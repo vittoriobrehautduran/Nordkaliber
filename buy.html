@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Designa Din Egen - Nordkaliber</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'lavender-grey': '#D1CFE0',
+                        'forest-teal': '#1B4332',
+                        'deep-blue': '#0F172A',
+                        'mustard-gold': '#E6B17A',
+                        'muted-beige': '#F0E6D3',
+                        'sage-green': '#6B8E6B',
+                        'hunter-brown': '#A0522D',
+                        'dark-green': '#1B4D3E',
+                        'light-green': '#90EE90',
+                        'premium-black': '#1a1a1a',
+                        'light-grey': '#E5E7EB',
+                        'warm-grey': '#D1D5DB',
+                        'cool-grey': '#9CA3AF',
+                        'soft-grey': '#F3F4F6'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .step-active {
+            background: linear-gradient(135deg, #E6B17A, #1B4332);
+            color: white;
+        }
+        .step-completed {
+            background: linear-gradient(135deg, #1B4332, #6B8E6B);
+            color: white;
+        }
+        .option-btn {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .option-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(230, 177, 122, 0.4);
+        }
+        .option-btn.selected {
+            border-color: #E6B17A;
+            background: linear-gradient(135deg, #E6B17A, #1B4332);
+            color: white;
+        }
+        .color-option {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+        .color-option.selected {
+            border-color: #E6B17A;
+            transform: scale(1.1);
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+                 .price-highlight {
+             background: linear-gradient(135deg, #E6B17A, #1B4332);
+             color: white;
+             padding: 1rem;
+             border-radius: 10px;
+             text-align: center;
+             margin: 1rem 0;
+         }
+         .option-disabled {
+             opacity: 0.4;
+             pointer-events: none;
+             filter: grayscale(100%);
+         }
+         .step-completed {
+             background: linear-gradient(135deg, #1B4332, #6B8E6B);
+             color: white;
+         }
+         .step-completed::after {
+             content: '✓';
+             position: absolute;
+             top: -2px;
+             right: -2px;
+             background: #22c55e;
+             color: white;
+             border-radius: 50%;
+             width: 20px;
+             height: 20px;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             font-size: 12px;
+             font-weight: bold;
+         }
+         
+         .special-request-confirmed {
+             background: linear-gradient(135deg, #22c55e, #16a34a) !important;
+             color: white !important;
+             border: none !important;
+             border-radius: 20px !important;
+             box-shadow: 0 10px 30px -10px rgba(34, 197, 94, 0.4), 0 4px 15px -2px rgba(0, 0, 0, 0.1) !important;
+             transform: scale(1.08) !important;
+             transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+             font-weight: 600 !important;
+             cursor: pointer !important;
+             pointer-events: auto !important;
+             opacity: 1 !important;
+             position: relative !important;
+             padding: 12px 20px !important;
+             min-height: 50px !important;
+             display: flex !important;
+             align-items: center !important;
+             justify-content: space-between !important;
+             overflow: hidden !important;
+         }
+         
+         .special-request-confirmed::before {
+             content: '✓';
+             background: rgba(255, 255, 255, 0.2);
+             color: white;
+             border-radius: 50%;
+             width: 24px;
+             height: 24px;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             font-size: 14px;
+             font-weight: bold;
+             animation: checkmarkAppear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+             flex-shrink: 0;
+         }
+         
+         .special-request-confirmed::after {
+             content: 'Klicka för att redigera';
+             position: absolute;
+             bottom: -20px;
+             left: 50%;
+             transform: translateX(-50%);
+             font-size: 11px;
+             opacity: 0;
+             transition: opacity 0.3s ease;
+             color: #22c55e;
+             background: white;
+             padding: 2px 8px;
+             border-radius: 8px;
+             white-space: nowrap;
+         }
+         
+         .special-request-confirmed:hover::after {
+             opacity: 1;
+         }
+         
+         @keyframes checkmarkAppear {
+             0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+             50% { transform: scale(1.2) rotate(-90deg); opacity: 0.8; }
+             100% { transform: scale(1) rotate(0deg); opacity: 1; }
+         }
+         
+         @keyframes indicatorPulse {
+             0% { box-shadow: 0 10px 30px -10px rgba(34, 197, 94, 0.4); }
+             50% { box-shadow: 0 15px 40px -10px rgba(34, 197, 94, 0.6); }
+             100% { box-shadow: 0 10px 30px -10px rgba(34, 197, 94, 0.4); }
+         }
+         
+         .special-request-confirmed {
+             animation: indicatorPulse 2s ease-in-out infinite;
+         }
+         
+         .special-request-confirmed::placeholder {
+             color: #9ca3af !important;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-hunter-brown to-dark-green py-4 px-6 shadow-lg">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-extrabold text-white hover:text-mustard-gold transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i>NORDKALIBER
+            </a>
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <i class="fas fa-shopping-cart text-2xl text-white cursor-pointer" onclick="toggleCart()"></i>
+                    <span id="cartCount" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-6 w-6 flex items-center justify-center">0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Progress Steps -->
+    <div class="max-w-4xl mx-auto py-8 px-4">
+        <div class="flex justify-between items-center mb-8">
+                         <div class="flex items-center space-x-4">
+                 <div id="step1" class="step-active w-12 h-12 rounded-full flex items-center justify-center font-bold relative">1</div>
+                 <div class="text-sm">Välj Kaliber</div>
+             </div>
+             <div class="flex-1 h-1 bg-gray-600 mx-4"></div>
+             <div class="flex items-center space-x-4">
+                 <div id="step2" class="w-12 h-12 rounded-full flex items-center justify-center font-bold bg-gray-600 relative">2</div>
+                 <div class="text-sm">Primär Färg</div>
+             </div>
+             <div class="flex-1 h-1 bg-gray-600 mx-4"></div>
+             <div class="flex items-center space-x-4">
+                 <div id="step3" class="w-12 h-12 rounded-full flex items-center justify-center font-bold bg-gray-600 relative">3</div>
+                 <div class="text-sm">Sekundär Färg</div>
+             </div>
+             <div class="flex-1 h-1 bg-gray-600 mx-4"></div>
+             <div class="flex items-center space-x-4">
+                 <div id="step4" class="w-12 h-12 rounded-full flex items-center justify-center font-bold bg-gray-600 relative">4</div>
+                 <div class="text-sm">Initialer (Valfritt)</div>
+             </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-6xl mx-auto px-4 pb-8">
+        <div class="grid lg:grid-cols-2 gap-8">
+            <!-- Configuration Panel -->
+            <div class="bg-soft-grey rounded-xl p-6 shadow-2xl">
+                <!-- Step 1: Caliber Selection -->
+                <div id="step1Content" class="fade-in">
+                    <h2 class="text-2xl font-bold mb-6 text-mustard-gold">
+                        <i class="fas fa-bullseye mr-3"></i>Steg 1: Välj Din Kaliber
+                    </h2>
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <button class="option-btn bg-light-grey text-gray-800 p-4 rounded-lg font-semibold" data-caliber="6.5x55">
+                            6.5x55 Swedish Mauser
+                        </button>
+                        <button class="option-btn bg-light-grey text-gray-800 p-4 rounded-lg font-semibold" data-caliber="308">
+                            .308 Winchester
+                        </button>
+                        <button class="option-btn bg-light-grey text-gray-800 p-4 rounded-lg font-semibold" data-caliber="30-06">
+                            .30-06 Springfield
+                        </button>
+                        <button class="option-btn bg-light-grey text-gray-800 p-4 rounded-lg font-semibold" data-caliber="270">
+                            .270 Winchester
+                        </button>
+                        <button class="option-btn bg-light-grey text-gray-800 p-4 rounded-lg font-semibold" data-caliber="243">
+                            .243 Winchester
+                        </button>
+                        <button class="option-btn bg-light-grey text-gray-800 p-4 rounded-lg font-semibold" data-caliber="7mm">
+                            7mm Remington Magnum
+                        </button>
+                        <button class="option-btn bg-light-grey text-gray-800 p-4 rounded-lg font-semibold" data-caliber="300">
+                            .300 Winchester Magnum
+                        </button>
+                        <button class="option-btn bg-light-grey text-gray-800 p-4 rounded-lg font-semibold" data-caliber="custom">
+                            .220 Swift
+                        </button>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium mb-2">Specialförfrågan (t.ex. Lila färg) +200kr</label>
+                        <textarea id="caliberSpecial" class="w-full p-3 bg-warm-grey border border-cool-grey rounded-lg text-gray-800" rows="3" placeholder="Beskriv din specialförfrågan här..."></textarea>
+                    </div>
+                                            <button id="nextStep1" class="w-full bg-gradient-to-r from-mustard-gold to-dark-green text-white py-3 px-6 rounded-lg font-semibold hover:from-dark-green hover:to-mustard-gold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                            Nästa Steg
+                        </button>
+                        </div>
+
+                <!-- Step 2: Primary Color -->
+                <div id="step2Content" class="hidden fade-in">
+                    <h2 class="text-2xl font-bold mb-6 text-mustard-gold">
+                        <i class="fas fa-palette mr-3"></i>Steg 2: Välj Primär Färg
+                    </h2>
+                    <div class="grid grid-cols-2 gap-6 mb-6">
+                        <div class="text-center">
+                            <div class="color-option bg-black mx-auto mb-2" data-color="black"></div>
+                            <span class="text-sm">Svart</span>
+                        </div>
+                        <div class="text-center">
+                            <div class="color-option bg-white mx-auto mb-2" data-color="white"></div>
+                            <span class="text-sm">Vit</span>
+                        </div>
+                        <div class="text-center">
+                            <div class="color-option bg-gray-500 mx-auto mb-2" data-color="gray"></div>
+                            <span class="text-sm">Grå</span>
+                        </div>
+                        <div class="text-center">
+                            <div class="color-option bg-green-600 mx-auto mb-2" data-color="green"></div>
+                            <span class="text-sm">Grön</span>
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium mb-2">Specialförfrågan (t.ex. Lila färg) +200kr</label>
+                        <textarea id="primarySpecial" class="w-full p-3 bg-warm-grey border border-cool-grey rounded-lg text-gray-800" rows="3" placeholder="Beskriv din specialförfrågan här..."></textarea>
+                    </div>
+                    <div class="flex space-x-4">
+                        <button id="prevStep2" class="flex-1 bg-gray-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-500 transition-all duration-300">
+                            Föregående
+                        </button>
+                        <button id="nextStep2" class="flex-1 bg-gradient-to-r from-mustard-gold to-dark-green text-white py-3 px-6 rounded-lg font-semibold hover:from-dark-green hover:to-mustard-gold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                            Nästa Steg
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Step 3: Secondary Color -->
+                <div id="step3Content" class="hidden fade-in">
+                    <h2 class="text-2xl font-bold mb-6 text-mustard-gold">
+                        <i class="fas fa-paint-brush mr-3"></i>Steg 3: Välj Sekundär Färg
+                    </h2>
+                    <div class="grid grid-cols-2 gap-6 mb-6">
+                        <div class="text-center">
+                            <div class="color-option bg-yellow-500 mx-auto mb-2" data-color="gold"></div>
+                            <span class="text-sm">Guld</span>
+                        </div>
+                        <div class="text-center">
+                            <div class="color-option bg-red-600 mx-auto mb-2" data-color="red"></div>
+                            <span class="text-sm">Röd</span>
+                        </div>
+                        <div class="text-center">
+                            <div class="color-option bg-orange-500 mx-auto mb-2" data-color="orange"></div>
+                            <span class="text-sm">Orange</span>
+                        </div>
+                        <div class="text-center">
+                            <div class="color-option bg-black mx-auto mb-2" data-color="black"></div>
+                            <span class="text-sm">Svart</span>
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium mb-2">Specialförfrågan (t.ex. Lila färg) +200kr</label>
+                        <textarea id="secondarySpecial" class="w-full p-3 bg-warm-grey border border-cool-grey rounded-lg text-gray-800" rows="3" placeholder="Beskriv din specialförfrågan här..."></textarea>
+                    </div>
+                    <div class="flex space-x-4">
+                        <button id="prevStep3" class="flex-1 bg-gray-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-500 transition-all duration-300">
+                            Föregående
+                        </button>
+                        <button id="nextStep3" class="flex-1 bg-gradient-to-r from-mustard-gold to-dark-green text-white py-3 px-6 rounded-semibold hover:from-dark-green hover:to-mustard-gold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                            Nästa Steg
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Initials (Optional) -->
+                <div id="step4Content" class="hidden fade-in">
+                    <h2 class="text-2xl font-bold mb-6 text-mustard-gold">
+                        <i class="fas fa-signature mr-3"></i>Steg 4: Initialer (Valfritt)
+                    </h2>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium mb-2">Dina Initialer +100kr</label>
+                        <input type="text" id="initials" class="w-full p-3 bg-warm-grey border border-cool-grey rounded-lg text-gray-800" placeholder="t.ex. J.S." maxlength="5">
+                        <p class="text-xs text-gray-400 mt-1">Max 5 tecken</p>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium mb-2">Specialförfrågan (t.ex. Annan font) +200kr</label>
+                        <textarea id="initialsSpecial" class="w-full p-3 bg-warm-grey border border-cool-grey rounded-lg text-gray-800" rows="3" placeholder="Beskriv din specialförfrågan här..."></textarea>
+                    </div>
+                    <div class="flex space-x-4">
+                        <button id="prevStep4" class="flex-1 bg-gray-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-500 transition-all duration-300">
+                            Föregående
+                        </button>
+                        <button id="addToCart" class="flex-1 bg-gradient-to-r from-mustard-gold to-dark-green text-white py-3 px-6 rounded-lg font-semibold hover:from-dark-green hover:to-mustard-gold transition-all duration-300">
+                            Lägg till i Kundvagn
+                        </button>
+                    </div>
+                </div>
+                        </div>
+
+            <!-- Preview and Price Panel -->
+            <div class="space-y-6">
+                <!-- Product Preview -->
+                <div class="bg-soft-grey rounded-xl p-6 shadow-2xl">
+                    <h3 class="text-xl font-bold mb-4 text-mustard-gold">
+                        <i class="fas fa-eye mr-2"></i>Produktförhandsvisning
+                    </h3>
+                    <div class="bg-light-grey rounded-lg p-4 h-64 flex items-center justify-center">
+                        <img id="previewImage" src="images/product-black-box.png" alt="Produktförhandsvisning" class="max-w-full max-h-full object-contain">
+                        <div id="placeholderText" class="text-gray-400 text-center">
+                            <i class="fas fa-box text-4xl mb-2"></i>
+                            <p>Välj alternativ för att se förhandsvisning</p>
+                        </div>
+                    </div>
+                                         <div class="mt-4 text-sm text-gray-400">
+                         <p><strong>Vald Kaliber:</strong> <span id="selectedCaliber">-</span></p>
+                         <p><strong>Primär Färg:</strong> <span id="selectedPrimary">-</span></p>
+                         <p><strong>Sekundär Färg:</strong> <span id="selectedSecondary">-</span></p>
+                         <p><strong>Initialer:</strong> <span id="selectedInitials">-</span></p>
+                         <div id="specialRequests" class="mt-3 pt-3 border-t border-gray-600 hidden">
+                             <p class="text-yellow-400 font-semibold mb-2">Specialförfrågningar:</p>
+                             <div id="specialRequestsList"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Price Breakdown -->
+                <div class="bg-soft-grey rounded-xl p-6 shadow-2xl">
+                    <h3 class="text-xl font-bold mb-4 text-mustard-gold">
+                        <i class="fas fa-calculator mr-2"></i>Prisuppställning
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span>Standard låda:</span>
+                            <span>650kr</span>
+                        </div>
+                        <div id="caliberSpecialPrice" class="flex justify-between text-green-400 hidden">
+                            <span>Kaliber specialförfrågan:</span>
+                            <span>+200kr</span>
+                        </div>
+                        <div id="primarySpecialPrice" class="flex justify-between text-green-400 hidden">
+                            <span>Primär färg specialförfrågan:</span>
+                            <span>+200kr</span>
+                        </div>
+                        <div id="secondarySpecialPrice" class="flex justify-between text-green-400 hidden">
+                            <span>Sekundär färg specialförfrågan:</span>
+                            <span>+200kr</span>
+                        </div>
+                        <div id="initialsPrice" class="flex justify-between text-green-400 hidden">
+                            <span>Initialer:</span>
+                            <span>+100kr</span>
+                        </div>
+                        <div id="initialsSpecialPrice" class="flex justify-between text-green-400 hidden">
+                            <span>Initialer specialförfrågan:</span>
+                            <span>+200kr</span>
+                        </div>
+                        <hr class="border-gray-600">
+                        <div class="flex justify-between text-xl font-bold">
+                            <span>Totalt:</span>
+                            <span id="totalPrice">650kr</span>
+                        </div>
+                    </div>
+                </div>
+                        </div>
+                    </div>
+                </div>
+                
+    <!-- Cart Modal -->
+    <div id="cartModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-soft-grey rounded-xl p-6 max-w-md w-full">
+                <h3 class="text-xl font-bold mb-4 text-mustard-gold">Din Kundvagn</h3>
+                <div id="cartItems" class="space-y-3 mb-4">
+                    <!-- Cart items will be displayed here -->
+                </div>
+                <div class="flex space-x-4">
+                    <button onclick="closeCart()" class="flex-1 bg-gray-600 text-white py-2 px-4 rounded-lg">Stäng</button>
+                                            <button onclick="goToCheckout()" class="flex-1 bg-gradient-to-r from-mustard-gold to-dark-green text-white py-2 px-4 rounded-lg">Gå till Kassan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let selectedCaliber = '';
+        let selectedPrimary = '';
+        let selectedSecondary = '';
+        let selectedInitials = '';
+        let cart = [];
+        let basePrice = 650;
+
+                 // Step navigation
+         function showStep(step) {
+             console.log('showStep called with step:', step);
+             
+             // Hide all step contents using both methods for consistency
+             const allSteps = ['step1Content', 'step2Content', 'step3Content', 'step4Content'];
+             allSteps.forEach(stepId => {
+                 const step = document.getElementById(stepId);
+                 if (step) {
+                     step.style.display = 'none';
+                     step.classList.add('hidden');
+                 }
+             });
+             console.log('Hidden all step contents');
+             
+             // Show current step content
+             const currentStepContent = document.getElementById(`step${step}Content`);
+             console.log('Current step content element:', currentStepContent);
+             if (currentStepContent) {
+                 currentStepContent.style.display = 'block';
+                 currentStepContent.classList.remove('hidden');
+                 console.log('Showed step', step, 'content');
+             } else {
+                 console.error('Could not find step content for step:', step);
+             }
+             
+             // Update progress indicators
+             for (let i = 1; i <= 4; i++) {
+                 const stepEl = document.getElementById(`step${i}`);
+                 if (i < step) {
+                     stepEl.className = 'step-completed w-12 h-12 rounded-full flex items-center justify-center font-bold relative';
+                 } else if (i === step) {
+                     stepEl.className = 'step-active w-12 h-12 rounded-full flex items-center justify-center font-bold relative';
+                 } else {
+                     stepEl.className = 'w-12 h-12 rounded-full flex items-center justify-center font-bold bg-gray-600 relative';
+                 }
+             }
+             console.log('Updated progress indicators');
+         }
+
+                 // Caliber selection
+         document.querySelectorAll('[data-caliber]').forEach(btn => {
+             btn.addEventListener('click', function() {
+                 // Don't allow selection if special request is active
+                 if (confirmedCaliberSpecial) return;
+                 
+                 // Toggle selection - if already selected, deselect it
+                 if (this.classList.contains('selected')) {
+                     this.classList.remove('selected');
+                     selectedCaliber = '';
+                     document.getElementById('selectedCaliber').textContent = '-';
+                     document.getElementById('nextStep1').disabled = true;
+                 } else {
+                     document.querySelectorAll('[data-caliber]').forEach(b => b.classList.remove('selected'));
+                     this.classList.add('selected');
+                     selectedCaliber = this.dataset.caliber;
+                     document.getElementById('selectedCaliber').textContent = this.textContent;
+                     document.getElementById('nextStep1').disabled = false;
+                 }
+                 updatePreview();
+             });
+         });
+
+                 // Primary color selection
+         document.querySelectorAll('[data-color]').forEach(btn => {
+             btn.addEventListener('click', function() {
+                 const step = this.closest('[id$="Content"]').id.includes('step2') ? 'primary' : 'secondary';
+                 
+                 // Don't allow selection if special request is active
+                 if (step === 'primary' && confirmedPrimarySpecial) return;
+                 if (step === 'secondary' && confirmedSecondarySpecial) return;
+                 
+                 // Toggle selection - if already selected, deselect it
+                 if (this.classList.contains('selected')) {
+                     this.classList.remove('selected');
+                     if (step === 'primary') {
+                         selectedPrimary = '';
+                         document.getElementById('selectedPrimary').textContent = '-';
+                         document.getElementById('nextStep2').disabled = true;
+                     } else {
+                         selectedSecondary = '';
+                         document.getElementById('selectedSecondary').textContent = '-';
+                         document.getElementById('nextStep3').disabled = true;
+                     }
+                 } else {
+                     document.querySelectorAll(`#step${step === 'primary' ? '2' : '3'}Content [data-color]`).forEach(b => b.classList.remove('selected'));
+                     this.classList.add('selected');
+                     
+                     if (step === 'primary') {
+                         selectedPrimary = this.dataset.color;
+                         document.getElementById('selectedPrimary').textContent = this.dataset.color.charAt(0).toUpperCase() + this.dataset.color.slice(1);
+                         document.getElementById('nextStep2').disabled = false;
+                     } else {
+                         selectedSecondary = this.dataset.color;
+                         document.getElementById('selectedSecondary').textContent = this.dataset.color.charAt(0).toUpperCase() + this.dataset.color.slice(1);
+                         document.getElementById('nextStep3').disabled = false;
+                     }
+                 }
+                 updatePreview();
+             });
+         });
+
+                 // Special request tracking
+         function updateSpecialPrices() {
+             const caliberSpecial = document.getElementById('caliberSpecial').value.trim();
+             const primarySpecial = document.getElementById('primarySpecial').value.trim();
+             const secondarySpecial = document.getElementById('secondarySpecial').value.trim();
+             const initials = document.getElementById('initials').value.trim();
+             const initialsSpecial = document.getElementById('initialsSpecial').value.trim();
+
+             // Use confirmed special requests for validation (any text is valid)
+             const hasValidCaliberSpecial = confirmedCaliberSpecial.length > 0;
+             const hasValidPrimarySpecial = confirmedPrimarySpecial.length > 0;
+             const hasValidSecondarySpecial = confirmedSecondarySpecial.length > 0;
+             const hasValidInitialsSpecial = confirmedInitialsSpecial.length > 0;
+
+             // Update price display
+             document.getElementById('caliberSpecialPrice').classList.toggle('hidden', !hasValidCaliberSpecial);
+             document.getElementById('primarySpecialPrice').classList.toggle('hidden', !hasValidPrimarySpecial);
+             document.getElementById('secondarySpecialPrice').classList.toggle('hidden', !hasValidSecondarySpecial);
+             document.getElementById('initialsPrice').classList.toggle('hidden', !initials);
+             document.getElementById('initialsSpecialPrice').classList.toggle('hidden', !hasValidInitialsSpecial);
+
+             // Disable/enable standard options based on special requests
+             const caliberOptions = document.querySelectorAll('[data-caliber]');
+             const primaryOptions = document.querySelectorAll('#step2Content [data-color]');
+             const secondaryOptions = document.querySelectorAll('#step3Content [data-color]');
+
+             caliberOptions.forEach(option => {
+                 option.classList.toggle('option-disabled', !!confirmedCaliberSpecial);
+             });
+
+             primaryOptions.forEach(option => {
+                 option.classList.toggle('option-disabled', !!confirmedPrimarySpecial);
+             });
+
+             secondaryOptions.forEach(option => {
+                 option.classList.toggle('option-disabled', !!confirmedSecondarySpecial);
+             });
+
+             // Update preview with special requests
+             updatePreviewWithSpecialRequests();
+
+             let total = basePrice;
+             if (hasValidCaliberSpecial) total += 200;
+             if (hasValidPrimarySpecial) total += 200;
+             if (hasValidSecondarySpecial) total += 200;
+             if (initials) total += 100;
+             if (hasValidInitialsSpecial) total += 200;
+
+             document.getElementById('totalPrice').textContent = total + 'kr';
+         }
+
+         // Update preview to show special requests
+         function updatePreviewWithSpecialRequests() {
+             const specialRequestsDiv = document.getElementById('specialRequests');
+             const specialRequestsList = document.getElementById('specialRequestsList');
+
+             const specialRequests = [];
+             if (confirmedCaliberSpecial) specialRequests.push(`Kaliber: ${confirmedCaliberSpecial}`);
+             if (confirmedPrimarySpecial) specialRequests.push(`Primär färg: ${confirmedPrimarySpecial}`);
+             if (confirmedSecondarySpecial) specialRequests.push(`Sekundär färg: ${confirmedSecondarySpecial}`);
+             if (confirmedInitialsSpecial) specialRequests.push(`Initialer: ${confirmedInitialsSpecial}`);
+
+             if (specialRequests.length > 0) {
+                 specialRequestsList.innerHTML = specialRequests.map(req => 
+                     `<p class="text-yellow-300 text-xs mb-1">• ${req}</p>`
+                 ).join('');
+                 specialRequestsDiv.classList.remove('hidden');
+             } else {
+                 specialRequestsDiv.classList.add('hidden');
+             }
+         }
+
+                 // Track confirmed special requests
+         let confirmedCaliberSpecial = '';
+         let confirmedPrimarySpecial = '';
+         let confirmedSecondarySpecial = '';
+         let confirmedInitialsSpecial = '';
+
+         // Add event listeners for special requests
+         ['caliberSpecial', 'primarySpecial', 'secondarySpecial', 'initials', 'initialsSpecial'].forEach(id => {
+             const input = document.getElementById(id);
+             
+             // Handle input changes
+             input.addEventListener('input', function() {
+                 updateSpecialPrices();
+                 updatePreview(); // Update preview immediately
+                 
+                 // Disable next buttons when typing (not confirmed yet)
+                 if (id === 'caliberSpecial') {
+                     document.getElementById('nextStep1').disabled = true;
+                 } else if (id === 'primarySpecial') {
+                     document.getElementById('nextStep2').disabled = true;
+                 } else if (id === 'secondarySpecial') {
+                     document.getElementById('nextStep3').disabled = true;
+                 }
+             });
+             
+             // Handle Enter key press
+             input.addEventListener('keydown', function(e) {
+                 if (e.key === 'Enter') {
+                     e.preventDefault();
+                     e.stopPropagation();
+                     
+                     const value = this.value.trim();
+                     
+                     console.log('Enter pressed for:', id);
+                     console.log('Value:', value);
+                     console.log('Current classes:', this.className);
+                     
+                     if (value) { // Just check if there's any text
+                         if (id === 'caliberSpecial') {
+                             confirmedCaliberSpecial = value;
+                             console.log('Set confirmedCaliberSpecial to:', confirmedCaliberSpecial);
+                             document.querySelectorAll('[data-caliber]').forEach(btn => btn.classList.remove('selected'));
+                             selectedCaliber = '';
+                             
+                             // Force enable the button
+                             const nextStep1Btn = document.getElementById('nextStep1');
+                             nextStep1Btn.disabled = false;
+                             nextStep1Btn.removeAttribute('disabled');
+                             nextStep1Btn.classList.remove('disabled:opacity-50', 'disabled:cursor-not-allowed');
+                             nextStep1Btn.style.opacity = '1';
+                             nextStep1Btn.style.cursor = 'pointer';
+                             nextStep1Btn.style.pointerEvents = 'auto';
+                             nextStep1Btn.style.backgroundColor = '#8B4513'; // Force visible background
+                             
+                             console.log('nextStep1 disabled after setting:', nextStep1Btn.disabled);
+                             console.log('nextStep1 has disabled attribute:', nextStep1Btn.hasAttribute('disabled'));
+                             console.log('nextStep1 opacity:', nextStep1Btn.style.opacity);
+                             console.log('nextStep1 cursor:', nextStep1Btn.style.cursor);
+                             console.log('nextStep1 background:', nextStep1Btn.style.backgroundColor);
+                             
+                             // Apply modern white box animation
+                             this.classList.add('special-request-confirmed');
+                             this.readOnly = true;
+                             this.disabled = true;
+                             
+                             console.log('Applied special-request-confirmed class');
+                             console.log('Classes after:', this.className);
+                             console.log('ReadOnly:', this.readOnly);
+                             console.log('Disabled:', this.disabled);
+                             
+                             // Temporary alert to confirm transformation
+                             setTimeout(() => {
+                                 if (this.classList.contains('special-request-confirmed')) {
+                                     console.log('✅ Transformation successful - class still present');
+                                 } else {
+                                     console.log('❌ Transformation failed - class removed');
+                                 }
+                             }, 500);
+                             
+                             // Add click handler to make editable again
+                             this.addEventListener('click', function(e) {
+                                 if (this.classList.contains('special-request-confirmed')) {
+                                     e.preventDefault();
+                                     e.stopPropagation();
+                                     
+                                     // Animate back to text box
+                                     this.style.transform = 'scale(0.95)';
+                                     setTimeout(() => {
+                                         this.classList.remove('special-request-confirmed');
+                                         this.readOnly = false;
+                                         this.disabled = false;
+                                         this.style.transform = '';
+                                         this.focus();
+                                         
+                                         // Clear the confirmed value
+                                         confirmedCaliberSpecial = '';
+                                         updateSpecialPrices();
+                                         updatePreview();
+                                     }, 150);
+                                 }
+                             });
+                         } else if (id === 'primarySpecial') {
+                             confirmedPrimarySpecial = value;
+                             console.log('Set confirmedPrimarySpecial to:', confirmedPrimarySpecial);
+                             document.querySelectorAll('#step2Content [data-color]').forEach(btn => btn.classList.remove('selected'));
+                             selectedPrimary = '';
+                             document.getElementById('nextStep2').disabled = false;
+                             // Apply modern white box animation
+                             this.classList.add('special-request-confirmed');
+                             this.readOnly = true;
+                             this.disabled = true;
+                             
+                             // Add click handler to make editable again
+                             this.addEventListener('click', function(e) {
+                                 if (this.classList.contains('special-request-confirmed')) {
+                                     e.preventDefault();
+                                     e.stopPropagation();
+                                     
+                                     // Animate back to text box
+                                     this.style.transform = 'scale(0.95)';
+                                     setTimeout(() => {
+                                         this.classList.remove('special-request-confirmed');
+                                         this.readOnly = false;
+                                         this.disabled = false;
+                                         this.style.transform = '';
+                                         this.focus();
+                                         
+                                         // Clear the confirmed value
+                                         confirmedPrimarySpecial = '';
+                                         updateSpecialPrices();
+                                         updatePreview();
+                                     }, 150);
+                                 }
+                             });
+                         } else if (id === 'secondarySpecial') {
+                             confirmedSecondarySpecial = value;
+                             console.log('Set confirmedSecondarySpecial to:', confirmedSecondarySpecial);
+                             document.querySelectorAll('#step3Content [data-color]').forEach(btn => btn.classList.remove('selected'));
+                             selectedSecondary = '';
+                             document.getElementById('nextStep3').disabled = false;
+                             // Apply modern white box animation
+                             this.classList.add('special-request-confirmed');
+                             this.readOnly = true;
+                             this.disabled = true;
+                             
+                             // Add click handler to make editable again
+                             this.addEventListener('click', function(e) {
+                                 if (this.classList.contains('special-request-confirmed')) {
+                                     e.preventDefault();
+                                     e.stopPropagation();
+                                     
+                                     // Animate back to text box
+                                     this.style.transform = 'scale(0.95)';
+                                     setTimeout(() => {
+                                         this.classList.remove('special-request-confirmed');
+                                         this.readOnly = false;
+                                         this.disabled = false;
+                                         this.style.transform = '';
+                                         this.focus();
+                                         
+                                         // Clear the confirmed value
+                                         confirmedSecondarySpecial = '';
+                                         updateSpecialPrices();
+                                         updatePreview();
+                                     }, 150);
+                                 }
+                             });
+                         } else if (id === 'initials') {
+                             selectedInitials = value;
+                             console.log('Set selectedInitials to:', selectedInitials);
+                             document.getElementById('selectedInitials').textContent = value;
+                             
+                             // Apply modern white box animation
+                             this.classList.add('special-request-confirmed');
+                             this.readOnly = true;
+                             this.disabled = true;
+                             
+                             console.log('Applied special-request-confirmed class to initials');
+                             console.log('Classes after:', this.className);
+                             
+                             // Add click handler to make editable again
+                             this.addEventListener('click', function(e) {
+                                 if (this.classList.contains('special-request-confirmed')) {
+                                     e.preventDefault();
+                                     e.stopPropagation();
+                                     
+                                     // Animate back to text box
+                                     this.style.transform = 'scale(0.95)';
+                                     setTimeout(() => {
+                                         this.classList.remove('special-request-confirmed');
+                                         this.readOnly = false;
+                                         this.disabled = false;
+                                         this.style.transform = '';
+                                         this.focus();
+                                         
+                                         // Clear the confirmed value
+                                         selectedInitials = '';
+                                         document.getElementById('selectedInitials').textContent = '-';
+                                         updateSpecialPrices();
+                                         updatePreview();
+                                     }, 150);
+                                 }
+                             });
+                         } else if (id === 'initialsSpecial') {
+                             confirmedInitialsSpecial = value;
+                             console.log('Set confirmedInitialsSpecial to:', confirmedInitialsSpecial);
+                             // Apply modern white box animation
+                             this.classList.add('special-request-confirmed');
+                             this.readOnly = true;
+                             this.disabled = true;
+                             
+                             // Add click handler to make editable again
+                             this.addEventListener('click', function(e) {
+                                 if (this.classList.contains('special-request-confirmed')) {
+                                     e.preventDefault();
+                                     e.stopPropagation();
+                                     
+                                     // Animate back to text box
+                                     this.style.transform = 'scale(0.95)';
+                                     setTimeout(() => {
+                                         this.classList.remove('special-request-confirmed');
+                                         this.readOnly = false;
+                                         this.disabled = false;
+                                         this.style.transform = '';
+                                         this.focus();
+                                         
+                                         // Clear the confirmed value
+                                         confirmedInitialsSpecial = '';
+                                         updateSpecialPrices();
+                                         updatePreview();
+                                     }, 150);
+                                 }
+                             });
+                         }
+                         
+                         updateSpecialPrices();
+                         updatePreview();
+                     } else {
+                         // Show error for empty input
+                         this.style.borderColor = '#ef4444'; // Red border for invalid
+                         setTimeout(() => {
+                             this.style.borderColor = '#6b7280'; // Reset border color
+                         }, 1000);
+                     }
+                 }
+             });
+             
+             // Handle blur (when user clicks away) - clear confirmation
+             input.addEventListener('blur', function() {
+                 // Don't clear if we're clicking the next step button or if confirmed
+                 setTimeout(() => {
+                     // Check which step we're on and get the appropriate next step button
+                     let nextStepBtn;
+                     if (id === 'caliberSpecial') {
+                         nextStepBtn = document.getElementById('nextStep1');
+                     } else if (id === 'primarySpecial') {
+                         nextStepBtn = document.getElementById('nextStep2');
+                     } else if (id === 'secondarySpecial') {
+                         nextStepBtn = document.getElementById('nextStep3');
+                     } else if (id === 'initialsSpecial') {
+                         nextStepBtn = document.getElementById('addToCart');
+                     }
+                     
+                     if (nextStepBtn && document.activeElement === nextStepBtn) {
+                         return; // Don't clear if next step button is focused
+                     }
+                     
+                     // Don't clear if the input is confirmed (has the special class)
+                     if (this.classList.contains('special-request-confirmed')) {
+                         return; // Keep the confirmation
+                     }
+                     
+                     if (id === 'caliberSpecial') {
+                         confirmedCaliberSpecial = '';
+                         this.classList.remove('special-request-confirmed');
+                         this.readOnly = false;
+                         this.disabled = false;
+                         if (!selectedCaliber) {
+                             document.getElementById('nextStep1').disabled = true;
+                         }
+                     } else if (id === 'primarySpecial') {
+                         confirmedPrimarySpecial = '';
+                         this.classList.remove('special-request-confirmed');
+                         this.readOnly = false;
+                         this.disabled = false;
+                         if (!selectedPrimary) {
+                             document.getElementById('nextStep2').disabled = true;
+                         }
+                     } else if (id === 'secondarySpecial') {
+                         confirmedSecondarySpecial = '';
+                         this.classList.remove('special-request-confirmed');
+                         this.readOnly = false;
+                         this.disabled = false;
+                         if (!selectedSecondary) {
+                             document.getElementById('nextStep3').disabled = true;
+                         }
+                     } else if (id === 'initials') {
+                         selectedInitials = '';
+                         this.classList.remove('special-request-confirmed');
+                         this.readOnly = false;
+                         this.disabled = false;
+                         document.getElementById('selectedInitials').textContent = '-';
+                     } else if (id === 'initialsSpecial') {
+                         confirmedInitialsSpecial = '';
+                         this.classList.remove('special-request-confirmed');
+                         this.readOnly = false;
+                         this.disabled = false;
+                     }
+                     
+                     updateSpecialPrices();
+                     updatePreview();
+                 }, 100); // Small delay to check focus
+             });
+         });
+
+                 // Update preview image and selections
+         function updatePreview() {
+             const previewImage = document.getElementById('previewImage');
+             const placeholderText = document.getElementById('placeholderText');
+             
+             // Update caliber display
+             if (confirmedCaliberSpecial) {
+                 document.getElementById('selectedCaliber').textContent = confirmedCaliberSpecial;
+             } else if (selectedCaliber) {
+                 const caliberButton = document.querySelector(`[data-caliber="${selectedCaliber}"]`);
+                 document.getElementById('selectedCaliber').textContent = caliberButton ? caliberButton.textContent : selectedCaliber;
+             } else {
+                 document.getElementById('selectedCaliber').textContent = '-';
+             }
+             
+             // Update primary color display
+             if (confirmedPrimarySpecial) {
+                 document.getElementById('selectedPrimary').textContent = confirmedPrimarySpecial;
+             } else if (selectedPrimary) {
+                 document.getElementById('selectedPrimary').textContent = selectedPrimary.charAt(0).toUpperCase() + selectedPrimary.slice(1);
+             } else {
+                 document.getElementById('selectedPrimary').textContent = '-';
+             }
+             
+             // Update secondary color display
+             if (confirmedSecondarySpecial) {
+                 document.getElementById('selectedSecondary').textContent = confirmedSecondarySpecial;
+             } else if (selectedSecondary) {
+                 document.getElementById('selectedSecondary').textContent = selectedSecondary.charAt(0).toUpperCase() + selectedSecondary.slice(1);
+             } else {
+                 document.getElementById('selectedSecondary').textContent = '-';
+             }
+             
+             // Update image preview
+             if (selectedPrimary && !confirmedPrimarySpecial) {
+                 const imageMap = {
+                     'black': 'images/product-black-box.png',
+                     'white': 'images/white_box.png',
+                     'gray': 'images/box_gray.png',
+                     'green': 'images/green_box.png'
+                 };
+                 
+                 if (imageMap[selectedPrimary]) {
+                     previewImage.src = imageMap[selectedPrimary];
+                     previewImage.style.display = 'block';
+                     placeholderText.style.display = 'none';
+                 }
+             } else {
+                 previewImage.style.display = 'none';
+                 placeholderText.style.display = 'block';
+             }
+         }
+
+                 // Step navigation buttons
+         document.getElementById('nextStep1').addEventListener('click', () => {
+             console.log('=== NEXT STEP 1 CLICKED ===');
+             console.log('selectedCaliber:', selectedCaliber);
+             console.log('confirmedCaliberSpecial:', confirmedCaliberSpecial);
+             
+             // Check if we can proceed
+             const canProceed = selectedCaliber || confirmedCaliberSpecial;
+             console.log('Can proceed:', canProceed);
+             
+             if (!canProceed) {
+                 alert('Cannot proceed - no valid selection');
+                 return;
+             }
+             
+             // Simple step navigation test
+             try {
+                 console.log('Starting step navigation...');
+                 
+                 // Get step elements
+                 const step1 = document.getElementById('step1Content');
+                 const step2 = document.getElementById('step2Content');
+                 
+                 console.log('Step 1 element:', step1);
+                 console.log('Step 2 element:', step2);
+                 
+                 if (step1) {
+                     console.log('Step 1 current display:', step1.style.display);
+                     console.log('Step 1 current classes:', step1.className);
+                     step1.style.display = 'none';
+                     step1.classList.add('hidden');
+                     console.log('Step 1 hidden');
+                 }
+                 
+                 if (step2) {
+                     console.log('Step 2 current display:', step2.style.display);
+                     console.log('Step 2 current classes:', step2.className);
+                     step2.style.display = 'block';
+                     step2.classList.remove('hidden');
+                     console.log('Step 2 shown');
+                 }
+                 
+                 // Update indicators
+                 const step1Indicator = document.getElementById('step1');
+                 const step2Indicator = document.getElementById('step2');
+                 
+                 if (step1Indicator) {
+                     step1Indicator.className = 'step-completed w-12 h-12 rounded-full flex items-center justify-center font-bold relative';
+                     console.log('Step 1 indicator updated');
+                 }
+                 
+                 if (step2Indicator) {
+                     step2Indicator.className = 'step-active w-12 h-12 rounded-full flex items-center justify-center font-bold relative';
+                     console.log('Step 2 indicator updated');
+                 }
+                 
+                 console.log('Step navigation completed successfully');
+                 
+             } catch (error) {
+                 console.error('Error in step navigation:', error);
+                 alert('Error: ' + error.message);
+             }
+         });
+
+         document.getElementById('nextStep2').addEventListener('click', () => {
+             console.log('=== NEXT STEP 2 CLICKED ===');
+             console.log('selectedPrimary:', selectedPrimary);
+             console.log('confirmedPrimarySpecial:', confirmedPrimarySpecial);
+             
+             // Check if we can proceed
+             const canProceed = selectedPrimary || confirmedPrimarySpecial;
+             console.log('Can proceed:', canProceed);
+             
+             if (!canProceed) {
+                 alert('Cannot proceed - no valid selection');
+                 return;
+             }
+             
+             // Proper step navigation
+             try {
+                 console.log('Starting step 2 to 3 navigation...');
+                 
+                 // Hide ALL step content first
+                 const allSteps = ['step1Content', 'step2Content', 'step3Content', 'step4Content'];
+                 allSteps.forEach(stepId => {
+                     const step = document.getElementById(stepId);
+                     if (step) {
+                         step.style.display = 'none';
+                         step.classList.add('hidden');
+                     }
+                 });
+                 
+                 // Show only step 3
+                 const step3 = document.getElementById('step3Content');
+                 if (step3) {
+                     step3.style.display = 'block';
+                     step3.classList.remove('hidden');
+                     console.log('Step 3 shown');
+                 }
+                 
+                 // Update progress indicators
+                 const step1Indicator = document.getElementById('step1');
+                 const step2Indicator = document.getElementById('step2');
+                 const step3Indicator = document.getElementById('step3');
+                 const step4Indicator = document.getElementById('step4');
+                 
+                 if (step1Indicator) {
+                     step1Indicator.className = 'step-completed w-12 h-12 rounded-full flex items-center justify-center font-bold relative';
+                 }
+                 
+                 if (step2Indicator) {
+                     step2Indicator.className = 'step-completed w-12 h-12 rounded-full flex items-center justify-center font-bold relative';
+                 }
+                 
+                 if (step3Indicator) {
+                     step3Indicator.className = 'step-active w-12 h-12 rounded-full flex items-center justify-center font-bold relative';
+                 }
+                 
+                 if (step4Indicator) {
+                     step4Indicator.className = 'w-12 h-12 rounded-full flex items-center justify-center font-bold bg-gray-600 relative';
+                 }
+                 
+                 console.log('Step navigation completed successfully');
+                 
+             } catch (error) {
+                 console.error('Error in step navigation:', error);
+                 alert('Error: ' + error.message);
+             }
+         });
+
+         document.getElementById('nextStep3').addEventListener('click', () => {
+             console.log('=== NEXT STEP 3 CLICKED ===');
+             
+             // Proper step navigation
+             try {
+                 // Hide ALL step content first
+                 const allSteps = ['step1Content', 'step2Content', 'step3Content', 'step4Content'];
+                 allSteps.forEach(stepId => {
+                     const step = document.getElementById(stepId);
+                     if (step) {
+                         step.style.display = 'none';
+                         step.classList.add('hidden');
+                     }
+                 });
+                 
+                 // Show only step 4
+                 const step4 = document.getElementById('step4Content');
+                 if (step4) {
+                     step4.style.display = 'block';
+                     step4.classList.remove('hidden');
+                     console.log('Step 4 shown');
+                 }
+                 
+                 // Update progress indicators
+                 const step1Indicator = document.getElementById('step1');
+                 const step2Indicator = document.getElementById('step2');
+                 const step3Indicator = document.getElementById('step3');
+                 const step4Indicator = document.getElementById('step4');
+                 
+                 if (step1Indicator) {
+                     step1Indicator.className = 'step-completed w-12 h-12 rounded-full flex items-center justify-center font-bold relative';
+                 }
+                 
+                 if (step2Indicator) {
+                     step2Indicator.className = 'step-completed w-12 h-12 rounded-full flex items-center justify-center font-bold relative';
+                 }
+                 
+                 if (step3Indicator) {
+                     step3Indicator.className = 'step-completed w-12 h-12 rounded-full flex items-center justify-center font-bold relative';
+                 }
+                 
+                 if (step4Indicator) {
+                     step4Indicator.className = 'step-active w-12 h-12 rounded-full flex items-center justify-center font-bold relative';
+                 }
+                 
+                 console.log('Step navigation completed successfully');
+                 
+             } catch (error) {
+                 console.error('Error in step navigation:', error);
+                 alert('Error: ' + error.message);
+             }
+         });
+
+        document.getElementById('prevStep2').addEventListener('click', () => {
+            console.log('=== PREV STEP 2 CLICKED ===');
+            console.log('Current step before:', currentStep);
+            currentStep = 1;
+            console.log('Current step after:', currentStep);
+            showStep(currentStep);
+        });
+
+        document.getElementById('prevStep3').addEventListener('click', () => {
+            console.log('=== PREV STEP 3 CLICKED ===');
+            console.log('Current step before:', currentStep);
+            currentStep = 2;
+            console.log('Current step after:', currentStep);
+            showStep(currentStep);
+        });
+
+        document.getElementById('prevStep4').addEventListener('click', () => {
+            console.log('=== PREV STEP 4 CLICKED ===');
+            console.log('Current step before:', currentStep);
+            currentStep = 3;
+            console.log('Current step after:', currentStep);
+            showStep(currentStep);
+        });
+
+        // Add to cart
+        document.getElementById('addToCart').addEventListener('click', () => {
+            const initials = document.getElementById('initials').value.trim();
+            selectedInitials = initials;
+            document.getElementById('selectedInitials').textContent = initials || '-';
+
+            const product = {
+                caliber: selectedCaliber,
+                primary: selectedPrimary,
+                secondary: selectedSecondary,
+                initials: initials,
+                specialRequests: {
+                    caliber: document.getElementById('caliberSpecial').value.trim(),
+                    primary: document.getElementById('primarySpecial').value.trim(),
+                    secondary: document.getElementById('secondarySpecial').value.trim(),
+                    initials: document.getElementById('initialsSpecial').value.trim()
+                },
+                price: parseInt(document.getElementById('totalPrice').textContent)
+            };
+
+            cart.push(product);
+            updateCartCount();
+            
+            // Reset form
+            resetForm();
+            
+            alert('Produkt tillagd i kundvagnen!');
+        });
+
+                 function resetForm() {
+             currentStep = 1;
+             selectedCaliber = '';
+             selectedPrimary = '';
+             selectedSecondary = '';
+             selectedInitials = '';
+             
+             // Reset confirmed special requests
+             confirmedCaliberSpecial = '';
+             confirmedPrimarySpecial = '';
+             confirmedSecondarySpecial = '';
+             confirmedInitialsSpecial = '';
+             
+             // Reset selections
+             document.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+             document.querySelectorAll('button[disabled]').forEach(btn => btn.disabled = true);
+             
+             // Reset text inputs
+             ['caliberSpecial', 'primarySpecial', 'secondarySpecial', 'initials', 'initialsSpecial'].forEach(id => {
+                 const input = document.getElementById(id);
+                 input.value = '';
+                 input.classList.remove('special-request-confirmed');
+                 input.readOnly = false;
+                 input.disabled = false;
+             });
+             
+             // Reset preview
+             document.getElementById('selectedCaliber').textContent = '-';
+             document.getElementById('selectedPrimary').textContent = '-';
+             document.getElementById('selectedSecondary').textContent = '-';
+             document.getElementById('selectedInitials').textContent = '-';
+             
+             // Reset price
+             document.getElementById('totalPrice').textContent = '650kr';
+             document.querySelectorAll('[id$="SpecialPrice"], #initialsPrice').forEach(el => el.classList.add('hidden'));
+             
+             // Reset special requests display
+             document.getElementById('specialRequests').classList.add('hidden');
+             
+             // Re-enable all options
+             document.querySelectorAll('.option-disabled').forEach(el => el.classList.remove('option-disabled'));
+             
+             showStep(1);
+             updatePreview();
+             updateSpecialPrices();
+         }
+
+        function updateCartCount() {
+            document.getElementById('cartCount').textContent = cart.length;
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cartModal');
+            const items = document.getElementById('cartItems');
+            
+            if (cart.length === 0) {
+                items.innerHTML = '<p class="text-gray-400">Din kundvagn är tom</p>';
+            } else {
+                items.innerHTML = cart.map((item, index) => `
+                    <div class="border-b border-gray-600 pb-2">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="font-semibold">${item.caliber} - ${item.primary}/${item.secondary}</p>
+                                <p class="text-sm text-gray-400">${item.initials ? 'Initialer: ' + item.initials : 'Inga initialer'}</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-semibold">${item.price}kr</p>
+                                <button onclick="removeFromCart(${index})" class="text-red-400 text-sm">Ta bort</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            modal.classList.toggle('hidden');
+        }
+
+        function closeCart() {
+            document.getElementById('cartModal').classList.add('hidden');
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartCount();
+            toggleCart();
+        }
+
+        function goToCheckout() {
+            alert('Kassan kommer snart!');
+            closeCart();
+        }
+
+                 // Initialize
+         console.log('=== SCRIPT LOADED ===');
+         showStep(1);
+         updateSpecialPrices();
+         
+         // Test function to manually advance steps
+         window.testStepAdvance = function() {
+             console.log('=== MANUAL TEST ===');
+             
+             // Force step 2 to show
+             const step1 = document.getElementById('step1Content');
+             const step2 = document.getElementById('step2Content');
+             
+             console.log('Step 1 element:', step1);
+             console.log('Step 2 element:', step2);
+             
+             if (step1) {
+                 step1.style.display = 'none';
+                 step1.classList.add('hidden');
+                 console.log('Step 1 manually hidden');
+             }
+             
+             if (step2) {
+                 step2.style.display = 'block';
+                 step2.classList.remove('hidden');
+                 console.log('Step 2 manually shown');
+             }
+             
+             console.log('Manually switched to step 2');
+         };
+         
+         // Test function to manually go back to step 1
+         window.testStepBack = function() {
+             console.log('=== MANUAL BACK TEST ===');
+             
+             // Force step 1 to show
+             const step1 = document.getElementById('step1Content');
+             const step2 = document.getElementById('step2Content');
+             
+             console.log('Step 1 element:', step1);
+             console.log('Step 2 element:', step2);
+             
+             if (step2) {
+                 step2.style.display = 'none';
+                 step2.classList.add('hidden');
+                 console.log('Step 2 manually hidden');
+             }
+             
+             if (step1) {
+                 step1.style.display = 'block';
+                 step1.classList.remove('hidden');
+                 console.log('Step 1 manually shown');
+             }
+             
+             console.log('Manually switched back to step 1');
+         };
+         
+         // Test function to manually go to step 3
+         window.testStep3 = function() {
+             console.log('=== MANUAL STEP 3 TEST ===');
+             
+             // Force step 3 to show
+             const step2 = document.getElementById('step2Content');
+             const step3 = document.getElementById('step3Content');
+             
+             console.log('Step 2 element:', step2);
+             console.log('Step 3 element:', step3);
+             
+             if (step2) {
+                 step2.style.display = 'none';
+                 step2.classList.add('hidden');
+                 console.log('Step 2 manually hidden');
+             }
+             
+             if (step3) {
+                 step3.style.display = 'block';
+                 step3.classList.remove('hidden');
+                 console.log('Step 3 manually shown');
+             }
+             
+             console.log('Manually switched to step 3');
+         };
+         
+         // Test function to check button state
+         window.checkButton = function() {
+             const btn = document.getElementById('nextStep1');
+             console.log('Button element:', btn);
+             console.log('Button disabled:', btn.disabled);
+             console.log('Button has disabled attribute:', btn.hasAttribute('disabled'));
+             console.log('Button opacity:', btn.style.opacity);
+             console.log('Button cursor:', btn.style.cursor);
+             console.log('Button classes:', btn.className);
+             console.log('Button background:', btn.style.backgroundColor);
+             console.log('Button pointer-events:', btn.style.pointerEvents);
+             
+             // Test if we can add a new event listener
+             btn.addEventListener('click', () => {
+                 alert('NEW EVENT LISTENER TRIGGERED!');
+             });
+             
+             console.log('Added new event listener to button');
+         };
+         
+         // Test function to manually enable button
+         window.enableButton = function() {
+             const btn = document.getElementById('nextStep1');
+             btn.disabled = false;
+             btn.removeAttribute('disabled');
+             btn.style.opacity = '1';
+             btn.style.cursor = 'pointer';
+             btn.style.pointerEvents = 'auto';
+             btn.style.backgroundColor = '#8B4513';
+             console.log('Button manually enabled');
+         };
+         
+         // Simple test to check if JavaScript is working
+         alert('Page loaded! JavaScript is working!');
+         console.log('JavaScript is working!');
+         console.log('Current step variable:', currentStep);
+         console.log('Next step button exists:', !!document.getElementById('nextStep1'));
+         
+         // Check if step content elements exist
+         console.log('Step 1 content exists:', !!document.getElementById('step1Content'));
+         console.log('Step 2 content exists:', !!document.getElementById('step2Content'));
+         console.log('Step 3 content exists:', !!document.getElementById('step3Content'));
+         console.log('Step 4 content exists:', !!document.getElementById('step4Content'));
+         
+         // Check step indicators
+         console.log('Step 1 indicator exists:', !!document.getElementById('step1'));
+         console.log('Step 2 indicator exists:', !!document.getElementById('step2'));
+         console.log('Step 3 indicator exists:', !!document.getElementById('step3'));
+         console.log('Step 4 indicator exists:', !!document.getElementById('step4'));
+    </script>
+</body>
+</html>
