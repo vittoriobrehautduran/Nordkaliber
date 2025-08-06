@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Betalning Genomförd - Nordkaliber</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'hunter-brown': '#A0522D',
+                        'dark-green': '#1B4D3E',
+                        'mustard-gold': '#E6B17A',
+                        'premium-black': '#0A0A0A'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0A0A0A;
+            color: #f3f3f3;
+        }
+        
+        .success-animation {
+            animation: successPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes successPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .checkmark {
+            animation: checkmarkDraw 1s ease-in-out forwards;
+        }
+        
+        @keyframes checkmarkDraw {
+            0% { stroke-dashoffset: 100; }
+            100% { stroke-dashoffset: 0; }
+        }
+    </style>
+</head>
+<body class="bg-premium-black text-gray-200 min-h-screen">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-hunter-brown to-dark-green py-4 px-6 shadow-lg">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-extrabold text-white hover:text-mustard-gold transition-colors">
+                NORDKALIBER
+            </a>
+        </div>
+    </header>
+
+    <!-- Success Content -->
+    <div class="min-h-screen flex items-center justify-center px-4">
+        <div class="max-w-2xl mx-auto text-center">
+            <!-- Success Icon -->
+            <div class="mb-8 success-animation">
+                <div class="w-32 h-32 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-16 h-16 text-white checkmark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" stroke-dasharray="100" stroke-dashoffset="100"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Success Message -->
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">
+                Tack för din beställning!
+            </h1>
+            
+            <p class="text-xl text-gray-300 mb-8 leading-relaxed">
+                Din betalning har genomförts framgångsrikt. Vi har skickat en bekräftelse till din e-postadress.
+            </p>
+
+            <!-- Order Details -->
+            <div class="bg-dark-green bg-opacity-50 rounded-lg p-6 mb-8 border border-hunter-brown border-opacity-20">
+                <h2 class="text-2xl font-bold text-mustard-gold mb-4">
+                    <i class="fas fa-receipt mr-3"></i>Orderdetaljer
+                </h2>
+                <div id="orderDetails" class="text-left space-y-3">
+                    <div class="flex justify-between">
+                        <span class="text-gray-300">Ordernummer:</span>
+                        <span id="orderNumber" class="font-semibold text-white">-</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-300">Betalningsstatus:</span>
+                        <span class="text-green-400 font-semibold">Bekräftad</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-300">Leveransstatus:</span>
+                        <span class="text-yellow-400 font-semibold">Förbereds</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Next Steps -->
+            <div class="bg-dark-green bg-opacity-30 rounded-lg p-6 mb-8 border border-hunter-brown border-opacity-20">
+                <h3 class="text-xl font-bold text-mustard-gold mb-4">
+                    <i class="fas fa-shipping-fast mr-3"></i>Vad händer nu?
+                </h3>
+                <div class="text-left space-y-3 text-gray-300">
+                    <div class="flex items-start">
+                        <div class="w-6 h-6 bg-mustard-gold rounded-full flex items-center justify-center text-xs font-bold text-dark-green mr-3 mt-0.5">1</div>
+                        <div>
+                            <p class="font-semibold text-white">Orderbekräftelse</p>
+                            <p class="text-sm">Du får en e-post med orderdetaljer inom några minuter</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="w-6 h-6 bg-mustard-gold rounded-full flex items-center justify-center text-xs font-bold text-dark-green mr-3 mt-0.5">2</div>
+                        <div>
+                            <p class="font-semibold text-white">Tillverkning</p>
+                            <p class="text-sm">Vi börjar tillverka din skräddarsydda ammunitionlåda</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="w-6 h-6 bg-mustard-gold rounded-full flex items-center justify-center text-xs font-bold text-dark-green mr-3 mt-0.5">3</div>
+                        <div>
+                            <p class="font-semibold text-white">Leverans</p>
+                            <p class="text-sm">Du får ett spårningsnummer när din order skickas</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="index.html" class="bg-gradient-to-r from-mustard-gold to-dark-green text-white px-8 py-3 rounded-full font-semibold hover:from-dark-green hover:to-mustard-gold transition-all duration-300 inline-block">
+                    <i class="fas fa-home mr-2"></i>Tillbaka till startsidan
+                </a>
+                <a href="buy.html" class="bg-gray-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-gray-500 transition-all duration-300 inline-block">
+                    <i class="fas fa-plus mr-2"></i>Beställ en till
+                </a>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="mt-12 text-center text-gray-400">
+                <p class="mb-2">Har du frågor om din order?</p>
+                <p class="text-mustard-gold">
+                    <i class="fas fa-envelope mr-2"></i>info@nordkaliber.se
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get session ID from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const sessionId = urlParams.get('session_id');
+        
+        if (sessionId) {
+            // Set order number (you could also fetch this from your backend)
+            document.getElementById('orderNumber').textContent = sessionId.substring(0, 8).toUpperCase();
+            
+            // Store session ID for potential backend verification
+            localStorage.setItem('lastOrderSessionId', sessionId);
+        }
+
+        // Add some interactive elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate checkmark
+            const checkmark = document.querySelector('.checkmark');
+            if (checkmark) {
+                setTimeout(() => {
+                    checkmark.style.strokeDashoffset = '0';
+                }, 500);
+            }
+
+            // Add click tracking for analytics (if needed)
+            const actionButtons = document.querySelectorAll('a');
+            actionButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // You could send analytics data here
+                    console.log('User clicked:', this.textContent.trim());
+                });
+            });
+        });
+
+        // Optional: Send success event to analytics
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'purchase', {
+                transaction_id: sessionId,
+                value: 1 // You could get the actual value from your cart
+            });
+        }
+    </script>
+</body>
+</html> 

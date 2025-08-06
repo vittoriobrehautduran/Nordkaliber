@@ -6,6 +6,7 @@
     <title>Designa Din Egen - Nordkaliber</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://js.stripe.com/v3/"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -258,7 +259,7 @@
                         </button>
                         <button class="option-btn bg-light-grey text-gray-800 p-4 rounded-lg font-semibold" data-caliber="300">
                             .300 Winchester Magnum
-                        </button>
+                        </button>s
                         <button class="option-btn bg-light-grey text-gray-800 p-4 rounded-lg font-semibold" data-caliber="custom">
                             .220 Swift
                         </button>
@@ -1328,15 +1329,118 @@
             toggleCart();
         }
 
-        function goToCheckout() {
-            alert('Kassan kommer snart!');
-            closeCart();
+        // Stripe integration
+        let stripe = null;
+        let publishableKey = null;
+
+        // Initialize Stripe
+        async function initializeStripe() {
+            try {
+                const response = await fetch('/api/config');
+                const config = await response.json();
+                publishableKey = config.publishableKey;
+                
+                if (publishableKey) {
+                    stripe = Stripe(publishableKey);
+                    console.log('Stripe initialized successfully');
+                } else {
+                    console.error('No publishable key found');
+                }
+            } catch (error) {
+                console.error('Failed to initialize Stripe:', error);
+            }
+        }
+
+        // Create checkout session
+        async function createCheckoutSession(items, customerEmail) {
+            try {
+                const response = await fetch('/api/create-checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        items: items,
+                        customerEmail: customerEmail
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to create checkout session');
+                }
+
+                const { sessionId } = await response.json();
+                return sessionId;
+            } catch (error) {
+                console.error('Error creating checkout session:', error);
+                throw error;
+            }
+        }
+
+        // Redirect to Stripe checkout
+        async function redirectToCheckout(sessionId) {
+            if (!stripe) {
+                console.error('Stripe not initialized');
+                return;
+            }
+
+            const { error } = await stripe.redirectToCheckout({
+                sessionId: sessionId
+            });
+
+            if (error) {
+                console.error('Error redirecting to checkout:', error);
+                alert('Ett fel uppstod vid omdirigering till betalningssidan. Försök igen.');
+            }
+        }
+
+        // Enhanced checkout function
+        async function goToCheckout() {
+            if (cart.length === 0) {
+                alert('Din kundvagn är tom');
+                return;
+            }
+
+            // Show loading state
+            const checkoutBtn = document.querySelector('button[onclick="goToCheckout()"]');
+            const originalText = checkoutBtn.textContent;
+            checkoutBtn.textContent = 'Laddar...';
+            checkoutBtn.disabled = true;
+
+            try {
+                // Get customer email (you could add an email input to the cart modal)
+                const customerEmail = prompt('Ange din e-postadress för orderbekräftelse:');
+                
+                if (!customerEmail || !customerEmail.includes('@')) {
+                    alert('Vänligen ange en giltig e-postadress');
+                    return;
+                }
+
+                // Create checkout session
+                const sessionId = await createCheckoutSession(cart, customerEmail);
+                
+                // Redirect to Stripe checkout
+                await redirectToCheckout(sessionId);
+                
+            } catch (error) {
+                console.error('Checkout error:', error);
+                alert('Ett fel uppstod vid skapande av betalningssession. Försök igen.');
+            } finally {
+                // Reset button state
+                checkoutBtn.textContent = originalText;
+                checkoutBtn.disabled = false;
+            }
         }
 
                  // Initialize
          console.log('=== SCRIPT LOADED ===');
          showStep(1);
          updateSpecialPrices();
+         
+         // Initialize Stripe when page loads
+         document.addEventListener('DOMContentLoaded', function() {
+             initializeStripe();
+         });
          
          // Test function to manually advance steps
          window.testStepAdvance = function() {
