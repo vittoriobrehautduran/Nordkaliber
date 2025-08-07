@@ -1,4 +1,5 @@
-module.exports = (req, res) => {
+// Standard Vercel serverless function
+export default function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -24,4 +25,4 @@ module.exports = (req, res) => {
   res.json({
     publishableKey: publishableKey
   });
-}; 
+} 
