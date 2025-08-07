@@ -21,10 +21,6 @@
       "dest": "/api/$1"
     },
     {
-      "src": "/images/(.*)",
-      "dest": "/public/images/$1"
-    },
-    {
       "src": "/design",
       "dest": "/public/design/design.html"
     },
