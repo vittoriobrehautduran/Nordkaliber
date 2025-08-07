@@ -52,6 +52,29 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
+        /* Stripe Payment Element styling for clean white design */
+        #payment-element {
+            margin-bottom: 24px;
+        }
+        
+        /* Custom styling for Stripe elements to match clean white theme */
+        .StripeElement {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px;
+            color: #32325d;
+        }
+        
+        .StripeElement--focus {
+            border-color: #6772e5;
+            box-shadow: 0 0 0 2px rgba(103, 114, 229, 0.2);
+        }
+        
+        .StripeElement--invalid {
+            border-color: #fa755a;
+        }
     </style>
 </head>
 <body class="min-h-screen">
@@ -155,15 +178,19 @@
                         </div>
                     </div>
 
-                    <!-- Payment Method -->
+                    <!-- Payment Methods -->
                     <div class="mb-8">
                         <h3 class="text-lg font-semibold mb-4 text-gray-900">Betalningsmetod</h3>
                         
+                        <!-- Stripe Payment Element -->
                         <div class="bg-white border border-gray-300 rounded-lg p-4">
-                            <div class="text-center">
-                                <i class="fas fa-credit-card text-2xl text-gray-400 mb-2"></i>
-                                <p class="text-gray-600">Betalning hanteras säkert av Stripe</p>
-                                <p class="text-sm text-gray-500 mt-1">Stödjer kort, PayPal, Klarna, Swish och Apple Pay</p>
+                            <div id="payment-element">
+                                <!-- Stripe Payment Element will be inserted here -->
+                            </div>
+                            <div id="payment-message" class="text-red-600 text-sm mt-4"></div>
+                            <div id="payment-status" class="text-sm text-gray-600 mt-2">
+                                <i class="fas fa-spinner fa-spin mr-1"></i>
+                                Laddar betalningsmetoder...
                             </div>
                         </div>
                     </div>
@@ -190,6 +217,8 @@
 
     <script>
         // Global variables
+        let stripe = null;
+        let elements = null;
         let orderData = null;
 
         // Initialize when page loads
@@ -198,12 +227,27 @@
         });
 
         // Initialize checkout
-        function initializeCheckout() {
+        async function initializeCheckout() {
             // Load order data from localStorage
             loadOrderData();
             
             // Update order summary
             updateOrderSummary();
+            
+            // Initialize Stripe
+            await initializeStripe();
+            
+            // Check if payment element loads properly after 3 seconds
+            setTimeout(() => {
+                const paymentElement = document.getElementById('payment-element');
+                if (paymentElement && paymentElement.children.length === 0) {
+                    console.log('⏰ Stripe Payment Element failed to load');
+                    document.getElementById('payment-status').innerHTML = '<i class="fas fa-exclamation-triangle text-red-600 mr-1"></i>Betalningsmetoder kunde inte laddas';
+                } else {
+                    // Stripe loaded successfully
+                    document.getElementById('payment-status').innerHTML = '<i class="fas fa-check text-green-600 mr-1"></i>Betalningsmetoder laddade';
+                }
+            }, 3000);
         }
 
         // Load order data from localStorage
@@ -229,6 +273,79 @@
             }
         }
 
+        // Initialize Stripe
+        async function initializeStripe() {
+            try {
+                console.log('🔄 Initializing Stripe...');
+                
+                // Get Stripe config from server
+                const response = await fetch('/api/stripe-config');
+                if (!response.ok) {
+                    throw new Error('Failed to get Stripe configuration');
+                }
+                
+                const config = await response.json();
+                console.log('✅ Got Stripe config:', config.publishableKey ? 'Key received' : 'No key');
+                
+                stripe = Stripe(config.publishableKey);
+                
+                // Create payment intent
+                const paymentIntentResponse = await fetch('/api/create-payment-intent', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        items: orderData.items,
+                        customerEmail: document.getElementById('email').value || 'test@example.com'
+                    })
+                });
+
+                if (!paymentIntentResponse.ok) {
+                    const errorData = await paymentIntentResponse.json();
+                    throw new Error(`Payment intent creation failed: ${errorData.details || 'Unknown error'}`);
+                }
+
+                const { clientSecret } = await paymentIntentResponse.json();
+                console.log('✅ Payment Intent created, clientSecret:', clientSecret ? 'Received' : 'Missing');
+                
+                // Create elements with clean white appearance
+                elements = stripe.elements({
+                    clientSecret: clientSecret,
+                    appearance: {
+                        theme: 'stripe',
+                        variables: {
+                            colorPrimary: '#6772e5',
+                            colorBackground: '#ffffff',
+                            colorText: '#32325d',
+                            colorDanger: '#fa755a',
+                            fontFamily: 'Inter, sans-serif',
+                            spacingUnit: '4px',
+                            borderRadius: '8px',
+                        },
+                    },
+                });
+
+                // Create and mount the Payment Element
+                const paymentElement = elements.create('payment', {
+                    layout: {
+                        type: 'tabs',
+                        defaultCollapsed: false,
+                        spacedAccordionItems: false,
+                    },
+                    paymentMethodOrder: ['card', 'paypal', 'klarna', 'apple_pay', 'google_pay'],
+                });
+                
+                paymentElement.mount('#payment-element');
+                
+                console.log('✅ Stripe Payment Element mounted successfully');
+                showMessage('Payment methods loaded successfully!', 'success');
+            } catch (error) {
+                console.error('❌ Failed to initialize Stripe:', error);
+                showMessage(`Payment setup failed: ${error.message}`, 'error');
+            }
+        }
+
         // Handle form submission
         document.getElementById('submit').addEventListener('click', handleSubmit);
 
@@ -242,35 +359,34 @@
             setLoading(true);
 
             try {
-                // For now, simulate a successful payment
-                // In a real implementation, you would integrate with Stripe here
-                console.log('Processing payment...');
-                
-                // Simulate payment processing
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                
-                // Store order details for success page
-                const orderDetails = {
-                    items: orderData.items,
-                    customer: {
-                        firstName: document.getElementById('firstName').value,
-                        lastName: document.getElementById('lastName').value,
-                        email: document.getElementById('email').value,
-                        phone: document.getElementById('phone').value,
-                        address: document.getElementById('address').value,
-                        postalCode: document.getElementById('postalCode').value,
-                        city: document.getElementById('city').value,
-                        country: document.getElementById('country').value
-                    },
-                    total: orderData.total,
-                    orderId: 'ORD-' + Date.now()
-                };
-                
-                localStorage.setItem('orderDetails', JSON.stringify(orderDetails));
-                
-                // Redirect to success page
-                window.location.href = '/success';
-                
+                // Confirm payment
+                const { error } = await stripe.confirmPayment({
+                    elements,
+                    confirmParams: {
+                        return_url: `${window.location.origin}/success`,
+                        payment_method_data: {
+                            billing_details: {
+                                name: document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value,
+                                email: document.getElementById('email').value,
+                                phone: document.getElementById('phone').value,
+                                address: {
+                                    line1: document.getElementById('address').value,
+                                    postal_code: document.getElementById('postalCode').value,
+                                    city: document.getElementById('city').value,
+                                    country: document.getElementById('country').value,
+                                }
+                            }
+                        }
+                    }
+                });
+
+                if (error) {
+                    if (error.type === 'card_error' || error.type === 'validation_error') {
+                        showMessage(error.message, 'error');
+                    } else {
+                        showMessage('Ett oväntat fel uppstod. Försök igen.', 'error');
+                    }
+                }
             } catch (error) {
                 console.error('Payment error:', error);
                 showMessage('Ett fel uppstod vid betalning. Försök igen.', 'error');
@@ -316,17 +432,18 @@
 
         // Show message
         function showMessage(messageText, messageType) {
-            // Create a temporary message element
-            const messageElement = document.createElement('div');
-            messageElement.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${
-                messageType === 'error' ? 'bg-red-500 text-white' : 'bg-green-500 text-white'
-            }`;
-            messageElement.textContent = messageText;
+            const messageContainer = document.querySelector('#payment-message');
+            messageContainer.classList.remove('hidden');
+            messageContainer.textContent = messageText;
             
-            document.body.appendChild(messageElement);
-            
-            setTimeout(() => {
-                messageElement.remove();
+            if (messageType === 'error') {
+                messageContainer.className = 'text-red-600 text-sm mt-4';
+            } else {
+                messageContainer.className = 'text-green-600 text-sm mt-4';
+            }
+
+            setTimeout(function() {
+                messageContainer.classList.add('hidden');
             }, 4000);
         }
 
