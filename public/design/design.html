@@ -1709,19 +1709,20 @@
             document.getElementById('selectedInitials').textContent = initials || '-';
 
             const product = {
+                id: Date.now(), // Unique ID for editing
                 caliber: selectedCaliber,
                 primaryColor: selectedPrimary,
                 secondaryColor: selectedSecondary,
                 design: selectedDesign,
                 initials: initials,
                 specialRequests: {
-                    caliber: document.getElementById('caliberSpecial').value.trim(),
-                    primary: document.getElementById('primarySpecial').value.trim(),
-                    secondary: document.getElementById('secondarySpecial').value.trim(),
-                    design: document.getElementById('designSpecial').value.trim(),
-                    initials: document.getElementById('initialsSpecial').value.trim()
+                    caliber: confirmedCaliberSpecial || document.getElementById('caliberSpecial').value.trim(),
+                    primary: confirmedPrimarySpecial || document.getElementById('primarySpecial').value.trim(),
+                    secondary: confirmedSecondarySpecial || document.getElementById('secondarySpecial').value.trim(),
+                    design: confirmedDesignSpecial || document.getElementById('designSpecial').value.trim(),
+                    initials: confirmedInitialsSpecial || document.getElementById('initialsSpecial').value.trim()
                 },
-                price: parseInt(document.getElementById('totalPrice').textContent)
+                price: parseInt(document.getElementById('totalPrice').textContent.replace('kr', ''))
             };
 
             cart.push(product);
@@ -1730,7 +1731,10 @@
             // Reset form
             resetForm();
             
-            // Product added to cart successfully
+            // Automatically open cart after adding product
+            setTimeout(() => {
+                toggleCart();
+            }, 500);
         });
 
                  function resetForm() {
@@ -1813,24 +1817,55 @@
                     </div>
                 `;
             } else {
-                items.innerHTML = cart.map((item, index) => `
-                    <div class="bg-white bg-opacity-10 rounded-lg p-4 border border-mustard-gold border-opacity-20">
-                        <div class="flex justify-between items-start mb-2">
-                            <div class="flex-1">
-                                <p class="font-bold text-lg text-white">${item.caliber}</p>
-                                <p class="text-mustard-gold font-semibold">${item.primaryColor}/${item.secondaryColor}</p>
-                                ${item.design && item.design !== 'none' ? `<p class="text-gray-300 text-sm">Design: ${item.design}</p>` : ''}
-                                ${item.initials ? `<p class="text-gray-300 text-sm">Initialer: ${item.initials}</p>` : ''}
-                            </div>
-                            <div class="text-right ml-4">
-                                <p class="font-bold text-xl text-mustard-gold">${item.price} kr</p>
-                                <button onclick="removeFromCart(${index})" class="text-red-400 hover:text-red-300 text-sm font-semibold mt-1 transition-colors">
-                                    <i class="fas fa-trash mr-1"></i>Ta bort
-                                </button>
+                items.innerHTML = cart.map((item, index) => {
+                    // Determine display values
+                    const displayCaliber = item.caliber || (item.specialRequests.caliber ? 'Specialförfrågan' : 'Ej vald');
+                    const displayPrimary = item.primaryColor || (item.specialRequests.primary ? 'Specialförfrågan' : 'Ej vald');
+                    const displaySecondary = item.secondaryColor || (item.specialRequests.secondary ? 'Specialförfrågan' : 'Ej vald');
+                    
+                    // Get design name for display
+                    const designNames = {
+                        'älg_logo': 'Design 1',
+                        'älg_design': 'Design 2',
+                        'älg_jägare': 'Design 3',
+                        'älg_majestic': 'Design 4',
+                        'fågel_design': 'Design 5',
+                        'jägare_hund': 'Design 6',
+                        'your_text': 'Din Text',
+                        'none': 'Ingen Design'
+                    };
+                    const displayDesign = item.design ? (designNames[item.design] || item.design) : (item.specialRequests.design ? 'Specialförfrågan' : 'Ej vald');
+                    
+                    return `
+                        <div class="bg-white bg-opacity-10 rounded-lg p-4 border border-mustard-gold border-opacity-20">
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="flex-1">
+                                    <p class="font-bold text-lg text-white">${displayCaliber}</p>
+                                    <p class="text-mustard-gold font-semibold">${displayPrimary}/${displaySecondary}</p>
+                                    ${displayDesign !== 'Ej vald' ? `<p class="text-gray-300 text-sm">Design: ${displayDesign}</p>` : ''}
+                                    ${item.initials ? `<p class="text-gray-300 text-sm">Initialer: ${item.initials}</p>` : ''}
+                                    ${Object.values(item.specialRequests).some(req => req) ? `
+                                        <div class="mt-2 p-2 bg-yellow-500 bg-opacity-20 rounded">
+                                            <p class="text-yellow-300 text-xs font-semibold">Specialförfrågningar:</p>
+                                            ${Object.entries(item.specialRequests).map(([key, value]) => value ? `<p class="text-yellow-200 text-xs">• ${key}: ${value}</p>` : '').join('')}
+                                        </div>
+                                    ` : ''}
+                                </div>
+                                <div class="text-right ml-4">
+                                    <p class="font-bold text-xl text-mustard-gold">${item.price} kr</p>
+                                    <div class="flex space-x-2 mt-2">
+                                        <button onclick="editCartItem(${index})" class="text-blue-400 hover:text-blue-300 text-sm font-semibold transition-colors">
+                                            <i class="fas fa-edit mr-1"></i>Redigera
+                                        </button>
+                                        <button onclick="removeFromCart(${index})" class="text-red-400 hover:text-red-300 text-sm font-semibold transition-colors">
+                                            <i class="fas fa-trash mr-1"></i>Ta bort
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `).join('');
+                    `;
+                }).join('');
             }
             
             // Show modal and slide in
@@ -1855,6 +1890,238 @@
             cart.splice(index, 1);
             updateCartCount();
             toggleCart();
+        }
+
+        function editCartItem(index) {
+            const item = cart[index];
+            
+            // Close cart first
+            closeCart();
+            
+            // Load the item data into the form
+            loadItemForEditing(item);
+            
+            // Remove the item from cart (will be re-added when user confirms)
+            cart.splice(index, 1);
+            updateCartCount();
+        }
+
+        function loadItemForEditing(item) {
+            console.log('Loading item for editing:', item);
+            
+            // Clear all previous selections first
+            document.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+            document.querySelectorAll('.special-request-confirmed').forEach(el => {
+                el.classList.remove('special-request-confirmed');
+                el.readOnly = false;
+                el.disabled = false;
+            });
+            
+            // Reset all form inputs
+            ['caliberSpecial', 'primarySpecial', 'secondarySpecial', 'designSpecial', 'initials', 'initialsSpecial'].forEach(id => {
+                const input = document.getElementById(id);
+                input.value = '';
+                input.classList.remove('special-request-confirmed');
+                input.readOnly = false;
+                input.disabled = false;
+            });
+            
+            // Set the form values based on the item
+            selectedCaliber = item.caliber || '';
+            selectedPrimary = item.primaryColor || '';
+            selectedSecondary = item.secondaryColor || '';
+            selectedDesign = item.design || '';
+            selectedInitials = item.initials || '';
+            
+            // Load special requests
+            confirmedCaliberSpecial = item.specialRequests.caliber || '';
+            confirmedPrimarySpecial = item.specialRequests.primary || '';
+            confirmedSecondarySpecial = item.specialRequests.secondary || '';
+            confirmedDesignSpecial = item.specialRequests.design || '';
+            confirmedInitialsSpecial = item.specialRequests.initials || '';
+            
+            console.log('Loaded values:', {
+                selectedCaliber,
+                selectedPrimary,
+                selectedSecondary,
+                selectedDesign,
+                selectedInitials,
+                confirmedCaliberSpecial,
+                confirmedPrimarySpecial,
+                confirmedSecondarySpecial,
+                confirmedDesignSpecial,
+                confirmedInitialsSpecial
+            });
+            
+            // Update form inputs for special requests
+            if (confirmedCaliberSpecial) {
+                document.getElementById('caliberSpecial').value = confirmedCaliberSpecial;
+                document.getElementById('caliberSpecial').classList.add('special-request-confirmed');
+                document.getElementById('caliberSpecial').readOnly = true;
+                document.getElementById('caliberSpecial').disabled = true;
+            }
+            
+            if (confirmedPrimarySpecial) {
+                document.getElementById('primarySpecial').value = confirmedPrimarySpecial;
+                document.getElementById('primarySpecial').classList.add('special-request-confirmed');
+                document.getElementById('primarySpecial').readOnly = true;
+                document.getElementById('primarySpecial').disabled = true;
+            }
+            
+            if (confirmedSecondarySpecial) {
+                document.getElementById('secondarySpecial').value = confirmedSecondarySpecial;
+                document.getElementById('secondarySpecial').classList.add('special-request-confirmed');
+                document.getElementById('secondarySpecial').readOnly = true;
+                document.getElementById('secondarySpecial').disabled = true;
+            }
+            
+            if (confirmedDesignSpecial) {
+                document.getElementById('designSpecial').value = confirmedDesignSpecial;
+                document.getElementById('designSpecial').classList.add('special-request-confirmed');
+                document.getElementById('designSpecial').readOnly = true;
+                document.getElementById('designSpecial').disabled = true;
+            }
+            
+            if (selectedInitials) {
+                document.getElementById('initials').value = selectedInitials;
+                document.getElementById('initials').classList.add('special-request-confirmed');
+                document.getElementById('initials').readOnly = true;
+                document.getElementById('initials').disabled = true;
+            }
+            
+            if (confirmedInitialsSpecial) {
+                document.getElementById('initialsSpecial').value = confirmedInitialsSpecial;
+                document.getElementById('initialsSpecial').classList.add('special-request-confirmed');
+                document.getElementById('initialsSpecial').readOnly = true;
+                document.getElementById('initialsSpecial').disabled = true;
+            }
+            
+            // Update visual selections
+            updateVisualSelections();
+            
+            // Update preview and prices
+            updatePreview();
+            updateSpecialPrices();
+            
+            // Navigate to the appropriate step
+            navigateToRelevantStep();
+            
+            // Change the "Add to Cart" button to "Update Cart"
+            const addToCartBtn = document.getElementById('addToCart');
+            addToCartBtn.textContent = 'Uppdatera Kundvagn';
+            addToCartBtn.onclick = () => updateCartItem(item.id);
+        }
+
+        function updateVisualSelections() {
+            // Clear all selections first
+            document.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+            
+            // Select caliber if not a special request
+            if (selectedCaliber && !confirmedCaliberSpecial) {
+                const caliberBtn = document.querySelector(`[data-caliber="${selectedCaliber}"]`);
+                if (caliberBtn) caliberBtn.classList.add('selected');
+            }
+            
+            // Select primary color if not a special request
+            if (selectedPrimary && !confirmedPrimarySpecial) {
+                const primaryBtn = document.querySelector(`#step2Content [data-color="${selectedPrimary}"]`);
+                if (primaryBtn) primaryBtn.classList.add('selected');
+            }
+            
+            // Select secondary color if not a special request
+            if (selectedSecondary && !confirmedSecondarySpecial) {
+                const secondaryBtn = document.querySelector(`#step3Content [data-color="${selectedSecondary}"]`);
+                if (secondaryBtn) secondaryBtn.classList.add('selected');
+            }
+            
+            // Select design if not a special request
+            if (selectedDesign && !confirmedDesignSpecial) {
+                const designBtn = document.querySelector(`[data-design="${selectedDesign}"]`);
+                if (designBtn) designBtn.classList.add('selected');
+            }
+        }
+
+        function navigateToRelevantStep() {
+            // Determine which step to show based on what's selected
+            if (selectedCaliber || confirmedCaliberSpecial) {
+                if (selectedPrimary || confirmedPrimarySpecial) {
+                    if (selectedSecondary || confirmedSecondarySpecial) {
+                        if (selectedDesign || confirmedDesignSpecial) {
+                            showStep(5); // Go to initials step
+                        } else {
+                            showStep(4); // Go to design step
+                        }
+                    } else {
+                        showStep(3); // Go to secondary color step
+                    }
+                } else {
+                    showStep(2); // Go to primary color step
+                }
+            } else {
+                showStep(1); // Go to caliber step
+            }
+        }
+
+        function updateCartItem(originalId) {
+            console.log('Updating cart item with ID:', originalId);
+            
+            const initials = document.getElementById('initials').value.trim();
+            selectedInitials = initials;
+            document.getElementById('selectedInitials').textContent = initials || '-';
+
+            // Get current values (prioritize confirmed special requests)
+            const currentCaliber = confirmedCaliberSpecial || selectedCaliber;
+            const currentPrimary = confirmedPrimarySpecial || selectedPrimary;
+            const currentSecondary = confirmedSecondarySpecial || selectedSecondary;
+            const currentDesign = confirmedDesignSpecial || selectedDesign;
+            const currentInitials = selectedInitials;
+            
+            console.log('Current values for update:', {
+                currentCaliber,
+                currentPrimary,
+                currentSecondary,
+                currentDesign,
+                currentInitials,
+                confirmedCaliberSpecial,
+                confirmedPrimarySpecial,
+                confirmedSecondarySpecial,
+                confirmedDesignSpecial,
+                confirmedInitialsSpecial
+            });
+
+            const updatedProduct = {
+                id: originalId, // Keep the same ID
+                caliber: currentCaliber,
+                primaryColor: currentPrimary,
+                secondaryColor: currentSecondary,
+                design: currentDesign,
+                initials: currentInitials,
+                specialRequests: {
+                    caliber: confirmedCaliberSpecial || '',
+                    primary: confirmedPrimarySpecial || '',
+                    secondary: confirmedSecondarySpecial || '',
+                    design: confirmedDesignSpecial || '',
+                    initials: confirmedInitialsSpecial || ''
+                },
+                price: parseInt(document.getElementById('totalPrice').textContent.replace('kr', ''))
+            };
+
+            console.log('Updated product:', updatedProduct);
+            cart.push(updatedProduct);
+            updateCartCount();
+            
+            // Reset form
+            resetForm();
+            
+            // Change button back to normal
+            const addToCartBtn = document.getElementById('addToCart');
+            addToCartBtn.textContent = 'Lägg till i Kundvagn';
+            addToCartBtn.onclick = null; // Remove the update handler
+            
+            // Automatically open cart after updating
+            setTimeout(() => {
+                toggleCart();
+            }, 500);
         }
 
         // Stripe integration
