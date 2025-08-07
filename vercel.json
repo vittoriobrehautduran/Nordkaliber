@@ -12,6 +12,11 @@
   ],
   "routes": [
     {
+      "src": "/design/design.html",
+      "dest": "/design",
+      "status": 301
+    },
+    {
       "src": "/api/(.*)",
       "dest": "/api/$1"
     },
