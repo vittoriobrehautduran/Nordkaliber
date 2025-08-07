@@ -359,6 +359,30 @@
             setLoading(true);
 
             try {
+                // Get customer information
+                const customer = {
+                    firstName: document.getElementById('firstName').value,
+                    lastName: document.getElementById('lastName').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    address: document.getElementById('address').value,
+                    postalCode: document.getElementById('postalCode').value,
+                    city: document.getElementById('city').value,
+                    country: document.getElementById('country').value
+                };
+
+                // Create complete order data
+                const completeOrderData = {
+                    orderId: 'NK-' + Date.now(),
+                    customer: customer,
+                    items: orderData.items,
+                    total: orderData.total,
+                    orderDate: new Date().toISOString()
+                };
+
+                // Save order data to localStorage for success page
+                localStorage.setItem('orderDetails', JSON.stringify(completeOrderData));
+
                 // Confirm payment
                 const { error } = await stripe.confirmPayment({
                     elements,
@@ -366,14 +390,14 @@
                         return_url: `${window.location.origin}/success`,
                         payment_method_data: {
                             billing_details: {
-                                name: document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value,
-                                email: document.getElementById('email').value,
-                                phone: document.getElementById('phone').value,
+                                name: customer.firstName + ' ' + customer.lastName,
+                                email: customer.email,
+                                phone: customer.phone,
                                 address: {
-                                    line1: document.getElementById('address').value,
-                                    postal_code: document.getElementById('postalCode').value,
-                                    city: document.getElementById('city').value,
-                                    country: document.getElementById('country').value,
+                                    line1: customer.address,
+                                    postal_code: customer.postalCode,
+                                    city: customer.city,
+                                    country: customer.country,
                                 }
                             }
                         }

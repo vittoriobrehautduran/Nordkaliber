@@ -8,20 +8,26 @@
     "dev": "nodemon api/index.js",
     "vercel-build": "echo 'Build complete'"
   },
-  "keywords": ["nordkaliber", "stripe", "ecommerce", "nodejs"],
+  "keywords": [
+    "nordkaliber",
+    "stripe",
+    "ecommerce",
+    "nodejs"
+  ],
   "author": "Vittoriobre",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.18.2",
-    "stripe": "^14.10.0",
+    "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "body-parser": "^1.20.2",
-    "helmet": "^7.1.0",
+    "express": "^4.18.2",
     "express-rate-limit": "^7.1.5",
-    "node-fetch": "^2.7.0"
+    "helmet": "^7.1.0",
+    "node-fetch": "^2.7.0",
+    "nodemailer": "^7.0.5",
+    "stripe": "^14.10.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
   }
-} 
+}
