@@ -28,12 +28,19 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: 'Invalid items data' });
     }
 
-    // Calculate total amount
-    const totalAmount = items.reduce((sum, item) => sum + item.price, 0);
+    // Calculate total amount and convert to cents (Stripe expects smallest currency unit)
+    const totalAmountInKronor = items.reduce((sum, item) => sum + item.price, 0);
+    const totalAmountInCents = Math.round(totalAmountInKronor * 100); // Convert SEK to cents
+
+    console.log('💰 Amount calculation:', {
+      totalInKronor: totalAmountInKronor,
+      totalInCents: totalAmountInCents,
+      items: items.map(item => ({ name: item.caliber, price: item.price }))
+    });
 
     // Create payment intent with Swedish payment methods
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: totalAmount, // Amount in cents
+      amount: totalAmountInCents, // Amount in cents
       currency: 'sek',
       metadata: {
         order_type: 'custom_ammunition_box',
