@@ -1,40 +1,10 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "public/**",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "api/**/*.js",
-      "use": "@vercel/node"
-    }
-  ],
   "routes": [
     {
       "src": "/design/design.html",
       "dest": "/design",
       "status": 301
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/design",
-      "dest": "/public/design/design.html"
-    },
-    {
-      "src": "/checkout",
-      "dest": "/public/checkout.html"
-    },
-    {
-      "src": "/success",
-      "dest": "/public/success.html"
-    },
-    {
-      "src": "/",
-      "dest": "/public/index.html"
     }
   ]
 } 
