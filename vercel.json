@@ -5,6 +5,22 @@
       "src": "/design/design.html",
       "dest": "/design",
       "status": 301
+    },
+    {
+      "src": "/design",
+      "dest": "/public/design/design.html"
+    },
+    {
+      "src": "/checkout",
+      "dest": "/public/checkout.html"
+    },
+    {
+      "src": "/success",
+      "dest": "/public/success.html"
+    },
+    {
+      "src": "/",
+      "dest": "/public/index.html"
     }
   ]
 } 
