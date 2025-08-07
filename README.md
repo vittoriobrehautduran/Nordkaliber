@@ -161,7 +161,7 @@ nordkaliber/
 ├── package.json          # Dependencies and scripts
 ├── .env                  # Environment variables (create from env.example)
 ├── index.html            # Main landing page
-├── buy.html              # Product customization page
+├── design/design.html    # Product customization page
 ├── success.html          # Payment success page
 ├── images/               # Product images and videos
 ├── WEBHOOK_SETUP.md      # Webhook configuration guide
