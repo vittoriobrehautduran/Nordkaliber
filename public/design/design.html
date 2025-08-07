@@ -386,7 +386,7 @@
     <!-- Header -->
     <header class="bg-gradient-to-r from-hunter-brown to-dark-green py-4 px-6 shadow-lg">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-extrabold text-white hover:text-mustard-gold transition-colors">
+                            <a href="/" class="text-2xl font-extrabold text-white hover:text-mustard-gold transition-colors">
                 <i class="fas fa-arrow-left mr-2"></i>NORDKALIBER
             </a>
             <div class="flex items-center space-x-4">
@@ -1944,7 +1944,7 @@
                 localStorage.setItem('nordkaliberCart', JSON.stringify(cartData));
                 
                 // Redirect to checkout page
-                window.location.href = 'checkout.html';
+                window.location.href = '/checkout';
                 
             } catch (error) {
                 console.error('Checkout error:', error);
