@@ -6,6 +6,14 @@ const app = express();
 // Serve static files from the root directory
 app.use(express.static('.'));
 
+// Explicitly serve images with proper headers
+app.use('/images', express.static(path.join(__dirname, 'images'), {
+    setHeaders: (res, path) => {
+        res.set('Cache-Control', 'public, max-age=31536000');
+        res.set('Access-Control-Allow-Origin', '*');
+    }
+}));
+
 // Serve index.html for the root route
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
