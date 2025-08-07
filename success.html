@@ -170,9 +170,9 @@
     <script>
         // Get order details from URL parameters or localStorage
         document.addEventListener('DOMContentLoaded', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const sessionId = urlParams.get('session_id');
-            
+        const urlParams = new URLSearchParams(window.location.search);
+        const sessionId = urlParams.get('session_id');
+        
             // Try to get order details from localStorage
             const cartData = localStorage.getItem('nordkaliberCart');
             let orderDetails = '';

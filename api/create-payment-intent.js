@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const { items, customerEmail } = req.body;
+    const { items, customerEmail, customerName, customerPhone, customerAddress } = req.body;
 
     if (!items || !Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ error: 'Invalid items data' });
@@ -31,23 +31,55 @@ module.exports = async (req, res) => {
     // Calculate total amount
     const totalAmount = items.reduce((sum, item) => sum + item.price, 0);
 
-    // Create payment intent
+    // Create payment intent with Swedish payment methods
     const paymentIntent = await stripe.paymentIntents.create({
       amount: totalAmount, // Amount in cents
       currency: 'sek',
       metadata: {
         order_type: 'custom_ammunition_box',
         items_count: items.length.toString(),
-        customer_email: customerEmail
+        customer_email: customerEmail,
+        customer_name: customerName,
+        customer_phone: customerPhone,
+        items: JSON.stringify(items)
       },
+      // Enable specific payment methods for Sweden
+      payment_method_types: [
+        'card',
+        'klarna',
+        'sofort',
+        'ideal',
+        'bancontact',
+        'eps',
+        'giropay',
+        'p24'
+      ],
+      // Configure automatic payment methods
       automatic_payment_methods: {
         enabled: true,
+        allow_redirects: 'always'
       },
+      // Add setup for future payments if needed
+      setup_future_usage: 'off_session',
+      // Add receipt email
+      receipt_email: customerEmail,
+      // Add description
+      description: `Nordkaliber order - ${items.length} item(s)`,
     });
 
-    res.json({ clientSecret: paymentIntent.client_secret });
+    console.log('✅ Payment Intent created:', {
+      id: paymentIntent.id,
+      amount: paymentIntent.amount,
+      currency: paymentIntent.currency,
+      status: paymentIntent.status
+    });
+
+    res.json({ 
+      clientSecret: paymentIntent.client_secret,
+      paymentIntentId: paymentIntent.id
+    });
   } catch (error) {
-    console.error('Error creating payment intent:', error);
+    console.error('❌ Error creating payment intent:', error);
     res.status(500).json({ 
       error: 'Failed to create payment intent',
       details: error.message

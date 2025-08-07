@@ -291,7 +291,7 @@
                 
                 stripe = Stripe(config.publishableKey);
                 
-                // Create payment intent
+                // Create payment intent with customer data
                 const paymentIntentResponse = await fetch('/api/create-payment-intent', {
                     method: 'POST',
                     headers: {
@@ -299,7 +299,15 @@
                     },
                     body: JSON.stringify({
                         items: orderData.items,
-                        customerEmail: document.getElementById('email').value || 'test@example.com'
+                        customerEmail: document.getElementById('email').value || 'test@example.com',
+                        customerName: document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value,
+                        customerPhone: document.getElementById('phone').value,
+                        customerAddress: {
+                            line1: document.getElementById('address').value,
+                            postal_code: document.getElementById('postalCode').value,
+                            city: document.getElementById('city').value,
+                            country: document.getElementById('country').value,
+                        }
                     })
                 });
 
@@ -328,14 +336,40 @@
                     },
                 });
 
-                // Create and mount the Payment Element
+                // Create and mount the Payment Element with Swedish payment methods
                 const paymentElement = elements.create('payment', {
                     layout: {
                         type: 'tabs',
                         defaultCollapsed: false,
                         spacedAccordionItems: false,
                     },
-                    paymentMethodOrder: ['card', 'paypal', 'klarna', 'apple_pay', 'google_pay'],
+                    paymentMethodOrder: [
+                        'card',
+                        'klarna',
+                        'sofort',
+                        'ideal',
+                        'bancontact',
+                        'eps',
+                        'giropay',
+                        'p24',
+                        'apple_pay',
+                        'google_pay'
+                    ],
+                    fields: {
+                        billingDetails: {
+                            name: 'auto',
+                            email: 'auto',
+                            phone: 'auto',
+                            address: {
+                                country: 'auto',
+                                line1: 'auto',
+                                line2: 'auto',
+                                city: 'auto',
+                                state: 'auto',
+                                postalCode: 'auto'
+                            }
+                        }
+                    }
                 });
                 
                 paymentElement.mount('#payment-element');

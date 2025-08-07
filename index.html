@@ -131,6 +131,41 @@
             contain: layout style paint;
         }
         
+        /* Hide button on low height screens */
+        @media (max-height: 700px) {
+            .hide-on-low-height {
+                display: none !important;
+            }
+        }
+        
+        /* Better centering for mobile devices */
+        @media (max-width: 640px) {
+            .mobile-center {
+                transform: translateY(-10%) !important;
+            }
+        }
+        
+        /* Hide text only on iPhone SE (vertical) */
+        @media (max-width: 380px) {
+            .hide-on-iphone-se {
+                display: none !important;
+            }
+        }
+        
+        /* Adjust logo position for iPhone SE landscape */
+        @media (min-width: 641px) and (max-width: 670px) and (max-height: 380px) {
+            .iphone-se-landscape-logo-adjust {
+                transform: translateY(5%) !important;
+            }
+        }
+        
+        /* Adjust logo position for mobile landscape views */
+        @media (max-width: 932px) and (max-height: 430px) {
+            .iphone-se-landscape-logo-adjust {
+                transform: translateY(10%) !important;
+            }
+        }
+        
         /* Optimize overview section specifically */
         #overview {
             contain: layout style paint;
@@ -741,7 +776,6 @@
                     <a href="#overview" class="nav-link text-gray-300 hover:text-mustard-gold transition">Översikt</a>
                     <a href="#om-oss" class="nav-link text-gray-300 hover:text-mustard-gold transition">Om Oss</a>
                     <a href="#kontakt" class="nav-link text-gray-300 hover:text-mustard-gold transition">Kontakt</a>
-                    <a href="#spara" class="nav-link text-gray-300 hover:text-mustard-gold transition">Spåra Paket</a>
                     <a href="design/design.html" id="navbarDesignBtn" class="w-12 h-12 bg-gradient-to-br from-hunter-brown via-dark-green to-hunter-brown rounded-full shadow-2xl flex items-center justify-center transition-all duration-3000 ease-in-out cursor-pointer hover:shadow-3xl overflow-hidden relative">
                         <!-- Plus icon -->
                         <i id="navbarBtnIcon" class="fas fa-plus text-white text-xl transition-all duration-500 ease-out relative z-10"></i>
@@ -754,8 +788,8 @@
                 
                 <!-- Mobile Menu Button -->
                 <div class="md:hidden flex items-center space-x-3">
-                    <a href="design/design.html" class="bg-white hover:bg-gray-100 text-blue-600 px-3 py-1.5 rounded-full font-semibold transition-colors duration-300 text-sm">
-                        KÖP
+                    <a href="design/design.html" class="bg-gradient-to-r from-hunter-brown to-dark-green text-white px-4 py-2 rounded-full font-semibold transition-all duration-300 text-sm hover:from-dark-green hover:to-hunter-brown">
+                        Designa din egen nu
                     </a>
                     <div class="hamburger w-6 flex flex-col justify-between items-center">
                         <div class="line w-full h-0.5 bg-mustard-gold mb-1.5"></div>
@@ -772,7 +806,6 @@
                     <a href="#produkter" class="text-gray-300 hover:text-mustard-gold transition">Produkter</a>
                     <a href="#om-oss" class="text-gray-300 hover:text-mustard-gold transition">Om Oss</a>
                     <a href="#kontakt" class="text-gray-300 hover:text-mustard-gold transition">Kontakt</a>
-                    <a href="#spara" class="text-gray-300 hover:text-mustard-gold transition">Spåra Paket</a>
                 </div>
             </div>
         </div>
@@ -781,16 +814,21 @@
 
 
     <!-- Hero Section -->
-    <section id="hem" class="hero-image flex items-center justify-center text-center pt-12 section-blur-bottom">
-        <div class="container mx-auto px-4 py-0 relative">
+    <section id="hem" class="hero-image flex flex-col justify-center items-center text-center pt-12 pb-16 section-blur-bottom min-h-screen mobile-center iphone-se-landscape-logo-adjust" style="transform: translateY(-5%);">
+        <div class="container mx-auto px-4 relative">
             <!-- Logo positioned at the top -->
-            <div class="flex justify-center mb-8">
-                <img src="images/NordkaliberLogga.png" alt="NORDKALIBER" class="h-32 md:h-80 bounce-in">
+            <div class="flex justify-center mb-6 md:mb-8">
+                <img src="images/NordkaliberLogga.png" alt="NORDKALIBER" class="h-20 sm:h-24 md:h-80 bounce-in">
             </div>
             <!-- Text content below logo -->
-            <div class="mt-8">
-                <p class="text-xl md:text-2xl mb-4 max-w-2xl mx-auto slide-up" style="animation-delay: 0.3s;">Premium ammunitionlådor för den seriösa jägaren</p>
-                <a href="#overview" class="btn-hunter text-white px-8 py-3 rounded-full font-medium inline-block scale-in hover-lift hover-glow" style="animation-delay: 0.6s;">UPPTÄCK VÅRA PRODUKTER</a>
+            <div class="mt-0">
+                <p class="text-base sm:text-lg md:text-2xl mb-6 max-w-2xl mx-auto slide-up hide-on-iphone-se" style="animation-delay: 0.3s;">Premium ammunitionlådor för den seriösa jägaren</p>
+                <!-- Button for mobile - positioned normally -->
+                <a href="#overview" class="btn-hunter text-white px-4 sm:px-6 md:px-8 py-2 md:py-3 rounded-full font-medium inline-block scale-in hover-lift hover-glow text-sm sm:text-base hide-on-low-height md:hidden" style="animation-delay: 0.6s;">UPPTÄCK VÅRA PRODUKTER</a>
+            </div>
+            <!-- Button positioned absolutely for larger screens -->
+            <div class="absolute left-1/2 transform -translate-x-1/2 hidden md:block" style="top: 60%;">
+                <a href="#overview" class="btn-hunter text-white px-4 sm:px-6 md:px-8 py-2 md:py-3 rounded-full font-medium inline-block scale-in hover-lift hover-glow text-sm sm:text-base hide-on-low-height" style="animation-delay: 0.6s;">UPPTÄCK VÅRA PRODUKTER</a>
             </div>
         </div>
     </section>
@@ -1086,7 +1124,6 @@
                         <li><a href="#overview" class="text-gray-400 hover:text-mustard-gold transition">Översikt</a></li>
                         <li><a href="#om-oss" class="text-gray-400 hover:text-mustard-gold transition">Om Oss</a></li>
                         <li><a href="#kontakt" class="text-gray-400 hover:text-mustard-gold transition">Kontakt</a></li>
-                        <li><a href="#spara" class="text-gray-400 hover:text-mustard-gold transition">Spåra Paket</a></li>
                     </ul>
                 </div>
                 <div>
