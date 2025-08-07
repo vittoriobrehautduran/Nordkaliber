@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Betalning Genomförd - Nordkaliber</title>
+    <title>Tack för din beställning - Nordkaliber</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -11,20 +11,36 @@
             theme: {
                 extend: {
                     colors: {
+                        'lavender-grey': '#D1CFE0',
+                        'forest-teal': '#1B4332',
+                        'deep-blue': '#0F172A',
+                        'mustard-gold': '#E6B17A',
+                        'muted-beige': '#F0E6D3',
+                        'sage-green': '#6B8E6B',
                         'hunter-brown': '#A0522D',
                         'dark-green': '#1B4D3E',
-                        'mustard-gold': '#E6B17A',
-                        'premium-black': '#0A0A0A'
-                    }
+                        'light-green': '#2D5A46',
+                        'premium-black': '#0A0A0A',
+                        'light-grey': '#E5E7EB',
+                        'warm-grey': '#D1D5DB',
+                        'cool-grey': '#9CA3AF',
+                        'soft-grey': '#F3F4F6'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
                 }
             }
         }
     </script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
         body {
             font-family: 'Inter', sans-serif;
             background-color: #0A0A0A;
             color: #f3f3f3;
+            overflow-x: hidden;
         }
         
         .success-animation {
@@ -36,8 +52,17 @@
             50% { transform: scale(1.05); }
         }
         
+        .fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
         .checkmark {
-            animation: checkmarkDraw 1s ease-in-out forwards;
+            animation: checkmarkDraw 1s ease-in-out 0.5s both;
         }
         
         @keyframes checkmarkDraw {
@@ -46,148 +71,148 @@
         }
     </style>
 </head>
-<body class="bg-premium-black text-gray-200 min-h-screen">
+<body class="min-h-screen">
     <!-- Header -->
-    <header class="bg-gradient-to-r from-hunter-brown to-dark-green py-4 px-6 shadow-lg">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-extrabold text-white hover:text-mustard-gold transition-colors">
-                NORDKALIBER
-            </a>
+    <header class="bg-premium-black border-b border-hunter-brown border-opacity-30">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <a href="index.html" class="flex items-center space-x-2 text-mustard-gold hover:text-white transition-colors">
+                    <i class="fas fa-home text-xl"></i>
+                    <span class="text-xl font-semibold">NORDKALIBER</span>
+                </a>
+                <div class="text-right">
+                    <div class="text-sm text-cool-grey">Beställning bekräftad</div>
+                    <div class="text-lg font-semibold text-green-400">✓ Slutförd</div>
+                </div>
+            </div>
         </div>
     </header>
 
-    <!-- Success Content -->
-    <div class="min-h-screen flex items-center justify-center px-4">
-        <div class="max-w-2xl mx-auto text-center">
+    <div class="container mx-auto px-4 py-16">
+        <div class="max-w-2xl mx-auto text-center fade-in">
             <!-- Success Icon -->
-            <div class="mb-8 success-animation">
-                <div class="w-32 h-32 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <svg class="w-16 h-16 text-white checkmark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="mb-8">
+                <div class="inline-flex items-center justify-center w-24 h-24 bg-green-500 bg-opacity-20 rounded-full success-animation">
+                    <svg class="w-12 h-12 text-green-400 checkmark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" stroke-dasharray="100" stroke-dashoffset="100"></path>
                     </svg>
                 </div>
             </div>
 
             <!-- Success Message -->
-            <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">
-                Tack för din beställning!
-            </h1>
-            
-            <p class="text-xl text-gray-300 mb-8 leading-relaxed">
-                Din betalning har genomförts framgångsrikt. Vi har skickat en bekräftelse till din e-postadress.
-            </p>
+            <h1 class="text-4xl font-bold mb-4 text-mustard-gold">Tack för din beställning!</h1>
+            <p class="text-xl mb-8 text-cool-grey">Din betalning har bekräftats och din order behandlas nu.</p>
 
             <!-- Order Details -->
-            <div class="bg-dark-green bg-opacity-50 rounded-lg p-6 mb-8 border border-hunter-brown border-opacity-20">
-                <h2 class="text-2xl font-bold text-mustard-gold mb-4">
-                    <i class="fas fa-receipt mr-3"></i>Orderdetaljer
-                </h2>
+            <div class="bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg p-6 mb-8">
+                <h2 class="text-xl font-semibold mb-4 text-mustard-gold">Orderinformation</h2>
                 <div id="orderDetails" class="text-left space-y-3">
-                    <div class="flex justify-between">
-                        <span class="text-gray-300">Ordernummer:</span>
-                        <span id="orderNumber" class="font-semibold text-white">-</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-300">Betalningsstatus:</span>
-                        <span class="text-green-400 font-semibold">Bekräftad</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-300">Leveransstatus:</span>
-                        <span class="text-yellow-400 font-semibold">Förbereds</span>
-                    </div>
+                    <!-- Order details will be populated here -->
                 </div>
             </div>
 
             <!-- Next Steps -->
-            <div class="bg-dark-green bg-opacity-30 rounded-lg p-6 mb-8 border border-hunter-brown border-opacity-20">
-                <h3 class="text-xl font-bold text-mustard-gold mb-4">
-                    <i class="fas fa-shipping-fast mr-3"></i>Vad händer nu?
-                </h3>
-                <div class="text-left space-y-3 text-gray-300">
-                    <div class="flex items-start">
-                        <div class="w-6 h-6 bg-mustard-gold rounded-full flex items-center justify-center text-xs font-bold text-dark-green mr-3 mt-0.5">1</div>
-                        <div>
-                            <p class="font-semibold text-white">Orderbekräftelse</p>
-                            <p class="text-sm">Du får en e-post med orderdetaljer inom några minuter</p>
+            <div class="bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg p-6 mb-8">
+                <h3 class="text-lg font-semibold mb-4 text-mustard-gold">Vad händer nu?</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-mustard-gold bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-envelope text-mustard-gold"></i>
                         </div>
+                        <div class="font-medium">Bekräftelse</div>
+                        <div class="text-cool-grey">Du får en e-post bekräftelse inom några minuter</div>
                     </div>
-                    <div class="flex items-start">
-                        <div class="w-6 h-6 bg-mustard-gold rounded-full flex items-center justify-center text-xs font-bold text-dark-green mr-3 mt-0.5">2</div>
-                        <div>
-                            <p class="font-semibold text-white">Tillverkning</p>
-                            <p class="text-sm">Vi börjar tillverka din skräddarsydda ammunitionlåda</p>
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-mustard-gold bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-cogs text-mustard-gold"></i>
                         </div>
+                        <div class="font-medium">Tillverkning</div>
+                        <div class="text-cool-grey">Din ammunition box tillverkas på beställning</div>
                     </div>
-                    <div class="flex items-start">
-                        <div class="w-6 h-6 bg-mustard-gold rounded-full flex items-center justify-center text-xs font-bold text-dark-green mr-3 mt-0.5">3</div>
-                        <div>
-                            <p class="font-semibold text-white">Leverans</p>
-                            <p class="text-sm">Du får ett spårningsnummer när din order skickas</p>
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-mustard-gold bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-shipping-fast text-mustard-gold"></i>
                         </div>
+                        <div class="font-medium">Leverans</div>
+                        <div class="text-cool-grey">Gratis leverans inom 3-7 arbetsdagar</div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg p-6 mb-8">
+                <h3 class="text-lg font-semibold mb-4 text-mustard-gold">Behöver du hjälp?</h3>
+                <p class="text-cool-grey mb-4">Om du har frågor om din beställning, tveka inte att kontakta oss.</p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="mailto:support@nordkaliber.se" class="flex items-center justify-center space-x-2 bg-mustard-gold text-white px-6 py-3 rounded-lg hover:bg-dark-green transition-colors">
+                        <i class="fas fa-envelope"></i>
+                        <span>E-post support</span>
+                    </a>
+                    <a href="tel:+46701234567" class="flex items-center justify-center space-x-2 bg-dark-green text-white px-6 py-3 rounded-lg hover:bg-mustard-gold transition-colors">
+                        <i class="fas fa-phone"></i>
+                        <span>Ring oss</span>
+                    </a>
                 </div>
             </div>
 
             <!-- Action Buttons -->
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="index.html" class="bg-gradient-to-r from-mustard-gold to-dark-green text-white px-8 py-3 rounded-full font-semibold hover:from-dark-green hover:to-mustard-gold transition-all duration-300 inline-block">
-                    <i class="fas fa-home mr-2"></i>Tillbaka till startsidan
+                <a href="buy.html" class="bg-gradient-to-r from-mustard-gold to-dark-green text-white px-8 py-4 rounded-lg font-semibold hover:from-dark-green hover:to-mustard-gold transition-all duration-300 transform hover:scale-105">
+                    Beställ en till
                 </a>
-                <a href="buy.html" class="bg-gray-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-gray-500 transition-all duration-300 inline-block">
-                    <i class="fas fa-plus mr-2"></i>Beställ en till
+                <a href="index.html" class="bg-premium-black border border-hunter-brown border-opacity-30 text-white px-8 py-4 rounded-lg font-semibold hover:bg-dark-green transition-colors">
+                    Tillbaka till startsidan
                 </a>
-            </div>
-
-            <!-- Contact Info -->
-            <div class="mt-12 text-center text-gray-400">
-                <p class="mb-2">Har du frågor om din order?</p>
-                <p class="text-mustard-gold">
-                    <i class="fas fa-envelope mr-2"></i>info@nordkaliber.se
-                </p>
             </div>
         </div>
     </div>
 
     <script>
-        // Get session ID from URL parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        const sessionId = urlParams.get('session_id');
-        
-        if (sessionId) {
-            // Set order number (you could also fetch this from your backend)
-            document.getElementById('orderNumber').textContent = sessionId.substring(0, 8).toUpperCase();
-            
-            // Store session ID for potential backend verification
-            localStorage.setItem('lastOrderSessionId', sessionId);
-        }
-
-        // Add some interactive elements
+        // Get order details from URL parameters or localStorage
         document.addEventListener('DOMContentLoaded', function() {
-            // Animate checkmark
-            const checkmark = document.querySelector('.checkmark');
-            if (checkmark) {
-                setTimeout(() => {
-                    checkmark.style.strokeDashoffset = '0';
-                }, 500);
+            const urlParams = new URLSearchParams(window.location.search);
+            const sessionId = urlParams.get('session_id');
+            
+            // Try to get order details from localStorage
+            const cartData = localStorage.getItem('nordkaliberCart');
+            let orderDetails = '';
+            
+            if (cartData) {
+                const order = JSON.parse(cartData);
+                orderDetails = order.items.map(item => `
+                    <div class="flex justify-between items-center py-2 border-b border-hunter-brown border-opacity-20">
+                        <div>
+                            <div class="font-medium">${item.caliber}</div>
+                            <div class="text-sm text-cool-grey">${item.primaryColor}/${item.secondaryColor}</div>
+                            ${item.initials ? `<div class="text-sm text-cool-grey">Initialer: ${item.initials}</div>` : ''}
+                        </div>
+                        <div class="font-semibold">${item.price} kr</div>
+                    </div>
+                `).join('');
+                
+                // Add total
+                const total = order.items.reduce((sum, item) => sum + item.price, 0);
+                orderDetails += `
+                    <div class="flex justify-between items-center py-2 font-semibold text-mustard-gold">
+                        <span>Totalt:</span>
+                        <span>${total} kr</span>
+                    </div>
+                `;
+                
+                // Clear cart data
+                localStorage.removeItem('nordkaliberCart');
+            } else {
+                orderDetails = '<p class="text-cool-grey">Orderdetaljer laddas...</p>';
             }
-
-            // Add click tracking for analytics (if needed)
-            const actionButtons = document.querySelectorAll('a');
-            actionButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    // You could send analytics data here
-                    console.log('User clicked:', this.textContent.trim());
-                });
-            });
+            
+            document.getElementById('orderDetails').innerHTML = orderDetails;
+            
+            // If we have a session ID, we could fetch order details from the server
+            if (sessionId) {
+                console.log('Payment session ID:', sessionId);
+                // Here you could make an API call to get order details from your backend
+            }
         });
-
-        // Optional: Send success event to analytics
-        if (typeof gtag !== 'undefined') {
-            gtag('event', 'purchase', {
-                transaction_id: sessionId,
-                value: 1 // You could get the actual value from your cart
-            });
-        }
     </script>
 </body>
 </html> 

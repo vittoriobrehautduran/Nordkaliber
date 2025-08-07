@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node backend.js",
     "dev": "nodemon backend.js",
-    "test": "node test-backend.js"
+    "test": "node test-backend.js",
+    "test:checkout": "node test-checkout.js"
   },
   "keywords": ["nordkaliber", "stripe", "ecommerce", "nodejs"],
   "author": "Vittoriobre",

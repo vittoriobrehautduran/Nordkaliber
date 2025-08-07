@@ -5,10 +5,12 @@ const rateLimit = require('express-rate-limit');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: '2025-07-30.basil'
+});
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 // Security middleware
 app.use(helmet());
@@ -21,22 +23,9 @@ const limiter = rateLimit({
 });
 app.use('/api/', limiter);
 
-// CORS configuration
-const allowedOrigins = process.env.ALLOWED_ORIGINS ? 
-    process.env.ALLOWED_ORIGINS.split(',') : 
-    ['http://localhost:3000', 'http://127.0.0.1:3000'];
-
+// CORS configuration - Allow all origins in development
 app.use(cors({
-    origin: function (origin, callback) {
-        // Allow requests with no origin (like mobile apps or curl requests)
-        if (!origin) return callback(null, true);
-        
-        if (allowedOrigins.indexOf(origin) === -1) {
-            const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-            return callback(new Error(msg), false);
-        }
-        return callback(null, true);
-    },
+    origin: true, // Allow all origins
     credentials: true
 }));
 
@@ -58,9 +47,53 @@ app.get('/api/health', (req, res) => {
 
 // Get Stripe publishable key
 app.get('/api/config', (req, res) => {
+    console.log('DEBUG: STRIPE_PUBLISHABLE_KEY =', process.env.STRIPE_PUBLISHABLE_KEY);
     res.json({
         publishableKey: process.env.STRIPE_PUBLISHABLE_KEY
     });
+});
+
+// Stripe configuration endpoint for checkout page
+app.get('/api/stripe-config', (req, res) => {
+    res.json({
+        publishableKey: process.env.STRIPE_PUBLISHABLE_KEY
+    });
+});
+
+// Create Payment Intent for Payment Element
+app.post('/api/create-payment-intent', async (req, res) => {
+    try {
+        const { items, customerEmail } = req.body;
+
+        if (!items || !Array.isArray(items) || items.length === 0) {
+            return res.status(400).json({ error: 'Invalid items data' });
+        }
+
+        // Calculate total amount
+        const totalAmount = items.reduce((sum, item) => sum + item.price, 0);
+
+        // Create payment intent
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: totalAmount, // Amount in cents
+            currency: 'sek',
+            metadata: {
+                order_type: 'custom_ammunition_box',
+                items_count: items.length.toString(),
+                customer_email: customerEmail
+            },
+            automatic_payment_methods: {
+                enabled: true,
+            },
+        });
+
+        res.json({ clientSecret: paymentIntent.client_secret });
+    } catch (error) {
+        console.error('Error creating payment intent:', error);
+        res.status(500).json({ 
+            error: 'Failed to create payment intent',
+            details: error.message
+        });
+    }
 });
 
 // Create Stripe checkout session
@@ -76,8 +109,8 @@ app.post('/api/create-checkout-session', async (req, res) => {
         const lineItems = items.map(item => {
             const description = [
                 `Kaliber: ${item.caliber || 'Standard'}`,
-                `Primär färg: ${item.primary || 'Standard'}`,
-                `Sekundär färg: ${item.secondary || 'Standard'}`
+                `Primär färg: ${item.primaryColor || 'Standard'}`,
+                `Sekundär färg: ${item.secondaryColor || 'Standard'}`
             ];
 
             if (item.initials) {
@@ -108,11 +141,11 @@ app.post('/api/create-checkout-session', async (req, res) => {
         });
 
         const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
+            payment_method_types: ['card', 'paypal', 'klarna'],
             line_items: lineItems,
             mode: 'payment',
-            success_url: `${req.headers.origin}/success.html?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${req.headers.origin}/buy.html`,
+            success_url: `${req.protocol}://${req.get('host')}/success.html?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${req.protocol}://${req.get('host')}/checkout.html`,
             customer_email: customerEmail,
             metadata: {
                 order_type: 'custom_ammunition_box',
@@ -148,9 +181,11 @@ app.post('/api/create-checkout-session', async (req, res) => {
         res.json({ sessionId: session.id });
     } catch (error) {
         console.error('Error creating checkout session:', error);
+        console.error('Error details:', error.message);
+        console.error('Error type:', error.type);
         res.status(500).json({ 
             error: 'Failed to create checkout session',
-            details: process.env.NODE_ENV === 'development' ? error.message : undefined
+            details: error.message
         });
     }
 });

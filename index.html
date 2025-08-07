@@ -299,6 +299,270 @@
             50% { opacity: 0.5; }
         }
         
+        /* Mobile-specific hero logo fixes */
+        @media (max-width: 768px) {
+            .hero-image {
+                min-height: 100vh;
+                padding-top: 2rem;
+            }
+            
+            .hero-image img {
+                max-width: 80vw !important;
+                height: auto !important;
+                min-height: 8rem !important;
+            }
+            
+            .hero-image .mb-8 {
+                margin-bottom: 2rem !important;
+            }
+            
+            .hero-image .mt-8 {
+                margin-top: 2rem !important;
+            }
+        }
+        
+        /* Mobile horizontal view logo fixes */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .hero-image {
+                min-height: 100vh !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                position: relative !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            
+            .hero-image .container {
+                position: absolute !important;
+                top: 50% !important;
+                left: 50% !important;
+                transform: translate(-50%, -50%) !important;
+                width: 100% !important;
+                height: auto !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            
+            .hero-image .flex.justify-center {
+                margin-bottom: 0 !important;
+            }
+            
+            .hero-image .mt-8 {
+                margin-top: 2rem !important;
+            }
+            
+            .hero-image img {
+                max-width: 60vw !important;
+                height: auto !important;
+                min-height: 10rem !important;
+                margin-bottom: 2rem !important;
+                display: block !important;
+            }
+            
+            .hero-image .mb-8 {
+                margin-bottom: 2rem !important;
+            }
+            
+            .hero-image .mt-8 {
+                margin-top: 0 !important;
+            }
+            
+            /* Hide the tagline text in horizontal mobile view */
+            .hero-image p {
+                display: none !important;
+            }
+            
+            /* Center the button nicely under the logo */
+            .hero-image a {
+                font-size: 1rem !important;
+                padding: 1rem 2rem !important;
+                margin-top: 1rem !important;
+            }
+            
+            /* Header logo positioning for horizontal mobile - make it bigger */
+            nav .flex.items-center img {
+                height: 3.5rem !important;
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
+            }
+            
+            /* Adjust header padding for better logo visibility */
+            nav .container {
+                padding-top: 0.5rem !important;
+                padding-bottom: 0.5rem !important;
+            }
+        }
+        
+        /* Wider mobile view fixes (tablet/phone landscape) */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .hero-image {
+                min-height: 100vh !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                position: relative !important;
+                overflow: hidden !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            
+            .hero-image .container {
+                position: absolute !important;
+                top: 50% !important;
+                left: 50% !important;
+                transform: translate(-50%, -50%) !important;
+                width: 100% !important;
+                height: auto !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            
+            .hero-image .flex.justify-center {
+                margin-bottom: 0 !important;
+            }
+            
+            .hero-image .mt-8 {
+                margin-top: 2rem !important;
+            }
+            
+            .hero-image img {
+                max-width: 50vw !important;
+                height: auto !important;
+                min-height: 12rem !important;
+                margin-bottom: 3rem !important;
+                display: block !important;
+            }
+            
+            .hero-image .mb-8 {
+                margin-bottom: 3rem !important;
+            }
+            
+            .hero-image .mt-8 {
+                margin-top: 0 !important;
+            }
+            
+            /* Hide the tagline text in wider mobile view */
+            .hero-image p {
+                display: none !important;
+            }
+            
+            /* Center the button nicely under the logo */
+            .hero-image a {
+                font-size: 1.1rem !important;
+                padding: 1.25rem 2.5rem !important;
+                margin-top: 1.5rem !important;
+            }
+            
+            /* Header logo positioning for wider mobile */
+            nav .flex.items-center img {
+                height: 4rem !important;
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
+            }
+        }
+        
+        /* Specific fix for 846x421 and similar dimensions */
+        @media (min-width: 800px) and (max-width: 900px) and (max-height: 500px) {
+            .hero-image {
+                min-height: 100vh !important;
+                height: 100vh !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                position: relative !important;
+                overflow: hidden !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            
+            .hero-image .container {
+                position: absolute !important;
+                top: 50% !important;
+                left: 50% !important;
+                transform: translate(-50%, -50%) !important;
+                width: 100% !important;
+                height: auto !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            
+            .hero-image .flex.justify-center {
+                margin-bottom: 0 !important;
+            }
+            
+            .hero-image .mt-8 {
+                margin-top: 2rem !important;
+            }
+            
+            .hero-image img {
+                max-width: 45vw !important;
+                height: auto !important;
+                min-height: 10rem !important;
+                margin-bottom: 2rem !important;
+                display: block !important;
+            }
+            
+            /* Hide the tagline text */
+            .hero-image p {
+                display: none !important;
+            }
+            
+            /* Center the button nicely under the logo */
+            .hero-image a {
+                font-size: 1rem !important;
+                padding: 1rem 2rem !important;
+                margin-top: 1rem !important;
+            }
+        }
+        
+        /* Mobile contact section improvements */
+        @media (max-width: 768px) {
+            .blur-bg.rounded-lg.p-8 {
+                padding: 1.5rem !important;
+            }
+            
+            .blur-bg h2 {
+                font-size: 1.5rem !important;
+                margin-bottom: 1.5rem !important;
+            }
+            
+            .space-y-6 > div {
+                margin-bottom: 1.5rem !important;
+            }
+            
+            .space-y-6 > div:last-child {
+                margin-bottom: 0 !important;
+            }
+            
+            .flex.items-start {
+                align-items: flex-start !important;
+            }
+            
+            .flex.items-start i {
+                margin-top: 0.25rem !important;
+                margin-right: 1rem !important;
+                flex-shrink: 0 !important;
+            }
+            
+            .flex.items-start div {
+                flex: 1 !important;
+                word-wrap: break-word !important;
+            }
+        }
+        
         .parallax {
             background-attachment: fixed;
             background-position: center;
@@ -420,27 +684,12 @@
         .floating-btn-visible {
             opacity: 1 !important;
             pointer-events: auto !important;
+            visibility: visible !important;
         }
         
-        .button-fade-in {
-            opacity: 1 !important;
-            transform: scale(1) !important;
-        }
+
         
-        .button-wide {
-            width: 200px !important;
-            border-radius: 50px !important;
-            transition: width 1.5s ease-in-out, border-radius 2s ease-in-out !important;
-        }
-        
-        .icon-hidden {
-            opacity: 0 !important;
-            transform: scale(0.5) !important;
-        }
-        
-        .text-visible {
-            opacity: 1 !important;
-        }
+
         
         /* Shimmer animation */
         @keyframes shimmer {
@@ -455,6 +704,24 @@
         .animate-shimmer {
             animation: shimmer 5s ease-in-out infinite;
         }
+        
+        /* Navbar button animations */
+        .navbar-btn-wide {
+            width: 200px !important;
+            border-radius: 50px !important;
+            transition: all 1.5s ease-in-out !important;
+        }
+        
+        .navbar-icon-hidden {
+            opacity: 0 !important;
+            transform: scale(0.5) !important;
+            transition: all 0.5s ease-in-out !important;
+        }
+        
+        .navbar-text-visible {
+            opacity: 1 !important;
+            transition: all 0.5s ease-in-out !important;
+        }
     </style>
 </head>
 <body class="bg-premium-black text-gray-200">
@@ -463,22 +730,33 @@
         <div class="container mx-auto px-4 py-4">
             <div class="flex justify-between items-center">
                 <div class="flex items-center overflow-visible">
-                    <a href="#" class="flex items-center">
+                    <a href="index.html" class="flex items-center">
                         <img src="images/site-logo-png.png" alt="Site Logo" class="h-20 md:h-30 -mt-1 -mb-1">
                     </a>
                 </div>
                 
                 <!-- Desktop Navigation -->
-                <div class="hidden md:flex space-x-8">
+                <div class="hidden md:flex items-center space-x-8">
                     <a href="#hem" class="nav-link text-gray-300 hover:text-mustard-gold transition">Hem</a>
                     <a href="#overview" class="nav-link text-gray-300 hover:text-mustard-gold transition">Översikt</a>
                     <a href="#om-oss" class="nav-link text-gray-300 hover:text-mustard-gold transition">Om Oss</a>
                     <a href="#kontakt" class="nav-link text-gray-300 hover:text-mustard-gold transition">Kontakt</a>
                     <a href="#spara" class="nav-link text-gray-300 hover:text-mustard-gold transition">Spåra Paket</a>
+                    <a href="buy.html" id="navbarDesignBtn" class="w-12 h-12 bg-gradient-to-br from-hunter-brown via-dark-green to-hunter-brown rounded-full shadow-2xl flex items-center justify-center transition-all duration-3000 ease-in-out cursor-pointer hover:shadow-3xl overflow-hidden relative">
+                        <!-- Plus icon -->
+                        <i id="navbarBtnIcon" class="fas fa-plus text-white text-xl transition-all duration-500 ease-out relative z-10"></i>
+                        <!-- Text that appears -->
+                        <span id="navbarBtnText" class="text-sm font-semibold text-white px-4 whitespace-nowrap absolute opacity-0 transition-all duration-500 ease-out relative z-10">Designa din egen nu</span>
+                        <!-- Shimmer effect -->
+                        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 animate-shimmer"></div>
+                    </a>
                 </div>
                 
                 <!-- Mobile Menu Button -->
-                <div class="md:hidden">
+                <div class="md:hidden flex items-center space-x-3">
+                    <a href="buy.html" class="bg-white hover:bg-gray-100 text-blue-600 px-3 py-1.5 rounded-full font-semibold transition-colors duration-300 text-sm">
+                        KÖP
+                    </a>
                     <div class="hamburger w-6 flex flex-col justify-between items-center">
                         <div class="line w-full h-0.5 bg-mustard-gold mb-1.5"></div>
                         <div class="line w-full h-0.5 bg-mustard-gold mb-1.5"></div>
@@ -505,10 +783,12 @@
     <!-- Hero Section -->
     <section id="hem" class="hero-image flex items-center justify-center text-center pt-12 section-blur-bottom">
         <div class="container mx-auto px-4 py-0 relative">
-            <div class="absolute -top-32 md:-top-20 left-0 right-0 flex justify-center z-10">
-                <img src="images/NordkaliberLogga.png" alt="NORDKALIBER" class="h-48 md:h-80 bounce-in">
+            <!-- Logo positioned at the top -->
+            <div class="flex justify-center mb-8">
+                <img src="images/NordkaliberLogga.png" alt="NORDKALIBER" class="h-32 md:h-80 bounce-in">
             </div>
-            <div class="pt-40 md:pt-60">
+            <!-- Text content below logo -->
+            <div class="mt-8">
                 <p class="text-xl md:text-2xl mb-4 max-w-2xl mx-auto slide-up" style="animation-delay: 0.3s;">Premium ammunitionlådor för den seriösa jägaren</p>
                 <a href="#overview" class="btn-hunter text-white px-8 py-3 rounded-full font-medium inline-block scale-in hover-lift hover-glow" style="animation-delay: 0.6s;">UPPTÄCK VÅRA PRODUKTER</a>
             </div>
@@ -615,6 +895,8 @@
                 </div>
             </div>
             
+
+            
             <!-- Video Presentation Section -->
             <div class="max-w-4xl mx-auto mb-16 video-section">
                 <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 text-mustard-gold slide-up">SE VÅRA PRODUKTER I AKTION</h3>
@@ -655,25 +937,6 @@
                 <h2 class="text-3xl md:text-4xl font-bold mb-4 text-white slide-up">Unik pryl</h2>
                 <p class="text-xl text-gray-300 mb-8 slide-up">En produkt som ger jägaren det lilla extra.</p>
                 <a href="buy.html" class="btn-hunter text-white px-8 py-3 rounded-full font-medium inline-block scale-in hover-lift hover-glow slide-up">BESTÄLL DIN EGEN IDAG</a>
-            </div>
-            
-            <!-- Floating Design Button Container -->
-            <div class="relative mt-16 mb-20">
-                <div id="floatingDesignBtn" class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-500 ease-out" style="opacity: 1; pointer-events: auto; visibility: visible;">
-                    <div class="relative">
-                        <!-- Transformable button -->
-                        <div id="designButton" class="w-20 h-20 bg-gradient-to-br from-hunter-brown via-dark-green to-hunter-brown rounded-full shadow-2xl flex items-center justify-center transition-all duration-3000 ease-in-out cursor-pointer hover:shadow-3xl overflow-hidden relative">
-                            <!-- Brilliance overlay -->
-                            <div class="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-white/10 rounded-full"></div>
-                            <!-- Shimmer effect -->
-                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent rounded-full transform -skew-x-12 animate-shimmer"></div>
-                            <!-- Plus icon -->
-                            <i id="plusIcon" class="fas fa-plus text-white text-xl transition-all duration-500 ease-out relative z-10"></i>
-                            <!-- Text that appears -->
-                            <span id="buttonText" class="text-sm font-semibold text-white px-4 whitespace-nowrap absolute opacity-0 transition-all duration-500 ease-out relative z-10">Designa din egen nu</span>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -757,31 +1020,31 @@
                 </div>
                 
                 <div class="blur-bg rounded-lg p-8 border border-hunter-brown border-opacity-20">
-                    <h2 class="text-3xl font-bold mb-6">KONTAKTUPPGIFTER</h2>
+                    <h2 class="text-2xl md:text-3xl font-bold mb-6 text-center md:text-left">KONTAKTUPPGIFTER</h2>
                     <div class="space-y-6">
                         <div class="flex items-start">
-                            <i class="fas fa-map-marker-alt text-mustard-gold mt-1 mr-4"></i>
+                            <i class="fas fa-map-marker-alt text-mustard-gold mt-1 mr-4 flex-shrink-0"></i>
                             <div>
                                 <h3 class="font-bold">Adress</h3>
-                                <p class="text-gray-400">Jägargatan 42<br>114 56 Stockholm</p>
+                                <p class="text-gray-400">Farkostvägen 7<br>SE-181 35 Lidingö SE</p>
                             </div>
                         </div>
                         <div class="flex items-start">
-                            <i class="fas fa-phone-alt text-mustard-gold mt-1 mr-4"></i>
+                            <i class="fas fa-phone-alt text-mustard-gold mt-1 mr-4 flex-shrink-0"></i>
                             <div>
                                 <h3 class="font-bold">Telefon</h3>
-                                <p class="text-gray-400">08-123 45 67</p>
+                                <p class="text-gray-400">+46 79 040 46 16</p>
                             </div>
                         </div>
                         <div class="flex items-start">
-                            <i class="fas fa-envelope text-mustard-gold mt-1 mr-4"></i>
+                            <i class="fas fa-envelope text-mustard-gold mt-1 mr-4 flex-shrink-0"></i>
                             <div>
                                 <h3 class="font-bold">E-post</h3>
-                                <p class="text-gray-400">info@nordkaliber.se</p>
+                                <p class="text-gray-400">vittoriobre@gmail.com</p>
                             </div>
                         </div>
                         <div class="flex items-start">
-                            <i class="fas fa-clock text-mustard-gold mt-1 mr-4"></i>
+                            <i class="fas fa-clock text-mustard-gold mt-1 mr-4 flex-shrink-0"></i>
                             <div>
                                 <h3 class="font-bold">Öppettider</h3>
                                 <p class="text-gray-400">Mån-Fre: 09:00-17:00<br>Lör: 10:00-15:00<br>Sön: Stängt</p>
@@ -814,7 +1077,7 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
                 <div>
                     <h3 class="text-xl font-bold text-mustard-gold mb-4">NORDKALIBER</h3>
-                    <p class="text-gray-400">Premium ammunitionlådor för den kräsne jägaren. Svensk kvalitet sedan 2012.</p>
+                    <p class="text-gray-400">Premium ammunitionlådor för den kräsne jägaren. Svensk kvalitet sedan 2025.</p>
                 </div>
                 <div>
                     <h3 class="text-lg font-bold mb-4">Länkar</h3>
@@ -839,14 +1102,14 @@
                     <h3 class="text-lg font-bold mb-4">Följ Oss</h3>
                     <div class="flex space-x-4">
                                             <a href="#" class="text-gray-400 hover:text-mustard-gold transition text-xl"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-mustard-gold transition text-xl"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.instagram.com/nordkaliber?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-mustard-gold transition text-xl"><i class="fab fa-instagram"></i></a>
                     <a href="#" class="text-gray-400 hover:text-mustard-gold transition text-xl"><i class="fab fa-youtube"></i></a>
                     <a href="#" class="text-gray-400 hover:text-mustard-gold transition text-xl"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
             </div>
             <div class="border-t border-hunter-brown border-opacity-20 mt-12 pt-8 text-center text-gray-500">
-                <p>&copy; 2023 Nordkaliber AB. Alla rättigheter reserverade.</p>
+                <p>&copy; 2025 Nordkaliber AB. Alla rättigheter reserverade.</p>
             </div>
         </div>
     </footer>
@@ -1075,58 +1338,8 @@
             setupVideoHover(video2);
             setupVideoHover(adVideo);
         
-        // Floating Design Button Animation
-        const floatingBtn = document.getElementById('floatingDesignBtn');
-        const designButton = document.getElementById('designButton');
-        const plusIcon = document.getElementById('plusIcon');
-        const buttonText = document.getElementById('buttonText');
-        
-        let hasAnimated = false;
-        
-        // Debug: Check if button elements exist
-        console.log('Floating button found:', floatingBtn);
-        console.log('Design button found:', designButton);
-        
-        // Scroll-based floating button behavior
-        window.addEventListener('scroll', () => {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            
-            if (scrollTop > 300) {
-                // Show floating button when scrolled down
-                floatingBtn.classList.add('floating-btn-visible');
-                
-                if (!hasAnimated) {
-                    // Transform to wide button
-                    setTimeout(() => {
-                        designButton.classList.add('button-fade-in');
-                    }, 200);
-                    
-                    setTimeout(() => {
-                        designButton.classList.add('button-wide');
-                        plusIcon.classList.add('icon-hidden');
-                    }, 1200);
-                    
-                    // Show text
-                    setTimeout(() => {
-                        buttonText.classList.add('text-visible');
-                    }, 1500);
-                    
-                    hasAnimated = true;
-                }
-            } else {
-                // Hide floating button when at top
-                floatingBtn.classList.remove('floating-btn-visible');
-                designButton.classList.remove('button-fade-in', 'button-wide');
-                plusIcon.classList.remove('icon-hidden');
-                buttonText.classList.remove('text-visible');
-                hasAnimated = false;
-            }
-        });
-        
-        // Click handler for design button
-        designButton.addEventListener('click', () => {
-            window.location.href = 'buy.html';
-        });
+
+
         
         // Video modal functionality
         const videoContainer = document.getElementById('videoContainer');
@@ -1189,7 +1402,34 @@
             }
         });
         
-        // Simple scroll handling for floating button and scroll-to-top
+        // Navbar Design Button Animation
+        const navbarDesignBtn = document.getElementById('navbarDesignBtn');
+        const navbarBtnText = document.getElementById('navbarBtnText');
+        const navbarBtnIcon = document.getElementById('navbarBtnIcon');
+        
+        // Function to reset button state if it gets stuck
+        function resetNavbarButton() {
+            navbarDesignBtn.classList.remove('navbar-btn-wide');
+            navbarBtnIcon.classList.remove('navbar-icon-hidden');
+            navbarBtnText.classList.remove('navbar-text-visible');
+        }
+        
+        // Animate button on page load
+        function animateNavbarButton() {
+            setTimeout(() => {
+                navbarDesignBtn.classList.add('navbar-btn-wide');
+                navbarBtnIcon.classList.add('navbar-icon-hidden');
+            }, 500);
+            
+            setTimeout(() => {
+                navbarBtnText.classList.add('navbar-text-visible');
+            }, 1500);
+        }
+        
+        // Start animation when page loads
+        animateNavbarButton();
+        
+        // Handle scroll-to-top button
         window.addEventListener('scroll', () => {
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             
@@ -1198,32 +1438,6 @@
                 scrollToTopBtn.style.opacity = '1';
             } else {
                 scrollToTopBtn.style.opacity = '0';
-            }
-            
-            // Handle floating design button animation when overview section is visible
-            const overviewSection = document.getElementById('overview');
-            if (overviewSection) {
-                const overviewTop = overviewSection.offsetTop;
-                const overviewBottom = overviewTop + overviewSection.offsetHeight;
-                
-                // Animate button when overview section is in view
-                if (scrollTop + 300 > overviewTop && scrollTop < overviewBottom && !hasAnimated) {
-                    // Start animation sequence
-                    setTimeout(() => {
-                        designButton.classList.add('button-fade-in');
-                    }, 100);
-                    
-                    setTimeout(() => {
-                        designButton.classList.add('button-wide');
-                        plusIcon.classList.add('icon-hidden');
-                    }, 1000);
-                    
-                    setTimeout(() => {
-                        buttonText.classList.add('text-visible');
-                    }, 1300);
-                    
-                    hasAnimated = true;
-                }
             }
         });
         

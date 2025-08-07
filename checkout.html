@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kassa - Nordkaliber</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'lavender-grey': '#D1CFE0',
+                        'forest-teal': '#1B4332',
+                        'deep-blue': '#0F172A',
+                        'mustard-gold': '#E6B17A',
+                        'muted-beige': '#F0E6D3',
+                        'sage-green': '#6B8E6B',
+                        'hunter-brown': '#A0522D',
+                        'dark-green': '#1B4D3E',
+                        'light-green': '#2D5A46',
+                        'premium-black': '#0A0A0A',
+                        'light-grey': '#E5E7EB',
+                        'warm-grey': '#D1D5DB',
+                        'cool-grey': '#9CA3AF',
+                        'soft-grey': '#F3F4F6'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            color: #32325d;
+            overflow-x: hidden;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Stripe Payment Element styling for clean white design */
+        #payment-element {
+            margin-bottom: 24px;
+        }
+        
+        /* Custom styling for Stripe elements to match clean white theme */
+        .StripeElement {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px;
+            color: #32325d;
+        }
+        
+        .StripeElement--focus {
+            border-color: #6772e5;
+            box-shadow: 0 0 0 2px rgba(103, 114, 229, 0.2);
+        }
+        
+        .StripeElement--invalid {
+            border-color: #fa755a;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <a href="buy.html" class="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors">
+                    <i class="fas fa-arrow-left text-xl"></i>
+                    <span class="text-xl font-semibold">NORDKALIBER</span>
+                </a>
+                <div class="text-right">
+                    <div class="text-lg font-semibold text-gray-900">Betalning</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Order Summary -->
+            <div class="lg:col-span-1">
+                <div class="bg-white border border-gray-200 rounded-lg p-6 sticky top-8 shadow-sm">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-900">Orderöversikt</h2>
+                    
+                    <div id="orderItems" class="space-y-3 mb-6">
+                        <!-- Order items will be populated here -->
+                    </div>
+                    
+                    <div class="border-t border-gray-200 pt-4 space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Delsumma:</span>
+                            <span id="subtotal" class="text-gray-900">0 kr</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Frakt:</span>
+                            <span class="text-green-600">Gratis</span>
+                        </div>
+                        <div class="flex justify-between text-lg font-semibold text-gray-900">
+                            <span>Totalt:</span>
+                            <span id="total">0 kr</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Checkout Form -->
+            <div class="lg:col-span-2">
+                <div class="bg-white border border-gray-200 rounded-lg p-6 fade-in shadow-sm">
+                    <h1 class="text-2xl font-bold mb-6 text-gray-900">Betalningsinformation</h1>
+                    
+                    <!-- Customer Information -->
+                    <div class="mb-8">
+                        <h3 class="text-lg font-semibold mb-4 text-gray-900">Kundinformation</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="firstName" class="block text-sm font-medium mb-2 text-gray-700">Förnamn *</label>
+                                <input type="text" id="firstName" required class="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label for="lastName" class="block text-sm font-medium mb-2 text-gray-700">Efternamn *</label>
+                                <input type="text" id="lastName" required class="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label for="email" class="block text-sm font-medium mb-2 text-gray-700">E-postadress *</label>
+                                <input type="email" id="email" required class="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label for="phone" class="block text-sm font-medium mb-2 text-gray-700">Telefonnummer</label>
+                                <input type="tel" id="phone" class="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Shipping Address -->
+                    <div class="mb-8">
+                        <h3 class="text-lg font-semibold mb-4 text-gray-900">Leveransadress</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="md:col-span-2">
+                                <label for="address" class="block text-sm font-medium mb-2 text-gray-700">Gatuadress *</label>
+                                <input type="text" id="address" required class="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label for="postalCode" class="block text-sm font-medium mb-2 text-gray-700">Postnummer *</label>
+                                <input type="text" id="postalCode" required class="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label for="city" class="block text-sm font-medium mb-2 text-gray-700">Stad *</label>
+                                <input type="text" id="city" required class="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label for="country" class="block text-sm font-medium mb-2 text-gray-700">Land *</label>
+                                <select id="country" required class="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="">Välj land</option>
+                                    <option value="SE">Sverige</option>
+                                    <option value="NO">Norge</option>
+                                    <option value="DK">Danmark</option>
+                                    <option value="FI">Finland</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Methods -->
+                    <div class="mb-8">
+                        <h3 class="text-lg font-semibold mb-4 text-gray-900">Betalningsmetod</h3>
+                        
+                                            <!-- Stripe Payment Element -->
+                    <div class="bg-white border border-gray-300 rounded-lg p-4">
+                        <div id="payment-element">
+                            <!-- Stripe Payment Element will be inserted here -->
+                        </div>
+                        <div id="payment-message" class="text-red-600 text-sm mt-4"></div>
+                        <div id="payment-status" class="text-sm text-gray-600 mt-2">
+                            <i class="fas fa-spinner fa-spin mr-1"></i>
+                            Laddar betalningsmetoder...
+                        </div>
+                    </div>
+                    </div>
+
+                    <!-- Terms and Conditions -->
+                    <div class="mb-8">
+                        <div class="flex items-start space-x-3">
+                            <input type="checkbox" id="terms" required class="mt-1">
+                            <label for="terms" class="text-sm text-gray-700">
+                                Jag accepterar <a href="#" class="text-blue-600 hover:underline">användarvillkoren</a> och <a href="#" class="text-blue-600 hover:underline">integritetspolicyn</a> *
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button id="submit" class="w-full bg-blue-600 text-white py-4 px-6 rounded-lg font-semibold text-lg hover:bg-blue-700 transition-colors">
+                        <div class="spinner hidden" id="spinner"></div>
+                        <span id="button-text">Slutför köp</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        // Global variables
+        let stripe = null;
+        let elements = null;
+        let orderData = null;
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCheckout();
+        });
+
+        // Initialize checkout
+        async function initializeCheckout() {
+            // Load order data from localStorage
+            loadOrderData();
+            
+            // Update order summary
+            updateOrderSummary();
+            
+            // Initialize Stripe
+            await initializeStripe();
+            
+            // Check if payment element loads properly after 3 seconds
+            setTimeout(() => {
+                const paymentElement = document.getElementById('payment-element');
+                if (paymentElement && paymentElement.children.length === 0) {
+                    console.log('⏰ Stripe Payment Element failed to load');
+                    document.getElementById('payment-status').innerHTML = '<i class="fas fa-exclamation-triangle text-red-600 mr-1"></i>Betalningsmetoder kunde inte laddas';
+                } else {
+                    // Stripe loaded successfully
+                    document.getElementById('payment-status').innerHTML = '<i class="fas fa-check text-green-600 mr-1"></i>Betalningsmetoder laddade';
+                }
+            }, 3000);
+        }
+
+        // Load order data from localStorage
+        function loadOrderData() {
+            const cartData = localStorage.getItem('nordkaliberCart');
+            if (cartData) {
+                orderData = JSON.parse(cartData);
+            } else {
+                // Create demo data if no cart data exists
+                orderData = {
+                    items: [
+                        {
+                            caliber: '6.5x55 Swedish Mauser',
+                            primaryColor: 'green',
+                            secondaryColor: 'black',
+                            initials: '',
+                            price: 850
+                        }
+                    ],
+                    total: 850
+                };
+                console.log('Using demo order data');
+            }
+        }
+
+        // Initialize Stripe
+        async function initializeStripe() {
+            try {
+                console.log('🔄 Initializing Stripe...');
+                
+                // Get Stripe config from server
+                const response = await fetch('http://localhost:3001/api/stripe-config');
+                if (!response.ok) {
+                    throw new Error('Failed to get Stripe configuration');
+                }
+                
+                const config = await response.json();
+                console.log('✅ Got Stripe config:', config.publishableKey ? 'Key received' : 'No key');
+                
+                stripe = Stripe(config.publishableKey);
+                
+                // Create payment intent
+                const paymentIntentResponse = await fetch('http://localhost:3001/api/create-payment-intent', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        items: orderData.items,
+                        customerEmail: document.getElementById('email').value || 'test@example.com'
+                    })
+                });
+
+                if (!paymentIntentResponse.ok) {
+                    const errorData = await paymentIntentResponse.json();
+                    throw new Error(`Payment intent creation failed: ${errorData.details || 'Unknown error'}`);
+                }
+
+                const { clientSecret } = await paymentIntentResponse.json();
+                console.log('✅ Payment Intent created, clientSecret:', clientSecret ? 'Received' : 'Missing');
+                
+                // Create elements with clean white appearance
+                elements = stripe.elements({
+                    clientSecret: clientSecret,
+                    appearance: {
+                        theme: 'stripe',
+                        variables: {
+                            colorPrimary: '#6772e5',
+                            colorBackground: '#ffffff',
+                            colorText: '#32325d',
+                            colorDanger: '#fa755a',
+                            fontFamily: 'Inter, sans-serif',
+                            spacingUnit: '4px',
+                            borderRadius: '8px',
+                        },
+                    },
+                });
+
+                // Create and mount the Payment Element
+                const paymentElement = elements.create('payment', {
+                    layout: {
+                        type: 'tabs',
+                        defaultCollapsed: false,
+                        spacedAccordionItems: false,
+                    },
+                    paymentMethodOrder: ['card', 'paypal', 'klarna', 'apple_pay', 'google_pay'],
+                });
+                
+                paymentElement.mount('#payment-element');
+                
+                console.log('✅ Stripe Payment Element mounted successfully');
+                showMessage('Payment methods loaded successfully!', 'success');
+            } catch (error) {
+                console.error('❌ Failed to initialize Stripe:', error);
+                showMessage(`Payment setup failed: ${error.message}`, 'error');
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('submit').addEventListener('click', handleSubmit);
+
+        async function handleSubmit(e) {
+            e.preventDefault();
+
+            if (!validateForm()) {
+                return;
+            }
+
+            setLoading(true);
+
+            try {
+                // Confirm payment
+                const { error } = await stripe.confirmPayment({
+                    elements,
+                    confirmParams: {
+                        return_url: `${window.location.origin}/success.html`,
+                        payment_method_data: {
+                            billing_details: {
+                                name: document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value,
+                                email: document.getElementById('email').value,
+                                phone: document.getElementById('phone').value,
+                                address: {
+                                    line1: document.getElementById('address').value,
+                                    postal_code: document.getElementById('postalCode').value,
+                                    city: document.getElementById('city').value,
+                                    country: document.getElementById('country').value,
+                                }
+                            }
+                        }
+                    }
+                });
+
+                if (error) {
+                    if (error.type === 'card_error' || error.type === 'validation_error') {
+                        showMessage(error.message, 'error');
+                    } else {
+                        showMessage('Ett oväntat fel uppstod. Försök igen.', 'error');
+                    }
+                }
+            } catch (error) {
+                console.error('Payment error:', error);
+                showMessage('Ett fel uppstod vid betalning. Försök igen.', 'error');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // Validate form
+        function validateForm() {
+            const requiredFields = ['firstName', 'lastName', 'email', 'address', 'postalCode', 'city', 'country'];
+            const terms = document.getElementById('terms');
+            
+            for (const fieldId of requiredFields) {
+                const field = document.getElementById(fieldId);
+                if (!field.value.trim()) {
+                    showMessage(`Vänligen fyll i ${field.previousElementSibling.textContent.replace(' *', '')}`, 'error');
+                    field.focus();
+                    return false;
+                }
+            }
+            
+            if (!terms.checked) {
+                showMessage('Du måste acceptera användarvillkoren', 'error');
+                return false;
+            }
+            
+            return true;
+        }
+
+        // Show/hide loading state
+        function setLoading(isLoading) {
+            if (isLoading) {
+                document.querySelector('#submit').disabled = true;
+                document.querySelector('#spinner').classList.remove('hidden');
+                document.querySelector('#button-text').classList.add('hidden');
+            } else {
+                document.querySelector('#submit').disabled = false;
+                document.querySelector('#spinner').classList.add('hidden');
+                document.querySelector('#button-text').classList.remove('hidden');
+            }
+        }
+
+        // Show message
+        function showMessage(messageText, messageType) {
+            const messageContainer = document.querySelector('#payment-message');
+            messageContainer.classList.remove('hidden');
+            messageContainer.textContent = messageText;
+            
+            if (messageType === 'error') {
+                messageContainer.className = 'text-red-600 text-sm mt-4';
+            } else {
+                messageContainer.className = 'text-green-600 text-sm mt-4';
+            }
+
+            setTimeout(function() {
+                messageContainer.classList.add('hidden');
+            }, 4000);
+        }
+
+
+
+
+
+        // Update order summary
+        function updateOrderSummary() {
+            if (!orderData) return;
+
+            const orderItemsContainer = document.getElementById('orderItems');
+            const subtotalElement = document.getElementById('subtotal');
+            const totalElement = document.getElementById('total');
+
+            // Clear existing items
+            orderItemsContainer.innerHTML = '';
+
+            // Add items
+            orderData.items.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'flex justify-between items-center';
+                itemElement.innerHTML = `
+                    <div>
+                        <div class="font-medium text-gray-900">${item.caliber}</div>
+                        <div class="text-sm text-gray-600">${item.primaryColor}/${item.secondaryColor}</div>
+                        ${item.initials ? `<div class="text-sm text-gray-600">Initialer: ${item.initials}</div>` : ''}
+                    </div>
+                    <div class="font-semibold text-gray-900">${item.price} kr</div>
+                `;
+                orderItemsContainer.appendChild(itemElement);
+            });
+
+            // Update totals
+            const subtotal = orderData.items.reduce((sum, item) => sum + item.price, 0);
+            subtotalElement.textContent = subtotal + ' kr';
+            totalElement.textContent = subtotal + ' kr';
+        }
+    </script>
+</body>
+</html> 

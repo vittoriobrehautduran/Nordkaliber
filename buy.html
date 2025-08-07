@@ -68,6 +68,19 @@
             border-color: #E6B17A;
             transform: scale(1.1);
         }
+        .design-option {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .design-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(230, 177, 122, 0.4);
+        }
+        .design-option.selected {
+            border-color: #E6B17A;
+            background: linear-gradient(135deg, #E6B17A, #1B4332);
+            color: white;
+        }
         .fade-in {
             animation: fadeIn 0.5s ease-in;
         }
@@ -185,6 +198,188 @@
          .special-request-confirmed::placeholder {
              color: #9ca3af !important;
         }
+        
+        /* Dark styling for maximum contrast and visibility */
+        .bg-soft-grey {
+            background-color: #374151 !important; /* Dark gray for main panels */
+        }
+        
+        .bg-light-grey {
+            background-color: #4B5563 !important; /* Medium dark gray for contrast */
+        }
+        
+        .bg-warm-grey {
+            background-color: #6B7280 !important; /* Lighter dark gray for inputs */
+        }
+        
+        /* Ensure text is light and readable on dark backgrounds */
+        .text-gray-800 {
+            color: #F9FAFB !important; /* Light text for better contrast */
+        }
+        
+        /* Make all text light on dark backgrounds */
+        .bg-soft-grey, .bg-light-grey, .bg-warm-grey {
+            color: #F9FAFB !important;
+        }
+        
+        /* Ensure input text is visible */
+        input, textarea, select {
+            color: #1F2937 !important; /* Dark text on light input backgrounds */
+            background-color: #F3F4F6 !important; /* Light background for inputs */
+        }
+        
+        /* Mobile-specific compact styling */
+        @media (max-width: 768px) {
+            /* Reduce header padding */
+            header {
+                padding: 0.5rem 1rem !important;
+            }
+            
+            /* Compact progress steps */
+            .max-w-4xl.mx-auto.py-8.px-4 {
+                padding: 0.5rem !important;
+            }
+            
+            /* Smaller step indicators on mobile */
+            #step1, #step2, #step3, #step4, #step5 {
+                width: 1.75rem !important;
+                height: 1.75rem !important;
+                font-size: 0.7rem !important;
+            }
+            
+            /* Hide step text on very small screens */
+            @media (max-width: 480px) {
+                .flex.items-center.space-x-4 .text-sm {
+                    display: none !important;
+                }
+            }
+            
+            /* Reduce main content padding */
+            .max-w-6xl.mx-auto.px-4.pb-8 {
+                padding: 0.25rem !important;
+                padding-bottom: 1rem !important;
+            }
+            
+            /* Compact configuration panel */
+            .bg-soft-grey.rounded-xl.p-6.shadow-2xl {
+                padding: 0.75rem !important;
+            }
+            
+            /* Smaller headings on mobile */
+            .text-2xl.font-bold.mb-6 {
+                font-size: 1.125rem !important;
+                margin-bottom: 0.75rem !important;
+            }
+            
+            /* Compact button grid */
+            .grid.grid-cols-2.gap-4.mb-6 {
+                gap: 0.375rem !important;
+                margin-bottom: 0.75rem !important;
+            }
+            
+            /* Smaller buttons */
+            .option-btn {
+                padding: 0.5rem !important;
+                font-size: 0.8rem !important;
+                min-height: auto !important;
+            }
+            
+            /* Compact color options */
+            .color-option {
+                width: 2.5rem !important;
+                height: 2.5rem !important;
+            }
+            
+            /* Reduce textarea rows */
+            textarea {
+                rows: 2 !important;
+            }
+            
+            /* Compact preview panel */
+            .space-y-6 > div {
+                margin-bottom: 0.75rem !important;
+            }
+            
+            .space-y-6 > div:last-child {
+                margin-bottom: 0 !important;
+            }
+            
+            /* Smaller preview image container */
+            .bg-light-grey.rounded-lg.p-4.h-64 {
+                height: 6rem !important;
+                padding: 0.375rem !important;
+            }
+            
+            /* Compact price breakdown */
+            .space-y-3 > div {
+                margin-bottom: 0.375rem !important;
+            }
+            
+            /* Smaller text in preview details */
+            .mt-4.text-sm.text-gray-400 p {
+                font-size: 0.7rem !important;
+                margin-bottom: 0.125rem !important;
+            }
+            
+            /* Compact special requests */
+            .mt-3.pt-3 {
+                margin-top: 0.375rem !important;
+                padding-top: 0.375rem !important;
+            }
+            
+            /* Reduce margins between sections */
+            .mb-6 {
+                margin-bottom: 0.75rem !important;
+            }
+            
+            /* Compact step navigation buttons */
+            .flex.space-x-4 button {
+                padding: 0.375rem 0.75rem !important;
+                font-size: 0.8rem !important;
+            }
+            
+            /* Smaller icons */
+            .fas {
+                font-size: 0.8rem !important;
+            }
+            
+            /* Compact input fields */
+            input, textarea, select {
+                padding: 0.375rem !important;
+            }
+            
+            /* Reduce spacing in price breakdown */
+            .text-xl.font-bold {
+                font-size: 1rem !important;
+            }
+            
+            /* Compact labels */
+            .block.text-sm.font-medium.mb-2 {
+                font-size: 0.75rem !important;
+                margin-bottom: 0.375rem !important;
+            }
+            
+            /* Smaller preview icons */
+            .fas.fa-box.text-4xl {
+                font-size: 2rem !important;
+            }
+            
+            /* Compact preview text */
+            .text-gray-400.text-center p {
+                font-size: 0.75rem !important;
+            }
+            
+            /* Reduce grid gap for color options */
+            .grid.grid-cols-2.gap-6 {
+                gap: 0.75rem !important;
+            }
+            
+            /* Compact preview details container */
+            .mt-4.text-sm.text-gray-400 {
+                margin-top: 0.5rem !important;
+                font-size: 0.7rem !important;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-white min-h-screen">
@@ -196,8 +391,10 @@
             </a>
             <div class="flex items-center space-x-4">
                 <div class="relative">
-                    <i class="fas fa-shopping-cart text-2xl text-white cursor-pointer" onclick="toggleCart()"></i>
-                    <span id="cartCount" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-6 w-6 flex items-center justify-center">0</span>
+                    <button onclick="toggleCart()" class="p-3 hover:bg-mustard-gold hover:bg-opacity-20 rounded-full transition-all duration-300 cursor-pointer">
+                        <i class="fas fa-shopping-cart text-3xl text-white"></i>
+                        <span id="cartCount" class="absolute -top-2 -right-2 bg-red-500 text-white text-sm rounded-full h-7 w-7 flex items-center justify-center font-bold">0</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -223,6 +420,11 @@
              <div class="flex-1 h-1 bg-gray-600 mx-4"></div>
              <div class="flex items-center space-x-4">
                  <div id="step4" class="w-12 h-12 rounded-full flex items-center justify-center font-bold bg-gray-600 relative">4</div>
+                 <div class="text-sm">Design</div>
+             </div>
+             <div class="flex-1 h-1 bg-gray-600 mx-4"></div>
+             <div class="flex items-center space-x-4">
+                 <div id="step5" class="w-12 h-12 rounded-full flex items-center justify-center font-bold bg-gray-600 relative">5</div>
                  <div class="text-sm">Initialer (Valfritt)</div>
              </div>
         </div>
@@ -239,34 +441,40 @@
                         <i class="fas fa-bullseye mr-3"></i>Steg 1: Välj Din Kaliber
                     </h2>
                     <div class="grid grid-cols-2 gap-4 mb-6">
-                        <button class="option-btn bg-light-grey text-gray-800 p-4 rounded-lg font-semibold" data-caliber="6.5x55">
-                            6.5x55 Swedish Mauser
-                        </button>
                         <button class="option-btn bg-light-grey text-gray-800 p-4 rounded-lg font-semibold" data-caliber="308">
                             .308 Winchester
+                        </button>
+                        <button class="option-btn bg-light-grey text-gray-800 p-4 rounded-lg font-semibold" data-caliber="223">
+                            .223 Remington
+                        </button>
+                        <button class="option-btn bg-light-grey text-gray-800 p-4 rounded-lg font-semibold" data-caliber="9.3x62">
+                            9.3x62 Mauser
+                        </button>
+                        <button class="option-btn bg-light-grey text-gray-800 p-4 rounded-lg font-semibold" data-caliber="7x57">
+                            7x57 Mauser
+                        </button>
+                        <button class="option-btn bg-light-grey text-gray-800 p-4 rounded-lg font-semibold" data-caliber="340">
+                            .340 Weatherby Magnum
+                        </button>
+                        <button class="option-btn bg-light-grey text-gray-800 p-4 rounded-lg font-semibold" data-caliber="8x57">
+                            8x57 Mauser
                         </button>
                         <button class="option-btn bg-light-grey text-gray-800 p-4 rounded-lg font-semibold" data-caliber="30-06">
                             .30-06 Springfield
                         </button>
-                        <button class="option-btn bg-light-grey text-gray-800 p-4 rounded-lg font-semibold" data-caliber="270">
-                            .270 Winchester
-                        </button>
-                        <button class="option-btn bg-light-grey text-gray-800 p-4 rounded-lg font-semibold" data-caliber="243">
-                            .243 Winchester
-                        </button>
-                        <button class="option-btn bg-light-grey text-gray-800 p-4 rounded-lg font-semibold" data-caliber="7mm">
-                            7mm Remington Magnum
-                        </button>
                         <button class="option-btn bg-light-grey text-gray-800 p-4 rounded-lg font-semibold" data-caliber="300">
                             .300 Winchester Magnum
-                        </button>s
-                        <button class="option-btn bg-light-grey text-gray-800 p-4 rounded-lg font-semibold" data-caliber="custom">
-                            .220 Swift
+                        </button>
+                        <button class="option-btn bg-light-grey text-gray-800 p-4 rounded-lg font-semibold" data-caliber="6.5x55">
+                            6.5x55 Swedish Mauser
+                        </button>
+                        <button class="option-btn bg-light-grey text-gray-800 p-4 rounded-lg font-semibold" data-caliber="12g">
+                            12 Gauge (Hagel)
                         </button>
                     </div>
                     <div class="mb-6">
                         <label class="block text-sm font-medium mb-2">Specialförfrågan (t.ex. Lila färg) +200kr</label>
-                        <textarea id="caliberSpecial" class="w-full p-3 bg-warm-grey border border-cool-grey rounded-lg text-gray-800" rows="3" placeholder="Beskriv din specialförfrågan här..."></textarea>
+                        <textarea id="caliberSpecial" class="w-full p-3 bg-warm-grey border border-cool-grey rounded-lg text-gray-800" rows="2" placeholder="Beskriv din specialförfrågan här..."></textarea>
                     </div>
                                             <button id="nextStep1" class="w-full bg-gradient-to-r from-mustard-gold to-dark-green text-white py-3 px-6 rounded-lg font-semibold hover:from-dark-green hover:to-mustard-gold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
                             Nästa Steg
@@ -298,7 +506,7 @@
                     </div>
                     <div class="mb-6">
                         <label class="block text-sm font-medium mb-2">Specialförfrågan (t.ex. Lila färg) +200kr</label>
-                        <textarea id="primarySpecial" class="w-full p-3 bg-warm-grey border border-cool-grey rounded-lg text-gray-800" rows="3" placeholder="Beskriv din specialförfrågan här..."></textarea>
+                        <textarea id="primarySpecial" class="w-full p-3 bg-warm-grey border border-cool-grey rounded-lg text-gray-800" rows="2" placeholder="Beskriv din specialförfrågan här..."></textarea>
                     </div>
                     <div class="flex space-x-4">
                         <button id="prevStep2" class="flex-1 bg-gray-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-500 transition-all duration-300">
@@ -335,7 +543,7 @@
                     </div>
                     <div class="mb-6">
                         <label class="block text-sm font-medium mb-2">Specialförfrågan (t.ex. Lila färg) +200kr</label>
-                        <textarea id="secondarySpecial" class="w-full p-3 bg-warm-grey border border-cool-grey rounded-lg text-gray-800" rows="3" placeholder="Beskriv din specialförfrågan här..."></textarea>
+                        <textarea id="secondarySpecial" class="w-full p-3 bg-warm-grey border border-cool-grey rounded-lg text-gray-800" rows="2" placeholder="Beskriv din specialförfrågan här..."></textarea>
                     </div>
                     <div class="flex space-x-4">
                         <button id="prevStep3" class="flex-1 bg-gray-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-500 transition-all duration-300">
@@ -347,10 +555,81 @@
                     </div>
                 </div>
 
-                <!-- Step 4: Initials (Optional) -->
+                <!-- Step 4: Design Selection -->
                 <div id="step4Content" class="hidden fade-in">
                     <h2 class="text-2xl font-bold mb-6 text-mustard-gold">
-                        <i class="fas fa-signature mr-3"></i>Steg 4: Initialer (Valfritt)
+                        <i class="fas fa-palette mr-3"></i>Steg 4: Välj Design
+                    </h2>
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="text-center">
+                            <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="älg_logo">
+                                <img src="images/älg_logo.svg" alt="Älg Logo" class="w-full h-24 object-contain mb-2">
+                                <span class="text-sm font-semibold">Älg Logo</span>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="älg_design">
+                                <img src="images/älg_design.svg" alt="Älg Design" class="w-full h-24 object-contain mb-2">
+                                <span class="text-sm font-semibold">Älg Design</span>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="älg_jägare">
+                                <img src="images/älg_jägare.svg" alt="Älg Jägare" class="w-full h-24 object-contain mb-2">
+                                <span class="text-sm font-semibold">Älg Jägare</span>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="älg_majestic">
+                                <img src="images/älg_majestic.svg" alt="Älg Majestic" class="w-full h-24 object-contain mb-2">
+                                <span class="text-sm font-semibold">Älg Majestic</span>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="fågel_design">
+                                <img src="images/fågel_design.svg" alt="Fågel Design" class="w-full h-24 object-contain mb-2">
+                                <span class="text-sm font-semibold">Fågel Design</span>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="jägare_hund">
+                                <img src="images/jägare_hund.svg" alt="Jägare Hund" class="w-full h-24 object-contain mb-2">
+                                <span class="text-sm font-semibold">Jägare Hund</span>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="your_text">
+                                <img src="images/your_text_design.svg" alt="Din Text" class="w-full h-24 object-contain mb-2">
+                                <span class="text-sm font-semibold">Din Text</span>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="none">
+                                <div class="w-full h-24 bg-gray-300 rounded flex items-center justify-center mb-2">
+                                    <i class="fas fa-times text-4xl text-gray-500"></i>
+                                </div>
+                                <span class="text-sm font-semibold">Ingen Design</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium mb-2">Specialförfrågan (t.ex. Annan design) +200kr</label>
+                        <textarea id="designSpecial" class="w-full p-3 bg-warm-grey border border-cool-grey rounded-lg text-gray-800" rows="2" placeholder="Beskriv din specialförfrågan här..."></textarea>
+                    </div>
+                    <div class="flex space-x-4">
+                        <button id="prevStep4" class="flex-1 bg-gray-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-500 transition-all duration-300">
+                            Föregående
+                        </button>
+                        <button id="nextStep4" class="flex-1 bg-gradient-to-r from-mustard-gold to-dark-green text-white py-3 px-6 rounded-lg font-semibold hover:from-dark-green hover:to-mustard-gold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                            Nästa Steg
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 5: Initials (Optional) -->
+                <div id="step5Content" class="hidden fade-in">
+                    <h2 class="text-2xl font-bold mb-6 text-mustard-gold">
+                        <i class="fas fa-signature mr-3"></i>Steg 5: Initialer (Valfritt)
                     </h2>
                     <div class="mb-6">
                         <label class="block text-sm font-medium mb-2">Dina Initialer +100kr</label>
@@ -359,10 +638,10 @@
                     </div>
                     <div class="mb-6">
                         <label class="block text-sm font-medium mb-2">Specialförfrågan (t.ex. Annan font) +200kr</label>
-                        <textarea id="initialsSpecial" class="w-full p-3 bg-warm-grey border border-cool-grey rounded-lg text-gray-800" rows="3" placeholder="Beskriv din specialförfrågan här..."></textarea>
+                        <textarea id="initialsSpecial" class="w-full p-3 bg-warm-grey border border-cool-grey rounded-lg text-gray-800" rows="2" placeholder="Beskriv din specialförfrågan här..."></textarea>
                     </div>
                     <div class="flex space-x-4">
-                        <button id="prevStep4" class="flex-1 bg-gray-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-500 transition-all duration-300">
+                        <button id="prevStep5" class="flex-1 bg-gray-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-500 transition-all duration-300">
                             Föregående
                         </button>
                         <button id="addToCart" class="flex-1 bg-gradient-to-r from-mustard-gold to-dark-green text-white py-3 px-6 rounded-lg font-semibold hover:from-dark-green hover:to-mustard-gold transition-all duration-300">
@@ -390,6 +669,7 @@
                          <p><strong>Vald Kaliber:</strong> <span id="selectedCaliber">-</span></p>
                          <p><strong>Primär Färg:</strong> <span id="selectedPrimary">-</span></p>
                          <p><strong>Sekundär Färg:</strong> <span id="selectedSecondary">-</span></p>
+                         <p><strong>Design:</strong> <span id="selectedDesign">-</span></p>
                          <p><strong>Initialer:</strong> <span id="selectedInitials">-</span></p>
                          <div id="specialRequests" class="mt-3 pt-3 border-t border-gray-600 hidden">
                              <p class="text-yellow-400 font-semibold mb-2">Specialförfrågningar:</p>
@@ -406,7 +686,7 @@
                     <div class="space-y-3">
                         <div class="flex justify-between">
                             <span>Standard låda:</span>
-                            <span>650kr</span>
+                            <span>850kr</span>
                         </div>
                         <div id="caliberSpecialPrice" class="flex justify-between text-green-400 hidden">
                             <span>Kaliber specialförfrågan:</span>
@@ -420,6 +700,10 @@
                             <span>Sekundär färg specialförfrågan:</span>
                             <span>+200kr</span>
                         </div>
+                        <div id="designSpecialPrice" class="flex justify-between text-green-400 hidden">
+                            <span>Design specialförfrågan:</span>
+                            <span>+200kr</span>
+                        </div>
                         <div id="initialsPrice" class="flex justify-between text-green-400 hidden">
                             <span>Initialer:</span>
                             <span>+100kr</span>
@@ -431,7 +715,7 @@
                         <hr class="border-gray-600">
                         <div class="flex justify-between text-xl font-bold">
                             <span>Totalt:</span>
-                            <span id="totalPrice">650kr</span>
+                            <span id="totalPrice">850kr</span>
                         </div>
                     </div>
                 </div>
@@ -439,17 +723,49 @@
                     </div>
                 </div>
                 
-    <!-- Cart Modal -->
-    <div id="cartModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-soft-grey rounded-xl p-6 max-w-md w-full">
-                <h3 class="text-xl font-bold mb-4 text-mustard-gold">Din Kundvagn</h3>
-                <div id="cartItems" class="space-y-3 mb-4">
+    <!-- Cart Modal - Side Slide -->
+    <div id="cartModal" class="fixed inset-0 bg-black bg-opacity-70 z-50 hidden">
+        <!-- Backdrop -->
+        <div class="absolute inset-0" onclick="closeCart()"></div>
+        
+        <!-- Cart Panel - Slides in from right -->
+        <div class="absolute right-0 top-0 h-full w-full md:w-96 bg-premium-black transform translate-x-full transition-transform duration-300 ease-in-out shadow-2xl">
+            <!-- Header -->
+            <div class="bg-premium-black p-6 border-b border-mustard-gold border-opacity-30">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-2xl md:text-3xl font-bold text-mustard-gold">🛒 Din Kundvagn</h3>
+                    <button onclick="closeCart()" class="text-mustard-gold hover:text-white text-2xl transition-colors">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="mt-2 text-white text-lg">
+                    <span id="cartCount" class="bg-mustard-gold text-premium-black px-3 py-1 rounded-full font-bold">0</span> produkter
+                </div>
+            </div>
+            
+            <!-- Cart Items -->
+            <div class="flex-1 overflow-y-auto p-6 bg-premium-black">
+                <div id="cartItems" class="space-y-4">
                     <!-- Cart items will be displayed here -->
                 </div>
-                <div class="flex space-x-4">
-                    <button onclick="closeCart()" class="flex-1 bg-gray-600 text-white py-2 px-4 rounded-lg">Stäng</button>
-                                            <button onclick="goToCheckout()" class="flex-1 bg-gradient-to-r from-mustard-gold to-dark-green text-white py-2 px-4 rounded-lg">Gå till Kassan</button>
+                </div>
+            
+            <!-- Footer -->
+            <div class="bg-premium-black p-6 border-t border-mustard-gold border-opacity-30">
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center text-xl font-bold text-white">
+                        <span>Totalt:</span>
+                        <span id="cartTotal" class="text-mustard-gold">0 kr</span>
+                    </div>
+                    <div class="flex flex-col space-y-3">
+                        <button onclick="goToCheckout()" class="w-full bg-gradient-to-r from-mustard-gold to-dark-green text-white py-4 px-6 rounded-lg font-bold text-lg hover:from-dark-green hover:to-mustard-gold transition-all duration-300 transform hover:scale-105">
+                            <i class="fas fa-shopping-cart mr-2"></i>
+                            Gå till Kassan
+                        </button>
+                        <button onclick="closeCart()" class="w-full bg-gray-600 text-white py-3 px-6 rounded-lg font-semibold text-lg hover:bg-gray-500 transition-colors">
+                            Fortsätt Handla
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -460,16 +776,17 @@
         let selectedCaliber = '';
         let selectedPrimary = '';
         let selectedSecondary = '';
+        let selectedDesign = '';
         let selectedInitials = '';
         let cart = [];
-        let basePrice = 650;
+        let basePrice = 850;
 
                  // Step navigation
          function showStep(step) {
              console.log('showStep called with step:', step);
              
              // Hide all step contents using both methods for consistency
-             const allSteps = ['step1Content', 'step2Content', 'step3Content', 'step4Content'];
+             const allSteps = ['step1Content', 'step2Content', 'step3Content', 'step4Content', 'step5Content'];
              allSteps.forEach(stepId => {
                  const step = document.getElementById(stepId);
                  if (step) {
@@ -491,7 +808,7 @@
              }
              
              // Update progress indicators
-             for (let i = 1; i <= 4; i++) {
+             for (let i = 1; i <= 5; i++) {
                  const stepEl = document.getElementById(`step${i}`);
                  if (i < step) {
                      stepEl.className = 'step-completed w-12 h-12 rounded-full flex items-center justify-center font-bold relative';
@@ -566,11 +883,47 @@
              });
          });
 
+                 // Design selection
+         document.querySelectorAll('[data-design]').forEach(btn => {
+             btn.addEventListener('click', function() {
+                 // Don't allow selection if special request is active
+                 if (confirmedDesignSpecial) return;
+                 
+                 // Toggle selection - if already selected, deselect it
+                 if (this.classList.contains('selected')) {
+                     this.classList.remove('selected');
+                     selectedDesign = '';
+                     document.getElementById('selectedDesign').textContent = '-';
+                     document.getElementById('nextStep4').disabled = true;
+                 } else {
+                     document.querySelectorAll('[data-design]').forEach(b => b.classList.remove('selected'));
+                     this.classList.add('selected');
+                     selectedDesign = this.dataset.design;
+                     
+                     const designNames = {
+                         'älg_logo': 'Älg Logo',
+                         'älg_design': 'Älg Design',
+                         'älg_jägare': 'Älg Jägare',
+                         'älg_majestic': 'Älg Majestic',
+                         'fågel_design': 'Fågel Design',
+                         'jägare_hund': 'Jägare Hund',
+                         'your_text': 'Din Text',
+                         'none': 'Ingen Design'
+                     };
+                     
+                     document.getElementById('selectedDesign').textContent = designNames[selectedDesign] || selectedDesign;
+                     document.getElementById('nextStep4').disabled = false;
+                 }
+                 updatePreview();
+             });
+         });
+
                  // Special request tracking
          function updateSpecialPrices() {
              const caliberSpecial = document.getElementById('caliberSpecial').value.trim();
              const primarySpecial = document.getElementById('primarySpecial').value.trim();
              const secondarySpecial = document.getElementById('secondarySpecial').value.trim();
+             const designSpecial = document.getElementById('designSpecial').value.trim();
              const initials = document.getElementById('initials').value.trim();
              const initialsSpecial = document.getElementById('initialsSpecial').value.trim();
 
@@ -578,12 +931,14 @@
              const hasValidCaliberSpecial = confirmedCaliberSpecial.length > 0;
              const hasValidPrimarySpecial = confirmedPrimarySpecial.length > 0;
              const hasValidSecondarySpecial = confirmedSecondarySpecial.length > 0;
+             const hasValidDesignSpecial = confirmedDesignSpecial.length > 0;
              const hasValidInitialsSpecial = confirmedInitialsSpecial.length > 0;
 
              // Update price display
              document.getElementById('caliberSpecialPrice').classList.toggle('hidden', !hasValidCaliberSpecial);
              document.getElementById('primarySpecialPrice').classList.toggle('hidden', !hasValidPrimarySpecial);
              document.getElementById('secondarySpecialPrice').classList.toggle('hidden', !hasValidSecondarySpecial);
+             document.getElementById('designSpecialPrice').classList.toggle('hidden', !hasValidDesignSpecial);
              document.getElementById('initialsPrice').classList.toggle('hidden', !initials);
              document.getElementById('initialsSpecialPrice').classList.toggle('hidden', !hasValidInitialsSpecial);
 
@@ -611,6 +966,7 @@
              if (hasValidCaliberSpecial) total += 200;
              if (hasValidPrimarySpecial) total += 200;
              if (hasValidSecondarySpecial) total += 200;
+             if (hasValidDesignSpecial) total += 200;
              if (initials) total += 100;
              if (hasValidInitialsSpecial) total += 200;
 
@@ -626,6 +982,7 @@
              if (confirmedCaliberSpecial) specialRequests.push(`Kaliber: ${confirmedCaliberSpecial}`);
              if (confirmedPrimarySpecial) specialRequests.push(`Primär färg: ${confirmedPrimarySpecial}`);
              if (confirmedSecondarySpecial) specialRequests.push(`Sekundär färg: ${confirmedSecondarySpecial}`);
+             if (confirmedDesignSpecial) specialRequests.push(`Design: ${confirmedDesignSpecial}`);
              if (confirmedInitialsSpecial) specialRequests.push(`Initialer: ${confirmedInitialsSpecial}`);
 
              if (specialRequests.length > 0) {
@@ -642,10 +999,11 @@
          let confirmedCaliberSpecial = '';
          let confirmedPrimarySpecial = '';
          let confirmedSecondarySpecial = '';
+         let confirmedDesignSpecial = '';
          let confirmedInitialsSpecial = '';
 
          // Add event listeners for special requests
-         ['caliberSpecial', 'primarySpecial', 'secondarySpecial', 'initials', 'initialsSpecial'].forEach(id => {
+         ['caliberSpecial', 'primarySpecial', 'secondarySpecial', 'designSpecial', 'initials', 'initialsSpecial'].forEach(id => {
              const input = document.getElementById(id);
              
              // Handle input changes
@@ -805,6 +1163,39 @@
                                      }, 150);
                                  }
                              });
+                         } else if (id === 'designSpecial') {
+                             confirmedDesignSpecial = value;
+                             console.log('Set confirmedDesignSpecial to:', confirmedDesignSpecial);
+                             document.querySelectorAll('[data-design]').forEach(btn => btn.classList.remove('selected'));
+                             selectedDesign = '';
+                             document.getElementById('nextStep4').disabled = false;
+                             // Apply modern white box animation
+                             this.classList.add('special-request-confirmed');
+                             this.readOnly = true;
+                             this.disabled = true;
+                             
+                             // Add click handler to make editable again
+                             this.addEventListener('click', function(e) {
+                                 if (this.classList.contains('special-request-confirmed')) {
+                                     e.preventDefault();
+                                     e.stopPropagation();
+                                     
+                                     // Animate back to text box
+                                     this.style.transform = 'scale(0.95)';
+                                     setTimeout(() => {
+                                         this.classList.remove('special-request-confirmed');
+                                         this.readOnly = false;
+                                         this.disabled = false;
+                                         this.style.transform = '';
+                                         this.focus();
+                                         
+                                         // Clear the confirmed value
+                                         confirmedDesignSpecial = '';
+                                         updateSpecialPrices();
+                                         updatePreview();
+                                     }, 150);
+                                 }
+                             });
                          } else if (id === 'initials') {
                              selectedInitials = value;
                              console.log('Set selectedInitials to:', selectedInitials);
@@ -934,6 +1325,14 @@
                          if (!selectedSecondary) {
                              document.getElementById('nextStep3').disabled = true;
                          }
+                     } else if (id === 'designSpecial') {
+                         confirmedDesignSpecial = '';
+                         this.classList.remove('special-request-confirmed');
+                         this.readOnly = false;
+                         this.disabled = false;
+                         if (!selectedDesign) {
+                             document.getElementById('nextStep4').disabled = true;
+                         }
                      } else if (id === 'initials') {
                          selectedInitials = '';
                          this.classList.remove('special-request-confirmed');
@@ -986,6 +1385,25 @@
                  document.getElementById('selectedSecondary').textContent = '-';
              }
              
+             // Update design display
+             if (confirmedDesignSpecial) {
+                 document.getElementById('selectedDesign').textContent = confirmedDesignSpecial;
+             } else if (selectedDesign) {
+                 const designNames = {
+                     'älg_logo': 'Älg Logo',
+                     'älg_design': 'Älg Design',
+                     'älg_jägare': 'Älg Jägare',
+                     'älg_majestic': 'Älg Majestic',
+                     'fågel_design': 'Fågel Design',
+                     'jägare_hund': 'Jägare Hund',
+                     'your_text': 'Din Text',
+                     'none': 'Ingen Design'
+                 };
+                 document.getElementById('selectedDesign').textContent = designNames[selectedDesign] || selectedDesign;
+             } else {
+                 document.getElementById('selectedDesign').textContent = '-';
+             }
+             
              // Update image preview
              if (selectedPrimary && !confirmedPrimarySpecial) {
                  const imageMap = {
@@ -1017,7 +1435,7 @@
              console.log('Can proceed:', canProceed);
              
              if (!canProceed) {
-                 alert('Cannot proceed - no valid selection');
+                 // Cannot proceed - no valid selection
                  return;
              }
              
@@ -1080,7 +1498,7 @@
              console.log('Can proceed:', canProceed);
              
              if (!canProceed) {
-                 alert('Cannot proceed - no valid selection');
+                 // Cannot proceed - no valid selection
                  return;
              }
              
@@ -1142,7 +1560,7 @@
              // Proper step navigation
              try {
                  // Hide ALL step content first
-                 const allSteps = ['step1Content', 'step2Content', 'step3Content', 'step4Content'];
+                 const allSteps = ['step1Content', 'step2Content', 'step3Content', 'step4Content', 'step5Content'];
                  allSteps.forEach(stepId => {
                      const step = document.getElementById(stepId);
                      if (step) {
@@ -1164,6 +1582,7 @@
                  const step2Indicator = document.getElementById('step2');
                  const step3Indicator = document.getElementById('step3');
                  const step4Indicator = document.getElementById('step4');
+                 const step5Indicator = document.getElementById('step5');
                  
                  if (step1Indicator) {
                      step1Indicator.className = 'step-completed w-12 h-12 rounded-full flex items-center justify-center font-bold relative';
@@ -1179,6 +1598,68 @@
                  
                  if (step4Indicator) {
                      step4Indicator.className = 'step-active w-12 h-12 rounded-full flex items-center justify-center font-bold relative';
+                 }
+                 
+                 if (step5Indicator) {
+                     step5Indicator.className = 'w-12 h-12 rounded-full flex items-center justify-center font-bold bg-gray-600 relative';
+                 }
+                 
+                 console.log('Step navigation completed successfully');
+                 
+             } catch (error) {
+                 console.error('Error in step navigation:', error);
+                 alert('Error: ' + error.message);
+             }
+         });
+
+         document.getElementById('nextStep4').addEventListener('click', () => {
+             console.log('=== NEXT STEP 4 CLICKED ===');
+             
+             // Proper step navigation
+             try {
+                 // Hide ALL step content first
+                 const allSteps = ['step1Content', 'step2Content', 'step3Content', 'step4Content', 'step5Content'];
+                 allSteps.forEach(stepId => {
+                     const step = document.getElementById(stepId);
+                     if (step) {
+                         step.style.display = 'none';
+                         step.classList.add('hidden');
+                     }
+                 });
+                 
+                 // Show only step 5
+                 const step5 = document.getElementById('step5Content');
+                 if (step5) {
+                     step5.style.display = 'block';
+                     step5.classList.remove('hidden');
+                     console.log('Step 5 shown');
+                 }
+                 
+                 // Update progress indicators
+                 const step1Indicator = document.getElementById('step1');
+                 const step2Indicator = document.getElementById('step2');
+                 const step3Indicator = document.getElementById('step3');
+                 const step4Indicator = document.getElementById('step4');
+                 const step5Indicator = document.getElementById('step5');
+                 
+                 if (step1Indicator) {
+                     step1Indicator.className = 'step-completed w-12 h-12 rounded-full flex items-center justify-center font-bold relative';
+                 }
+                 
+                 if (step2Indicator) {
+                     step2Indicator.className = 'step-completed w-12 h-12 rounded-full flex items-center justify-center font-bold relative';
+                 }
+                 
+                 if (step3Indicator) {
+                     step3Indicator.className = 'step-completed w-12 h-12 rounded-full flex items-center justify-center font-bold relative';
+                 }
+                 
+                 if (step4Indicator) {
+                     step4Indicator.className = 'step-completed w-12 h-12 rounded-full flex items-center justify-center font-bold relative';
+                 }
+                 
+                 if (step5Indicator) {
+                     step5Indicator.className = 'step-active w-12 h-12 rounded-full flex items-center justify-center font-bold relative';
                  }
                  
                  console.log('Step navigation completed successfully');
@@ -1213,6 +1694,14 @@
             showStep(currentStep);
         });
 
+        document.getElementById('prevStep5').addEventListener('click', () => {
+            console.log('=== PREV STEP 5 CLICKED ===');
+            console.log('Current step before:', currentStep);
+            currentStep = 4;
+            console.log('Current step after:', currentStep);
+            showStep(currentStep);
+        });
+
         // Add to cart
         document.getElementById('addToCart').addEventListener('click', () => {
             const initials = document.getElementById('initials').value.trim();
@@ -1221,13 +1710,15 @@
 
             const product = {
                 caliber: selectedCaliber,
-                primary: selectedPrimary,
-                secondary: selectedSecondary,
+                primaryColor: selectedPrimary,
+                secondaryColor: selectedSecondary,
+                design: selectedDesign,
                 initials: initials,
                 specialRequests: {
                     caliber: document.getElementById('caliberSpecial').value.trim(),
                     primary: document.getElementById('primarySpecial').value.trim(),
                     secondary: document.getElementById('secondarySpecial').value.trim(),
+                    design: document.getElementById('designSpecial').value.trim(),
                     initials: document.getElementById('initialsSpecial').value.trim()
                 },
                 price: parseInt(document.getElementById('totalPrice').textContent)
@@ -1239,7 +1730,7 @@
             // Reset form
             resetForm();
             
-            alert('Produkt tillagd i kundvagnen!');
+            // Product added to cart successfully
         });
 
                  function resetForm() {
@@ -1247,12 +1738,14 @@
              selectedCaliber = '';
              selectedPrimary = '';
              selectedSecondary = '';
+             selectedDesign = '';
              selectedInitials = '';
              
              // Reset confirmed special requests
              confirmedCaliberSpecial = '';
              confirmedPrimarySpecial = '';
              confirmedSecondarySpecial = '';
+             confirmedDesignSpecial = '';
              confirmedInitialsSpecial = '';
              
              // Reset selections
@@ -1260,7 +1753,7 @@
              document.querySelectorAll('button[disabled]').forEach(btn => btn.disabled = true);
              
              // Reset text inputs
-             ['caliberSpecial', 'primarySpecial', 'secondarySpecial', 'initials', 'initialsSpecial'].forEach(id => {
+             ['caliberSpecial', 'primarySpecial', 'secondarySpecial', 'designSpecial', 'initials', 'initialsSpecial'].forEach(id => {
                  const input = document.getElementById(id);
                  input.value = '';
                  input.classList.remove('special-request-confirmed');
@@ -1272,10 +1765,11 @@
              document.getElementById('selectedCaliber').textContent = '-';
              document.getElementById('selectedPrimary').textContent = '-';
              document.getElementById('selectedSecondary').textContent = '-';
+             document.getElementById('selectedDesign').textContent = '-';
              document.getElementById('selectedInitials').textContent = '-';
              
              // Reset price
-             document.getElementById('totalPrice').textContent = '650kr';
+             document.getElementById('totalPrice').textContent = '850kr';
              document.querySelectorAll('[id$="SpecialPrice"], #initialsPrice').forEach(el => el.classList.add('hidden'));
              
              // Reset special requests display
@@ -1290,37 +1784,71 @@
          }
 
         function updateCartCount() {
-            document.getElementById('cartCount').textContent = cart.length;
+            // Update all cart count elements
+            const cartCountElements = document.querySelectorAll('#cartCount');
+            cartCountElements.forEach(element => {
+                element.textContent = cart.length;
+            });
         }
 
         function toggleCart() {
             const modal = document.getElementById('cartModal');
+            const cartPanel = modal.querySelector('.absolute.right-0');
             const items = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            
+            // Update cart count first
+            updateCartCount();
+            
+            // Calculate total
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            cartTotal.textContent = total + ' kr';
             
             if (cart.length === 0) {
-                items.innerHTML = '<p class="text-gray-400">Din kundvagn är tom</p>';
+                items.innerHTML = `
+                    <div class="text-center py-8">
+                        <i class="fas fa-shopping-cart text-6xl text-gray-500 mb-4"></i>
+                        <p class="text-xl text-gray-400 font-semibold">Din kundvagn är tom</p>
+                        <p class="text-gray-500 mt-2">Lägg till produkter för att komma igång</p>
+                    </div>
+                `;
             } else {
                 items.innerHTML = cart.map((item, index) => `
-                    <div class="border-b border-gray-600 pb-2">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <p class="font-semibold">${item.caliber} - ${item.primary}/${item.secondary}</p>
-                                <p class="text-sm text-gray-400">${item.initials ? 'Initialer: ' + item.initials : 'Inga initialer'}</p>
+                    <div class="bg-white bg-opacity-10 rounded-lg p-4 border border-mustard-gold border-opacity-20">
+                        <div class="flex justify-between items-start mb-2">
+                            <div class="flex-1">
+                                <p class="font-bold text-lg text-white">${item.caliber}</p>
+                                <p class="text-mustard-gold font-semibold">${item.primaryColor}/${item.secondaryColor}</p>
+                                ${item.design && item.design !== 'none' ? `<p class="text-gray-300 text-sm">Design: ${item.design}</p>` : ''}
+                                ${item.initials ? `<p class="text-gray-300 text-sm">Initialer: ${item.initials}</p>` : ''}
                             </div>
-                            <div class="text-right">
-                                <p class="font-semibold">${item.price}kr</p>
-                                <button onclick="removeFromCart(${index})" class="text-red-400 text-sm">Ta bort</button>
+                            <div class="text-right ml-4">
+                                <p class="font-bold text-xl text-mustard-gold">${item.price} kr</p>
+                                <button onclick="removeFromCart(${index})" class="text-red-400 hover:text-red-300 text-sm font-semibold mt-1 transition-colors">
+                                    <i class="fas fa-trash mr-1"></i>Ta bort
+                                </button>
                             </div>
                         </div>
                     </div>
                 `).join('');
             }
             
-            modal.classList.toggle('hidden');
+            // Show modal and slide in
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                cartPanel.classList.remove('translate-x-full');
+            }, 10);
         }
 
         function closeCart() {
-            document.getElementById('cartModal').classList.add('hidden');
+            const modal = document.getElementById('cartModal');
+            const cartPanel = modal.querySelector('.absolute.right-0');
+            
+            // Slide out
+            cartPanel.classList.add('translate-x-full');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
         }
 
         function removeFromCart(index) {
@@ -1390,14 +1918,14 @@
 
             if (error) {
                 console.error('Error redirecting to checkout:', error);
-                alert('Ett fel uppstod vid omdirigering till betalningssidan. Försök igen.');
+                // Error occurred during redirect to payment page
             }
         }
 
         // Enhanced checkout function
         async function goToCheckout() {
             if (cart.length === 0) {
-                alert('Din kundvagn är tom');
+                // Cart is empty
                 return;
             }
 
@@ -1408,23 +1936,19 @@
             checkoutBtn.disabled = true;
 
             try {
-                // Get customer email (you could add an email input to the cart modal)
-                const customerEmail = prompt('Ange din e-postadress för orderbekräftelse:');
+                // Save cart data to localStorage for checkout page
+                const cartData = {
+                    items: cart,
+                    total: cart.reduce((sum, item) => sum + item.price, 0)
+                };
+                localStorage.setItem('nordkaliberCart', JSON.stringify(cartData));
                 
-                if (!customerEmail || !customerEmail.includes('@')) {
-                    alert('Vänligen ange en giltig e-postadress');
-                    return;
-                }
-
-                // Create checkout session
-                const sessionId = await createCheckoutSession(cart, customerEmail);
-                
-                // Redirect to Stripe checkout
-                await redirectToCheckout(sessionId);
+                // Redirect to checkout page
+                window.location.href = 'checkout.html';
                 
             } catch (error) {
                 console.error('Checkout error:', error);
-                alert('Ett fel uppstod vid skapande av betalningssession. Försök igen.');
+                // Error occurred during transfer to checkout
             } finally {
                 // Reset button state
                 checkoutBtn.textContent = originalText;
@@ -1534,7 +2058,7 @@
              
              // Test if we can add a new event listener
              btn.addEventListener('click', () => {
-                 alert('NEW EVENT LISTENER TRIGGERED!');
+                 // Event listener triggered
              });
              
              console.log('Added new event listener to button');
@@ -1553,7 +2077,7 @@
          };
          
          // Simple test to check if JavaScript is working
-         alert('Page loaded! JavaScript is working!');
+         // Page loaded successfully
          console.log('JavaScript is working!');
          console.log('Current step variable:', currentStep);
          console.log('Next step button exists:', !!document.getElementById('nextStep1'));
