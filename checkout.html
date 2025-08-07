@@ -289,6 +289,10 @@
                 const config = await response.json();
                 console.log('✅ Got Stripe config:', config.publishableKey ? 'Key received' : 'No key');
                 
+                if (!config.publishableKey) {
+                    throw new Error('No Stripe publishable key received');
+                }
+                
                 stripe = Stripe(config.publishableKey);
                 
                 // Create payment intent with customer data
@@ -313,10 +317,17 @@
 
                 if (!paymentIntentResponse.ok) {
                     const errorData = await paymentIntentResponse.json();
+                    console.error('❌ Payment intent error:', errorData);
                     throw new Error(`Payment intent creation failed: ${errorData.details || 'Unknown error'}`);
                 }
 
-                const { clientSecret } = await paymentIntentResponse.json();
+                const paymentIntentData = await paymentIntentResponse.json();
+                const { clientSecret } = paymentIntentData;
+                
+                if (!clientSecret) {
+                    throw new Error('No client secret received from payment intent');
+                }
+                
                 console.log('✅ Payment Intent created, clientSecret:', clientSecret ? 'Received' : 'Missing');
                 
                 // Create elements with clean white appearance
@@ -336,25 +347,13 @@
                     },
                 });
 
-                // Create and mount the Payment Element with Swedish payment methods
+                // Create and mount the Payment Element
                 const paymentElement = elements.create('payment', {
                     layout: {
                         type: 'tabs',
                         defaultCollapsed: false,
                         spacedAccordionItems: false,
                     },
-                    paymentMethodOrder: [
-                        'card',
-                        'klarna',
-                        'sofort',
-                        'ideal',
-                        'bancontact',
-                        'eps',
-                        'giropay',
-                        'p24',
-                        'apple_pay',
-                        'google_pay'
-                    ],
                     fields: {
                         billingDetails: {
                             name: 'auto',

@@ -43,18 +43,7 @@ module.exports = async (req, res) => {
         customer_phone: customerPhone,
         items: JSON.stringify(items)
       },
-      // Enable specific payment methods for Sweden
-      payment_method_types: [
-        'card',
-        'klarna',
-        'sofort',
-        'ideal',
-        'bancontact',
-        'eps',
-        'giropay',
-        'p24'
-      ],
-      // Configure automatic payment methods
+      // Configure automatic payment methods (this will automatically detect available methods)
       automatic_payment_methods: {
         enabled: true,
         allow_redirects: 'always'
