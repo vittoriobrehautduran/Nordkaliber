@@ -1,180 +1,150 @@
-# Stripe Webhook Setup Guide
+# Webhook Setup Guide - Fix Payment Processing Issues
 
-## 🔗 What is a Webhook?
+## Current Problem
+The client authenticated with BankID but the money didn't transfer because webhooks are failing. From Stripe Workbench, we can see:
+- **"Event delivery: payment_intent.requires_action"** - 1 failed event
+- **"Event delivery: payment_intent.created"** - 2 failed events  
+- **"invalid_request_error"** - 6 errors on POST /v1/payment_intents
 
-A webhook is a way for Stripe to notify your backend when events happen (like successful payments, failed payments, etc.). It's like Stripe sending a message to your server saying "Hey, someone just paid!"
+## Step-by-Step Webhook Setup
 
-## 📋 Webhook Setup Steps
+### 1. Configure Webhook Endpoint in Stripe Dashboard
 
-### 1. Go to Stripe Dashboard
-- Log into your [Stripe Dashboard](https://dashboard.stripe.com)
-- Navigate to **Developers** → **Webhooks**
+1. **Go to Stripe Dashboard**
+   - Navigate to `https://dashboard.stripe.com/webhooks`
+   - Or go to **Developers > Webhooks**
 
-### 2. Add Endpoint
-- Click **"Add endpoint"**
-- Enter your webhook URL:
-  - **Development**: `http://localhost:3000/api/webhook`
-  - **Production**: `https://yourdomain.com/api/webhook`
-- Click **"Select events"**
+2. **Add Endpoint**
+   - Click **"Add endpoint"**
+   - Set endpoint URL: `https://nordkaliber.store/api/webhook`
+   - **Important:** Make sure this URL is accessible and returns a 200 response
 
-### 3. Select Events
-Choose these events for your e-commerce site:
-- ✅ `checkout.session.completed` - When payment is successful
-- ✅ `payment_intent.payment_failed` - When payment fails
-- ✅ `customer.subscription.created` - If you add subscriptions later
-- ✅ `customer.subscription.updated` - If you add subscriptions later
-- ✅ `customer.subscription.deleted` - If you add subscriptions later
+3. **Select Events**
+   Select these specific events:
+   ```
+   ✅ payment_intent.succeeded
+   ✅ payment_intent.payment_failed
+   ✅ payment_intent.requires_action
+   ✅ payment_intent.created
+   ✅ payment_method.attached
+   ✅ checkout.session.completed
+   ```
 
-### 4. Get Webhook Secret
-- After creating the webhook, click on it
-- Find the **"Signing secret"** section
-- Click **"Reveal"** to see your webhook secret
-- Copy this secret to your `.env` file as `STRIPE_WEBHOOK_SECRET`
+4. **Copy Webhook Secret**
+   - After creating the endpoint, click on it
+   - Click **"Reveal"** next to "Signing secret"
+   - Copy the `whsec_...` secret
 
-## 🔧 Environment Variables
+### 2. Set Environment Variables
 
-Your `.env` file should look like this:
+Add this to your Vercel environment variables:
 
-```env
-# Stripe Configuration
-STRIPE_SECRET_KEY=sk_test_your_secret_key_here
-STRIPE_PUBLISHABLE_KEY=pk_test_your_publishable_key_here
+```bash
 STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret_here
-
-# Server Configuration
-PORT=3000
-NODE_ENV=development
-
-# CORS Configuration
-ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000,https://yourdomain.com
 ```
 
-## 🆔 Do You Need Product IDs?
+**How to add in Vercel:**
+1. Go to your Vercel project dashboard
+2. Navigate to **Settings > Environment Variables**
+3. Add `STRIPE_WEBHOOK_SECRET` with the value from step 1
+4. Redeploy your application
 
-**Short answer: No, for your current setup.**
+### 3. Test Webhook Endpoint
 
-### Why No Product IDs?
-Your current implementation uses **dynamic pricing** where:
-- Base price: 650 SEK
-- Special requests: +200 SEK each
-- Initials: +100 SEK
+Test if your webhook endpoint is accessible:
 
-Since prices vary based on user selections, we create products dynamically in the checkout session.
-
-### When You WOULD Need Product IDs:
-- If you had fixed products with set prices
-- If you wanted to track inventory
-- If you wanted to use Stripe's product catalog
-
-### Current Implementation:
-```javascript
-// In backend.js - we create products dynamically
-price_data: {
-    currency: 'sek',
-    product_data: {
-        name: 'Nordkaliber Ammunitionlåda',
-        description: description.join(', '),
-        images: ['https://yourdomain.com/images/product-black-box.png'],
-    },
-    unit_amount: item.price * 100, // Dynamic price
-},
-```
-
-## 🧪 Testing Webhooks
-
-### 1. Local Testing with Stripe CLI
 ```bash
-# Install Stripe CLI
-# Then run:
-stripe listen --forward-to localhost:3000/api/webhook
-```
-
-### 2. Test Events
-In Stripe Dashboard → Webhooks → Your webhook → **"Send test webhook"**
-
-### 3. Check Your Backend Logs
-When a webhook is received, you should see:
-```
-Payment successful for session: cs_test_...
-Processing successful payment for session: cs_test_...
-```
-
-## 🔍 Webhook Troubleshooting
-
-### Common Issues:
-
-1. **Webhook not receiving events**
-   - Check your webhook URL is correct
-   - Ensure your server is running
-   - Verify webhook secret in `.env`
-
-2. **"Invalid signature" errors**
-   - Double-check your `STRIPE_WEBHOOK_SECRET`
-   - Make sure you're using the correct secret for your environment
-
-3. **Webhook timeout**
-   - Your webhook handler should respond quickly
-   - Move heavy processing to background jobs
-
-### Testing Your Webhook:
-```bash
-# Start your server
-npm run dev
-
-# In another terminal, test the webhook endpoint
-curl -X POST http://localhost:3000/api/webhook \
+curl -X POST https://nordkaliber.store/api/webhook \
   -H "Content-Type: application/json" \
-  -d '{"test": "data"}'
+  -d '{"test": "webhook"}'
 ```
 
-## 🚀 Production Deployment
+You should get a response (even if it's an error, it means the endpoint is reachable).
 
-### For Production:
-1. **Update webhook URL** to your production domain
-2. **Use live keys** instead of test keys
-3. **Set up SSL** (HTTPS required for webhooks)
-4. **Update CORS origins** in your `.env`
+### 4. Verify Webhook Configuration
 
-### Example Production `.env`:
-```env
-STRIPE_SECRET_KEY=sk_live_your_live_secret_key
-STRIPE_PUBLISHABLE_KEY=pk_live_your_live_publishable_key
-STRIPE_WEBHOOK_SECRET=whsec_your_production_webhook_secret
-NODE_ENV=production
-ALLOWED_ORIGINS=https://yourdomain.com
-```
+1. **Check Stripe Dashboard**
+   - Go to **Developers > Webhooks**
+   - Your endpoint should show as "Active"
+   - Click on it to see delivery status
 
-## 📊 Webhook Events Explained
+2. **Check Recent Deliveries**
+   - Look for recent webhook attempts
+   - Check if they're succeeding or failing
+   - Look at the response codes (should be 200)
 
-### `checkout.session.completed`
-- **When**: Customer successfully completes payment
-- **What to do**: 
-  - Save order to database
-  - Send confirmation email
-  - Update inventory
-  - Notify fulfillment team
+### 5. Monitor Webhook Logs
 
-### `payment_intent.payment_failed`
-- **When**: Payment fails (insufficient funds, card declined, etc.)
-- **What to do**:
-  - Send failure notification to customer
-  - Log the failure
-  - Update order status
+After setup, monitor these logs:
 
-## 🔐 Security Best Practices
+1. **Stripe Dashboard Logs**
+   - Go to **Developers > Webhooks**
+   - Click on your endpoint
+   - Check "Recent deliveries" tab
 
-1. **Always verify webhook signatures**
-2. **Use HTTPS in production**
-3. **Keep webhook secrets secure**
-4. **Implement idempotency** (handle duplicate events)
-5. **Log all webhook events** for debugging
+2. **Vercel Function Logs**
+   - Go to your Vercel dashboard
+   - Navigate to **Functions > api/webhook**
+   - Check the logs for any errors
 
-## 📞 Need Help?
+## Common Issues and Solutions
 
-If you're having issues with webhooks:
-1. Check Stripe Dashboard → Webhooks → Event logs
-2. Look at your server logs
-3. Test with Stripe CLI
-4. Verify your webhook secret
+### Issue 1: "Webhook signature verification failed"
+**Solution:**
+- Make sure `STRIPE_WEBHOOK_SECRET` is set correctly
+- The secret should start with `whsec_`
+- Redeploy your application after setting the environment variable
 
-Your webhook setup is crucial for order processing, so make sure it's working correctly before going live! 
+### Issue 2: "Endpoint not reachable"
+**Solution:**
+- Verify the URL `https://nordkaliber.store/api/webhook` is correct
+- Make sure your Vercel deployment is live
+- Check if there are any CORS issues
+
+### Issue 3: "Event delivery failed"
+**Solution:**
+- Check Vercel function logs for errors
+- Make sure the webhook function returns a 200 status
+- Verify all required environment variables are set
+
+### Issue 4: "Payment intent errors"
+**Solution:**
+- The webhook is now properly configured to handle all payment events
+- Check the enhanced logging in the webhook function
+- Monitor both Stripe dashboard and Vercel logs
+
+## Testing the Fix
+
+1. **Make a Test Payment**
+   - Go to your checkout page
+   - Complete a test payment with BankID
+   - Monitor the webhook logs
+
+2. **Check Payment Status**
+   - The payment should now properly transfer money
+   - Confirmation emails should be sent
+   - Order should be marked as paid
+
+3. **Verify in Stripe Dashboard**
+   - Check **Payments** section
+   - Payment should show as "Succeeded"
+   - Webhook deliveries should show as successful
+
+## Enhanced Logging
+
+The updated webhook now includes:
+- ✅ Detailed logging for all payment events
+- ✅ Better error handling and debugging
+- ✅ Proper amount conversion (cents to SEK)
+- ✅ Comprehensive payment success processing
+- ✅ Support for both payment intents and checkout sessions
+
+## Next Steps
+
+1. **Set up the webhook endpoint** in Stripe Dashboard
+2. **Add the webhook secret** to Vercel environment variables
+3. **Redeploy your application**
+4. **Test with a real payment**
+5. **Monitor the logs** to ensure everything works
+
+Once this is set up, BankID payments should properly transfer money and send confirmation emails! 🎉 
