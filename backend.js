@@ -5,12 +5,17 @@ const rateLimit = require('express-rate-limit');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY, {
-    apiVersion: '2025-07-30.basil'
-});
+
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// Vercel optimization: Keep Stripe instance warm
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: '2025-07-30.basil',
+    timeout: 30000, // 30 second timeout for Vercel
+    maxNetworkRetries: 3
+});
 
 // Security middleware
 app.use(helmet());
@@ -41,7 +46,17 @@ app.get('/api/health', (req, res) => {
     res.json({ 
         status: 'OK', 
         timestamp: new Date().toISOString(),
-        environment: process.env.NODE_ENV || 'development'
+        environment: process.env.NODE_ENV || 'development',
+        platform: 'vercel'
+    });
+});
+
+// Vercel-specific health check for keeping functions warm
+app.get('/api/vercel-health', (req, res) => {
+    res.json({ 
+        status: 'WARM',
+        timestamp: new Date().toISOString(),
+        message: 'Function is warm and ready for Stripe payments'
     });
 });
 

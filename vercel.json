@@ -16,6 +16,11 @@
       "dest": "/$1"
     }
   ],
+  "functions": {
+    "backend.js": {
+      "maxDuration": 30
+    }
+  },
   "env": {
     "NODE_ENV": "production"
   }
