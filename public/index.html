@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nordkaliber - Premium Jaktutrustning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'lavender-grey': '#D1CFE0',
+                        'forest-teal': '#1B4332',
+                        'deep-blue': '#0F172A',
+                        'mustard-gold': '#E6B17A',
+                        'muted-beige': '#F0E6D3',
+                        'sage-green': '#6B8E6B',
+                        'hunter-brown': '#A0522D',
+                        'dark-green': '#1B4D3E',
+                        'light-green': '#2D5A46',
+                        'premium-black': '#0A0A0A',
+                        'light-grey': '#E5E7EB',
+                        'warm-grey': '#D1D5DB',
+                        'cool-grey': '#9CA3AF',
+                        'soft-grey': '#F3F4F6'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0A0A0A;
+            color: #f3f3f3;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            /* Performance optimizations */
+            contain: layout style paint;
+            transform: translateZ(0);
+        }
+        
+        /* Performance optimizations */
+        * {
+            box-sizing: border-box;
+        }
+        
+        img, video {
+            max-width: 100%;
+            height: auto;
+            /* Force hardware acceleration */
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+        
+        /* Optimize sections for better scroll performance */
+        section {
+            contain: layout style paint;
+            will-change: transform;
+        }
+        
+        /* Optimize hero section */
+        .hero-image {
+            contain: layout style paint;
+            will-change: transform;
+        }
+        
+        /* Optimize slideshow container */
+        .slideshow-container {
+            contain: layout style paint;
+            will-change: transform;
+            /* Additional performance optimizations for slideshow */
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+        
+        /* Optimize slideshow slides for better performance */
+        .slide {
+            contain: layout style paint;
+            will-change: opacity;
+            transform: translateZ(0);
+        }
+        
+        /* Optimize video sections for better scroll performance */
+        .video-section {
+            contain: layout style paint;
+            will-change: transform;
+            transform: translateZ(0);
+        }
+        
+        /* Optimize video elements specifically */
+        video {
+            contain: layout style paint;
+            will-change: transform;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+        
+        /* Optimize about section specifically */
+        #om-oss {
+            contain: layout style paint;
+            will-change: transform;
+            transform: translateZ(0);
+        }
+        
+        /* Remove parallax effects for better performance */
+        .parallax {
+            background-attachment: scroll !important;
+        }
+        
+        /* Optimize first scroll performance */
+        .container {
+            contain: layout style paint;
+        }
+        
+        /* Optimize grid layouts */
+        .grid {
+            contain: layout style paint;
+        }
+        
+        /* Optimize video containers */
+        .relative {
+            contain: layout style paint;
+        }
+        
+        /* Optimize overview section specifically */
+        #overview {
+            contain: layout style paint;
+            will-change: transform;
+            transform: translateZ(0);
+        }
+        
+        .hero-image {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('images/backgroundforest.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            will-change: transform;
+            /* Performance optimization for hero section */
+            contain: layout style paint;
+            transform: translateZ(0);
+        }
+        
+        .product-card {
+            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 10, 0.7);
+            will-change: transform;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .blur-bg {
+            background: rgba(10, 10, 10, 0.7);
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #A0522D;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .btn-hunter {
+            background: linear-gradient(45deg, #A0522D, #1B4D3E);
+            will-change: transform;
+        }
+        
+        .btn-hunter:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px -3px rgba(0, 0, 0, 0.3);
+        }
+        
+        .section {
+            opacity: 0;
+            transform: translateY(10px);
+            will-change: opacity, transform;
+        }
+        
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Enhanced animations */
+        .slide-up {
+            animation: slideUp 0.4s ease-out forwards;
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(15px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+        
+        .scale-in {
+            animation: scaleIn 0.3s ease-out forwards;
+        }
+        
+        @keyframes scaleIn {
+            from { 
+                opacity: 0; 
+                transform: scale(0.9); 
+            }
+            to { 
+                opacity: 1; 
+                transform: scale(1); 
+            }
+        }
+        
+        .bounce-in {
+            animation: bounceIn 0.4s ease-out forwards;
+        }
+        
+        @keyframes bounceIn {
+            0% { 
+                opacity: 0; 
+                transform: scale(0.3); 
+            }
+            50% { 
+                opacity: 1; 
+                transform: scale(1.05); 
+            }
+            70% { 
+                transform: scale(0.9); 
+            }
+            100% { 
+                opacity: 1; 
+                transform: scale(1); 
+            }
+        }
+        
+        /* Hover effects */
+        .hover-lift {
+            will-change: transform;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .hover-glow {
+            transition: all 0.3s ease;
+        }
+        
+        .hover-glow:hover {
+            box-shadow: 0 0 20px rgba(139, 90, 43, 0.5);
+        }
+        
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Loading animation */
+        .loading {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Mobile-specific hero logo fixes */
+        @media (max-width: 768px) {
+            .hero-image {
+                min-height: 100vh;
+                padding-top: 2rem;
+            }
+            
+            .hero-image img {
+                max-width: 80vw !important;
+                height: auto !important;
+                min-height: 8rem !important;
+            }
+            
+            .hero-image .mb-8 {
+                margin-bottom: 2rem !important;
+            }
+            
+            .hero-image .mt-8 {
+                margin-top: 2rem !important;
+            }
+        }
+        
+        /* Mobile horizontal view logo fixes */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .hero-image {
+                min-height: 100vh !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                position: relative !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            
+            .hero-image .container {
+                position: absolute !important;
+                top: 50% !important;
+                left: 50% !important;
+                transform: translate(-50%, -50%) !important;
+                width: 100% !important;
+                height: auto !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            
+            .hero-image .flex.justify-center {
+                margin-bottom: 0 !important;
+            }
+            
+            .hero-image .mt-8 {
+                margin-top: 2rem !important;
+            }
+            
+            .hero-image img {
+                max-width: 60vw !important;
+                height: auto !important;
+                min-height: 10rem !important;
+                margin-bottom: 2rem !important;
+                display: block !important;
+            }
+            
+            .hero-image .mb-8 {
+                margin-bottom: 2rem !important;
+            }
+            
+            .hero-image .mt-8 {
+                margin-top: 0 !important;
+            }
+            
+            /* Hide the tagline text in horizontal mobile view */
+            .hero-image p {
+                display: none !important;
+            }
+            
+            /* Center the button nicely under the logo */
+            .hero-image a {
+                font-size: 1rem !important;
+                padding: 1rem 2rem !important;
+                margin-top: 1rem !important;
+            }
+            
+            /* Header logo positioning for horizontal mobile - make it bigger */
+            nav .flex.items-center img {
+                height: 3.5rem !important;
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
+            }
+            
+            /* Adjust header padding for better logo visibility */
+            nav .container {
+                padding-top: 0.5rem !important;
+                padding-bottom: 0.5rem !important;
+            }
+        }
+        
+        /* Wider mobile view fixes (tablet/phone landscape) */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .hero-image {
+                min-height: 100vh !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                position: relative !important;
+                overflow: hidden !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            
+            .hero-image .container {
+                position: absolute !important;
+                top: 50% !important;
+                left: 50% !important;
+                transform: translate(-50%, -50%) !important;
+                width: 100% !important;
+                height: auto !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            
+            .hero-image .flex.justify-center {
+                margin-bottom: 0 !important;
+            }
+            
+            .hero-image .mt-8 {
+                margin-top: 2rem !important;
+            }
+            
+            .hero-image img {
+                max-width: 50vw !important;
+                height: auto !important;
+                min-height: 12rem !important;
+                margin-bottom: 3rem !important;
+                display: block !important;
+            }
+            
+            .hero-image .mb-8 {
+                margin-bottom: 3rem !important;
+            }
+            
+            .hero-image .mt-8 {
+                margin-top: 0 !important;
+            }
+            
+            /* Hide the tagline text in wider mobile view */
+            .hero-image p {
+                display: none !important;
+            }
+            
+            /* Center the button nicely under the logo */
+            .hero-image a {
+                font-size: 1.1rem !important;
+                padding: 1.25rem 2.5rem !important;
+                margin-top: 1.5rem !important;
+            }
+            
+            /* Header logo positioning for wider mobile */
+            nav .flex.items-center img {
+                height: 4rem !important;
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
+            }
+        }
+        
+        /* Specific fix for 846x421 and similar dimensions */
+        @media (min-width: 800px) and (max-width: 900px) and (max-height: 500px) {
+            .hero-image {
+                min-height: 100vh !important;
+                height: 100vh !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                position: relative !important;
+                overflow: hidden !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            
+            .hero-image .container {
+                position: absolute !important;
+                top: 50% !important;
+                left: 50% !important;
+                transform: translate(-50%, -50%) !important;
+                width: 100% !important;
+                height: auto !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            
+            .hero-image .flex.justify-center {
+                margin-bottom: 0 !important;
+            }
+            
+            .hero-image .mt-8 {
+                margin-top: 2rem !important;
+            }
+            
+            .hero-image img {
+                max-width: 45vw !important;
+                height: auto !important;
+                min-height: 10rem !important;
+                margin-bottom: 2rem !important;
+                display: block !important;
+            }
+            
+            /* Hide the tagline text */
+            .hero-image p {
+                display: none !important;
+            }
+            
+            /* Center the button nicely under the logo */
+            .hero-image a {
+                font-size: 1rem !important;
+                padding: 1rem 2rem !important;
+                margin-top: 1rem !important;
+            }
+        }
+        
+        /* Mobile contact section improvements */
+        @media (max-width: 768px) {
+            .blur-bg.rounded-lg.p-8 {
+                padding: 1.5rem !important;
+            }
+            
+            .blur-bg h2 {
+                font-size: 1.5rem !important;
+                margin-bottom: 1.5rem !important;
+            }
+            
+            .space-y-6 > div {
+                margin-bottom: 1.5rem !important;
+            }
+            
+            .space-y-6 > div:last-child {
+                margin-bottom: 0 !important;
+            }
+            
+            .flex.items-start {
+                align-items: flex-start !important;
+            }
+            
+            .flex.items-start i {
+                margin-top: 0.25rem !important;
+                margin-right: 1rem !important;
+                flex-shrink: 0 !important;
+            }
+            
+            .flex.items-start div {
+                flex: 1 !important;
+                word-wrap: break-word !important;
+            }
+        }
+        
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        .hamburger {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .hamburger.active .line:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+        
+        .hamburger.active .line:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active .line:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+        
+        .line {
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+        
+        .mobile-menu.open {
+            max-height: 500px;
+        }
+
+        /* Strong fade transitions - no blur, no lines */
+        .section-blur-top {
+            position: relative;
+        }
+        
+        .section-blur-top::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            left: 0;
+            right: 0;
+            height: 200px;
+            /* Strong fade with more stops to eliminate lines */
+            background: linear-gradient(
+                to bottom,
+                rgba(10, 10, 10, 1) 0%,
+                rgba(10, 10, 10, 1) 30%,
+                rgba(10, 10, 10, 0.9) 50%,
+                rgba(10, 10, 10, 0.7) 70%,
+                rgba(10, 10, 10, 0.4) 85%,
+                rgba(10, 10, 10, 0.1) 95%,
+                rgba(10, 10, 10, 0) 100%
+            );
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .section-blur-bottom {
+            position: relative;
+        }
+        
+        .section-blur-bottom::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            right: 0;
+            height: 150px;
+            /* Strong fade with more stops to eliminate lines */
+            background: linear-gradient(
+                to top,
+                rgba(10, 10, 10, 1) 0%,
+                rgba(10, 10, 10, 1) 30%,
+                rgba(10, 10, 10, 0.9) 50%,
+                rgba(10, 10, 10, 0.7) 70%,
+                rgba(10, 10, 10, 0.4) 85%,
+                rgba(10, 10, 10, 0.1) 95%,
+                rgba(10, 10, 10, 0) 100%
+            );
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Slideshow styles */
+        .slideshow-container {
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .slide.fade {
+            opacity: 1;
+        }
+
+        .dot.active {
+            background-color: #8B5A2B !important;
+        }
+        
+        /* Enhanced shadow for floating button */
+        .shadow-3xl {
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Floating button animations */
+        .floating-btn-visible {
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            visibility: visible !important;
+        }
+        
+
+        
+
+        
+        /* Shimmer animation */
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%) skewX(-12deg);
+            }
+            100% {
+                transform: translateX(200%) skewX(-12deg);
+            }
+        }
+        
+        .animate-shimmer {
+            animation: shimmer 5s ease-in-out infinite;
+        }
+        
+        /* Navbar button animations */
+        .navbar-btn-wide {
+            width: 200px !important;
+            border-radius: 50px !important;
+            transition: all 1.5s ease-in-out !important;
+        }
+        
+        .navbar-icon-hidden {
+            opacity: 0 !important;
+            transform: scale(0.5) !important;
+            transition: all 0.5s ease-in-out !important;
+        }
+        
+        .navbar-text-visible {
+            opacity: 1 !important;
+            transition: all 0.5s ease-in-out !important;
+        }
+    </style>
+</head>
+<body class="bg-premium-black text-gray-200">
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-premium-black bg-opacity-90 backdrop-filter backdrop-blur-lg border-b border-hunter-brown border-opacity-20">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center overflow-visible">
+                    <a href="index.html" class="flex items-center">
+                        <img src="images/site-logo-png.png" alt="Site Logo" class="h-20 md:h-30 -mt-1 -mb-1">
+                    </a>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#hem" class="nav-link text-gray-300 hover:text-mustard-gold transition">Hem</a>
+                    <a href="#overview" class="nav-link text-gray-300 hover:text-mustard-gold transition">Översikt</a>
+                    <a href="#om-oss" class="nav-link text-gray-300 hover:text-mustard-gold transition">Om Oss</a>
+                    <a href="#kontakt" class="nav-link text-gray-300 hover:text-mustard-gold transition">Kontakt</a>
+                    <a href="#spara" class="nav-link text-gray-300 hover:text-mustard-gold transition">Spåra Paket</a>
+                    <a href="design/design.html" id="navbarDesignBtn" class="w-12 h-12 bg-gradient-to-br from-hunter-brown via-dark-green to-hunter-brown rounded-full shadow-2xl flex items-center justify-center transition-all duration-3000 ease-in-out cursor-pointer hover:shadow-3xl overflow-hidden relative">
+                        <!-- Plus icon -->
+                        <i id="navbarBtnIcon" class="fas fa-plus text-white text-xl transition-all duration-500 ease-out relative z-10"></i>
+                        <!-- Text that appears -->
+                        <span id="navbarBtnText" class="text-sm font-semibold text-white px-4 whitespace-nowrap absolute opacity-0 transition-all duration-500 ease-out relative z-10">Designa din egen nu</span>
+                        <!-- Shimmer effect -->
+                        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 animate-shimmer"></div>
+                    </a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center space-x-3">
+                    <a href="design/design.html" class="bg-white hover:bg-gray-100 text-blue-600 px-3 py-1.5 rounded-full font-semibold transition-colors duration-300 text-sm">
+                        KÖP
+                    </a>
+                    <div class="hamburger w-6 flex flex-col justify-between items-center">
+                        <div class="line w-full h-0.5 bg-mustard-gold mb-1.5"></div>
+                        <div class="line w-full h-0.5 bg-mustard-gold mb-1.5"></div>
+                        <div class="line w-full h-0.5 bg-mustard-gold"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div class="mobile-menu md:hidden mt-4">
+                <div class="flex flex-col space-y-4 pb-4">
+                    <a href="#hem" class="text-gray-300 hover:text-mustard-gold transition">Hem</a>
+                    <a href="#produkter" class="text-gray-300 hover:text-mustard-gold transition">Produkter</a>
+                    <a href="#om-oss" class="text-gray-300 hover:text-mustard-gold transition">Om Oss</a>
+                    <a href="#kontakt" class="text-gray-300 hover:text-mustard-gold transition">Kontakt</a>
+                    <a href="#spara" class="text-gray-300 hover:text-mustard-gold transition">Spåra Paket</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+
+    <!-- Hero Section -->
+    <section id="hem" class="hero-image flex items-center justify-center text-center pt-12 section-blur-bottom">
+        <div class="container mx-auto px-4 py-0 relative">
+            <!-- Logo positioned at the top -->
+            <div class="flex justify-center mb-8">
+                <img src="images/NordkaliberLogga.png" alt="NORDKALIBER" class="h-32 md:h-80 bounce-in">
+            </div>
+            <!-- Text content below logo -->
+            <div class="mt-8">
+                <p class="text-xl md:text-2xl mb-4 max-w-2xl mx-auto slide-up" style="animation-delay: 0.3s;">Premium ammunitionlådor för den seriösa jägaren</p>
+                <a href="#overview" class="btn-hunter text-white px-8 py-3 rounded-full font-medium inline-block scale-in hover-lift hover-glow" style="animation-delay: 0.6s;">UPPTÄCK VÅRA PRODUKTER</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Overview Section -->
+    <section id="overview" class="py-32 section section-blur-top">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 slide-up">OPTIMAL FÖRVARING</h2>
+            
+            <div class="max-w-7xl mx-auto mb-20">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 items-center lg:ml-20 video-section">
+                    <!-- Nordkaliber Ad Video -->
+                    <div class="lg:col-span-1">
+                        <div id="videoContainer" class="relative overflow-hidden rounded-lg shadow-2xl hover-lift h-[500px] cursor-pointer">
+                            <video 
+                                id="adVideo"
+                                class="w-full h-full object-cover" 
+                                muted 
+                                playsinline
+                                preload="auto"
+                                poster="images/oppen-gra-box.jpg">
+                                <source src="images/nordkaliber_ad.mp4" type="video/mp4">
+                                Din webbläsare stöder inte video-elementet.
+                            </video>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
+                            <!-- Play overlay -->
+                            <div class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-cool-grey bg-opacity-70 rounded-full p-4">
+                                    <i class="fas fa-expand text-white text-2xl"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Slideshow -->
+                    <div class="lg:col-span-2">
+                        <div class="relative overflow-hidden rounded-lg shadow-2xl h-[500px] hover-lift">
+                    <div class="slideshow-container w-full h-full">
+                        <div class="slide fade">
+                            <img src="images/oppen-gra-box.jpg" 
+                                 alt="Öppen ammunitionlåda med .308 kaliber" 
+                                 class="w-full h-full object-cover">
+                        </div>
+                        <div class="slide fade">
+                            <img src="images/gra-box-i-hand.jpeg" 
+                                 alt="Detaljerad vy av ammunitionlåda med .308 patroner" 
+                                 class="w-full h-full object-cover">
+                        </div>
+                        <div class="slide fade">
+                            <img src="images/oppen-gra-box2.jpg" 
+                                 alt="Person håller ammunitionlåda med naturmotiv" 
+                                 class="w-full h-full object-cover">
+                        </div>
+                        <div class="slide fade">
+                            <img src="images/oppen-rod-box.JPG" 
+                                 alt="Person håller ammunitionlåda med naturmotiv" 
+                                 class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+                        <span class="dot w-3 h-3 rounded-full bg-warm-grey cursor-pointer"></span>
+                        <span class="dot w-3 h-3 rounded-full bg-warm-grey cursor-pointer"></span>
+                        <span class="dot w-3 h-3 rounded-full bg-warm-grey cursor-pointer"></span>
+                        <span class="dot w-3 h-3 rounded-full bg-warm-grey cursor-pointer"></span>
+                    </div>
+                </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product Features -->
+            <div class="max-w-4xl mx-auto mb-20">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div class="slide-up" style="animation-delay: 0.2s;">
+                        <h3 class="text-xl font-bold mb-2 text-mustard-gold hover-glow flex items-center">
+                            <i class="fas fa-shield-alt mr-3"></i>
+                            Skräddarsydda amunnitionslådor för alla patroner
+                        </h3>
+                        <p class="text-gray-400">Enkelt, smidigt och organiserat sätt att förvara din ammunition för den organiserade jägaren.</p>
+                    </div>
+                    <div class="slide-up" style="animation-delay: 0.3s;">
+                        <h3 class="text-xl font-bold mb-2 text-mustard-gold hover-glow flex items-center">
+                            <i class="fas fa-chevron-down mr-3"></i>
+                            ALLA PATRONSTYPER
+                        </h3>
+                        <p class="text-gray-400">Lämplig för olika typer av ammunition för jakt och skytte.</p>
+                    </div>
+                    <div class="slide-up" style="animation-delay: 0.4s;">
+                        <h3 class="text-xl font-bold mb-2 text-mustard-gold hover-glow flex items-center">
+                            <i class="fas fa-wrench mr-3"></i>
+                            FLEXIBEL DESIGN
+                        </h3>
+                        <p class="text-gray-400">Lådan kan anpassas för att spegla din jaktstil. Se hur andra kunder har anpassat sina.</p>
+                    </div>
+                    <div class="slide-up" style="animation-delay: 0.5s;">
+                        <h3 class="text-xl font-bold mb-2 text-mustard-gold hover-glow flex items-center">
+                            <i class="fas fa-running mr-3"></i>
+                            PRAXIS FÖRST
+                        </h3>
+                        <p class="text-gray-400">Enkel att bära i vildmarken jämfört med större lådor, lämplig för mångsidiga jägare.</p>
+                    </div>
+                </div>
+            </div>
+            
+
+            
+            <!-- Video Presentation Section -->
+            <div class="max-w-4xl mx-auto mb-16 video-section">
+                <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 text-mustard-gold slide-up">SE VÅRA PRODUKTER I AKTION</h3>
+                <div class="relative overflow-hidden rounded-lg shadow-2xl hover-lift">
+                    <video 
+                        id="video1"
+                        class="w-full h-auto" 
+                        muted 
+                        playsinline
+                        preload="auto"
+                        poster="images/oppen-gra-box.jpg">
+                        <source src="images/sequence_presentation.mp4" type="video/mp4">
+                        Din webbläsare stöder inte video-elementet.
+                    </video>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
+                </div>
+            </div>
+            
+            <!-- Second Video Presentation Section -->
+            <div class="max-w-4xl mx-auto mb-16 video-section">
+                <div class="relative overflow-hidden rounded-lg shadow-2xl hover-lift">
+                    <video 
+                        id="video2"
+                        class="w-full h-auto" 
+                        muted 
+                        playsinline
+                        preload="auto"
+                        poster="images/oppen-gro-box.jpg">
+                        <source src="images/video_presentation2.mp4" type="video/mp4">
+                        Din webbläsare stöder inte video-elementet.
+                    </video>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
+                </div>
+            </div>
+            
+            <!-- Unik Pryl Section -->
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-white slide-up">Unik pryl</h2>
+                <p class="text-xl text-gray-300 mb-8 slide-up">En produkt som ger jägaren det lilla extra.</p>
+                <a href="design/design.html" class="btn-hunter text-white px-8 py-3 rounded-full font-medium inline-block scale-in hover-lift hover-glow slide-up">BESTÄLL DIN EGEN IDAG</a>
+            </div>
+        </div>
+    </section>
+
+
+
+   
+
+    <!-- About Section -->
+            <section id="om-oss" class="py-20 section" style="background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('images/elk1.jpg'); background-position: center 70%; background-size: cover;">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto bg-dark-green bg-opacity-50 rounded-lg p-10 border border-hunter-brown border-opacity-20 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8">Nordkaliber</h2>
+                <p class="text-lg leading-relaxed">Vi är ett varumärke som sätter kunden i första plats. Nordkaliber levererar en unik produkt som komplementerar jakten på ett sätt som inte finns på marknaden just nu.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 section">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">VARFÖR VÄLJA NORDKALIBER?</h2>
+            
+            <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-10">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-shield-alt text-mustard-gold text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Trygg Handel</h3>
+                    <p class="text-gray-400">Säkra betalningar med kryptering för din trygghet.</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-truck text-mustard-gold text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Effektiv Leverans</h3>
+                    <p class="text-gray-400">Snabb hantering och snabb leverans av dina beställningar.</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-headset text-mustard-gold text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">24/7 E-mail Support</h3>
+                    <p class="text-gray-400">Vårt team är alltid tillgängligt för dina frågor eller bekymmer.</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-undo text-mustard-gold text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Enkel Retur</h3>
+                    <p class="text-gray-400">Smidig retur- och bytepolitik för din tillfredsställelse.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="kontakt" class="py-20 section">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div class="blur-bg rounded-lg p-8 border border-hunter-brown border-opacity-20">
+                    <h2 class="text-3xl font-bold mb-6">KONTAKTA OSS</h2>
+                    <form>
+                        <div class="mb-4">
+                            <label for="name" class="block mb-2">Namn</label>
+                            <input type="text" id="name" class="w-full bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-hunter-brown">
+                        </div>
+                        <div class="mb-4">
+                            <label for="email" class="block mb-2">E-post</label>
+                            <input type="email" id="email" class="w-full bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-hunter-brown">
+                        </div>
+                        <div class="mb-4">
+                            <label for="message" class="block mb-2">Meddelande</label>
+                            <textarea id="message" rows="4" class="w-full bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-hunter-brown"></textarea>
+                        </div>
+                        <button type="submit" class="btn-hunter text-white px-6 py-3 rounded-full font-medium w-full">SKICKA</button>
+                    </form>
+                </div>
+                
+                <div class="blur-bg rounded-lg p-8 border border-hunter-brown border-opacity-20">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-6 text-center md:text-left">KONTAKTUPPGIFTER</h2>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-mustard-gold mt-1 mr-4 flex-shrink-0"></i>
+                            <div>
+                                <h3 class="font-bold">Adress</h3>
+                                <p class="text-gray-400">Farkostvägen 7<br>SE-181 35 Lidingö SE</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-phone-alt text-mustard-gold mt-1 mr-4 flex-shrink-0"></i>
+                            <div>
+                                <h3 class="font-bold">Telefon</h3>
+                                <p class="text-gray-400">+46 79 040 46 16</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-envelope text-mustard-gold mt-1 mr-4 flex-shrink-0"></i>
+                            <div>
+                                <h3 class="font-bold">E-post</h3>
+                                <p class="text-gray-400">vittoriobre@gmail.com</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-clock text-mustard-gold mt-1 mr-4 flex-shrink-0"></i>
+                            <div>
+                                <h3 class="font-bold">Öppettider</h3>
+                                <p class="text-gray-400">Mån-Fre: 09:00-17:00<br>Lör: 10:00-15:00<br>Sön: Stängt</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Newsletter Section -->
+    <section class="py-20 section">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto blur-bg rounded-lg p-10 border border-hunter-brown border-opacity-20 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">PRENUMERERA PÅ VÅRT NYHETSBREV</h2>
+                <p class="mb-8">Få exklusiva erbjudanden, nyheter om våra produkter och jaktrelaterade tips direkt till din inkorg.</p>
+                <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                    <input type="email" placeholder="Din e-postadress" class="flex-grow bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-hunter-brown">
+                    <button type="submit" class="btn-hunter text-white px-6 py-2 rounded-full font-medium whitespace-nowrap">PRENUMERERA</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-premium-black border-t border-hunter-brown border-opacity-20 py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+                <div>
+                    <h3 class="text-xl font-bold text-mustard-gold mb-4">NORDKALIBER</h3>
+                    <p class="text-gray-400">Premium ammunitionlådor för den kräsne jägaren. Svensk kvalitet sedan 2025.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Länkar</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#hem" class="text-gray-400 hover:text-mustard-gold transition">Hem</a></li>
+                        <li><a href="#overview" class="text-gray-400 hover:text-mustard-gold transition">Översikt</a></li>
+                        <li><a href="#om-oss" class="text-gray-400 hover:text-mustard-gold transition">Om Oss</a></li>
+                        <li><a href="#kontakt" class="text-gray-400 hover:text-mustard-gold transition">Kontakt</a></li>
+                        <li><a href="#spara" class="text-gray-400 hover:text-mustard-gold transition">Spåra Paket</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Support</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-mustard-gold transition">Vanliga Frågor</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-mustard-gold transition">Returpolicy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-mustard-gold transition">Leveransvillkor</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-mustard-gold transition">Garantier</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Följ Oss</h3>
+                    <div class="flex space-x-4">
+                                            <a href="#" class="text-gray-400 hover:text-mustard-gold transition text-xl"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/nordkaliber?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-mustard-gold transition text-xl"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-mustard-gold transition text-xl"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-mustard-gold transition text-xl"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-hunter-brown border-opacity-20 mt-12 pt-8 text-center text-gray-500">
+                <p>&copy; 2025 Nordkaliber AB. Alla rättigheter reserverade.</p>
+            </div>
+        </div>
+    </footer>
+
+
+
+    <!-- Video Modal Overlay -->
+    <div id="videoModal" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden flex items-center justify-center p-4">
+        <div class="relative w-full max-w-5xl bg-black rounded-xl overflow-hidden shadow-2xl transform scale-95 transition-transform duration-300">
+            <!-- Video header -->
+            <div class="flex justify-between items-center p-4 bg-gradient-to-r from-hunter-brown to-dark-green">
+                <h3 class="text-white font-semibold text-lg">Nordkaliber - Produktpresentation</h3>
+                <button id="closeVideoModal" class="bg-white bg-opacity-20 text-white rounded-full p-2 hover:bg-opacity-30 transition-all duration-300">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <!-- Video player -->
+            <div class="relative">
+                <video 
+                    id="expandedVideo"
+                    class="w-full h-auto max-h-[70vh] object-contain bg-black" 
+                    autoplay 
+                    muted 
+                    loop 
+                    playsinline
+                    controls
+                    preload="auto">
+                    <source src="images/nordkaliber_ad.mp4" type="video/mp4">
+                    Din webbläsare stöder inte video-elementet.
+                </video>
+                <!-- Video controls overlay -->
+                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent h-20 pointer-events-none"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll to top button -->
+    <button id="scrollToTop" class="fixed bottom-8 right-8 bg-hunter-brown text-white p-3 rounded-full shadow-lg hover-lift hover-glow opacity-0 transition-opacity duration-300 z-50">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    if (mobileMenu.classList.contains('open')) {
+                        hamburger.classList.remove('active');
+                        mobileMenu.classList.remove('open');
+                    }
+                }
+            });
+        });
+        
+        // Scroll animation
+        const sections = document.querySelectorAll('.section');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+        
+        // Automatic slideshow
+        let slideIndex = 0;
+        function showSlides() {
+            let i;
+            let slides = document.getElementsByClassName("slide");
+            let dots = document.getElementsByClassName("dot");
+            
+            for (i = 0; i < slides.length; i++) {
+                slides[i].classList.remove("fade");
+            }
+            
+            slideIndex++;
+            if (slideIndex > slides.length) {slideIndex = 1}
+            
+            for (i = 0; i < dots.length; i++) {
+                dots[i].classList.remove("active");
+            }
+            
+            slides[slideIndex-1].classList.add("fade");
+            dots[slideIndex-1].classList.add("active");
+            
+            setTimeout(showSlides, 8000); // Change image every 8 seconds (less frequent)
+        }
+        
+        // Initialize slideshow with performance optimization
+        document.addEventListener('DOMContentLoaded', function() {
+            // Delay slideshow initialization to reduce initial lag
+            requestAnimationFrame(() => {
+                showSlides();
+            });
+            
+            // Click on dots to navigate
+            let dots = document.getElementsByClassName("dot");
+            for (let i = 0; i < dots.length; i++) {
+                dots[i].addEventListener('click', function() {
+                    slideIndex = i;
+                    showSlides();
+                });
+            }
+        });
+
+        // Form submission handling (simplified)
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('Tack för ditt meddelande! Vi återkommer så snart som möjligt.');
+                form.reset();
+            });
+        });
+        
+        // Scroll to top functionality
+        const scrollToTopBtn = document.getElementById('scrollToTop');
+        
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Load all images upfront for better performance
+        document.querySelectorAll('img').forEach(img => {
+            img.loading = 'eager';
+        });
+        
+        // Simplified mobile menu without animations
+        const hamburger = document.querySelector('.hamburger');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('open');
+        });
+        
+        // Removed hover effects from navigation links for performance
+        
+                // Video handling with immediate autoplay on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const video1 = document.getElementById('video1');
+            const video2 = document.getElementById('video2');
+            const adVideo = document.getElementById('adVideo');
+            
+            // Function to start all videos immediately
+            function startAllVideos() {
+                // Start video1 immediately
+                if (video1) {
+                    video1.loop = true;
+                    video1.play().catch(() => {
+                        // Silent fail for autoplay
+                    });
+                }
+                
+                // Start video2 immediately
+                if (video2) {
+                    video2.loop = true;
+                    video2.play().catch(() => {
+                        // Silent fail for autoplay
+                    });
+                }
+                
+                // Start ad video immediately
+                if (adVideo) {
+                    adVideo.loop = true;
+                    adVideo.play().catch(() => {
+                        // Silent fail for autoplay
+                    });
+                }
+            }
+            
+            // Start all videos immediately when page loads
+            startAllVideos();
+            
+            // Simplified hover functionality for videos
+            function setupVideoHover(video) {
+                if (!video) return;
+                
+                let isHovering = false;
+                
+                video.addEventListener('mouseenter', () => {
+                    if (!isHovering) {
+                        isHovering = true;
+                        video.loop = true;
+                        video.play().catch(() => {
+                            // Silent fail
+                        });
+                    }
+                });
+                
+                video.addEventListener('mouseleave', () => {
+                    if (isHovering) {
+                        isHovering = false;
+                        video.loop = false;
+                        video.pause();
+                        video.currentTime = 0;
+                    }
+                });
+            }
+            
+            // Setup hover functionality for all videos
+            setupVideoHover(video1);
+            setupVideoHover(video2);
+            setupVideoHover(adVideo);
+        
+
+
+        
+        // Video modal functionality
+        const videoContainer = document.getElementById('videoContainer');
+        const videoModal = document.getElementById('videoModal');
+        const closeVideoModal = document.getElementById('closeVideoModal');
+        const expandedVideo = document.getElementById('expandedVideo');
+        
+        // Click to play/pause functionality for ad video
+        if (adVideo) {
+            adVideo.addEventListener('click', () => {
+                if (adVideo.paused) {
+                    adVideo.play().catch(() => {
+                        // Silent fail
+                    });
+                } else {
+                    adVideo.pause();
+                }
+            });
+        }
+        
+        // Open video modal
+        videoContainer.addEventListener('click', () => {
+            videoModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            
+            // Smooth opening animation
+            setTimeout(() => {
+                const modalContent = videoModal.querySelector('div');
+                modalContent.style.transform = 'scale(1)';
+            }, 10);
+            
+            expandedVideo.play();
+        });
+        
+        // Close video modal
+        function closeModal() {
+            const modalContent = videoModal.querySelector('div');
+            modalContent.style.transform = 'scale(0.95)';
+            
+            setTimeout(() => {
+                videoModal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+                expandedVideo.pause();
+            }, 300);
+        }
+        
+        closeVideoModal.addEventListener('click', closeModal);
+        
+        // Close modal when clicking outside
+        videoModal.addEventListener('click', (e) => {
+            if (e.target === videoModal) {
+                closeModal();
+            }
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !videoModal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+        
+        // Navbar Design Button Animation
+        const navbarDesignBtn = document.getElementById('navbarDesignBtn');
+        const navbarBtnText = document.getElementById('navbarBtnText');
+        const navbarBtnIcon = document.getElementById('navbarBtnIcon');
+        
+        // Function to reset button state if it gets stuck
+        function resetNavbarButton() {
+            navbarDesignBtn.classList.remove('navbar-btn-wide');
+            navbarBtnIcon.classList.remove('navbar-icon-hidden');
+            navbarBtnText.classList.remove('navbar-text-visible');
+        }
+        
+        // Animate button on page load
+        function animateNavbarButton() {
+            setTimeout(() => {
+                navbarDesignBtn.classList.add('navbar-btn-wide');
+                navbarBtnIcon.classList.add('navbar-icon-hidden');
+            }, 500);
+            
+            setTimeout(() => {
+                navbarBtnText.classList.add('navbar-text-visible');
+            }, 1500);
+        }
+        
+        // Start animation when page loads
+        animateNavbarButton();
+        
+        // Handle scroll-to-top button
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // Handle scroll-to-top button
+            if (scrollTop > 300) {
+                scrollToTopBtn.style.opacity = '1';
+            } else {
+                scrollToTopBtn.style.opacity = '0';
+            }
+        });
+        
+    });
+        
+    </script>
+</body>
+</html>
