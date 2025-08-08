@@ -1404,34 +1404,20 @@
         const videoModal = document.getElementById('videoModal');
         const closeVideoModal = document.getElementById('closeVideoModal');
         const expandedVideo = document.getElementById('expandedVideo');
-        
-        // Click to play/pause functionality for ad video
-        if (adVideo) {
-            adVideo.addEventListener('click', () => {
-                if (adVideo.paused) {
-                    adVideo.play().catch(() => {
-                        // Silent fail
-                    });
-                } else {
-                    adVideo.pause();
-                }
-            });
-        }
-        
-        // Open video modal (with robust playback to avoid gray screen)
-        videoContainer.addEventListener('click', (evt) => {
-            evt.stopPropagation();
+        // Ensure container looks clickable
+        if (videoContainer) { videoContainer.style.cursor = 'pointer'; }
+
+        function openVideoModal() {
+            if (!videoModal || !expandedVideo) return;
             if (!videoModal.classList.contains('hidden')) return;
-            // Ensure modal is at end of body to avoid any stacking/transform contexts
+            // Ensure modal is at end of body to avoid stacking/transform contexts
             if (videoModal.parentElement !== document.body) {
                 document.body.appendChild(videoModal);
             }
-            // Lock page scrolling (html + body) without altering layout
             document.documentElement.style.overflow = 'hidden';
             document.body.style.overflow = 'hidden';
-            // Critical: remove transform on body so fixed modal is relative to viewport
             document.body.classList.add('no-transform');
-            // Force layout to viewport-centered overlay (in case classes are overridden)
+            // Force layout as viewport overlay
             videoModal.style.position = 'fixed';
             videoModal.style.left = '0';
             videoModal.style.top = '0';
@@ -1442,23 +1428,19 @@
             videoModal.style.justifyContent = 'center';
             videoModal.style.zIndex = '2147483647';
             videoModal.classList.remove('hidden');
-
-            // Smooth opening animation
+            // Animate in
             setTimeout(() => {
                 const modalContent = videoModal.querySelector('div');
-                modalContent.style.transform = 'scale(1)';
+                if (modalContent) modalContent.style.transform = 'scale(1)';
             }, 10);
-
-            // Ensure video is ready and starts reliably
+            // Start video reliably
             try {
                 expandedVideo.pause();
                 expandedVideo.currentTime = 0;
-                // Reload source to force repaint on some browsers
                 expandedVideo.load();
                 const playPromise = expandedVideo.play();
                 if (playPromise && typeof playPromise.then === 'function') {
                     playPromise.catch(() => {
-                        // If autoplay fails, show controls and let user start manually
                         expandedVideo.controls = true;
                         expandedVideo.muted = false;
                     });
@@ -1467,16 +1449,29 @@
                 expandedVideo.controls = true;
                 expandedVideo.muted = false;
             }
-
-            // Fallback: if the video still doesn't start rendering after a short delay,
-            // force a tiny seek to trigger paint, and show a direct link
             setTimeout(() => {
                 if (expandedVideo.readyState < 2 || expandedVideo.paused) {
                     try { expandedVideo.currentTime = 0.001; } catch(_) {}
                     expandedVideo.controls = true;
                 }
             }, 600);
+        }
+        
+        // Open video modal (with robust playback to avoid gray screen)
+        videoContainer.addEventListener('click', (evt) => {
+            evt.preventDefault();
+            evt.stopPropagation();
+            openVideoModal();
         });
+
+        // Also open modal when clicking directly on the video
+        if (adVideo) {
+            adVideo.addEventListener('click', (evt) => {
+                evt.preventDefault();
+                evt.stopPropagation();
+                openVideoModal();
+            });
+        }
         
         // Close video modal
         function closeModal() {

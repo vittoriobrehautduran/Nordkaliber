@@ -1404,24 +1404,9 @@
         const closeVideoModal = document.getElementById('closeVideoModal');
         const expandedVideo = document.getElementById('expandedVideo');
         
-        // Click to play/pause functionality for ad video
-        if (adVideo) {
-            adVideo.addEventListener('click', () => {
-                if (adVideo.paused) {
-                    adVideo.play().catch(() => {
-                        // Silent fail
-                    });
-                } else {
-                    adVideo.pause();
-                }
-            });
-        }
-        
-        // Open video modal (with robust playback to avoid gray screen)
-        videoContainer.addEventListener('click', (evt) => {
-            evt.stopPropagation();
+        function openVideoModal() {
+            if (!videoModal || !expandedVideo) return;
             if (!videoModal.classList.contains('hidden')) return;
-            const scrollY = window.scrollY || window.pageYOffset;
             if (videoModal.parentElement !== document.body) {
                 document.body.appendChild(videoModal);
             }
@@ -1438,14 +1423,10 @@
             videoModal.style.justifyContent = 'center';
             videoModal.style.zIndex = '2147483647';
             videoModal.classList.remove('hidden');
-
-            // Smooth opening animation
             setTimeout(() => {
                 const modalContent = videoModal.querySelector('div');
-                modalContent.style.transform = 'scale(1)';
+                if (modalContent) modalContent.style.transform = 'scale(1)';
             }, 10);
-
-            // Ensure video is ready and starts reliably
             try {
                 expandedVideo.pause();
                 expandedVideo.currentTime = 0;
@@ -1461,14 +1442,28 @@
                 expandedVideo.controls = true;
                 expandedVideo.muted = false;
             }
-
             setTimeout(() => {
                 if (expandedVideo.readyState < 2 || expandedVideo.paused) {
                     try { expandedVideo.currentTime = 0.001; } catch(_) {}
                     expandedVideo.controls = true;
                 }
             }, 600);
+        }
+        
+        videoContainer.addEventListener('click', (evt) => {
+            evt.preventDefault();
+            evt.stopPropagation();
+            openVideoModal();
         });
+
+        if (adVideo) {
+            adVideo.style.cursor = 'pointer';
+            adVideo.addEventListener('click', (evt) => {
+                evt.preventDefault();
+                evt.stopPropagation();
+                openVideoModal();
+            });
+        }
         
         // Close video modal
         function closeModal() {
