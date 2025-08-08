@@ -15,12 +15,12 @@ function createTransporter() {
       throw new Error('Nodemailer is not available');
     }
     
-    if (typeof nodemailer.createTransporter !== 'function') {
+    if (typeof nodemailer.createTransport !== 'function') {
       console.error('❌ Nodemailer methods:', Object.keys(nodemailer));
-      throw new Error('createTransporter is not a function. Available methods: ' + Object.keys(nodemailer).join(', '));
+      throw new Error('createTransport is not a function. Available methods: ' + Object.keys(nodemailer).join(', '));
     }
     
-    const transporter = nodemailer.createTransporter({
+    const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
         user: process.env.EMAIL_USER || 'nordkaliber@gmail.com',

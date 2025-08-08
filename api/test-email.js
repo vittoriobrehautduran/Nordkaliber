@@ -63,10 +63,10 @@ module.exports = async (req, res) => {
       });
     }
 
-    if (typeof nodemailer.createTransporter !== 'function') {
+    if (typeof nodemailer.createTransport !== 'function') {
       return res.status(500).json({
         error: 'Invalid nodemailer',
-        message: 'createTransporter is not a function. Available methods: ' + Object.keys(nodemailer).join(', '),
+        message: 'createTransport is not a function. Available methods: ' + Object.keys(nodemailer).join(', '),
         config: {
           emailUser,
           hasPassword: !!emailPassword,
@@ -75,7 +75,7 @@ module.exports = async (req, res) => {
       });
     }
 
-    const transporter = nodemailer.createTransporter({
+    const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
         user: emailUser,
