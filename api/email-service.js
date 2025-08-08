@@ -1,15 +1,35 @@
-const nodemailer = require('nodemailer');
+// Import nodemailer with better error handling
+let nodemailer;
+try {
+  nodemailer = require('nodemailer');
+  console.log('✅ Nodemailer loaded successfully');
+} catch (error) {
+  console.error('❌ Failed to load nodemailer:', error);
+  nodemailer = null;
+}
 
 // Email configuration - Create transporter inside functions to avoid initialization errors
 function createTransporter() {
   try {
-    return nodemailer.createTransporter({
+    if (!nodemailer) {
+      throw new Error('Nodemailer is not available');
+    }
+    
+    if (typeof nodemailer.createTransporter !== 'function') {
+      console.error('❌ Nodemailer methods:', Object.keys(nodemailer));
+      throw new Error('createTransporter is not a function. Available methods: ' + Object.keys(nodemailer).join(', '));
+    }
+    
+    const transporter = nodemailer.createTransporter({
       service: 'gmail',
       auth: {
         user: process.env.EMAIL_USER || 'nordkaliber@gmail.com',
         pass: process.env.EMAIL_PASSWORD // App password required for Gmail
       }
     });
+    
+    console.log('✅ Transporter created successfully');
+    return transporter;
   } catch (error) {
     console.error('❌ Error creating transporter:', error);
     throw error;
@@ -29,10 +49,8 @@ async function sendCustomerConfirmationEmail(orderData) {
       to: orderData.customer.email
     });
     
-    // Check if nodemailer is available
-    if (!nodemailer || typeof nodemailer.createTransporter !== 'function') {
-      throw new Error('Nodemailer is not properly loaded or createTransporter is not a function');
-    }
+    // Create transporter (this will handle nodemailer checks)
+    const transporter = createTransporter();
     
     const { customer, items, total, orderId } = orderData;
     
@@ -133,7 +151,6 @@ async function sendCustomerConfirmationEmail(orderData) {
       subject: mailOptions.subject
     });
 
-    const transporter = createTransporter();
     await transporter.sendMail(mailOptions);
     console.log(`✅ Customer confirmation email sent to ${customer.email}`);
     return true;
@@ -151,10 +168,8 @@ async function sendCustomerConfirmationEmail(orderData) {
 // Send production manager notification
 async function sendProductionManagerNotification(orderData) {
   try {
-    // Check if nodemailer is available
-    if (!nodemailer || typeof nodemailer.createTransporter !== 'function') {
-      throw new Error('Nodemailer is not properly loaded or createTransporter is not a function');
-    }
+    // Create transporter (this will handle nodemailer checks)
+    const transporter = createTransporter();
     
     const { customer, items, total, orderId } = orderData;
     
@@ -268,7 +283,6 @@ async function sendProductionManagerNotification(orderData) {
       html: htmlContent
     };
 
-    const transporter = createTransporter();
     await transporter.sendMail(mailOptions);
     console.log(`✅ Production manager notification sent to ${PRODUCTION_MANAGER_EMAIL}`);
     return true;

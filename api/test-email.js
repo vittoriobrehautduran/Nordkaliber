@@ -1,4 +1,12 @@
-const nodemailer = require('nodemailer');
+// Import nodemailer with better error handling
+let nodemailer;
+try {
+  nodemailer = require('nodemailer');
+  console.log('✅ Nodemailer loaded successfully in test-email');
+} catch (error) {
+  console.error('❌ Failed to load nodemailer in test-email:', error);
+  nodemailer = null;
+}
 
 module.exports = async (req, res) => {
   // Enable CORS
@@ -42,7 +50,31 @@ module.exports = async (req, res) => {
       });
     }
 
-    // Create transporter
+    // Create transporter with error handling
+    if (!nodemailer) {
+      return res.status(500).json({
+        error: 'Nodemailer not available',
+        message: 'Failed to load nodemailer module',
+        config: {
+          emailUser,
+          hasPassword: !!emailPassword,
+          productionEmail
+        }
+      });
+    }
+
+    if (typeof nodemailer.createTransporter !== 'function') {
+      return res.status(500).json({
+        error: 'Invalid nodemailer',
+        message: 'createTransporter is not a function. Available methods: ' + Object.keys(nodemailer).join(', '),
+        config: {
+          emailUser,
+          hasPassword: !!emailPassword,
+          productionEmail
+        }
+      });
+    }
+
     const transporter = nodemailer.createTransporter({
       service: 'gmail',
       auth: {
