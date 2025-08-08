@@ -1,6 +1,15 @@
 {
   "version": 2,
+  "functions": {
+    "api/*.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
   "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
     {
       "src": "/design/design.html",
       "dest": "/design",
@@ -21,6 +30,14 @@
     {
       "src": "/success",
       "dest": "/public/success.html"
+    },
+    {
+      "src": "/policies",
+      "dest": "/public/policies.html"
+    },
+    {
+      "src": "/test-email",
+      "dest": "/public/test-email.html"
     },
     {
       "src": "/",
