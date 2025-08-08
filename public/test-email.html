@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Test - Nordkaliber</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'hunter-brown': '#1B4D3E',
+                        'dark-green': '#2D5A3D',
+                        'mustard-gold': '#D4AF37',
+                        'premium-black': '#1A1A1A',
+                        'cream': '#F5F5DC'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-cream text-gray-800">
+    <div class="container mx-auto px-4 py-12 max-w-4xl">
+        <div class="bg-white rounded-lg shadow-lg p-8">
+            <h1 class="text-3xl font-bold text-hunter-brown mb-6">
+                <i class="fas fa-envelope mr-3 text-mustard-gold"></i>
+                Email Test - Nordkaliber
+            </h1>
+            
+            <div class="mb-6">
+                <h2 class="text-xl font-semibold mb-4">Email Configuration Test</h2>
+                <p class="text-gray-600 mb-4">
+                    This page helps you test the email configuration for order confirmations.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h3 class="font-semibold mb-2">Test Email Configuration</h3>
+                    <p class="text-sm text-gray-600 mb-4">
+                        Click the button below to test if the email service is properly configured.
+                    </p>
+                    <button id="testEmailBtn" class="bg-mustard-gold text-white px-4 py-2 rounded hover:bg-yellow-600 transition">
+                        <i class="fas fa-paper-plane mr-2"></i>
+                        Test Email
+                    </button>
+                </div>
+
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h3 class="font-semibold mb-2">Test Order Email</h3>
+                    <p class="text-sm text-gray-600 mb-4">
+                        Test the complete order email flow with sample data.
+                    </p>
+                    <button id="testOrderBtn" class="bg-hunter-brown text-white px-4 py-2 rounded hover:bg-green-700 transition">
+                        <i class="fas fa-shopping-cart mr-2"></i>
+                        Test Order Email
+                    </button>
+                </div>
+            </div>
+
+            <div id="result" class="hidden">
+                <h3 class="font-semibold mb-2">Test Results</h3>
+                <div id="resultContent" class="bg-gray-50 p-4 rounded-lg">
+                    <!-- Results will be displayed here -->
+                </div>
+            </div>
+
+            <div class="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <h3 class="font-semibold text-blue-800 mb-2">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    Setup Instructions
+                </h3>
+                <div class="text-sm text-blue-700 space-y-2">
+                    <p><strong>1. Gmail App Password:</strong> You need to create an app password for nordkaliber@gmail.com</p>
+                    <p><strong>2. Environment Variables:</strong> Set these in Vercel:</p>
+                    <ul class="list-disc list-inside ml-4 space-y-1">
+                        <li><code>EMAIL_USER=nordkaliber@gmail.com</code></li>
+                        <li><code>EMAIL_PASSWORD=your_app_password</code></li>
+                        <li><code>PRODUCTION_MANAGER_EMAIL=nordkaliber@gmail.com</code></li>
+                    </ul>
+                    <p><strong>3. Gmail Settings:</strong> Enable 2-factor authentication and generate an app password</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('testEmailBtn').addEventListener('click', async () => {
+            const resultDiv = document.getElementById('result');
+            const resultContent = document.getElementById('resultContent');
+            
+            resultDiv.classList.remove('hidden');
+            resultContent.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-spinner fa-spin text-blue-500 mr-2"></i>
+                    <span>Testing email configuration...</span>
+                </div>
+            `;
+
+            try {
+                const response = await fetch('/api/test-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    resultContent.innerHTML = `
+                        <div class="text-green-700">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            <strong>Success!</strong> Email test completed successfully.
+                            <div class="mt-2 text-sm">
+                                <p><strong>From:</strong> ${result.config.emailUser}</p>
+                                <p><strong>To:</strong> ${result.config.productionEmail}</p>
+                                <p><strong>Time:</strong> ${new Date(result.config.timestamp).toLocaleString('sv-SE')}</p>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    resultContent.innerHTML = `
+                        <div class="text-red-700">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>
+                            <strong>Error:</strong> ${result.error}
+                            <div class="mt-2 text-sm">
+                                <p><strong>Message:</strong> ${result.message}</p>
+                                ${result.code ? `<p><strong>Code:</strong> ${result.code}</p>` : ''}
+                                <p><strong>Config:</strong> Email user: ${result.config.emailUser}, Has password: ${result.config.hasPassword}</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultContent.innerHTML = `
+                    <div class="text-red-700">
+                        <i class="fas fa-times-circle mr-2"></i>
+                        <strong>Network Error:</strong> ${error.message}
+                    </div>
+                `;
+            }
+        });
+
+        document.getElementById('testOrderBtn').addEventListener('click', async () => {
+            const resultDiv = document.getElementById('result');
+            const resultContent = document.getElementById('resultContent');
+            
+            resultDiv.classList.remove('hidden');
+            resultContent.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-spinner fa-spin text-blue-500 mr-2"></i>
+                    <span>Testing order email...</span>
+                </div>
+            `;
+
+            // Sample order data
+            const sampleOrder = {
+                orderId: 'TEST-' + Date.now(),
+                customer: {
+                    firstName: 'Test',
+                    lastName: 'Kund',
+                    email: 'nordkaliber@gmail.com',
+                    phone: '070-123 45 67',
+                    address: 'Testgatan 1',
+                    postalCode: '12345',
+                    city: 'Stockholm',
+                    country: 'Sverige'
+                },
+                items: [
+                    {
+                        caliber: '6.5 Creedmoor',
+                        primaryColor: 'Svart',
+                        secondaryColor: 'Gul',
+                        initials: 'TK',
+                        price: 599,
+                        specialRequests: {
+                            customText: 'Test specialförfrågan'
+                        }
+                    }
+                ],
+                total: 599
+            };
+
+            try {
+                const response = await fetch('/api/order-complete', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(sampleOrder)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    resultContent.innerHTML = `
+                        <div class="text-green-700">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            <strong>Success!</strong> Order email test completed successfully.
+                            <div class="mt-2 text-sm">
+                                <p><strong>Order ID:</strong> ${result.orderId}</p>
+                                <p><strong>Customer Email:</strong> ${result.emailsSent.customerEmailSent ? '✅ Sent' : '❌ Failed'}</p>
+                                <p><strong>Production Email:</strong> ${result.emailsSent.productionEmailSent ? '✅ Sent' : '❌ Failed'}</p>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    resultContent.innerHTML = `
+                        <div class="text-red-700">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>
+                            <strong>Error:</strong> ${result.error}
+                            <div class="mt-2 text-sm">
+                                <p><strong>Details:</strong> ${result.details}</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultContent.innerHTML = `
+                    <div class="text-red-700">
+                        <i class="fas fa-times-circle mr-2"></i>
+                        <strong>Network Error:</strong> ${error.message}
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html> 

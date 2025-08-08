@@ -2,19 +2,26 @@ const nodemailer = require('nodemailer');
 
 // Email configuration
 const transporter = nodemailer.createTransporter({
-  service: 'gmail', // You can change this to your email provider
+  service: 'gmail',
   auth: {
-    user: process.env.EMAIL_USER, // Your email
-    pass: process.env.EMAIL_PASSWORD // Your email password or app password
+    user: process.env.EMAIL_USER || 'nordkaliber@gmail.com',
+    pass: process.env.EMAIL_PASSWORD // App password required for Gmail
   }
 });
 
 // Production manager email
-const PRODUCTION_MANAGER_EMAIL = process.env.PRODUCTION_MANAGER_EMAIL || 'production@nordkaliber.store';
+const PRODUCTION_MANAGER_EMAIL = process.env.PRODUCTION_MANAGER_EMAIL || 'nordkaliber@gmail.com';
 
 // Send customer confirmation email
 async function sendCustomerConfirmationEmail(orderData) {
   try {
+    console.log('📧 Attempting to send customer confirmation email...');
+    console.log('📧 Email configuration:', {
+      user: process.env.EMAIL_USER || 'nordkaliber@gmail.com',
+      hasPassword: !!process.env.EMAIL_PASSWORD,
+      to: orderData.customer.email
+    });
+    
     const { customer, items, total, orderId } = orderData;
     
     const itemsList = items.map(item => `
@@ -102,17 +109,28 @@ async function sendCustomerConfirmationEmail(orderData) {
     `;
 
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: process.env.EMAIL_USER || 'nordkaliber@gmail.com',
       to: customer.email,
       subject: `Orderbekräftelse - ${orderId}`,
       html: htmlContent
     };
+
+    console.log('📧 Mail options:', {
+      from: mailOptions.from,
+      to: mailOptions.to,
+      subject: mailOptions.subject
+    });
 
     await transporter.sendMail(mailOptions);
     console.log(`✅ Customer confirmation email sent to ${customer.email}`);
     return true;
   } catch (error) {
     console.error('❌ Error sending customer confirmation email:', error);
+    console.error('❌ Error details:', {
+      message: error.message,
+      code: error.code,
+      command: error.command
+    });
     return false;
   }
 }
@@ -226,7 +244,7 @@ async function sendProductionManagerNotification(orderData) {
     `;
 
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: process.env.EMAIL_USER || 'nordkaliber@gmail.com',
       to: PRODUCTION_MANAGER_EMAIL,
       subject: subject,
       html: htmlContent
