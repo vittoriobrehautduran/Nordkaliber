@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Policies - Nordkaliber</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon-32x32.png">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'hunter-brown': '#8B4513',
+                        'dark-green': '#2F4F2F',
+                        'mustard-gold': '#DAA520',
+                        'premium-black': '#1a1a1a',
+                        'forest-green': '#228B22',
+                        'cream': '#F5F5DC'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        .hover-glow:hover {
+            box-shadow: 0 0 20px rgba(218, 165, 32, 0.3);
+        }
+        .section-fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .section-fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-cream text-gray-800">
+    <!-- Navigation -->
+    <nav class="bg-premium-black shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" class="flex items-center space-x-3">
+                        <span class="text-2xl font-bold text-mustard-gold">NORDKALIBER</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-300 hover:text-mustard-gold transition duration-300" data-sv="Hem" data-en="Home">Hem</a>
+                    <a href="index.html#overview" class="text-gray-300 hover:text-mustard-gold transition duration-300" data-sv="Produkter" data-en="Products">Produkter</a>
+                    <a href="index.html#om-oss" class="text-gray-300 hover:text-mustard-gold transition duration-300" data-sv="Om Oss" data-en="About Us">Om Oss</a>
+                    <a href="index.html#kontakt" class="text-gray-300 hover:text-mustard-gold transition duration-300" data-sv="Kontakt" data-en="Contact">Kontakt</a>
+                    <button id="languageToggle" class="text-gray-300 hover:text-mustard-gold transition duration-300 flex items-center space-x-2">
+                        <i class="fas fa-globe"></i>
+                        <span id="languageText">EN</span>
+                    </button>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobileMenuBtn" class="text-gray-300 hover:text-mustard-gold">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="md:hidden bg-premium-black border-t border-hunter-brown border-opacity-20 hidden">
+            <div class="px-4 py-6 space-y-4">
+                <a href="index.html" class="block text-gray-300 hover:text-mustard-gold transition duration-300" data-sv="Hem" data-en="Home">Hem</a>
+                <a href="index.html#overview" class="block text-gray-300 hover:text-mustard-gold transition duration-300" data-sv="Produkter" data-en="Products">Produkter</a>
+                <a href="index.html#om-oss" class="block text-gray-300 hover:text-mustard-gold transition duration-300" data-sv="Om Oss" data-en="About Us">Om Oss</a>
+                <a href="index.html#kontakt" class="block text-gray-300 hover:text-mustard-gold transition duration-300" data-sv="Kontakt" data-en="Contact">Kontakt</a>
+                <button id="mobileLanguageToggle" class="block text-gray-300 hover:text-mustard-gold transition duration-300 flex items-center space-x-2">
+                    <i class="fas fa-globe"></i>
+                    <span id="mobileLanguageText">EN</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-hunter-brown to-dark-green text-white py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4" data-sv="Policies & Villkor" data-en="Policies & Terms">Policies & Villkor</h1>
+            <p class="text-xl text-gray-200 max-w-2xl mx-auto" data-sv="Läs våra policies för frakt, integritet och andra viktiga villkor som gäller för din shoppingupplevelse hos Nordkaliber." data-en="Read our policies for shipping, privacy and other important terms that apply to your shopping experience at Nordkaliber.">Läs våra policies för frakt, integritet och andra viktiga villkor som gäller för din shoppingupplevelse hos Nordkaliber.</p>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <div class="bg-white shadow-md sticky top-20 z-40">
+        <div class="container mx-auto px-4">
+            <div class="flex space-x-8 overflow-x-auto">
+                <button id="shippingTab" class="policy-tab active py-4 px-6 border-b-2 border-mustard-gold text-mustard-gold font-semibold whitespace-nowrap">
+                    <i class="fas fa-shipping-fast mr-2"></i><span data-sv="Fraktpolicy" data-en="Shipping Policy">Fraktpolicy</span>
+                </button>
+                <button id="privacyTab" class="policy-tab py-4 px-6 border-b-2 border-transparent text-gray-600 hover:text-mustard-gold font-semibold whitespace-nowrap">
+                    <i class="fas fa-shield-alt mr-2"></i><span data-sv="Integritetspolicy" data-en="Privacy Policy">Integritetspolicy</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Sections -->
+    <main class="container mx-auto px-4 py-12">
+        <!-- Shipping Policy Section -->
+        <section id="shippingPolicy" class="policy-section section-fade-in">
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+                    <h2 class="text-3xl font-bold text-hunter-brown mb-6 flex items-center">
+                        <i class="fas fa-shipping-fast mr-3 text-mustard-gold"></i>
+                        <span data-sv="Fraktpolicy" data-en="Shipping Policy">Fraktpolicy</span>
+                    </h2>
+                    
+                    <div class="prose prose-lg max-w-none">
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-semibold text-dark-green mb-4" data-sv="Inledning" data-en="Introduction">Inledning</h3>
+                            <p class="text-gray-700 leading-relaxed" data-sv="Välkommen! På Nordkaliber strävar vi efter att leverera dina beställningar snabbt och effektivt. Läs vår fraktpolicy noggrant för att förstå våra fraktrutiner." data-en="Welcome! At Nordkaliber, we are committed to delivering your orders promptly and efficiently. Please read our shipping policy carefully to understand our shipping practices.">
+                                Välkommen! På Nordkaliber strävar vi efter att leverera dina beställningar snabbt och effektivt. 
+                                Läs vår fraktpolicy noggrant för att förstå våra fraktrutiner.
+                            </p>
+                        </div>
+
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-semibold text-dark-green mb-4" data-sv="Fraktmetoder och leveranstider" data-en="Shipping Methods and Delivery Times">Fraktmetoder och leveranstider</h3>
+                            <p class="text-gray-700 mb-4" data-sv="Vi erbjuder en rad olika fraktalternativ för att tillgodose dina behov:" data-en="We offer a variety of shipping options to meet your needs:">Vi erbjuder en rad olika fraktalternativ för att tillgodose dina behov:</p>
+                            <ul class="space-y-3 text-gray-700">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="<strong>Standardfrakt:</strong> Leverans inom 5–7 arbetsdagar." data-en="<strong>Standard Shipping:</strong> Delivery within 5-7 business days."><strong>Standardfrakt:</strong> Leverans inom 5–7 arbetsdagar.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="<strong>Expressfrakt:</strong> Leverans inom 2–3 arbetsdagar." data-en="<strong>Express Shipping:</strong> Delivery within 2-3 business days."><strong>Expressfrakt:</strong> Leverans inom 2–3 arbetsdagar.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="<strong>Övernattleverans:</strong> Leverans nästa arbetsdag." data-en="<strong>Overnight Shipping:</strong> Delivery by the next business day."><strong>Övernattleverans:</strong> Leverans nästa arbetsdag.</span>
+                                </li>
+                            </ul>
+                            <p class="text-gray-700 mt-4" data-sv="Leveranstiderna är uppskattningar och kan variera beroende på din plats och externa faktorer." data-en="Delivery times are estimates and may vary based on your location and external factors.">
+                                Leveranstiderna är uppskattningar och kan variera beroende på din plats och externa faktorer.
+                            </p>
+                        </div>
+
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-semibold text-dark-green mb-4" data-sv="Orderhanteringstid" data-en="Order Processing Time">Orderhanteringstid</h3>
+                            <ul class="space-y-3 text-gray-700">
+                                <li class="flex items-start">
+                                    <i class="fas fa-clock text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="Beställningar behandlas inom 1–2 arbetsdagar (måndag–fredag)." data-en="Orders are processed within 1-2 business days (Monday-Friday).">Beställningar behandlas inom 1–2 arbetsdagar (måndag–fredag).</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-clock text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="Beställningar som görs efter kl. 12.00 PST eller på helger/helgdagar behandlas nästa arbetsdag." data-en="Orders placed after 12 PM PST or on weekends/holidays will be processed on the next business day.">Beställningar som görs efter kl. 12.00 PST eller på helger/helgdagar behandlas nästa arbetsdag.</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-semibold text-dark-green mb-4" data-sv="Fraktpriser" data-en="Shipping Rates">Fraktpriser</h3>
+                            <p class="text-gray-700" data-sv="Fraktkostnaderna beräknas utifrån vikten och måtten på din beställning samt den valda fraktmetoden. Priserna visas i kassan." data-en="Shipping charges are calculated based on the weight and dimensions of your order, and the shipping method chosen. Rates will be displayed at checkout.">
+                                Fraktkostnaderna beräknas utifrån vikten och måtten på din beställning samt den valda fraktmetoden. 
+                                Priserna visas i kassan.
+                            </p>
+                        </div>
+
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-semibold text-dark-green mb-4" data-sv="Internationell frakt" data-en="International Shipping">Internationell frakt</h3>
+                            <p class="text-gray-700" data-sv="Vi levererar över hela världen. Internationella fraktpriser och leveranstider varierar beroende på destination. Kunderna ansvarar för eventuella tullavgifter, skatter eller importtullar." data-en="We ship worldwide. International shipping rates and delivery times vary by destination. Customers are responsible for any customs fees, taxes, or import duties.">
+                                Vi levererar över hela världen. Internationella fraktpriser och leveranstider varierar beroende på destination. 
+                                Kunderna ansvarar för eventuella tullavgifter, skatter eller importtullar.
+                            </p>
+                        </div>
+
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-semibold text-dark-green mb-4" data-sv="Order spårning" data-en="Order Tracking">Order spårning</h3>
+                            <p class="text-gray-700" data-sv="När din beställning har skickats får du ett spårningsnummer via e-post så att du kan följa paketets väg." data-en="Once your order is shipped, you will receive a tracking number via email to monitor your package's progress.">
+                                När din beställning har skickats får du ett spårningsnummer via e-post så att du kan följa paketets väg.
+                            </p>
+                        </div>
+
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-semibold text-dark-green mb-4" data-sv="Förlorade eller skadade paket" data-en="Lost or Damaged Packages">Förlorade eller skadade paket</h3>
+                            <p class="text-gray-700" data-sv="Om ditt paket går förlorat eller anländer skadat, vänligen kontakta vår kundtjänst på nordkaliber@gmail.com inom 7 dagar från leveransdatumet för att få hjälp." data-en="If your package is lost or arrives damaged, please contact our customer service at nordkaliber@gmail.com within 7 days of the delivery date for assistance.">
+                                Om ditt paket går förlorat eller anländer skadat, vänligen kontakta vår kundtjänst på 
+                                <a href="mailto:nordkaliber@gmail.com" class="text-mustard-gold hover:underline">nordkaliber@gmail.com</a> 
+                                inom 7 dagar från leveransdatumet för att få hjälp.
+                            </p>
+                        </div>
+
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-semibold text-dark-green mb-4" data-sv="Felaktig adress" data-en="Incorrect Address">Felaktig adress</h3>
+                            <p class="text-gray-700" data-sv="Vänligen se till att din leveransadress är korrekt. Vi ansvarar inte för felaktiga uppgifter." data-en="Please ensure your shipping address is correct. We are not responsible for packages delivered to an incorrect address provided by the customer.">
+                                Vänligen se till att din leveransadress är korrekt. Vi ansvarar inte för felaktiga uppgifter.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Privacy Policy Section -->
+        <section id="privacyPolicy" class="policy-section section-fade-in hidden">
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <h2 class="text-3xl font-bold text-hunter-brown mb-6 flex items-center">
+                        <i class="fas fa-shield-alt mr-3 text-mustard-gold"></i>
+                        <span data-sv="Integritetspolicy" data-en="Privacy Policy">Integritetspolicy</span>
+                    </h2>
+                    
+                    <div class="prose prose-lg max-w-none">
+                        <div class="mb-6 text-sm text-gray-600">
+                            <p data-sv="<strong>Senast uppdaterad:</strong> 31 juli 2025" data-en="<strong>Last updated:</strong> July 31, 2025"><strong>Senast uppdaterad:</strong> 31 juli 2025</p>
+                        </div>
+
+                        <div class="mb-8">
+                            <p class="text-gray-700 leading-relaxed" data-sv="Nordkaliber driver denna butik och webbplats, inklusive all relaterad information, allt innehåll, alla funktioner, verktyg, produkter och tjänster för att ge dig som kund en anpassad shoppingupplevelse ("Tjänsterna"). Denna integritetspolicy beskriver hur vi samlar in, använder och avslöjar dina personuppgifter när du besöker, använder eller gör ett köp eller annan transaktion med hjälp av tjänsterna eller på annat sätt kommunicerar med oss." data-en="Nordkaliber operates this store and website, including all related information, all content, all features, tools, products and services to provide you as a customer with a personalized shopping experience ("Services"). This privacy policy describes how we collect, use and disclose your personal data when you visit, use or make a purchase or other transaction using the services or otherwise communicate with us.">
+                                Nordkaliber driver denna butik och webbplats, inklusive all relaterad information, allt innehåll, 
+                                alla funktioner, verktyg, produkter och tjänster för att ge dig som kund en anpassad shoppingupplevelse 
+                                ("Tjänsterna"). Denna integritetspolicy beskriver hur vi samlar in, använder och avslöjar dina 
+                                personuppgifter när du besöker, använder eller gör ett köp eller annan transaktion med hjälp av 
+                                tjänsterna eller på annat sätt kommunicerar med oss.
+                            </p>
+                            <p class="text-gray-700 leading-relaxed mt-4" data-sv="Läs denna integritetspolicy noggrant. Genom att använda och få tillgång till någon av tjänsterna bekräftar du att du har läst denna integritetspolicy och förstår hur dina uppgifter samlas in, används och lämnas ut enligt beskrivningen i denna integritetspolicy." data-en="Read this privacy policy carefully. By using and accessing any of the services, you confirm that you have read this privacy policy and understand how your data is collected, used and disclosed as described in this privacy policy.">
+                                Läs denna integritetspolicy noggrant. Genom att använda och få tillgång till någon av tjänsterna 
+                                bekräftar du att du har läst denna integritetspolicy och förstår hur dina uppgifter samlas in, 
+                                används och lämnas ut enligt beskrivningen i denna integritetspolicy.
+                            </p>
+                        </div>
+
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-semibold text-dark-green mb-4" data-sv="Personuppgifter som vi samlar in eller behandlar" data-en="Personal Data We Collect or Process">Personuppgifter som vi samlar in eller behandlar</h3>
+                            <p class="text-gray-700 mb-4" data-sv="När vi använder termen "personuppgifter" avser vi information som identifierar eller rimligen kan kopplas till dig eller någon annan person. Personuppgifter omfattar inte information som samlas in anonymt eller som har avidentifierats så att den inte kan identifiera eller rimligen kopplas till dig. Vi kan samla in eller behandla följande kategorier av personuppgifter, inklusive slutsatser som dras från dessa personuppgifter, beroende på hur du interagerar med tjänsterna, var du bor, och i den utsträckning som tillåts eller krävs enligt tillämplig lag:" data-en="When we use the term "personal data" we mean information that identifies or can reasonably be linked to you or any other person. Personal data does not include information that is collected anonymously or that has been de-identified so that it cannot identify or reasonably be linked to you. We may collect or process the following categories of personal data, including inferences drawn from such personal data, depending on how you interact with the services, where you live, and to the extent permitted or required by applicable law:">
+                                När vi använder termen "personuppgifter" avser vi information som identifierar eller rimligen 
+                                kan kopplas till dig eller någon annan person. Personuppgifter omfattar inte information som 
+                                samlas in anonymt eller som har avidentifierats så att den inte kan identifiera eller rimligen 
+                                kopplas till dig. Vi kan samla in eller behandla följande kategorier av personuppgifter, 
+                                inklusive slutsatser som dras från dessa personuppgifter, beroende på hur du interagerar med 
+                                tjänsterna, var du bor, och i den utsträckning som tillåts eller krävs enligt tillämplig lag:
+                            </p>
+                            <ul class="space-y-3 text-gray-700">
+                                <li class="flex items-start">
+                                    <i class="fas fa-user text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="<strong>Kontaktuppgifter</strong> inklusive namn, adress, faktureringsadress, leveransadress, telefonnummer och e-postadress." data-en="<strong>Contact information</strong> including name, address, billing address, shipping address, phone number and email address."><strong>Kontaktuppgifter</strong> inklusive namn, adress, faktureringsadress, leveransadress, telefonnummer och e-postadress.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-credit-card text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="<strong>Finansiell information</strong> inklusive kreditkortsnummer, betalkortsnummer och finansiella kontonummer, betalkortsinformation, information om finansiella konton, transaktionsuppgifter, information om betalningssätt, betalningsbekräftelser och andra betalningsuppgifter." data-en="<strong>Financial information</strong> including credit card numbers, debit card numbers and financial account numbers, payment card information, financial account information, transaction information, payment method information, payment confirmations and other payment information."><strong>Finansiell information</strong> inklusive kreditkortsnummer, betalkortsnummer och finansiella kontonummer, betalkortsinformation, information om finansiella konton, transaktionsuppgifter, information om betalningssätt, betalningsbekräftelser och andra betalningsuppgifter.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-user-circle text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="<strong>Kontoinformation</strong> inklusive användarnamn, lösenord, säkerhetsfrågor, preferenser och inställningar." data-en="<strong>Account information</strong> including username, password, security questions, preferences and settings."><strong>Kontoinformation</strong> inklusive användarnamn, lösenord, säkerhetsfrågor, preferenser och inställningar.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-shopping-cart text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="<strong>Transaktionsinformation</strong> inklusive de artiklar du tittar på, lägger i varukorgen, lägger till i önskelistan eller köper, returnerar, byter eller avbeställer samt dina tidigare transaktioner." data-en="<strong>Transaction information</strong> including the items you view, add to cart, add to wishlist or purchase, return, exchange or cancel as well as your previous transactions."><strong>Transaktionsinformation</strong> inklusive de artiklar du tittar på, lägger i varukorgen, lägger till i önskelistan eller köper, returnerar, byter eller avbeställer samt dina tidigare transaktioner.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-comments text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="<strong>Kommunikation med oss</strong> inklusive den information du lämnar i din kommunikation med oss, till exempel när du skickar en kundsupportförfrågan." data-en="<strong>Communication with us</strong> including the information you provide in your communication with us, for example when you send a customer support request."><strong>Kommunikation med oss</strong> inklusive den information du lämnar i din kommunikation med oss, till exempel när du skickar en kundsupportförfrågan.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-desktop text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="<strong>Enhetsinformation</strong> inklusive information om din enhet, webbläsare eller nätverksanslutning, din IP-adress och andra unika identifierare." data-en="<strong>Device information</strong> including information about your device, browser or network connection, your IP address and other unique identifiers."><strong>Enhetsinformation</strong> inklusive information om din enhet, webbläsare eller nätverksanslutning, din IP-adress och andra unika identifierare.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-chart-line text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="<strong>Användningsinformation</strong> inklusive information om din interaktion med tjänsterna, inklusive hur och när du interagerar med eller navigerar i tjänsterna." data-en="<strong>Usage information</strong> including information about your interaction with the services, including how and when you interact with or navigate the services."><strong>Användningsinformation</strong> inklusive information om din interaktion med tjänsterna, inklusive hur och när du interagerar med eller navigerar i tjänsterna.</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-semibold text-dark-green mb-4" data-sv="Källor till personuppgifter" data-en="Sources of Personal Data">Källor till personuppgifter</h3>
+                            <p class="text-gray-700 mb-4" data-sv="Vi kan samla in personuppgifter från följande källor:" data-en="We may collect personal data from the following sources:">Vi kan samla in personuppgifter från följande källor:</p>
+                            <ul class="space-y-3 text-gray-700">
+                                <li class="flex items-start">
+                                    <i class="fas fa-user-plus text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="<strong>Direkt från dig</strong> inklusive när du skapar ett konto, besöker eller använder tjänsterna, kommunicerar med oss eller på annat sätt tillhandahåller oss dina personuppgifter." data-en="<strong>Directly from you</strong> including when you create an account, visit or use the services, communicate with us or otherwise provide us with your personal data."><strong>Direkt från dig</strong> inklusive när du skapar ett konto, besöker eller använder tjänsterna, kommunicerar med oss eller på annat sätt tillhandahåller oss dina personuppgifter.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-robot text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="<strong>Automatiskt via tjänsterna</strong> inklusive från din enhet när du använder våra produkter eller tjänster eller besöker våra webbplatser, samt genom användning av cookies och liknande tekniker." data-en="<strong>Automatically via the services</strong> including from your device when you use our products or services or visit our websites, as well as through the use of cookies and similar technologies."><strong>Automatiskt via tjänsterna</strong> inklusive från din enhet när du använder våra produkter eller tjänster eller besöker våra webbplatser, samt genom användning av cookies och liknande tekniker.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-handshake text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="<strong>Från våra tjänsteleverantörer</strong> inklusive när vi anlitar dem för att möjliggöra viss teknik och när de samlar in eller behandlar dina personuppgifter för vår räkning." data-en="<strong>From our service providers</strong> including when we hire them to enable certain technology and when they collect or process your personal data on our behalf."><strong>Från våra tjänsteleverantörer</strong> inklusive när vi anlitar dem för att möjliggöra viss teknik och när de samlar in eller behandlar dina personuppgifter för vår räkning.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-users text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="<strong>Från våra partner eller andra tredje parter.</strong>" data-en="<strong>From our partners or other third parties.</strong>"><strong>Från våra partner eller andra tredje parter.</strong></span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-semibold text-dark-green mb-4" data-sv="Hur vi använder dina personuppgifter" data-en="How We Use Your Personal Data">Hur vi använder dina personuppgifter</h3>
+                            <p class="text-gray-700 mb-4" data-sv="Beroende på hur du interagerar med oss eller vilka av våra tjänster du använder kan vi använda personuppgifter för följande ändamål:" data-en="Depending on how you interact with us or which of our services you use, we may use personal data for the following purposes:">Beroende på hur du interagerar med oss eller vilka av våra tjänster du använder kan vi använda personuppgifter för följande ändamål:</p>
+                            <ul class="space-y-3 text-gray-700">
+                                <li class="flex items-start">
+                                    <i class="fas fa-cog text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="<strong>Tillhandahålla, anpassa och förbättra tjänsterna.</strong> Vi använder dina personuppgifter för att tillhandahålla tjänsterna, inklusive för att fullgöra vårt avtal med dig, behandla dina betalningar, distribuera dina beställningar, komma ihåg dina preferenser och artiklar du är intresserad av, skicka meddelanden till dig som rör ditt konto, behandla köp, returer, byten eller andra transaktioner, skapa, underhålla och på annat sätt hantera ditt konto, ordna leverans, underlätta returer och byten, göra det möjligt för dig att publicera recensioner och för att skapa en anpassad shoppingupplevelse för dig, till exempel genom att rekommendera produkter som är relaterade till dina köp." data-en="<strong>Provide, customize and improve services.</strong> We use your personal data to provide the services, including to fulfill our agreement with you, process your payments, distribute your orders, remember your preferences and items you are interested in, send messages to you regarding your account, process purchases, returns, exchanges or other transactions, create, maintain and otherwise manage your account, arrange delivery, facilitate returns and exchanges, enable you to post reviews and to create a personalized shopping experience for you, for example by recommending products related to your purchases."><strong>Tillhandahålla, anpassa och förbättra tjänsterna.</strong> Vi använder dina personuppgifter för att tillhandahålla tjänsterna, inklusive för att fullgöra vårt avtal med dig, behandla dina betalningar, distribuera dina beställningar, komma ihåg dina preferenser och artiklar du är intresserad av, skicka meddelanden till dig som rör ditt konto, behandla köp, returer, byten eller andra transaktioner, skapa, underhålla och på annat sätt hantera ditt konto, ordna leverans, underlätta returer och byten, göra det möjligt för dig att publicera recensioner och för att skapa en anpassad shoppingupplevelse för dig, till exempel genom att rekommendera produkter som är relaterade till dina köp.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-bullhorn text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="<strong>Marknadsföring och annonsering.</strong> Vi använder dina personuppgifter för marknadsförings- och reklamändamål, till exempel för att skicka marknadsförings-, reklam- och kampanjmeddelanden via e-post, sms eller post, och för att visa dig onlineannonser för produkter eller tjänster på tjänsterna eller andra webbplatser, bland annat baserat på artiklar du tidigare har köpt eller lagt i din varukorg samt annan aktivitet på tjänsterna." data-en="<strong>Marketing and advertising.</strong> We use your personal data for marketing and advertising purposes, for example to send marketing, advertising and campaign messages via email, SMS or mail, and to show you online advertisements for products or services on the services or other websites, among other things based on items you have previously purchased or added to your cart as well as other activity on the services."><strong>Marknadsföring och annonsering.</strong> Vi använder dina personuppgifter för marknadsförings- och reklamändamål, till exempel för att skicka marknadsförings-, reklam- och kampanjmeddelanden via e-post, sms eller post, och för att visa dig onlineannonser för produkter eller tjänster på tjänsterna eller andra webbplatser, bland annat baserat på artiklar du tidigare har köpt eller lagt i din varukorg samt annan aktivitet på tjänsterna.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-shield-alt text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="<strong>Säkerhet och förebyggande av bedrägerier.</strong> Vi använder dina personuppgifter för att verifiera ditt konto, för att tillhandahålla en säker betalnings- och shoppingupplevelse, för att upptäcka, utreda eller vidta åtgärder mot eventuell bedräglig, olaglig, osäker eller skadlig verksamhet, för att skydda allmän säkerhet och för att säkra våra tjänster. Om du väljer att använda tjänsterna och registrera ett konto är du ansvarig för att hålla dina inloggningsuppgifter säkra." data-en="<strong>Security and fraud prevention.</strong> We use your personal data to verify your account, to provide a secure payment and shopping experience, to detect, investigate or take action against any fraudulent, illegal, unsafe or harmful activity, to protect general security and to secure our services. If you choose to use the services and register an account, you are responsible for keeping your login credentials secure."><strong>Säkerhet och förebyggande av bedrägerier.</strong> Vi använder dina personuppgifter för att verifiera ditt konto, för att tillhandahålla en säker betalnings- och shoppingupplevelse, för att upptäcka, utreda eller vidta åtgärder mot eventuell bedräglig, olaglig, osäker eller skadlig verksamhet, för att skydda allmän säkerhet och för att säkra våra tjänster. Om du väljer att använda tjänsterna och registrera ett konto är du ansvarig för att hålla dina inloggningsuppgifter säkra.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-headset text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="<strong>Kommunikation med dig.</strong> Vi använder dina personuppgifter för att ge dig kundsupport, svara på dina frågor, tillhandahålla effektiva tjänster och upprätthålla vår affärsrelation med dig." data-en="<strong>Communication with you.</strong> We use your personal data to provide you with customer support, answer your questions, provide effective services and maintain our business relationship with you."><strong>Kommunikation med dig.</strong> Vi använder dina personuppgifter för att ge dig kundsupport, svara på dina frågor, tillhandahålla effektiva tjänster och upprätthålla vår affärsrelation med dig.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-gavel text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="<strong>Juridiska orsaker.</strong> Vi använder dina personuppgifter för att följa tillämplig lagstiftning eller svara på giltiga rättsliga förfaranden, inklusive förfrågningar från brottsbekämpande myndigheter eller statliga organ, för att utreda eller delta i civilrättsliga förfaranden, potentiella eller faktiska rättstvister eller andra kontradiktoriska rättsliga förfaranden, samt för att verkställa eller utreda potentiella överträdelser av våra villkor eller policyer." data-en="<strong>Legal reasons.</strong> We use your personal data to comply with applicable laws or respond to valid legal proceedings, including requests from law enforcement agencies or government agencies, to investigate or participate in civil proceedings, potential or actual disputes or other adversarial legal proceedings, and to enforce or investigate potential violations of our terms or policies."><strong>Juridiska orsaker.</strong> Vi använder dina personuppgifter för att följa tillämplig lagstiftning eller svara på giltiga rättsliga förfaranden, inklusive förfrågningar från brottsbekämpande myndigheter eller statliga organ, för att utreda eller delta i civilrättsliga förfaranden, potentiella eller faktiska rättstvister eller andra kontradiktoriska rättsliga förfaranden, samt för att verkställa eller utreda potentiella överträdelser av våra villkor eller policyer.</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-semibold text-dark-green mb-4" data-sv="Hur vi lämnar ut personuppgifter" data-en="How We Share Personal Data">Hur vi lämnar ut personuppgifter</h3>
+                            <p class="text-gray-700 mb-4" data-sv="Under vissa omständigheter kan vi lämna ut dina personuppgifter till tredje part för legitima ändamål i enlighet med denna integritetspolicy. Sådana omständigheter kan bland annat vara:" data-en="Under certain circumstances, we may share your personal data with third parties for legitimate purposes in accordance with this privacy policy. Such circumstances may include:">Under vissa omständigheter kan vi lämna ut dina personuppgifter till tredje part för legitima ändamål i enlighet med denna integritetspolicy. Sådana omständigheter kan bland annat vara:</p>
+                            <ul class="space-y-3 text-gray-700">
+                                <li class="flex items-start">
+                                    <i class="fas fa-share-alt text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="Till leverantörer och andra tredje parter som utför tjänster för vår räkning (t.ex. IT-hantering, betalningshantering, dataanalys, kundsupport, molnlagring, distribution och frakt)." data-en="To suppliers and other third parties who perform services on our behalf (e.g. IT management, payment processing, data analysis, customer support, cloud storage, distribution and freight).">Till leverantörer och andra tredje parter som utför tjänster för vår räkning (t.ex. IT-hantering, betalningshantering, dataanalys, kundsupport, molnlagring, distribution och frakt).</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-ad text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="Till affärs- och marknadsföringspartner för att tillhandahålla marknadsföringstjänster och annonsera för dig." data-en="To business and marketing partners to provide marketing services and advertise to you.">Till affärs- och marknadsföringspartner för att tillhandahålla marknadsföringstjänster och annonsera för dig.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-user-check text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="När du uppmanar oss eller på annat sätt samtycker till att vi lämnar ut viss information till tredje part, till exempel för att skicka produkter till dig." data-en="When you ask us or otherwise agree to share certain information with third parties, for example to send products to you.">När du uppmanar oss eller på annat sätt samtycker till att vi lämnar ut viss information till tredje part, till exempel för att skicka produkter till dig.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-building text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="Till våra dotterbolag eller på annat sätt inom vår koncern." data-en="To our subsidiaries or otherwise within our group.">Till våra dotterbolag eller på annat sätt inom vår koncern.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-balance-scale text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="I samband med en affärstransaktion såsom en fusion eller konkurs, för att uppfylla tillämpliga lagliga skyldigheter, för att verkställa tillämpliga användarvillkor eller policyer, och för att skydda eller försvara tjänsterna, våra rättigheter och rättigheterna för våra användare eller andra." data-en="In connection with a business transaction such as a merger or bankruptcy, to fulfill applicable legal obligations, to enforce applicable terms of use or policies, and to protect or defend the services, our rights and the rights of our users or others.">I samband med en affärstransaktion såsom en fusion eller konkurs, för att uppfylla tillämpliga lagliga skyldigheter, för att verkställa tillämpliga användarvillkor eller policyer, och för att skydda eller försvara tjänsterna, våra rättigheter och rättigheterna för våra användare eller andra.</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-semibold text-dark-green mb-4" data-sv="Tredjepartswebbplatser och -länkar" data-en="Third-party Websites and Links">Tredjepartswebbplatser och -länkar</h3>
+                            <p class="text-gray-700" data-sv="Tjänsterna kan tillhandahålla länkar till webbplatser eller andra onlineplattformar som drivs av tredje part. Om du följer länkar till webbplatser som inte är knutna till eller kontrolleras av oss bör du granska deras integritets- och säkerhetspolicyer samt andra regler och villkor. Vi garanterar inte och ansvarar inte för sekretessen eller säkerheten på sådana webbplatser." data-en="The services may provide links to websites or other online platforms operated by third parties. If you follow links to websites that are not affiliated with or controlled by us, you should review their privacy and security policies as well as other rules and terms. We do not guarantee and are not responsible for the privacy or security of such websites.">
+                                Tjänsterna kan tillhandahålla länkar till webbplatser eller andra onlineplattformar som drivs av tredje part. 
+                                Om du följer länkar till webbplatser som inte är knutna till eller kontrolleras av oss bör du granska deras 
+                                integritets- och säkerhetspolicyer samt andra regler och villkor. Vi garanterar inte och ansvarar inte för 
+                                sekretessen eller säkerheten på sådana webbplatser.
+                            </p>
+                        </div>
+
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-semibold text-dark-green mb-4" data-sv="Barns uppgifter" data-en="Children's Data">Barns uppgifter</h3>
+                            <p class="text-gray-700" data-sv="Tjänsterna är inte avsedda att användas av barn, och vi samlar inte medvetet in några personuppgifter om barn under myndighetsåldern i din jurisdiktion. Om du är förälder eller vårdnadshavare till ett barn som har lämnat sina personuppgifter till oss kan du kontakta oss via kontaktuppgifterna nedan för att begära att dessa raderas." data-en="The services are not intended to be used by children, and we do not knowingly collect any personal data about children under the age of majority in your jurisdiction. If you are a parent or guardian of a child who has provided their personal data to us, you can contact us via the contact information below to request that these be deleted.">
+                                Tjänsterna är inte avsedda att användas av barn, och vi samlar inte medvetet in några personuppgifter om 
+                                barn under myndighetsåldern i din jurisdiktion. Om du är förälder eller vårdnadshavare till ett barn som 
+                                har lämnat sina personuppgifter till oss kan du kontakta oss via kontaktuppgifterna nedan för att begära 
+                                att dessa raderas.
+                            </p>
+                        </div>
+
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-semibold text-dark-green mb-4" data-sv="Säkerhet och lagring av dina uppgifter" data-en="Security and Storage of Your Data">Säkerhet och lagring av dina uppgifter</h3>
+                            <p class="text-gray-700 mb-4" data-sv="Vänligen observera att inga säkerhetsåtgärder är perfekta eller ogenomträngliga, och vi kan inte garantera "perfekt säkerhet". Dessutom kan information som du skickar till oss vara osäker under överföringen. Vi rekommenderar att du inte använder osäkra kanaler för att skicka känslig eller konfidentiell information till oss." data-en="Please note that no security measures are perfect or impenetrable, and we cannot guarantee "perfect security". Additionally, information you send to us may be insecure during transmission. We recommend that you do not use insecure channels to send sensitive or confidential information to us.">
+                                Vänligen observera att inga säkerhetsåtgärder är perfekta eller ogenomträngliga, och vi kan inte garantera 
+                                "perfekt säkerhet". Dessutom kan information som du skickar till oss vara osäker under överföringen. 
+                                Vi rekommenderar att du inte använder osäkra kanaler för att skicka känslig eller konfidentiell information till oss.
+                            </p>
+                            <p class="text-gray-700" data-sv="Hur länge vi lagrar dina personuppgifter beror på olika faktorer, till exempel om vi behöver uppgifterna för att upprätthålla ditt konto, tillhandahålla tjänster, uppfylla lagliga skyldigheter, lösa tvister eller verkställa andra tillämpliga avtal och policyer." data-en="How long we store your personal data depends on various factors, such as whether we need the data to maintain your account, provide services, fulfill legal obligations, resolve disputes or enforce other applicable agreements and policies.">
+                                Hur länge vi lagrar dina personuppgifter beror på olika faktorer, till exempel om vi behöver uppgifterna 
+                                för att upprätthålla ditt konto, tillhandahålla tjänster, uppfylla lagliga skyldigheter, lösa tvister 
+                                eller verkställa andra tillämpliga avtal och policyer.
+                            </p>
+                        </div>
+
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-semibold text-dark-green mb-4" data-sv="Dina rättigheter och valmöjligheter" data-en="Your Rights and Choices">Dina rättigheter och valmöjligheter</h3>
+                            <p class="text-gray-700 mb-4" data-sv="Beroende på var du bor kan du ha några av eller alla de rättigheter som anges nedan i relation till dina personuppgifter. Dessa rättigheter är dock inte absoluta, kan gälla endast under vissa omständigheter och i vissa fall kan vi avslå din begäran i enlighet med lagen." data-en="Depending on where you live, you may have some or all of the rights listed below in relation to your personal data. However, these rights are not absolute, may apply only under certain circumstances, and in some cases we may deny your request in accordance with the law.">Beroende på var du bor kan du ha några av eller alla de rättigheter som anges nedan i relation till dina personuppgifter. Dessa rättigheter är dock inte absoluta, kan gälla endast under vissa omständigheter och i vissa fall kan vi avslå din begäran i enlighet med lagen.</p>
+                            <ul class="space-y-3 text-gray-700">
+                                <li class="flex items-start">
+                                    <i class="fas fa-eye text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="<strong>Rätt till åtkomst/information.</strong> Du kan ha rätt att begära tillgång till personuppgifter som vi har om dig." data-en="<strong>Right to access/information.</strong> You may have the right to request access to personal data we have about you."><strong>Rätt till åtkomst/information.</strong> Du kan ha rätt att begära tillgång till personuppgifter som vi har om dig.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-trash text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="<strong>Rätt att radera.</strong> Du kan ha rätt att begära att vi raderar personuppgifter som vi har om dig." data-en="<strong>Right to delete.</strong> You may have the right to request that we delete personal data we have about you."><strong>Rätt att radera.</strong> Du kan ha rätt att begära att vi raderar personuppgifter som vi har om dig.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-edit text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="<strong>Rätt till rättelse.</strong> Du kan ha rätt att begära att vi korrigerar felaktiga personuppgifter som vi har om dig." data-en="<strong>Right to rectification.</strong> You may have the right to request that we correct inaccurate personal data we have about you."><strong>Rätt till rättelse.</strong> Du kan ha rätt att begära att vi korrigerar felaktiga personuppgifter som vi har om dig.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-download text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="<strong>Rätt till överförbarhet.</strong> Du kan ha rätt att få en kopia av de personuppgifter vi har om dig och begära att vi överför dem till en tredje part, under vissa omständigheter och med vissa undantag." data-en="<strong>Right to data portability.</strong> You may have the right to obtain a copy of the personal data we have about you and request that we transfer it to a third party, under certain circumstances and with certain exceptions."><strong>Rätt till överförbarhet.</strong> Du kan ha rätt att få en kopia av de personuppgifter vi har om dig och begära att vi överför dem till en tredje part, under vissa omständigheter och med vissa undantag.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-ban text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="<strong>Rätt att välja bort försäljning eller delning för riktad reklam.</strong> Beroende på var du bor kan du ha rätt att välja bort "försäljning" eller "delning" av dina personuppgifter eller att välja bort behandling av dina personuppgifter för ändamål som anses vara "riktad reklam"." data-en="<strong>Right to opt out of sale or sharing for targeted advertising.</strong> Depending on where you live, you may have the right to opt out of the 'sale' or 'sharing' of your personal data or to opt out of the processing of your personal data for purposes considered 'targeted advertising'."><strong>Rätt att välja bort försäljning eller delning för riktad reklam.</strong> Beroende på var du bor kan du ha rätt att välja bort "försäljning" eller "delning" av dina personuppgifter eller att välja bort behandling av dina personuppgifter för ändamål som anses vara "riktad reklam".</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-cog text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="<strong>Hantera kommunikationsinställningar.</strong> Vi kan skicka reklam via e-post till dig, och du kan när som helst välja att inte längre ta emot dessa genom att använda alternativet att avprenumerera som visas i våra e-postmeddelanden till dig." data-en="<strong>Manage communication settings.</strong> We may send you advertising via email, and you can choose not to receive these at any time by using the unsubscribe option shown in our emails to you."><strong>Hantera kommunikationsinställningar.</strong> Vi kan skicka reklam via e-post till dig, och du kan när som helst välja att inte längre ta emot dessa genom att använda alternativet att avprenumerera som visas i våra e-postmeddelanden till dig.</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-semibold text-dark-green mb-4" data-sv="Ytterligare rättigheter för EES och Storbritannien" data-en="Additional Rights for EEA and UK">Ytterligare rättigheter för EES och Storbritannien</h3>
+                            <p class="text-gray-700 mb-4" data-sv="Om du är bosatt i Storbritannien eller Europeiska ekonomiska samarbetsområdet, och omfattas av undantag och begränsningar som följer av lokal lagstiftning, kan du utöva följande rättigheter utöver de rättigheter som anges ovan:" data-en="If you are resident in the United Kingdom or the European Economic Area, and are subject to exceptions and limitations arising from local legislation, you may exercise the following rights in addition to the rights listed above:">Om du är bosatt i Storbritannien eller Europeiska ekonomiska samarbetsområdet, och omfattas av undantag och begränsningar som följer av lokal lagstiftning, kan du utöva följande rättigheter utöver de rättigheter som anges ovan:</p>
+                            <ul class="space-y-3 text-gray-700">
+                                <li class="flex items-start">
+                                    <i class="fas fa-exclamation-triangle text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="<strong>Invändning mot behandling och begränsning av behandling:</strong> Du kan ha rätt att begära att vi upphör med eller begränsar vår behandling av personuppgifter för vissa ändamål." data-en="<strong>Objection to processing and restriction of processing:</strong> You may have the right to request that we stop or restrict our processing of personal data for certain purposes."><strong>Invändning mot behandling och begränsning av behandling:</strong> Du kan ha rätt att begära att vi upphör med eller begränsar vår behandling av personuppgifter för vissa ändamål.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-undo text-mustard-gold mt-1 mr-3"></i>
+                                    <span data-sv="<strong>Återkallande av samtycke:</strong> När vi förlitar oss på ditt samtycke för att behandla dina personuppgifter har du rätt att återkalla detta samtycke. Om du återkallar ditt samtycke påverkar detta inte lagligheten av den behandling som skett med ditt samtycke innan det återkallades." data-en="<strong>Withdrawal of consent:</strong> When we rely on your consent to process your personal data, you have the right to withdraw this consent. If you withdraw your consent, this does not affect the lawfulness of the processing that occurred with your consent before it was withdrawn."><strong>Återkallande av samtycke:</strong> När vi förlitar oss på ditt samtycke för att behandla dina personuppgifter har du rätt att återkalla detta samtycke. Om du återkallar ditt samtycke påverkar detta inte lagligheten av den behandling som skett med ditt samtycke innan det återkallades.</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-semibold text-dark-green mb-4" data-sv="Klagomål" data-en="Complaints">Klagomål</h3>
+                            <p class="text-gray-700" data-sv="Om du har klagomål på hur vi behandlar dina personuppgifter, vänligen kontakta oss via kontaktuppgifterna nedan. Beroende på var du bor kan du ha rätt att överklaga vårt beslut genom att kontakta oss via kontaktuppgifterna nedan eller lämna in ett klagomål till din lokala datatillsynsmyndighet." data-en="If you have complaints about how we process your personal data, please contact us via the contact information below. Depending on where you live, you may have the right to appeal our decision by contacting us via the contact information below or file a complaint with your local data protection authority.">
+                                Om du har klagomål på hur vi behandlar dina personuppgifter, vänligen kontakta oss via kontaktuppgifterna nedan. 
+                                Beroende på var du bor kan du ha rätt att överklaga vårt beslut genom att kontakta oss via kontaktuppgifterna 
+                                nedan eller lämna in ett klagomål till din lokala datatillsynsmyndighet.
+                            </p>
+                        </div>
+
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-semibold text-dark-green mb-4" data-sv="Internationella överföringar" data-en="International Transfers">Internationella överföringar</h3>
+                            <p class="text-gray-700 mb-4" data-sv="Observera att vi kan överföra, lagra och behandla dina personuppgifter utanför det land där du bor." data-en="Please note that we may transfer, store and process your personal data outside the country where you live.">
+                                Observera att vi kan överföra, lagra och behandla dina personuppgifter utanför det land där du bor.
+                            </p>
+                            <p class="text-gray-700" data-sv="Om vi överför dina personuppgifter utanför det Europeiska ekonomiska samarbetsområdet eller Storbritannien kommer vi att använda erkända överföringsmekanismer såsom Europeiska kommissionens standardavtalsklausuler eller motsvarande avtal som utfärdats av relevant behörig myndighet i Storbritannien, i tillämpliga fall, såvida inte dataöverföringen sker till ett land som har fastställts erbjuda en adekvat skyddsnivå." data-en="If we transfer your personal data outside the European Economic Area or the United Kingdom, we will use recognized transfer mechanisms such as the European Commission's standard contractual clauses or equivalent agreements issued by the relevant competent authority in the United Kingdom, where applicable, unless the data transfer takes place to a country that has been determined to offer an adequate level of protection.">
+                                Om vi överför dina personuppgifter utanför det Europeiska ekonomiska samarbetsområdet eller Storbritannien 
+                                kommer vi att använda erkända överföringsmekanismer såsom Europeiska kommissionens standardavtalsklausuler 
+                                eller motsvarande avtal som utfärdats av relevant behörig myndighet i Storbritannien, i tillämpliga fall, 
+                                såvida inte dataöverföringen sker till ett land som har fastställts erbjuda en adekvat skyddsnivå.
+                            </p>
+                        </div>
+
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-semibold text-dark-green mb-4" data-sv="Ändringar i denna integritetspolicy" data-en="Changes to this Privacy Policy">Ändringar i denna integritetspolicy</h3>
+                            <p class="text-gray-700" data-sv="Vi kan uppdatera denna integritetspolicy från tid till annan, bland annat för att återspegla förändringar i våra rutiner eller av andra operativa, juridiska eller regulatoriska skäl. Vi kommer att publicera den reviderade integritetspolicyn på denna webbplats, uppdatera datumet för "Senast uppdaterad" och meddela detta i enlighet med tillämplig lagstiftning." data-en="We may update this privacy policy from time to time, including to reflect changes in our practices or for other operational, legal or regulatory reasons. We will publish the revised privacy policy on this website, update the "Last updated" date and notify this in accordance with applicable legislation.">
+                                Vi kan uppdatera denna integritetspolicy från tid till annan, bland annat för att återspegla förändringar 
+                                i våra rutiner eller av andra operativa, juridiska eller regulatoriska skäl. Vi kommer att publicera 
+                                den reviderade integritetspolicyn på denna webbplats, uppdatera datumet för "Senast uppdaterad" och 
+                                meddela detta i enlighet med tillämplig lagstiftning.
+                            </p>
+                        </div>
+
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-semibold text-dark-green mb-4" data-sv="Kontakt" data-en="Contact">Kontakt</h3>
+                            <p class="text-gray-700" data-sv="Om du har några frågor om våra sekretessrutiner eller denna integritetspolicy, eller om du vill utöva någon av dina rättigheter, vänligen kontakta oss på" data-en="If you have any questions about our privacy practices or this privacy policy, or if you wish to exercise any of your rights, please contact us at">
+                                Om du har några frågor om våra sekretessrutiner eller denna integritetspolicy, eller om du vill 
+                                utöva någon av dina rättigheter, vänligen kontakta oss på 
+                                <a href="mailto:nordkaliber@gmail.com" class="text-mustard-gold hover:underline">nordkaliber@gmail.com</a>, 
+                                <span data-sv="eller kontakta oss på Farkostvägen 4, Lidingö Stad, 181 35, SE. I enlighet med tillämpliga dataskyddslagar är vi personuppgiftsansvariga för dina personuppgifter." data-en="or contact us at Farkostvägen 4, Lidingö Stad, 181 35, SE. In accordance with applicable data protection laws, we are the data controller for your personal data.">eller kontakta oss på Farkostvägen 4, Lidingö Stad, 181 35, SE. I enlighet med tillämpliga 
+                                dataskyddslagar är vi personuppgiftsansvariga för dina personuppgifter.</span>
+                            </p>
+                        </div>
+
+                        <div class="bg-gray-50 p-6 rounded-lg">
+                            <h4 class="text-lg font-semibold text-dark-green mb-3" data-sv="Viktig information" data-en="Important Information">Viktig information</h4>
+                            <p class="text-gray-700 text-sm" data-sv="Denna integritetspolicy kan uppdateras från tid till annan. Vi kommer att publicera den reviderade integritetspolicyn på denna webbplats och uppdatera datumet för "Senast uppdaterad"." data-en="This privacy policy may be updated from time to time. We will publish the revised privacy policy on this website and update the "Last updated" date.">
+                                Denna integritetspolicy kan uppdateras från tid till annan. Vi kommer att publicera den reviderade 
+                                integritetspolicyn på denna webbplats och uppdatera datumet för "Senast uppdaterad".
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-premium-black border-t border-hunter-brown border-opacity-20 py-12 mt-16">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+                <div>
+                    <h3 class="text-xl font-bold text-mustard-gold mb-4">NORDKALIBER</h3>
+                    <p class="text-gray-400">Premium ammunitionlådor för den kräsne jägaren. Svensk kvalitet sedan 2025.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4 text-white" data-sv="Länkar" data-en="Links">Länkar</h3>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-mustard-gold transition" data-sv="Hem" data-en="Home">Hem</a></li>
+                        <li><a href="index.html#overview" class="text-gray-400 hover:text-mustard-gold transition" data-sv="Översikt" data-en="Overview">Översikt</a></li>
+                        <li><a href="index.html#om-oss" class="text-gray-400 hover:text-mustard-gold transition" data-sv="Om Oss" data-en="About Us">Om Oss</a></li>
+                        <li><a href="index.html#kontakt" class="text-gray-400 hover:text-mustard-gold transition" data-sv="Kontakt" data-en="Contact">Kontakt</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4 text-white" data-sv="Support" data-en="Support">Support</h3>
+                    <ul class="space-y-2">
+                        <li><a href="policies.html" class="text-gray-400 hover:text-mustard-gold transition" data-sv="Policies & Villkor" data-en="Policies & Terms">Policies & Villkor</a></li>
+                        <li><a href="policies.html" class="text-gray-400 hover:text-mustard-gold transition" data-sv="Frakt & Leverans" data-en="Shipping & Delivery">Frakt & Leverans</a></li>
+                        <li><a href="policies.html" class="text-gray-400 hover:text-mustard-gold transition" data-sv="Integritetspolicy" data-en="Privacy Policy">Integritetspolicy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4 text-white" data-sv="Följ Oss" data-en="Follow Us">Följ Oss</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-mustard-gold transition text-xl"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/nordkaliber?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-mustard-gold transition text-xl"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-mustard-gold transition text-xl"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-mustard-gold transition text-xl"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-hunter-brown border-opacity-20 mt-12 pt-8 text-center text-gray-500">
+                <p>&copy; 2025 Nordkaliber AB. Alla rättigheter reserverade.</p>
+                <div class="mt-4 p-4 bg-gray-800 rounded-lg">
+                    <p class="text-sm text-gray-400 mb-2">
+                        <i class="fas fa-code mr-2"></i>
+                        <span class="developer-note-text">Denna webbplats är professionellt utvecklad med modern webbteknik för att säkerställa en säker, snabb och användarvänlig upplevelse. Om du upptäcker några tekniska problem eller har feedback om webbplatsens funktionalitet, vänligen kontakta vår kundtjänst på</span>
+                        <a href="mailto:vittorio.brehaut.duran@gmail.com" class="text-mustard-gold hover:underline">vittorio.brehaut.duran@gmail.com</a>.
+                    </p>
+                    <p class="text-xs text-gray-500" data-sv="Utvecklad med säkerhet, prestanda och användarupplevelse i fokus." data-en="Developed with security, performance and user experience in focus.">
+                        <span class="developer-note-subtext">Utvecklad med säkerhet, prestanda och användarupplevelse i fokus.</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to top button -->
+    <button id="scrollToTop" class="fixed bottom-8 right-8 bg-hunter-brown text-white p-3 rounded-full shadow-lg hover-lift hover-glow opacity-0 transition-opacity duration-300 z-50">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Language toggle functionality
+            let currentLanguage = 'sv'; // Default to Swedish
+            const languageToggle = document.getElementById('languageToggle');
+            const mobileLanguageToggle = document.getElementById('mobileLanguageToggle');
+            const languageText = document.getElementById('languageText');
+            const mobileLanguageText = document.getElementById('mobileLanguageText');
+
+            function translatePage(language) {
+                const elements = document.querySelectorAll('[data-sv][data-en]');
+                elements.forEach(element => {
+                    const text = language === 'sv' ? element.getAttribute('data-sv') : element.getAttribute('data-en');
+                    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                        element.placeholder = text;
+                    } else {
+                        // Preserve email links and other HTML elements
+                        const emailLinks = element.querySelectorAll('a[href^="mailto:"]');
+                        const originalEmails = [];
+                        emailLinks.forEach(link => {
+                            originalEmails.push({
+                                href: link.href,
+                                text: link.textContent,
+                                className: link.className
+                            });
+                        });
+                        
+                        element.innerHTML = text;
+                        
+                        // Restore email links
+                        const newEmailLinks = element.querySelectorAll('a[href^="mailto:"]');
+                        if (newEmailLinks.length === 0 && originalEmails.length > 0) {
+                            // If no email links found, add them back
+                            originalEmails.forEach(email => {
+                                const emailText = language === 'sv' ? 'nordkaliber@gmail.com' : 'nordkaliber@gmail.com';
+                                const emailLink = `<a href="${email.href}" class="${email.className}">${emailText}</a>`;
+                                element.innerHTML = element.innerHTML.replace('nordkaliber@gmail.com', emailLink);
+                            });
+                        }
+                    }
+                });
+
+                // Update special elements
+                const developerNoteText = document.querySelector('.developer-note-text');
+                const developerNoteSubtext = document.querySelector('.developer-note-subtext');
+                
+                if (developerNoteText) {
+                    developerNoteText.textContent = language === 'sv' 
+                        ? 'Denna webbplats är professionellt utvecklad med modern webbteknik för att säkerställa en säker, snabb och användarvänlig upplevelse. Om du upptäcker några tekniska problem eller har feedback om webbplatsens funktionalitet, vänligen kontakta vår kundtjänst på'
+                        : 'This website is professionally developed with modern web technology to ensure a secure, fast and user-friendly experience. If you discover any technical issues or have feedback about the website\'s functionality, please contact our customer service at';
+                }
+                
+                if (developerNoteSubtext) {
+                    developerNoteSubtext.textContent = language === 'sv'
+                        ? 'Utvecklad med säkerhet, prestanda och användarupplevelse i fokus.'
+                        : 'Developed with security, performance and user experience in focus.';
+                }
+            }
+
+            function toggleLanguage() {
+                currentLanguage = currentLanguage === 'sv' ? 'en' : 'sv';
+                languageText.textContent = currentLanguage.toUpperCase();
+                mobileLanguageText.textContent = currentLanguage.toUpperCase();
+                
+                // Translate the page
+                translatePage(currentLanguage);
+            }
+
+            languageToggle.addEventListener('click', toggleLanguage);
+            mobileLanguageToggle.addEventListener('click', toggleLanguage);
+
+            // Mobile menu toggle
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Policy tab switching
+            const shippingTab = document.getElementById('shippingTab');
+            const privacyTab = document.getElementById('privacyTab');
+            const shippingPolicy = document.getElementById('shippingPolicy');
+            const privacyPolicy = document.getElementById('privacyPolicy');
+
+            function switchToShipping() {
+                shippingTab.classList.add('active', 'border-mustard-gold', 'text-mustard-gold');
+                shippingTab.classList.remove('border-transparent', 'text-gray-600');
+                privacyTab.classList.remove('active', 'border-mustard-gold', 'text-mustard-gold');
+                privacyTab.classList.add('border-transparent', 'text-gray-600');
+                
+                shippingPolicy.classList.remove('hidden');
+                privacyPolicy.classList.add('hidden');
+            }
+
+            function switchToPrivacy() {
+                privacyTab.classList.add('active', 'border-mustard-gold', 'text-mustard-gold');
+                privacyTab.classList.remove('border-transparent', 'text-gray-600');
+                shippingTab.classList.remove('active', 'border-mustard-gold', 'text-mustard-gold');
+                shippingTab.classList.add('border-transparent', 'text-gray-600');
+                
+                privacyPolicy.classList.remove('hidden');
+                shippingPolicy.classList.add('hidden');
+            }
+
+            shippingTab.addEventListener('click', switchToShipping);
+            privacyTab.addEventListener('click', switchToPrivacy);
+
+            // Scroll to top functionality
+            const scrollToTopBtn = document.getElementById('scrollToTop');
+            
+            window.addEventListener('scroll', () => {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                if (scrollTop > 300) {
+                    scrollToTopBtn.style.opacity = '1';
+                } else {
+                    scrollToTopBtn.style.opacity = '0';
+                }
+            });
+
+            scrollToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Intersection Observer for fade-in animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all sections with fade-in class
+            document.querySelectorAll('.section-fade-in').forEach(section => {
+                observer.observe(section);
+            });
+
+            // Trigger initial animation for visible sections
+            setTimeout(() => {
+                document.querySelectorAll('.section-fade-in').forEach(section => {
+                    if (section.getBoundingClientRect().top < window.innerHeight) {
+                        section.classList.add('visible');
+                    }
+                });
+            }, 100);
+        });
+    </script>
+</body>
+</html> 
