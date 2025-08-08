@@ -1704,6 +1704,12 @@
 
         // Add to cart
         document.getElementById('addToCart').addEventListener('click', () => {
+            // If we are editing an existing item, delegate to updater and stop
+            if (window.__isEditingCartItem && window.__editingCartItemId != null) {
+                updateCartItem(window.__editingCartItemId);
+                return;
+            }
+
             const initials = document.getElementById('initials').value.trim();
             selectedInitials = initials;
             document.getElementById('selectedInitials').textContent = initials || '-';
@@ -1722,7 +1728,8 @@
                     design: confirmedDesignSpecial || document.getElementById('designSpecial').value.trim(),
                     initials: confirmedInitialsSpecial || document.getElementById('initialsSpecial').value.trim()
                 },
-                price: parseInt(document.getElementById('totalPrice').textContent.replace('kr', ''))
+                // Robust parse: strip non-digits
+                price: parseInt(document.getElementById('totalPrice').textContent.replace(/[^0-9]/g, ''))
             };
 
             cart.push(product);
@@ -2006,10 +2013,11 @@
             // Navigate to the appropriate step
             navigateToRelevantStep();
             
-            // Change the "Add to Cart" button to "Update Cart"
+            // Switch button to update mode using global flags
             const addToCartBtn = document.getElementById('addToCart');
             addToCartBtn.textContent = 'Uppdatera Kundvagn';
-            addToCartBtn.onclick = () => updateCartItem(item.id);
+            window.__isEditingCartItem = true;
+            window.__editingCartItemId = item.id;
         }
 
         function updateVisualSelections() {
@@ -2103,7 +2111,7 @@
                     design: confirmedDesignSpecial || '',
                     initials: confirmedInitialsSpecial || ''
                 },
-                price: parseInt(document.getElementById('totalPrice').textContent.replace('kr', ''))
+                price: parseInt(document.getElementById('totalPrice').textContent.replace(/[^0-9]/g, ''))
             };
 
             console.log('Updated product:', updatedProduct);
@@ -2113,10 +2121,11 @@
             // Reset form
             resetForm();
             
-            // Change button back to normal
+            // Reset button and flags back to normal add mode
             const addToCartBtn = document.getElementById('addToCart');
             addToCartBtn.textContent = 'Lägg till i Kundvagn';
-            addToCartBtn.onclick = null; // Remove the update handler
+            window.__isEditingCartItem = false;
+            window.__editingCartItemId = null;
             
             // Automatically open cart after updating
             setTimeout(() => {
