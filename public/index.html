@@ -851,7 +851,7 @@
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 items-center lg:ml-20 video-section">
                     <!-- Nordkaliber Ad Video -->
                     <div class="lg:col-span-1">
-                        <div id="videoContainer" class="relative overflow-hidden rounded-lg shadow-2xl hover-lift h-[500px] cursor-pointer">
+                        <div id="videoContainer" class="relative overflow-hidden rounded-lg shadow-2xl hover-lift h-[500px] cursor-pointer" role="button" tabindex="0" aria-label="Öppna video" onclick="window.__openNVModal && window.__openNVModal()">
                             <video 
                                 id="adVideo"
                                 class="w-full h-full object-cover" 
@@ -1408,15 +1408,24 @@
         if (videoContainer) { videoContainer.style.cursor = 'pointer'; }
 
         function openVideoModal() {
+            try { console.log('[NK] openVideoModal called'); } catch(e) {}
             if (!videoModal || !expandedVideo) return;
             if (!videoModal.classList.contains('hidden')) return;
             // Ensure modal is at end of body to avoid stacking/transform contexts
             if (videoModal.parentElement !== document.body) {
                 document.body.appendChild(videoModal);
             }
+            // Lock scroll AFTER we show the modal (we pre-scroll first)
+            const currentY = window.scrollY || window.pageYOffset || 0;
             document.documentElement.style.overflow = 'hidden';
             document.body.style.overflow = 'hidden';
             document.body.classList.add('no-transform');
+            document.body.dataset.scrollY = String(currentY);
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${currentY}px`;
+            document.body.style.left = '0';
+            document.body.style.right = '0';
+            document.body.style.width = '100%';
             // Force layout as viewport overlay
             videoModal.style.position = 'fixed';
             videoModal.style.left = '0';
@@ -1428,10 +1437,23 @@
             videoModal.style.justifyContent = 'center';
             videoModal.style.zIndex = '2147483647';
             videoModal.classList.remove('hidden');
+            try { console.log('[NK] videoModal shown'); } catch(e) {}
             // Animate in
             setTimeout(() => {
                 const modalContent = videoModal.querySelector('div');
                 if (modalContent) modalContent.style.transform = 'scale(1)';
+                // Fallback autoscroll only if somehow not centered
+                // Now lock scroll in place
+                const currentY = window.scrollY || window.pageYOffset || 0;
+                document.documentElement.style.overflow = 'hidden';
+                document.body.style.overflow = 'hidden';
+                document.body.classList.add('no-transform');
+                document.body.dataset.scrollY = String(currentY);
+                document.body.style.position = 'fixed';
+                document.body.style.top = `-${currentY}px`;
+                document.body.style.left = '0';
+                document.body.style.right = '0';
+                document.body.style.width = '100%';
             }, 10);
             // Start video reliably
             try {
@@ -1443,33 +1465,76 @@
                     playPromise.catch(() => {
                         expandedVideo.controls = true;
                         expandedVideo.muted = false;
+                        try { console.log('[NK] autoplay blocked; showing controls'); } catch(e) {}
                     });
                 }
             } catch (_) {
                 expandedVideo.controls = true;
                 expandedVideo.muted = false;
+                try { console.log('[NK] error starting video'); } catch(e) {}
             }
             setTimeout(() => {
                 if (expandedVideo.readyState < 2 || expandedVideo.paused) {
                     try { expandedVideo.currentTime = 0.001; } catch(_) {}
                     expandedVideo.controls = true;
+                    try { console.log('[NK] fallback seek applied'); } catch(e) {}
                 }
             }, 600);
+        }
+        // Expose to inline onclick
+        window.__openNVModal = openVideoModal;
+        
+        // Smooth scroll helper
+        function smoothScrollTo(targetY, done) {
+            try { console.log('[NK] smoothScrollTo', targetY); } catch(e) {}
+            const start = window.scrollY || window.pageYOffset || 0;
+            const maxY = Math.max(0, Math.min(targetY, document.body.scrollHeight - window.innerHeight));
+            window.scrollTo({ top: maxY, behavior: 'smooth' });
+            let elapsed = 0;
+            const step = 50;
+            const maxWait = 1200;
+            const timer = setInterval(() => {
+                elapsed += step;
+                const y = window.scrollY || window.pageYOffset || 0;
+                if (Math.abs(y - maxY) < 4 || elapsed >= maxWait) {
+                    clearInterval(timer);
+                    setTimeout(done, 50);
+                }
+            }, step);
+        }
+        
+        function scrollAndOpen() {
+            if (!videoContainer) return openVideoModal();
+            const containerTop = (window.scrollY || window.pageYOffset || 0) + videoContainer.getBoundingClientRect().top;
+            const targetY = containerTop - 80; // offset for header
+            smoothScrollTo(targetY, openVideoModal);
         }
         
         // Open video modal (with robust playback to avoid gray screen)
         videoContainer.addEventListener('click', (evt) => {
             evt.preventDefault();
             evt.stopPropagation();
-            openVideoModal();
+            try { console.log('[NK] container click'); } catch(e) {}
+            scrollAndOpen();
         });
 
         // Also open modal when clicking directly on the video
         if (adVideo) {
+            adVideo.setAttribute('onclick', 'window.__openNVModal && window.__openNVModal()');
             adVideo.addEventListener('click', (evt) => {
                 evt.preventDefault();
                 evt.stopPropagation();
-                openVideoModal();
+                try { console.log('[NK] video click'); } catch(e) {}
+                scrollAndOpen();
+            });
+        }
+        // Keyboard activation
+        if (videoContainer) {
+            videoContainer.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    scrollAndOpen();
+                }
             });
         }
         
@@ -1485,6 +1550,14 @@
                 document.body.classList.remove('no-transform');
                 // Clear forced inline styles
                 videoModal.removeAttribute('style');
+                // Restore body scroll position
+                const y = parseInt(document.body.dataset.scrollY || '0', 10);
+                document.body.style.position = '';
+                document.body.style.top = '';
+                document.body.style.left = '';
+                document.body.style.right = '';
+                document.body.style.width = '';
+                window.scrollTo(0, y);
                 try { expandedVideo.pause(); } catch (_) {}
             }, 300);
         }

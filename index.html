@@ -850,7 +850,7 @@
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 items-center lg:ml-20 video-section">
                     <!-- Nordkaliber Ad Video -->
                     <div class="lg:col-span-1">
-                        <div id="videoContainer" class="relative overflow-hidden rounded-lg shadow-2xl hover-lift h-[500px] cursor-pointer">
+                        <div id="videoContainer" class="relative overflow-hidden rounded-lg shadow-2xl hover-lift h-[500px] cursor-pointer" role="button" tabindex="0" aria-label="Öppna video" onclick="window.__openNVModal && window.__openNVModal()">
                             <video 
                                 id="adVideo"
                                 class="w-full h-full object-cover" 
@@ -1405,27 +1405,26 @@
         const expandedVideo = document.getElementById('expandedVideo');
         
         function openVideoModal() {
+            try { console.log('[NK] openVideoModal called'); } catch(e) {}
             if (!videoModal || !expandedVideo) return;
             if (!videoModal.classList.contains('hidden')) return;
             if (videoModal.parentElement !== document.body) {
                 document.body.appendChild(videoModal);
             }
-            document.documentElement.style.overflow = 'hidden';
-            document.body.style.overflow = 'hidden';
-            document.body.classList.add('no-transform');
-            videoModal.style.position = 'fixed';
-            videoModal.style.left = '0';
-            videoModal.style.top = '0';
-            videoModal.style.width = '100vw';
-            videoModal.style.height = '100vh';
-            videoModal.style.display = 'flex';
-            videoModal.style.alignItems = 'center';
-            videoModal.style.justifyContent = 'center';
-            videoModal.style.zIndex = '2147483647';
-            videoModal.classList.remove('hidden');
+            // Lock after show (we will pre-scroll)
             setTimeout(() => {
                 const modalContent = videoModal.querySelector('div');
                 if (modalContent) modalContent.style.transform = 'scale(1)';
+                const currentY = window.scrollY || window.pageYOffset || 0;
+                document.documentElement.style.overflow = 'hidden';
+                document.body.style.overflow = 'hidden';
+                document.body.classList.add('no-transform');
+                document.body.dataset.scrollY = String(currentY);
+                document.body.style.position = 'fixed';
+                document.body.style.top = `-${currentY}px`;
+                document.body.style.left = '0';
+                document.body.style.right = '0';
+                document.body.style.width = '100%';
             }, 10);
             try {
                 expandedVideo.pause();
@@ -1436,32 +1435,71 @@
                     playPromise.catch(() => {
                         expandedVideo.controls = true;
                         expandedVideo.muted = false;
+                        try { console.log('[NK] autoplay blocked; showing controls'); } catch(e) {}
                     });
                 }
             } catch (_) {
                 expandedVideo.controls = true;
                 expandedVideo.muted = false;
+                try { console.log('[NK] error starting video'); } catch(e) {}
             }
             setTimeout(() => {
                 if (expandedVideo.readyState < 2 || expandedVideo.paused) {
                     try { expandedVideo.currentTime = 0.001; } catch(_) {}
                     expandedVideo.controls = true;
+                    try { console.log('[NK] fallback seek applied'); } catch(e) {}
                 }
             }, 600);
+        }
+        window.__openNVModal = openVideoModal;
+        
+        function smoothScrollTo(targetY, done) {
+            try { console.log('[NK] smoothScrollTo', targetY); } catch(e) {}
+            const maxY = Math.max(0, Math.min(targetY, document.body.scrollHeight - window.innerHeight));
+            window.scrollTo({ top: maxY, behavior: 'smooth' });
+            let elapsed = 0;
+            const step = 50;
+            const maxWait = 1200;
+            const timer = setInterval(() => {
+                elapsed += step;
+                const y = window.scrollY || window.pageYOffset || 0;
+                if (Math.abs(y - maxY) < 4 || elapsed >= maxWait) {
+                    clearInterval(timer);
+                    setTimeout(done, 50);
+                }
+            }, step);
+        }
+        
+        function scrollAndOpen() {
+            if (!videoContainer) return openVideoModal();
+            const containerTop = (window.scrollY || window.pageYOffset || 0) + videoContainer.getBoundingClientRect().top;
+            const targetY = containerTop - 80;
+            smoothScrollTo(targetY, openVideoModal);
         }
         
         videoContainer.addEventListener('click', (evt) => {
             evt.preventDefault();
             evt.stopPropagation();
-            openVideoModal();
+            try { console.log('[NK] container click'); } catch(e) {}
+            scrollAndOpen();
         });
 
         if (adVideo) {
+            adVideo.setAttribute('onclick', 'window.__openNVModal && window.__openNVModal()');
             adVideo.style.cursor = 'pointer';
             adVideo.addEventListener('click', (evt) => {
                 evt.preventDefault();
                 evt.stopPropagation();
-                openVideoModal();
+                try { console.log('[NK] video click'); } catch(e) {}
+                scrollAndOpen();
+            });
+        }
+        if (videoContainer) {
+            videoContainer.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    scrollAndOpen();
+                }
             });
         }
         
@@ -1477,6 +1515,13 @@
                 document.body.classList.remove('no-transform');
                 try { expandedVideo.pause(); } catch (_) {}
                 videoModal.removeAttribute('style');
+                const y = parseInt(document.body.dataset.scrollY || '0', 10);
+                document.body.style.position = '';
+                document.body.style.top = '';
+                document.body.style.left = '';
+                document.body.style.right = '';
+                document.body.style.width = '';
+                window.scrollTo(0, y);
             }, 300);
         }
         
