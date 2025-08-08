@@ -1239,6 +1239,7 @@
         
         // Automatic slideshow
         let slideIndex = 0;
+        let slideshowTimer = null;
         function showSlides() {
             let i;
             let slides = document.getElementsByClassName("slide");
@@ -1258,7 +1259,10 @@
             slides[slideIndex-1].classList.add("fade");
             dots[slideIndex-1].classList.add("active");
             
-            setTimeout(showSlides, 8000); // Change image every 8 seconds (less frequent)
+            if (slideshowTimer) {
+                clearTimeout(slideshowTimer);
+            }
+            slideshowTimer = setTimeout(showSlides, 8000); // Change image every 8 seconds
         }
         
         // Initialize slideshow with performance optimization
@@ -1276,6 +1280,15 @@
                     showSlides();
                 });
             }
+
+            // Click on slideshow area to advance to next slide
+            const slideshowContainers = document.querySelectorAll('.slideshow-container');
+            slideshowContainers.forEach(container => {
+                container.style.cursor = 'pointer';
+                container.addEventListener('click', () => {
+                    showSlides();
+                });
+            });
         });
 
         // Form submission handling (simplified)
@@ -1402,18 +1415,34 @@
             });
         }
         
-        // Open video modal
+        // Open video modal (with robust playback to avoid gray screen)
         videoContainer.addEventListener('click', () => {
+            if (!videoModal.classList.contains('hidden')) return;
             videoModal.classList.remove('hidden');
             document.body.style.overflow = 'hidden'; // Prevent background scrolling
-            
+
             // Smooth opening animation
             setTimeout(() => {
                 const modalContent = videoModal.querySelector('div');
                 modalContent.style.transform = 'scale(1)';
             }, 10);
-            
-            expandedVideo.play();
+
+            // Ensure video is ready and starts reliably
+            try {
+                expandedVideo.pause();
+                expandedVideo.currentTime = 0;
+                // Reload source to force repaint on some browsers
+                expandedVideo.load();
+                const playPromise = expandedVideo.play();
+                if (playPromise && typeof playPromise.then === 'function') {
+                    playPromise.catch(() => {
+                        // If autoplay fails, show controls and let user start manually
+                        expandedVideo.controls = true;
+                    });
+                }
+            } catch (_) {
+                expandedVideo.controls = true;
+            }
         });
         
         // Close video modal
@@ -1424,7 +1453,7 @@
             setTimeout(() => {
                 videoModal.classList.add('hidden');
                 document.body.style.overflow = 'auto';
-                expandedVideo.pause();
+                try { expandedVideo.pause(); } catch (_) {}
             }, 300);
         }
         
