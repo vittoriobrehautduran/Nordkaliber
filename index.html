@@ -1159,7 +1159,7 @@
 
 
     <!-- Video Modal Overlay -->
-    <div id="videoModal" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden flex items-center justify-center p-4">
+    <div id="videoModal" class="fixed inset-0 bg-black bg-opacity-90 z-[9999] hidden flex items-center justify-center p-4">
         <div class="relative w-full max-w-5xl bg-black rounded-xl overflow-hidden shadow-2xl transform scale-95 transition-transform duration-300">
             <!-- Video header -->
             <div class="flex justify-between items-center p-4 bg-gradient-to-r from-hunter-brown to-dark-green">
@@ -1416,7 +1416,8 @@
         }
         
         // Open video modal (with robust playback to avoid gray screen)
-        videoContainer.addEventListener('click', () => {
+        videoContainer.addEventListener('click', (evt) => {
+            evt.stopPropagation();
             if (!videoModal.classList.contains('hidden')) return;
             videoModal.classList.remove('hidden');
             document.body.style.overflow = 'hidden'; // Prevent background scrolling
@@ -1436,11 +1437,20 @@
                 if (playPromise && typeof playPromise.then === 'function') {
                     playPromise.catch(() => {
                         expandedVideo.controls = true;
+                        expandedVideo.muted = false;
                     });
                 }
             } catch (_) {
                 expandedVideo.controls = true;
+                expandedVideo.muted = false;
             }
+
+            setTimeout(() => {
+                if (expandedVideo.readyState < 2 || expandedVideo.paused) {
+                    try { expandedVideo.currentTime = 0.001; } catch(_) {}
+                    expandedVideo.controls = true;
+                }
+            }, 600);
         });
         
         // Close video modal
