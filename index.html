@@ -53,8 +53,7 @@
             contain: layout style paint;
             transform: translateZ(0);
         }
-        .modal-open { overflow: hidden !important; position: fixed; width: 100%; }
-        .no-transform { transform: none !important; }
+        /* Minimal; scroll lock applied inline */
         
         /* Performance optimizations */
         * {
@@ -1422,9 +1421,11 @@
             evt.stopPropagation();
             if (!videoModal.classList.contains('hidden')) return;
             const scrollY = window.scrollY || window.pageYOffset;
-            document.body.dataset.scrollY = String(scrollY);
-            document.body.classList.add('modal-open','no-transform');
-            document.body.style.top = `-${scrollY}px`;
+            if (videoModal.parentElement !== document.body) {
+                document.body.appendChild(videoModal);
+            }
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
             videoModal.classList.remove('hidden');
 
             // Smooth opening animation
@@ -1465,11 +1466,8 @@
             
             setTimeout(() => {
                 videoModal.classList.add('hidden');
-                const y = parseInt(document.body.dataset.scrollY || '0', 10);
-                document.body.classList.remove('modal-open','no-transform');
-                document.body.style.top = '';
+                document.documentElement.style.overflow = '';
                 document.body.style.overflow = '';
-                window.scrollTo(0, y);
                 try { expandedVideo.pause(); } catch (_) {}
             }, 300);
         }
