@@ -55,6 +55,7 @@
         }
         /* When modal is open, fully lock scroll and neutralize transforms */
         /* Keeping minimal; scroll lock handled via inline styles on open */
+        .no-transform { transform: none !important; }
         
         /* Performance optimizations */
         * {
@@ -1428,6 +1429,8 @@
             // Lock page scrolling (html + body) without altering layout
             document.documentElement.style.overflow = 'hidden';
             document.body.style.overflow = 'hidden';
+            // Critical: remove transform on body so fixed modal is relative to viewport
+            document.body.classList.add('no-transform');
             videoModal.classList.remove('hidden');
 
             // Smooth opening animation
@@ -1475,6 +1478,7 @@
                 // Restore scroll position and body styles
                 document.documentElement.style.overflow = '';
                 document.body.style.overflow = '';
+                document.body.classList.remove('no-transform');
                 try { expandedVideo.pause(); } catch (_) {}
             }, 300);
         }

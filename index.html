@@ -54,6 +54,7 @@
             transform: translateZ(0);
         }
         /* Minimal; scroll lock applied inline */
+        .no-transform { transform: none !important; }
         
         /* Performance optimizations */
         * {
@@ -1426,6 +1427,7 @@
             }
             document.documentElement.style.overflow = 'hidden';
             document.body.style.overflow = 'hidden';
+            document.body.classList.add('no-transform');
             videoModal.classList.remove('hidden');
 
             // Smooth opening animation
@@ -1468,6 +1470,7 @@
                 videoModal.classList.add('hidden');
                 document.documentElement.style.overflow = '';
                 document.body.style.overflow = '';
+                document.body.classList.remove('no-transform');
                 try { expandedVideo.pause(); } catch (_) {}
             }, 300);
         }
