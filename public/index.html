@@ -1431,6 +1431,16 @@
             document.body.style.overflow = 'hidden';
             // Critical: remove transform on body so fixed modal is relative to viewport
             document.body.classList.add('no-transform');
+            // Force layout to viewport-centered overlay (in case classes are overridden)
+            videoModal.style.position = 'fixed';
+            videoModal.style.left = '0';
+            videoModal.style.top = '0';
+            videoModal.style.width = '100vw';
+            videoModal.style.height = '100vh';
+            videoModal.style.display = 'flex';
+            videoModal.style.alignItems = 'center';
+            videoModal.style.justifyContent = 'center';
+            videoModal.style.zIndex = '2147483647';
             videoModal.classList.remove('hidden');
 
             // Smooth opening animation
@@ -1475,10 +1485,11 @@
             
             setTimeout(() => {
                 videoModal.classList.add('hidden');
-                // Restore scroll position and body styles
                 document.documentElement.style.overflow = '';
                 document.body.style.overflow = '';
                 document.body.classList.remove('no-transform');
+                // Clear forced inline styles
+                videoModal.removeAttribute('style');
                 try { expandedVideo.pause(); } catch (_) {}
             }, 300);
         }

@@ -1428,6 +1428,15 @@
             document.documentElement.style.overflow = 'hidden';
             document.body.style.overflow = 'hidden';
             document.body.classList.add('no-transform');
+            videoModal.style.position = 'fixed';
+            videoModal.style.left = '0';
+            videoModal.style.top = '0';
+            videoModal.style.width = '100vw';
+            videoModal.style.height = '100vh';
+            videoModal.style.display = 'flex';
+            videoModal.style.alignItems = 'center';
+            videoModal.style.justifyContent = 'center';
+            videoModal.style.zIndex = '2147483647';
             videoModal.classList.remove('hidden');
 
             // Smooth opening animation
@@ -1472,6 +1481,7 @@
                 document.body.style.overflow = '';
                 document.body.classList.remove('no-transform');
                 try { expandedVideo.pause(); } catch (_) {}
+                videoModal.removeAttribute('style');
             }, 300);
         }
         
