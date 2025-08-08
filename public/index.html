@@ -53,6 +53,13 @@
             contain: layout style paint;
             transform: translateZ(0);
         }
+        /* When modal is open, fully lock scroll and neutralize transforms */
+        .modal-open {
+            overflow: hidden !important;
+            position: fixed;
+            width: 100%;
+        }
+        .no-transform { transform: none !important; }
         
         /* Performance optimizations */
         * {
@@ -1419,8 +1426,12 @@
         videoContainer.addEventListener('click', (evt) => {
             evt.stopPropagation();
             if (!videoModal.classList.contains('hidden')) return;
+            // Lock scroll at current position and neutralize transforms to avoid offset issues
+            const scrollY = window.scrollY || window.pageYOffset;
+            document.body.dataset.scrollY = String(scrollY);
+            document.body.classList.add('modal-open','no-transform');
+            document.body.style.top = `-${scrollY}px`;
             videoModal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden'; // Prevent background scrolling
 
             // Smooth opening animation
             setTimeout(() => {
@@ -1464,7 +1475,12 @@
             
             setTimeout(() => {
                 videoModal.classList.add('hidden');
-                document.body.style.overflow = 'auto';
+                // Restore scroll position and body styles
+                const y = parseInt(document.body.dataset.scrollY || '0', 10);
+                document.body.classList.remove('modal-open','no-transform');
+                document.body.style.top = '';
+                document.body.style.overflow = '';
+                window.scrollTo(0, y);
                 try { expandedVideo.pause(); } catch (_) {}
             }, 300);
         }
