@@ -388,7 +388,7 @@
         }
         /* Layered preview */
         .preview-stack { position: relative; height: 16rem; }
-        .preview-layer { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center; opacity: 0; transition: opacity 1100ms ease-in-out; pointer-events: none; will-change: opacity; }
+        .preview-layer { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center; opacity: 0; transition: opacity 750ms ease-in-out; pointer-events: none; will-change: opacity; }
         .preview-layer.show { opacity: 1; }
         .layer-base { z-index: 1; }
         .layer-logo { z-index: 2; }
@@ -2482,7 +2482,7 @@
                           // Slight overlap so the change feels smooth
                           setTimeout(() => { activeEl.classList.remove('show'); }, 150);
                           // Switch active reference after fade completes
-                          setTimeout(() => { pair.active = nextKey; }, 1100);
+                          setTimeout(() => { pair.active = nextKey; }, 750);
                       });
                   });
                   incomingEl.setAttribute('src', newSrc);
@@ -2493,7 +2493,7 @@
                               incomingEl.style.display = 'block';
                               incomingEl.classList.add('show');
                               setTimeout(() => { activeEl.classList.remove('show'); }, 150);
-                              setTimeout(() => { pair.active = nextKey; }, 1100);
+                              setTimeout(() => { pair.active = nextKey; }, 750);
                           }
                       } catch (_) {}
                   }, 100);
