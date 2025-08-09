@@ -386,6 +386,13 @@
                 font-size: 0.7rem !important;
             }
         }
+        /* Layered preview */
+        .preview-stack { position: relative; height: 16rem; }
+        .preview-layer { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center; opacity: 0; transition: opacity 300ms ease; pointer-events: none; }
+        .preview-layer.show { opacity: 1; }
+        #baseBox { z-index: 1; }
+        #logoOverlay { z-index: 2; mix-blend-mode: multiply; }
+        #buttonOverlay { z-index: 3; mix-blend-mode: multiply; }
     </style>
 </head>
 <body class="bg-gray-900 text-white min-h-screen">
@@ -508,6 +515,10 @@
                         <div class="text-center">
                             <div class="color-option bg-green-600 mx-auto mb-2" data-color="green"></div>
                             <span class="text-sm">Grön</span>
+                        </div>
+                        <div class="text-center">
+                            <div class="color-option bg-red-600 mx-auto mb-2" data-color="red"></div>
+                            <span class="text-sm">Röd</span>
                         </div>
                     </div>
                     <div class="mb-6">
@@ -664,9 +675,11 @@
                     <h3 class="text-xl font-bold mb-4 text-mustard-gold">
                         <i class="fas fa-eye mr-2"></i>Produktförhandsvisning
                     </h3>
-                    <div class="bg-light-grey rounded-lg p-4 h-64 flex items-center justify-center">
-                        <img id="previewImage" src="/images/product-black-box.png" alt="Produktförhandsvisning" class="max-w-full max-h-full object-contain">
-                        <div id="placeholderText" class="text-gray-400 text-center">
+                    <div class="bg-white rounded-lg p-4 h-64 preview-stack flex items-center justify-center">
+                        <img id="baseBox" class="preview-layer" alt="Baslåda">
+                        <img id="logoOverlay" class="preview-layer" alt="Logo overlay">
+                        <img id="buttonOverlay" class="preview-layer" alt="Knapp overlay">
+                        <div id="placeholderText" class="text-gray-400 text-center absolute">
                             <i class="fas fa-box text-4xl mb-2"></i>
                             <p>Välj alternativ för att se förhandsvisning</p>
                         </div>
@@ -1360,7 +1373,9 @@
 
                  // Update preview image and selections
          function updatePreview() {
-             const previewImage = document.getElementById('previewImage');
+             const baseBox = document.getElementById('baseBox');
+             const logoOverlay = document.getElementById('logoOverlay');
+             const buttonOverlay = document.getElementById('buttonOverlay');
              const placeholderText = document.getElementById('placeholderText');
              
              // Update caliber display
@@ -1410,24 +1425,20 @@
                  document.getElementById('selectedDesign').textContent = '-';
              }
              
-             // Update image preview
-             if (selectedPrimary && !confirmedPrimarySpecial) {
-                 const imageMap = {
-                                                  'black': '/images/product-black-box.png',
-            'white': '/images/white_box.png',
-            'gray': '/images/box_gray.png',
-            'green': '/images/green_box.png'
-                 };
-                 
-                 if (imageMap[selectedPrimary]) {
-                     previewImage.src = imageMap[selectedPrimary];
-                     previewImage.style.display = 'block';
-                     placeholderText.style.display = 'none';
-                 }
+             // Update layered images
+             const baseSrc = confirmedPrimarySpecial ? null : primaryImageMap[selectedPrimary];
+             const logoSrc = confirmedSecondarySpecial ? null : secondaryLogoMap[selectedSecondary];
+             const buttonSrc = confirmedSecondarySpecial ? null : secondaryButtonMap[selectedSecondary];
+             if (baseSrc) {
+                 setImageWithFade(baseBox, baseSrc);
+                 placeholderText.style.display = 'none';
              } else {
-                 previewImage.style.display = 'none';
+                 baseBox && baseBox.removeAttribute('src');
+                 baseBox && baseBox.classList.remove('show');
                  placeholderText.style.display = 'block';
              }
+             setImageWithFade(logoOverlay, logoSrc);
+             setImageWithFade(buttonOverlay, buttonSrc);
          }
 
                  // Step navigation buttons
