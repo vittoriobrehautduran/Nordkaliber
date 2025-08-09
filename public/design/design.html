@@ -2399,6 +2399,34 @@
          console.log('Step 2 indicator exists:', !!document.getElementById('step2'));
          console.log('Step 3 indicator exists:', !!document.getElementById('step3'));
          console.log('Step 4 indicator exists:', !!document.getElementById('step4'));
+
+         function setImageWithFade(img, src) {
+              if (!img) return;
+              if (!src) {
+                  img.classList.remove('show');
+                  img.removeAttribute('src');
+                  return;
+              }
+              if (img.getAttribute('src') === src) {
+                  img.classList.add('show');
+                  return;
+              }
+              img.classList.remove('show');
+              img.addEventListener('load', function onload() {
+                  img.removeEventListener('load', onload);
+                  requestAnimationFrame(() => img.classList.add('show'));
+              });
+              img.setAttribute('src', src);
+              // Fallback: if load doesn't fire (cache/edge), ensure visibility shortly after
+              setTimeout(() => {
+                  try {
+                      if (img.getAttribute('src') === src) {
+                          img.classList.add('show');
+                          img.style.display = 'block';
+                      }
+                  } catch (e) {}
+              }, 500);
+          }
     </script>
 </body>
 </html>
