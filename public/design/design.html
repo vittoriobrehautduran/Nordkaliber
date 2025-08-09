@@ -388,11 +388,11 @@
         }
         /* Layered preview */
         .preview-stack { position: relative; height: 16rem; }
-        .preview-layer { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center; opacity: 0; transition: opacity 300ms ease; pointer-events: none; }
+        .preview-layer { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center; opacity: 0; transition: opacity 1100ms ease-in-out; pointer-events: none; will-change: opacity; }
         .preview-layer.show { opacity: 1; }
-        #baseBox { z-index: 1; }
-        #logoOverlay { z-index: 2; mix-blend-mode: multiply; }
-        #buttonOverlay { z-index: 3; mix-blend-mode: multiply; }
+        .layer-base { z-index: 1; }
+        .layer-logo { z-index: 2; }
+        .layer-button { z-index: 3; }
     </style>
 </head>
 <body class="bg-gray-900 text-white min-h-screen">
@@ -676,9 +676,12 @@
                         <i class="fas fa-eye mr-2"></i>Produktförhandsvisning
                     </h3>
                     <div class="bg-white rounded-lg p-4 h-64 preview-stack flex items-center justify-center">
-                        <img id="baseBox" class="preview-layer" alt="Baslåda">
-                        <img id="logoOverlay" class="preview-layer" alt="Logo overlay">
-                        <img id="buttonOverlay" class="preview-layer" alt="Knapp overlay">
+                        <img id="baseBoxA" class="preview-layer layer-base" alt="Baslåda">
+                        <img id="baseBoxB" class="preview-layer layer-base" alt="Baslåda">
+                        <img id="logoOverlayA" class="preview-layer layer-logo" alt="Logo overlay">
+                        <img id="logoOverlayB" class="preview-layer layer-logo" alt="Logo overlay">
+                        <img id="buttonOverlayA" class="preview-layer layer-button" alt="Knapp overlay">
+                        <img id="buttonOverlayB" class="preview-layer layer-button" alt="Knapp overlay">
                         <div id="placeholderText" class="text-gray-400 text-center absolute">
                             <i class="fas fa-box text-4xl mb-2"></i>
                             <p>Välj alternativ för att se förhandsvisning</p>
@@ -2439,7 +2442,7 @@
          };
          const secondaryLogoMap = {
              black: '/images/secondarycolors/blacklogo.PNG',
-             red: '/images/secondarycolors/redlogo.PNG',
+             red: '/images/secondarycolors/redlogo.png',
              orange: '/images/secondarycolors/orangelogo.PNG',
              gold: '/images/secondarycolors/goldlogo.PNG',
              silver: '/images/secondarycolors/silverlogo.PNG'
@@ -2451,6 +2454,72 @@
              gold: '/images/secondarycolors/goldbutton.PNG',
              white: '/images/secondarycolors/whitebutton.PNG'
          };
+
+          // Crossfade utility between A/B images in a layer
+          function createPair(aId, bId) {
+              return { A: document.getElementById(aId), B: document.getElementById(bId), active: 'A' };
+          }
+          function crossfade(pair, newSrc) {
+              const activeEl = pair[pair.active];
+              const nextKey = pair.active === 'A' ? 'B' : 'A';
+              const incomingEl = pair[nextKey];
+  
+              if (!newSrc) {
+                  activeEl.classList.remove('show');
+                  incomingEl.classList.remove('show');
+                  activeEl.removeAttribute('src');
+                  incomingEl.removeAttribute('src');
+                  return;
+              }
+  
+              if (incomingEl.getAttribute('src') !== newSrc) {
+                  incomingEl.classList.remove('show');
+                  incomingEl.addEventListener('load', function onload() {
+                      incomingEl.removeEventListener('load', onload);
+                      incomingEl.style.display = 'block';
+                      requestAnimationFrame(() => {
+                          // Start fading in the incoming image first
+                          incomingEl.classList.add('show');
+                          // Slight overlap so the change feels smooth
+                          setTimeout(() => { activeEl.classList.remove('show'); }, 150);
+                          // Switch active reference after fade completes
+                          setTimeout(() => { pair.active = nextKey; }, 1100);
+                      });
+                  });
+                  incomingEl.setAttribute('src', newSrc);
+                  // Fallback for cached/instant loads
+                  setTimeout(() => {
+                      try {
+                          if (incomingEl.getAttribute('src') === newSrc) {
+                              incomingEl.style.display = 'block';
+                              incomingEl.classList.add('show');
+                              setTimeout(() => { activeEl.classList.remove('show'); }, 150);
+                              setTimeout(() => { pair.active = nextKey; }, 1100);
+                          }
+                      } catch (_) {}
+                  }, 100);
+              } else {
+                  incomingEl.classList.add('show');
+                  setTimeout(() => { activeEl.classList.remove('show'); }, 150);
+                  setTimeout(() => { pair.active = nextKey; }, 1100);
+              }
+          }
+
+          // Persistent pairs (initialized once), with lazy fallback
+          let basePair = null;
+          let logoPair = null;
+          let buttonPair = null;
+          function ensurePairs() {
+              if (!basePair || !logoPair || !buttonPair) {
+                  basePair = createPair('baseBoxA','baseBoxB');
+                  logoPair = createPair('logoOverlayA','logoOverlayB');
+                  buttonPair = createPair('buttonOverlayA','buttonOverlayB');
+              }
+          }
+          document.addEventListener('DOMContentLoaded', ensurePairs);
+
+          // Ensure pairs exist
+          ensurePairs();
     </script>
 </body>
 </html>
