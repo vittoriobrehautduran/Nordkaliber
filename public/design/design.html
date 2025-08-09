@@ -580,43 +580,43 @@
                     <div class="grid grid-cols-2 gap-4 mb-6">
                         <div class="text-center">
                             <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="älg_logo">
-                                <img src="/images/alg_logo.svg" alt="Design 1" class="w-full h-24 object-contain mb-2">
+                                <img src="/images/alg_logo.svg" alt="Design 1" class="w-full h-24 object-contain mb-2" onerror="console.error('[Design] Thumb failed:', this.src)">
                                 <span class="text-sm font-semibold">Design 1</span>
                             </div>
                         </div>
                         <div class="text-center">
                             <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="älg_design">
-                                <img src="/images/alg_design.svg" alt="Design 2" class="w-full h-24 object-contain mb-2">
+                                <img src="/images/alg_design.svg" alt="Design 2" class="w-full h-24 object-contain mb-2" onerror="console.error('[Design] Thumb failed:', this.src)">
                                 <span class="text-sm font-semibold">Design 2</span>
                             </div>
                         </div>
                         <div class="text-center">
                             <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="älg_jägare">
-                                <img src="/images/alg_jagare.svg" alt="Design 3" class="w-full h-24 object-contain mb-2">
+                                <img src="/images/alg_jagare.svg" alt="Design 3" class="w-full h-24 object-contain mb-2" onerror="console.error('[Design] Thumb failed:', this.src)">
                                 <span class="text-sm font-semibold">Design 3</span>
                             </div>
                         </div>
                         <div class="text-center">
                             <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="älg_majestic">
-                                <img src="/images/alg_majestic.svg" alt="Design 4" class="w-full h-24 object-contain mb-2">
+                                <img src="/images/alg_majestic.svg" alt="Design 4" class="w-full h-24 object-contain mb-2" onerror="console.error('[Design] Thumb failed:', this.src)">
                                 <span class="text-sm font-semibold">Design 4</span>
                             </div>
                         </div>
                         <div class="text-center">
                             <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="fågel_design">
-                                <img src="/images/fagel_design.svg" alt="Design 5" class="w-full h-24 object-contain mb-2">
+                                <img src="/images/fagel_design.svg" alt="Design 5" class="w-full h-24 object-contain mb-2" onerror="console.error('[Design] Thumb failed:', this.src)">
                                 <span class="text-sm font-semibold">Design 5</span>
                             </div>
                         </div>
                         <div class="text-center">
                             <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="jägare_hund">
-                                <img src="/images/jagare_hund.svg" alt="Design 6" class="w-full h-24 object-contain mb-2">
+                                <img src="/images/jagare_hund.svg" alt="Design 6" class="w-full h-24 object-contain mb-2" onerror="console.error('[Design] Thumb failed:', this.src)">
                                 <span class="text-sm font-semibold">Design 6</span>
                             </div>
                         </div>
                         <div class="text-center">
                             <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="your_text">
-                                <img src="/images/your_text_design.svg" alt="Din Text" class="w-full h-24 object-contain mb-2">
+                                <img src="/images/your_text_design.svg" alt="Din Text" class="w-full h-24 object-contain mb-2" onerror="console.error('[Design] Thumb failed:', this.src)">
                                 <span class="text-sm font-semibold">Din Text</span>
                             </div>
                         </div>
@@ -1444,12 +1444,15 @@
                  // If a primary is selected but we didn't resolve a src (e.g., mapping/case issue), still hide placeholder
                  if (selectedPrimary && !confirmedPrimarySpecial) {
                      placeholderText.style.display = 'none';
+                     try { console.error('[Design] Missing baseSrc for selectedPrimary', selectedPrimary); } catch (e) {}
                  } else {
                      placeholderText.style.display = 'block';
                  }
              }
-             setImageWithFade(logoOverlay, logoSrc);
-             setImageWithFade(buttonOverlay, buttonSrc);
+             try {
+                 setImageWithFade(logoOverlay, logoSrc);
+                 setImageWithFade(buttonOverlay, buttonSrc);
+             } catch (e) { try { console.error('[Design] Overlay set error', e); } catch (_) {} }
          }
 
                  // Step navigation buttons
