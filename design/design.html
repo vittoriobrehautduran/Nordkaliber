@@ -128,26 +128,26 @@
              font-weight: bold;
          }
          
-                 .special-request-confirmed {
+         .special-request-confirmed {
             background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
-            color: white !important;
-            border: none !important;
+             color: white !important;
+             border: none !important;
             border-radius: 12px !important;
             box-shadow: 0 4px 12px -2px rgba(59, 130, 246, 0.3) !important;
             transition: all 0.3s ease !important;
             font-weight: 500 !important;
-            cursor: pointer !important;
-            pointer-events: auto !important;
-            opacity: 1 !important;
-            position: relative !important;
+             cursor: pointer !important;
+             pointer-events: auto !important;
+             opacity: 1 !important;
+             position: relative !important;
             padding: 10px 16px !important;
             min-height: 45px !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: space-between !important;
-            overflow: hidden !important;
-        }
-        
+             display: flex !important;
+             align-items: center !important;
+             justify-content: space-between !important;
+             overflow: hidden !important;
+         }
+         
         /* Option disabled styling for when special request is active */
         .option-disabled {
             opacity: 0.4 !important;
@@ -157,15 +157,15 @@
         
         /* Dropdown animation */
         .dropdown-enter {
-            opacity: 0;
+             opacity: 0;
             transform: translateY(-10px);
         }
         
         .dropdown-enter-active {
-            opacity: 1;
+             opacity: 1;
             transform: translateY(0);
             transition: all 0.2s ease-out;
-        }
+         }
          
          .special-request-confirmed::placeholder {
              color: #9ca3af !important;
@@ -236,10 +236,16 @@
             /* Main content container */
             .container.mx-auto.px-4.py-8 {
                 flex: 1 !important;
-                padding: 0.25rem !important;
+                padding: 0.75rem 0.75rem 1rem 0.75rem !important;
                 margin: 0 !important;
                 max-width: 100% !important;
                 overflow: visible !important;
+            }
+
+            .bg-soft-grey.rounded-xl.p-6.shadow-2xl,
+            .bg-soft-grey.rounded-xl.p-6 {
+                margin-left: 0.5rem !important;
+                margin-right: 0.5rem !important;
             }
             
             /* Grid becomes vertical stack - no scrolling */
@@ -398,10 +404,14 @@
             
             /* Textareas */
             textarea {
-                padding: 0.125rem !important;
-                font-size: 0.5rem !important;
+                padding: 0.5rem !important;
+                font-size: 16px !important;
                 min-height: 1.5rem !important;
                 line-height: 1 !important;
+            }
+
+            input, select, button {
+                font-size: 16px !important;
             }
             
             /* Dropdowns */
@@ -436,6 +446,13 @@
             .p-3, .p-4, .p-6 {
                 padding: 0.125rem !important;
             }
+
+            /* Cart modal padding/margins for mobile */
+            #cartModal .p-6 { padding: 1rem !important; }
+            #cartModal .px-6 { padding-left: 1rem !important; padding-right: 1rem !important; }
+            #cartModal .py-4 { padding-top: 0.875rem !important; padding-bottom: 0.875rem !important; }
+            #cartModal .rounded-lg { border-radius: 0.75rem !important; }
+            #cartModal .bg-premium-black { padding-left: max(1rem, env(safe-area-inset-left)) !important; padding-right: max(1rem, env(safe-area-inset-right)) !important; }
             
             /* Step indicators */
             .step-indicator {
@@ -1191,7 +1208,7 @@
                         <div class="text-center">
                             <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="your_text">
                                 <img src="/images/your_text_design.png" alt="Design 8" class="w-full h-24 object-contain mb-2" onerror="console.error('[Design] Thumb failed:', this.src)">
-                        <span class="text-sm font-semibold">Design 8</span>
+                                <span class="text-sm font-semibold">Design 8</span>
                             </div>
                         </div>
                         <div class="text-center">
@@ -1502,9 +1519,9 @@
                          'alg_jagare': 'Design 3',
                          'alg_majestic': 'Design 4',
                          'fagel_design': 'Design 5',
-                        'jagare_hund': 'Design 6',
-                        'algfavvo': 'Design 7',
-                        'your_text': 'Design 8',
+                         'jagare_hund': 'Design 6',
+                         'algfavvo': 'Design 7',
+                         'your_text': 'Design 8',
                          'none': 'Ingen Design'
                      };
                      
@@ -1601,7 +1618,7 @@
 
                  // Add event listeners for special requests (excluding those which now use dropdown)
         ['designSpecial', 'initials', 'initialsSpecial'].forEach(id => {
-            const input = document.getElementById(id);
+             const input = document.getElementById(id);
              
              // Handle input changes
              input.addEventListener('input', function() {
@@ -1947,7 +1964,7 @@
                      updatePreview();
                  }, 100); // Small delay to check focus
              });
-                 });
+         });
 
         // NEW: Special Request Dropdown Functionality
         function setupSpecialRequestDropdown(type) {
@@ -2197,7 +2214,7 @@
         // Apply once
         optimizeMobileLayout();
 
-                // Update preview image and selections
+                 // Update preview image and selections
          function updatePreview() {
              // Ensure pairs exist
              ensurePairs();
@@ -2242,7 +2259,7 @@
                      'alg_jagare': 'Design 3',
                      'alg_majestic': 'Design 4',
                      'fagel_design': 'Design 5',
-                        'jagare_hund': 'Design 6',
+                     'jagare_hund': 'Design 6',
                         'algfavvo': 'Design 7',
                         'your_text': 'Design 8',
                      'none': 'Ingen Design'
@@ -2272,12 +2289,12 @@
                      placeholderText.style.display = 'none';
                      try { console.error('[Design] Missing baseSrc for selectedPrimary', selectedPrimary); } catch (e) {}
                  } else {
-                     placeholderText.style.display = 'block';
-                 }
+                 placeholderText.style.display = 'block';
+             }
              }
              try {
-                 crossfade(logoPair, logoSrc);
-                 crossfade(buttonPair, buttonSrc);
+             crossfade(logoPair, logoSrc);
+             crossfade(buttonPair, buttonSrc);
              } catch (e) { try { console.error('[Design] Overlay set error', e); } catch (_) {} }
          }
 
@@ -3264,53 +3281,53 @@
              darkgreen: '/images/primarycolors/darkgreenbox.PNG',
              red: '/images/primarycolors/boxred.PNG'
          };
-                 const secondaryLogoMap = {
-            black: '/images/secondarycolors/blacklogo.PNG',
-            red: '/images/secondarycolors/redlogo.png',
-            orange: '/images/secondarycolors/orangelogo.PNG',
-            gold: '/images/secondarycolors/goldlogo.PNG',
+         const secondaryLogoMap = {
+             black: '/images/secondarycolors/blacklogo.PNG',
+             red: '/images/secondarycolors/redlogo.png',
+             orange: '/images/secondarycolors/orangelogo.PNG',
+             gold: '/images/secondarycolors/goldlogo.PNG',
             white: '/images/secondarycolors/whitelogo.PNG'
-        };
-                 const secondaryButtonMap = {
-            black: '/images/secondarycolors/blackbutton.PNG',
-            red: '/images/secondarycolors/redbutton.PNG',
-            orange: '/images/secondarycolors/orangebutton.PNG',
-            gold: '/images/secondarycolors/goldbutton.PNG',
-            white: '/images/secondarycolors/whitebutton.PNG'
-        };
+         };
+         const secondaryButtonMap = {
+             black: '/images/secondarycolors/blackbutton.PNG',
+             red: '/images/secondarycolors/redbutton.PNG',
+             orange: '/images/secondarycolors/orangebutton.PNG',
+             gold: '/images/secondarycolors/goldbutton.PNG',
+             white: '/images/secondarycolors/whitebutton.PNG'
+         };
 
           // Crossfade utility between A/B images in a layer
           function createPair(aId, bId) {
               return { A: document.getElementById(aId), B: document.getElementById(bId), active: 'A' };
           }
           function crossfade(pair, newSrc) {
-              const activeEl = pair[pair.active];
-              const nextKey = pair.active === 'A' ? 'B' : 'A';
-              const incomingEl = pair[nextKey];
+             const activeEl = pair[pair.active];
+             const nextKey = pair.active === 'A' ? 'B' : 'A';
+             const incomingEl = pair[nextKey];
   
               if (!newSrc) {
-                  activeEl.classList.remove('show');
-                  incomingEl.classList.remove('show');
-                  activeEl.removeAttribute('src');
-                  incomingEl.removeAttribute('src');
-                  return;
-              }
+                 activeEl.classList.remove('show');
+                 incomingEl.classList.remove('show');
+                 activeEl.removeAttribute('src');
+                 incomingEl.removeAttribute('src');
+                 return;
+             }
   
               if (incomingEl.getAttribute('src') !== newSrc) {
-                  incomingEl.classList.remove('show');
+                 incomingEl.classList.remove('show');
                   incomingEl.addEventListener('load', function onload() {
-                      incomingEl.removeEventListener('load', onload);
+                     incomingEl.removeEventListener('load', onload);
                       incomingEl.style.display = 'block';
                       requestAnimationFrame(() => {
                           // Start fading in the incoming image first
-                          incomingEl.classList.add('show');
+                         incomingEl.classList.add('show');
                           // Slight overlap so the change feels smooth
                           setTimeout(() => { activeEl.classList.remove('show'); }, 150);
                           // Switch active reference after fade completes
                           setTimeout(() => { pair.active = nextKey; }, 750);
-                      });
-                  });
-                  incomingEl.setAttribute('src', newSrc);
+                     });
+                 });
+                 incomingEl.setAttribute('src', newSrc);
                   // Fallback for cached/instant loads
                   setTimeout(() => {
                       try {
@@ -3322,8 +3339,8 @@
                           }
                       } catch (_) {}
                   }, 100);
-              } else {
-                  incomingEl.classList.add('show');
+             } else {
+                 incomingEl.classList.add('show');
                   setTimeout(() => { activeEl.classList.remove('show'); }, 150);
                   setTimeout(() => { pair.active = nextKey; }, 1100);
               }
@@ -3335,12 +3352,12 @@
           let buttonPair = null;
           function ensurePairs() {
               if (!basePair || !logoPair || !buttonPair) {
-                  basePair = createPair('baseBoxA','baseBoxB');
-                  logoPair = createPair('logoOverlayA','logoOverlayB');
-                  buttonPair = createPair('buttonOverlayA','buttonOverlayB');
-              }
-          }
-          document.addEventListener('DOMContentLoaded', ensurePairs);
+                basePair = createPair('baseBoxA','baseBoxB');
+                logoPair = createPair('logoOverlayA','logoOverlayB');
+                buttonPair = createPair('buttonOverlayA','buttonOverlayB');
+            }
+        }
+        document.addEventListener('DOMContentLoaded', ensurePairs);
 
           // Ensure pairs exist
           ensurePairs();

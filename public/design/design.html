@@ -233,13 +233,20 @@
                 max-width: 100% !important;
             }
             
-            /* Main content container */
+            /* Main content container - add safe padding on mobile */
             .container.mx-auto.px-4.py-8 {
                 flex: 1 !important;
-                padding: 0.25rem !important;
+                padding: 0.75rem 0.75rem 1rem 0.75rem !important; /* top/right/bottom/left */
                 margin: 0 !important;
                 max-width: 100% !important;
                 overflow: visible !important;
+            }
+
+            /* Card panels padding from screen edges */
+            .bg-soft-grey.rounded-xl.p-6.shadow-2xl,
+            .bg-soft-grey.rounded-xl.p-6 {
+                margin-left: 0.5rem !important;
+                margin-right: 0.5rem !important;
             }
             
             /* Grid becomes vertical stack - no scrolling */
@@ -398,10 +405,15 @@
             
             /* Textareas */
             textarea {
-                padding: 0.125rem !important;
-                font-size: 0.5rem !important;
+                padding: 0.5rem !important;
+                font-size: 16px !important; /* Prevent iOS zoom */
                 min-height: 1.5rem !important;
                 line-height: 1 !important;
+            }
+
+            /* Inputs should be at least 16px on iOS to avoid zoom */
+            input, select, button {
+                font-size: 16px !important;
             }
             
             /* Dropdowns */
@@ -436,6 +448,13 @@
             .p-3, .p-4, .p-6 {
                 padding: 0.125rem !important;
             }
+
+            /* Cart modal should retain comfortable padding on mobile */
+            #cartModal .p-6 { padding: 1rem !important; }
+            #cartModal .px-6 { padding-left: 1rem !important; padding-right: 1rem !important; }
+            #cartModal .py-4 { padding-top: 0.875rem !important; padding-bottom: 0.875rem !important; }
+            #cartModal .rounded-lg { border-radius: 0.75rem !important; }
+            #cartModal .bg-premium-black { padding-left: max(1rem, env(safe-area-inset-left)) !important; padding-right: max(1rem, env(safe-area-inset-right)) !important; }
             
             /* Step indicators */
             .step-indicator {
