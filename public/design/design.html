@@ -579,44 +579,50 @@
                     </h2>
                     <div class="grid grid-cols-2 gap-4 mb-6">
                         <div class="text-center">
-                            <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="älg_logo">
+                            <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="alg_logo">
                                 <img src="/images/alg_logo.svg" alt="Design 1" class="w-full h-24 object-contain mb-2" onerror="console.error('[Design] Thumb failed:', this.src)">
                                 <span class="text-sm font-semibold">Design 1</span>
                             </div>
                         </div>
                         <div class="text-center">
-                            <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="älg_design">
+                            <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="alg_design">
                                 <img src="/images/alg_design.svg" alt="Design 2" class="w-full h-24 object-contain mb-2" onerror="console.error('[Design] Thumb failed:', this.src)">
                                 <span class="text-sm font-semibold">Design 2</span>
                             </div>
                         </div>
                         <div class="text-center">
-                            <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="älg_jägare">
+                            <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="alg_jagare">
                                 <img src="/images/alg_jagare.svg" alt="Design 3" class="w-full h-24 object-contain mb-2" onerror="console.error('[Design] Thumb failed:', this.src)">
                                 <span class="text-sm font-semibold">Design 3</span>
                             </div>
                         </div>
                         <div class="text-center">
-                            <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="älg_majestic">
+                            <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="alg_majestic">
                                 <img src="/images/alg_majestic.svg" alt="Design 4" class="w-full h-24 object-contain mb-2" onerror="console.error('[Design] Thumb failed:', this.src)">
                                 <span class="text-sm font-semibold">Design 4</span>
                             </div>
                         </div>
                         <div class="text-center">
-                            <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="fågel_design">
-                                <img src="/images/fagel_design.svg" alt="Design 5" class="w-full h-24 object-contain mb-2" onerror="console.error('[Design] Thumb failed:', this.src)">
+                            <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="fagel_design">
+                                <img src="/images/fagel_design.png" alt="Design 5" class="w-full h-24 object-contain mb-2" onerror="console.error('[Design] Thumb failed:', this.src)">
                                 <span class="text-sm font-semibold">Design 5</span>
                             </div>
                         </div>
                         <div class="text-center">
-                            <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="jägare_hund">
+                            <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="jagare_hund">
                                 <img src="/images/jagare_hund.svg" alt="Design 6" class="w-full h-24 object-contain mb-2" onerror="console.error('[Design] Thumb failed:', this.src)">
                                 <span class="text-sm font-semibold">Design 6</span>
                             </div>
                         </div>
                         <div class="text-center">
+                            <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="algfavvo">
+                                <img src="/images/algfavvo.svg" alt="Design 7" class="w-full h-24 object-contain mb-2" onerror="console.error('[Design] Thumb failed:', this.src)">
+                                <span class="text-sm font-semibold">Design 7</span>
+                            </div>
+                        </div>
+                        <div class="text-center">
                             <div class="design-option bg-light-grey rounded-lg p-4 cursor-pointer hover:bg-warm-grey transition-all duration-300" data-design="your_text">
-                                <img src="/images/your_text_design.svg" alt="Din Text" class="w-full h-24 object-contain mb-2" onerror="console.error('[Design] Thumb failed:', this.src)">
+                                <img src="/images/your_text_design.png" alt="Din Text" class="w-full h-24 object-contain mb-2" onerror="console.error('[Design] Thumb failed:', this.src)">
                                 <span class="text-sm font-semibold">Din Text</span>
                             </div>
                         </div>
@@ -923,13 +929,14 @@
                      selectedDesign = this.dataset.design;
                      
                      const designNames = {
-                         'älg_logo': 'Design 1',
-                         'älg_design': 'Design 2',
-                         'älg_jägare': 'Design 3',
-                         'älg_majestic': 'Design 4',
-                         'fågel_design': 'Design 5',
-                         'jägare_hund': 'Design 6',
-                         'your_text': 'Din Text',
+                         'alg_logo': 'Design 1',
+                         'alg_design': 'Design 2',
+                         'alg_jagare': 'Design 3',
+                         'alg_majestic': 'Design 4',
+                         'fagel_design': 'Design 5',
+                        'jagare_hund': 'Design 6',
+                        'algfavvo': 'Design 7',
+                        'your_text': 'Design 8',
                          'none': 'Ingen Design'
                      };
                      
@@ -1414,13 +1421,14 @@
                  document.getElementById('selectedDesign').textContent = confirmedDesignSpecial;
              } else if (selectedDesign) {
                  const designNames = {
-                     'älg_logo': 'Design 1',
-                     'älg_design': 'Design 2',
-                     'älg_jägare': 'Design 3',
-                     'älg_majestic': 'Design 4',
-                     'fågel_design': 'Design 5',
-                     'jägare_hund': 'Design 6',
-                     'your_text': 'Din Text',
+                     'alg_logo': 'Design 1',
+                     'alg_design': 'Design 2',
+                     'alg_jagare': 'Design 3',
+                     'alg_majestic': 'Design 4',
+                     'fagel_design': 'Design 5',
+                        'jagare_hund': 'Design 6',
+                        'algfavvo': 'Design 7',
+                        'your_text': 'Din Text',
                      'none': 'Ingen Design'
                  };
                  document.getElementById('selectedDesign').textContent = designNames[selectedDesign] || selectedDesign;
@@ -1864,12 +1872,13 @@
                     
                     // Get design name for display
                     const designNames = {
-                        'älg_logo': 'Design 1',
-                        'älg_design': 'Design 2',
-                        'älg_jägare': 'Design 3',
-                        'älg_majestic': 'Design 4',
-                        'fågel_design': 'Design 5',
-                        'jägare_hund': 'Design 6',
+                        'alg_logo': 'Design 1',
+                        'alg_design': 'Design 2',
+                        'alg_jagare': 'Design 3',
+                        'alg_majestic': 'Design 4',
+                        'fagel_design': 'Design 5',
+                        'jagare_hund': 'Design 6',
+                        'algfavvo': 'Design 7',
                         'your_text': 'Din Text',
                         'none': 'Ingen Design'
                     };
