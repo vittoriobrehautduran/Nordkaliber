@@ -1429,13 +1429,24 @@
              const baseSrc = confirmedPrimarySpecial ? null : primaryImageMap[selectedPrimary];
              const logoSrc = confirmedSecondarySpecial ? null : secondaryLogoMap[selectedSecondary];
              const buttonSrc = confirmedSecondarySpecial ? null : secondaryButtonMap[selectedSecondary];
+             
+             // Debug resolved URLs
+             try {
+                 console.log('[Design] Resolved sources:', { baseSrc, logoSrc, buttonSrc });
+             } catch (e) {}
+             
              if (baseSrc) {
                  setImageWithFade(baseBox, baseSrc);
                  placeholderText.style.display = 'none';
              } else {
                  baseBox && baseBox.removeAttribute('src');
                  baseBox && baseBox.classList.remove('show');
-                 placeholderText.style.display = 'block';
+                 // If a primary is selected but we didn't resolve a src (e.g., mapping/case issue), still hide placeholder
+                 if (selectedPrimary && !confirmedPrimarySpecial) {
+                     placeholderText.style.display = 'none';
+                 } else {
+                     placeholderText.style.display = 'block';
+                 }
              }
              setImageWithFade(logoOverlay, logoSrc);
              setImageWithFade(buttonOverlay, buttonSrc);
