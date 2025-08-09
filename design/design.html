@@ -526,6 +526,10 @@
                             <div class="color-option bg-red-600 mx-auto mb-2" data-color="red"></div>
                             <span class="text-sm">Röd</span>
                         </div>
+                        <div class="text-center">
+                            <div class="color-option bg-green-800 mx-auto mb-2" data-color="darkgreen"></div>
+                            <span class="text-sm">Mörkgrön</span>
+                        </div>
                     </div>
                     <div class="mb-6">
                         <label class="block text-sm font-medium mb-2">Specialförfrågan (t.ex. Lila färg) +200kr</label>
@@ -563,9 +567,9 @@
                             <div class="color-option bg-black mx-auto mb-2" data-color="black"></div>
                             <span class="text-sm">Svart</span>
                         </div>
-                        <div class="text-center col-span-2">
-                            <div class="color-option mx-auto mb-2" data-color="silver" style="background: linear-gradient(135deg,#d1d5db,#9ca3af);"></div>
-                            <span class="text-sm">Silver</span>
+                        <div class="text-center">
+                            <div class="color-option bg-gray-200 mx-auto mb-2" data-color="white"></div>
+                            <span class="text-sm">Vit</span>
                         </div>
                     </div>
                     <div class="mb-6">
@@ -2416,21 +2420,20 @@
              darkgreen: '/images/primarycolors/darkgreenbox.PNG',
              red: '/images/primarycolors/boxred.PNG'
          };
-         const secondaryLogoMap = {
-             black: '/images/secondarycolors/blacklogo.PNG',
-             red: '/images/secondarycolors/redlogo.png',
-             orange: '/images/secondarycolors/orangelogo.PNG',
-             gold: '/images/secondarycolors/goldlogo.PNG',
-             silver: '/images/secondarycolors/silverlogo.PNG'
-         };
-         const secondaryButtonMap = {
-             black: '/images/secondarycolors/blackbutton.PNG',
-             red: '/images/secondarycolors/redbutton.PNG',
-             orange: '/images/secondarycolors/orangebutton.PNG',
-             gold: '/images/secondarycolors/goldbutton.PNG',
-             silver: '/images/secondarycolors/silverbutton.PNG',
-             white: '/images/secondarycolors/whitebutton.PNG'
-         };
+                 const secondaryLogoMap = {
+            black: '/images/secondarycolors/blacklogo.PNG',
+            red: '/images/secondarycolors/redlogo.png',
+            orange: '/images/secondarycolors/orangelogo.PNG',
+            gold: '/images/secondarycolors/goldlogo.PNG',
+            white: '/images/secondarycolors/whitelogo.PNG'
+        };
+                 const secondaryButtonMap = {
+            black: '/images/secondarycolors/blackbutton.PNG',
+            red: '/images/secondarycolors/redbutton.PNG',
+            orange: '/images/secondarycolors/orangebutton.PNG',
+            gold: '/images/secondarycolors/goldbutton.PNG',
+            white: '/images/secondarycolors/whitebutton.PNG'
+        };
          function createPair(aId,bId){ return { A: document.getElementById(aId), B: document.getElementById(bId), active: 'A' }; }
          function crossfade(pair, newSrc){
              const activeEl = pair[pair.active];
