@@ -765,6 +765,9 @@
         .navbar-text-visible {
             opacity: 1 !important;
             transition: all 0.5s ease-in-out !important;
+            left: 50% !important;
+            top: 50% !important;
+            transform: translate(-50%, -50%) !important;
         }
     </style>
 </head>
@@ -780,27 +783,27 @@
                 </div>
                 
                 <!-- Desktop Navigation -->
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#hem" class="nav-link text-gray-300 hover:text-mustard-gold transition">Hem</a>
-                    <a href="#overview" class="nav-link text-gray-300 hover:text-mustard-gold transition">Översikt</a>
-                    <a href="#om-oss" class="nav-link text-gray-300 hover:text-mustard-gold transition">Om Oss</a>
-                    <a href="#kontakt" class="nav-link text-gray-300 hover:text-mustard-gold transition">Kontakt</a>
+                <div class="hidden md:flex items-center space-x-8 h-full">
+                    <a href="#hem" class="nav-link text-gray-300 hover:text-mustard-gold transition flex items-center">Hem</a>
+                    <a href="#overview" class="nav-link text-gray-300 hover:text-mustard-gold transition flex items-center">Översikt</a>
+                    <a href="#om-oss" class="nav-link text-gray-300 hover:text-mustard-gold transition flex items-center">Om Oss</a>
+                    <a href="#kontakt" class="nav-link text-gray-300 hover:text-mustard-gold transition flex items-center">Kontakt</a>
                     <a href="design/design.html" id="navbarDesignBtn" class="w-12 h-12 bg-gradient-to-br from-hunter-brown via-dark-green to-hunter-brown rounded-full shadow-2xl flex items-center justify-center transition-all duration-3000 ease-in-out cursor-pointer hover:shadow-3xl overflow-hidden relative">
                         <!-- Plus icon -->
                         <i id="navbarBtnIcon" class="fas fa-plus text-white text-xl transition-all duration-500 ease-out relative z-10"></i>
                         <!-- Text that appears -->
-                        <span id="navbarBtnText" class="text-sm font-semibold text-white px-4 whitespace-nowrap absolute opacity-0 transition-all duration-500 ease-out relative z-10">Designa din egen nu</span>
+                        <span id="navbarBtnText" class="text-sm font-semibold text-white px-4 whitespace-nowrap absolute opacity-0 transition-all duration-500 ease-out z-10">Designa din egen nu</span>
                         <!-- Shimmer effect -->
                         <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 animate-shimmer"></div>
                     </a>
                 </div>
                 
                 <!-- Mobile Menu Button -->
-                <div class="md:hidden flex items-center space-x-3">
-                    <a href="design/design.html" class="bg-gradient-to-r from-hunter-brown to-dark-green text-white px-4 py-2 rounded-full font-semibold transition-all duration-300 text-sm hover:from-dark-green hover:to-hunter-brown">
+                <div class="md:hidden flex items-center space-x-3 h-full">
+                    <a href="design/design.html" class="bg-gradient-to-r from-hunter-brown to-dark-green text-white px-4 py-2 rounded-full font-semibold transition-all duration-300 text-sm hover:from-dark-green hover:to-hunter-brown flex items-center justify-center">
                         Designa din egen nu
                     </a>
-                    <div class="hamburger w-6 flex flex-col justify-between items-center">
+                    <div class="hamburger w-6 flex flex-col justify-center items-center h-6">
                         <div class="line w-full h-0.5 bg-mustard-gold mb-1.5"></div>
                         <div class="line w-full h-0.5 bg-mustard-gold mb-1.5"></div>
                         <div class="line w-full h-0.5 bg-mustard-gold"></div>
@@ -811,10 +814,10 @@
             <!-- Mobile Menu -->
             <div class="mobile-menu md:hidden mt-4">
                 <div class="flex flex-col space-y-4 pb-4">
-                    <a href="#hem" class="text-gray-300 hover:text-mustard-gold transition">Hem</a>
-                    <a href="#produkter" class="text-gray-300 hover:text-mustard-gold transition">Produkter</a>
-                    <a href="#om-oss" class="text-gray-300 hover:text-mustard-gold transition">Om Oss</a>
-                    <a href="#kontakt" class="text-gray-300 hover:text-mustard-gold transition">Kontakt</a>
+                    <a href="#hem" class="text-gray-300 hover:text-mustard-gold transition flex items-center">Hem</a>
+                    <a href="#produkter" class="text-gray-300 hover:text-mustard-gold transition flex items-center">Produkter</a>
+                    <a href="#om-oss" class="text-gray-300 hover:text-mustard-gold transition flex items-center">Om Oss</a>
+                    <a href="#kontakt" class="text-gray-300 hover:text-mustard-gold transition flex items-center">Kontakt</a>
                 </div>
             </div>
         </div>
@@ -845,10 +848,10 @@
     <!-- Overview Section -->
     <section id="overview" class="py-32 section section-blur-top">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 slide-up">AV JÄGARE FÖR JÄGARE</h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 slide-up text-mustard-gold">AV JÄGARE FÖR JÄGARE</h2>
             
             <div class="max-w-7xl mx-auto mb-20">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 items-center lg:ml-20 video-section">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center justify-center mx-auto video-section">
                     <!-- Nordkaliber Ad Video -->
                     <div class="lg:col-span-1">
                         <div id="videoContainer" class="relative overflow-hidden rounded-lg shadow-2xl hover-lift h-[500px] cursor-pointer" role="button" tabindex="0" aria-label="Öppna video" onclick="window.__openNVModal && window.__openNVModal()">
@@ -873,28 +876,32 @@
                     </div>
                     
                     <!-- Slideshow -->
-                    <div class="lg:col-span-2">
+                    <div class="lg:col-span-1">
                         <div class="relative overflow-hidden rounded-lg shadow-2xl h-[500px] hover-lift">
                         <div class="slideshow-container w-full h-full" id="mobileSlideshow">
                         <div class="slide fade">
                             <img src="images/oppen-gra-box.jpg" 
                                  alt="Öppen ammunitionlåda med .308 kaliber" 
-                                 class="w-full h-full object-cover">
+                                 class="w-full h-full object-cover" 
+                                 style="object-position: center 45%;">
                         </div>
                         <div class="slide fade">
                             <img src="images/gra-box-i-hand.jpeg" 
                                  alt="Detaljerad vy av ammunitionlåda med .308 patroner" 
-                                 class="w-full h-full object-cover">
+                                 class="w-full h-full object-cover" 
+                                 style="object-position: center 38%;">
                         </div>
                         <div class="slide fade">
                             <img src="images/oppen-gra-box2.jpg" 
                                  alt="Person håller ammunitionlåda med naturmotiv" 
-                                 class="w-full h-full object-cover">
+                                 class="w-full h-full object-cover" 
+                                 style="object-position: center 65%;">
                         </div>
                         <div class="slide fade">
                             <img src="images/oppen-rod-box.JPG" 
                                  alt="Person håller ammunitionlåda med naturmotiv" 
-                                 class="w-full h-full object-cover">
+                                 class="w-full h-full object-cover" 
+                                 style="object-position: center 58%;">
                         </div>
                     </div>
                     <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
@@ -916,28 +923,28 @@
                             <i class="fas fa-shield-alt mr-3"></i>
                             Praxis Först
                         </h3>
-                        <p class="text-gray-400">Du behöver ammunitionsförvaring som tål väder. Den robusta konstruktionen säkerställer att din ammunition skyddas mot alla väderförhållanden.</p>
+                        <p class="text-white">Du behöver ammunitionsförvaring som tål väder. Den robusta konstruktionen säkerställer att din ammunition skyddas mot alla väderförhållanden.</p>
                     </div>
                     <div class="slide-up" style="animation-delay: 0.3s;">
                         <h3 class="text-xl font-bold mb-2 text-mustard-gold hover-glow flex items-center">
                             <i class="fas fa-link mr-3"></i>
                             Missing Link
                         </h3>
-                        <p class="text-gray-400">Du har ägnat år åt att välja rätt gevär, välja optik och välja ammunition. Varje beslut i din utrustning är väl genomtänkt. Varför skulle ammunitionsförvaringen vara den svaga länken?</p>
+                        <p class="text-white">Du har ägnat år åt att välja rätt gevär, välja optik och välja ammunition. Varje beslut i din utrustning är väl genomtänkt. Varför skulle ammunitionsförvaringen vara den svaga länken?</p>
                     </div>
                     <div class="slide-up" style="animation-delay: 0.4s;">
                         <h3 class="text-xl font-bold mb-2 text-mustard-gold hover-glow flex items-center">
                             <i class="fas fa-wrench mr-3"></i>
                             Adapterad Interiör
                         </h3>
-                        <p class="text-gray-400">Våra ammunitionsetui passar alla typer av patroner och kan tillverkas snabbt även för mer ovanliga typer.</p>
+                        <p class="text-white">Våra ammunitionsetui passar alla typer av patroner och kan tillverkas snabbt även för mer ovanliga typer.</p>
                     </div>
                     <div class="slide-up" style="animation-delay: 0.5s;">
                         <h3 class="text-xl font-bold mb-2 text-mustard-gold hover-glow flex items-center">
                             <i class="fas fa-user-check mr-3"></i>
                             Jägarens Val
                         </h3>
-                        <p class="text-gray-400">Oavsett om du är på skjutbanan eller på jakt får du det lilla extra vad gäller stil.</p>
+                        <p class="text-white">Oavsett om du är på skjutbanan eller på jakt får du det lilla extra vad gäller stil.</p>
                     </div>
                 </div>
             </div>
@@ -981,8 +988,8 @@
             
             <!-- Unik Pryl Section -->
             <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-white slide-up">Unik pryl</h2>
-                <p class="text-xl text-gray-300 mb-8 slide-up">En produkt som ger jägaren det lilla extra.</p>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-mustard-gold slide-up">Unik pryl</h2>
+                <p class="text-xl text-white mb-8 slide-up">En produkt som ger jägaren det lilla extra.</p>
                 <a href="design/design.html" class="btn-hunter text-white px-8 py-3 rounded-full font-medium inline-block scale-in hover-lift hover-glow slide-up">BESTÄLL DIN EGEN IDAG</a>
             </div>
         </div>
@@ -1613,9 +1620,11 @@
         
         // Animate button on page load
         function animateNavbarButton() {
+            // Hide icon immediately
+            navbarBtnIcon.classList.add('navbar-icon-hidden');
+            
             setTimeout(() => {
                 navbarDesignBtn.classList.add('navbar-btn-wide');
-                navbarBtnIcon.classList.add('navbar-icon-hidden');
             }, 500);
             
             setTimeout(() => {
