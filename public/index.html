@@ -53,8 +53,7 @@
             contain: layout style paint;
             transform: translateZ(0);
         }
-        /* When modal is open, fully lock scroll and neutralize transforms */
-        /* Keeping minimal; scroll lock handled via inline styles on open */
+        /* Minimal; scroll lock applied inline */
         .no-transform { transform: none !important; }
         
         /* Performance optimizations */
@@ -730,6 +729,135 @@
             pointer-events: auto !important;
             visibility: visible !important;
         }
+
+        /* Enhanced smooth animations for scroll reveals */
+        .smooth-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .smooth-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .stagger-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .stagger-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .stagger-reveal:nth-child(1) { transition-delay: 0.1s; }
+        .stagger-reveal:nth-child(2) { transition-delay: 0.2s; }
+        .stagger-reveal:nth-child(3) { transition-delay: 0.3s; }
+        .stagger-reveal:nth-child(4) { transition-delay: 0.4s; }
+        
+        /* Text reveal animation */
+        .text-reveal {
+            overflow: hidden;
+        }
+        
+        .text-reveal span {
+            display: inline-block;
+            transform: translateY(100%);
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .text-reveal.revealed span {
+            transform: translateY(0);
+        }
+        
+        /* Smooth section transitions */
+        .section-fade {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .section-fade.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Enhanced button animations with 7 effects */
+        .btn-enhanced {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .btn-enhanced::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+        
+        .btn-enhanced:hover::before {
+            left: 100%;
+        }
+        
+        .btn-enhanced:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Enhanced hover effects for cards and elements */
+        .hover-smooth {
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .hover-smooth:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Enhanced product card animations */
+        .product-card-enhanced {
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform: translateZ(0);
+        }
+        
+        .product-card-enhanced:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Enhanced video hover effects */
+        .video-hover {
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .video-hover:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* Smooth navigation transitions */
+        .nav-smooth {
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        /* Responsive animations */
+        @media (max-width: 768px) {
+            .smooth-reveal {
+                transition-duration: 0.6s;
+            }
+            
+            .stagger-reveal {
+                transition-duration: 0.4s;
+            }
+        }
         
 
         
@@ -788,7 +916,7 @@
                     <a href="#overview" class="nav-link text-gray-300 hover:text-mustard-gold transition flex items-center">Översikt</a>
                     <a href="#om-oss" class="nav-link text-gray-300 hover:text-mustard-gold transition flex items-center">Om Oss</a>
                     <a href="#kontakt" class="nav-link text-gray-300 hover:text-mustard-gold transition flex items-center">Kontakt</a>
-                    <a href="design/design.html" id="navbarDesignBtn" class="w-12 h-12 bg-gradient-to-br from-hunter-brown via-dark-green to-hunter-brown rounded-full shadow-2xl flex items-center justify-center transition-all duration-3000 ease-in-out cursor-pointer hover:shadow-3xl overflow-hidden relative">
+                    <a href="design/design.html" id="navbarDesignBtn" class="w-12 h-12 bg-gradient-to-br from-hunter-brown via-dark-green to-hunter-brown rounded-full shadow-2xl flex items-center justify-center transition-all duration-3000 ease-in-out cursor-pointer hover:shadow-3xl overflow-hidden relative btn-enhanced hover-smooth">
                         <!-- Plus icon -->
                         <i id="navbarBtnIcon" class="fas fa-plus text-white text-xl transition-all duration-500 ease-out relative z-10"></i>
                         <!-- Text that appears -->
@@ -800,7 +928,7 @@
                 
                 <!-- Mobile Menu Button -->
                 <div class="md:hidden flex items-center space-x-3 h-full">
-                    <a href="design/design.html" class="bg-gradient-to-r from-hunter-brown to-dark-green text-white px-4 py-2 rounded-full font-semibold transition-all duration-300 text-sm hover:from-dark-green hover:to-hunter-brown flex items-center justify-center">
+                    <a href="design/design.html" class="btn-enhanced bg-gradient-to-r from-hunter-brown to-dark-green text-white px-4 py-2 rounded-full font-semibold transition-all duration-300 text-sm hover:from-dark-green hover:to-hunter-brown flex items-center justify-center hover-smooth">
                         Designa din egen nu
                     </a>
                     <div class="hamburger w-6 flex flex-col justify-center items-center h-6">
@@ -830,31 +958,35 @@
         <div class="container mx-auto px-4 relative">
             <!-- Logo positioned at the top -->
             <div class="flex justify-center mb-6 md:mb-8">
-                <img src="images/NordkaliberLogga.png" alt="NORDKALIBER" class="h-20 sm:h-24 md:h-80 bounce-in">
+                <img src="images/NordkaliberLogga.png" alt="NORDKALIBER" class="h-20 sm:h-24 md:h-80 smooth-reveal">
             </div>
             <!-- Text content below logo -->
             <div class="mt-0">
-                <p class="text-base sm:text-lg md:text-2xl mb-6 max-w-2xl mx-auto slide-up hide-on-iphone-se" style="animation-delay: 0.3s;">Premium ammunitionsetui för den seriösa jägaren</p>
+                <p class="text-base sm:text-lg md:text-2xl mb-6 max-w-2xl mx-auto text-reveal smooth-reveal hide-on-iphone-se">
+                    <span>Premium ammunitionsetui för den seriösa jägaren</span>
+                </p>
                 <!-- Button for mobile - positioned normally -->
-                <a href="#overview" class="btn-hunter text-white px-4 sm:px-6 md:px-8 py-2 md:py-3 rounded-full font-medium inline-block scale-in hover-lift hover-glow text-sm sm:text-base hide-on-low-height md:hidden" style="animation-delay: 0.6s;">UPPTÄCK VÅRA PRODUKTER</a>
+                <a href="#overview" class="btn-enhanced btn-hunter text-white px-4 sm:px-6 md:px-8 py-2 md:py-3 rounded-full font-medium inline-block hover-smooth text-sm sm:text-base hide-on-low-height md:hidden">UPPTÄCK VÅRA PRODUKTER</a>
             </div>
             <!-- Button positioned absolutely for larger screens -->
             <div class="absolute left-1/2 transform -translate-x-1/2 hidden md:block" style="top: 60%;">
-                <a href="#overview" class="btn-hunter text-white px-4 sm:px-6 md:px-8 py-2 md:py-3 rounded-full font-medium inline-block scale-in hover-lift hover-glow text-sm sm:text-base hide-on-low-height" style="animation-delay: 0.6s;">UPPTÄCK VÅRA PRODUKTER</a>
+                <a href="#overview" class="btn-enhanced btn-hunter text-white px-4 sm:px-6 md:px-8 py-2 md:py-3 rounded-full font-medium inline-block hover-smooth text-sm sm:text-base hide-on-low-height">UPPTÄCK VÅRA PRODUKTER</a>
             </div>
         </div>
     </section>
 
     <!-- Overview Section -->
-    <section id="overview" class="py-32 section section-blur-top">
+    <section id="overview" class="py-32 section-fade section-blur-top">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 slide-up text-mustard-gold">AV JÄGARE FÖR JÄGARE</h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-reveal smooth-reveal text-mustard-gold">
+                <span>AV JÄGARE FÖR JÄGARE</span>
+            </h2>
             
             <div class="max-w-7xl mx-auto mb-20">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center justify-center mx-auto video-section">
                     <!-- Nordkaliber Ad Video -->
                     <div class="lg:col-span-1">
-                        <div id="videoContainer" class="relative overflow-hidden rounded-lg shadow-2xl hover-lift h-[500px] cursor-pointer" role="button" tabindex="0" aria-label="Öppna video" onclick="window.__openNVModal && window.__openNVModal()">
+                        <div id="videoContainer" class="relative overflow-hidden rounded-lg shadow-2xl video-hover product-card-enhanced h-[500px] cursor-pointer" role="button" tabindex="0" aria-label="Öppna video" onclick="window.__openNVModal && window.__openNVModal()">
                             <video 
                                 id="adVideo"
                                 class="w-full h-full object-cover" 
@@ -868,7 +1000,7 @@
                             <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
                             <!-- Play overlay -->
                             <div class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
-                                <div class="bg-cool-grey bg-opacity-70 rounded-full p-4">
+                                <div class="bg-cool-grey bg-opacity-70 rounded-full p-4 hover-smooth">
                                     <i class="fas fa-expand text-white text-2xl"></i>
                                 </div>
                             </div>
@@ -877,7 +1009,7 @@
                     
                     <!-- Slideshow -->
                     <div class="lg:col-span-1">
-                        <div class="relative overflow-hidden rounded-lg shadow-2xl h-[500px] hover-lift">
+                        <div class="relative overflow-hidden rounded-lg shadow-2xl h-[500px] product-card-enhanced">
                         <div class="slideshow-container w-full h-full" id="mobileSlideshow">
                         <div class="slide fade">
                             <img src="images/oppen-gra-box.jpg" 
@@ -905,10 +1037,10 @@
                         </div>
                     </div>
                     <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
-                        <span class="dot w-3 h-3 rounded-full bg-warm-grey cursor-pointer"></span>
-                        <span class="dot w-3 h-3 rounded-full bg-warm-grey cursor-pointer"></span>
-                        <span class="dot w-3 h-3 rounded-full bg-warm-grey cursor-pointer"></span>
-                        <span class="dot w-3 h-3 rounded-full bg-warm-grey cursor-pointer"></span>
+                        <span class="dot w-3 h-3 rounded-full bg-warm-grey cursor-pointer hover-smooth"></span>
+                        <span class="dot w-3 h-3 rounded-full bg-warm-grey cursor-pointer hover-smooth"></span>
+                        <span class="dot w-3 h-3 rounded-full bg-warm-grey cursor-pointer hover-smooth"></span>
+                        <span class="dot w-3 h-3 rounded-full bg-warm-grey cursor-pointer hover-smooth"></span>
                     </div>
                 </div>
                     </div>
@@ -918,29 +1050,29 @@
             <!-- Product Features -->
             <div class="max-w-4xl mx-auto mb-20">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    <div class="slide-up" style="animation-delay: 0.2s;">
-                        <h3 class="text-xl font-bold mb-2 text-mustard-gold hover-glow flex items-center">
+                    <div class="stagger-reveal">
+                        <h3 class="text-xl font-bold mb-2 text-mustard-gold hover-smooth flex items-center">
                             <i class="fas fa-shield-alt mr-3"></i>
                             Praxis Först
                         </h3>
                         <p class="text-white">Du behöver ammunitionsförvaring som tål väder. Den robusta konstruktionen säkerställer att din ammunition skyddas mot alla väderförhållanden.</p>
                     </div>
-                    <div class="slide-up" style="animation-delay: 0.3s;">
-                        <h3 class="text-xl font-bold mb-2 text-mustard-gold hover-glow flex items-center">
+                    <div class="stagger-reveal">
+                        <h3 class="text-xl font-bold mb-2 text-mustard-gold hover-smooth flex items-center">
                             <i class="fas fa-link mr-3"></i>
                             Missing Link
                         </h3>
                         <p class="text-white">Du har ägnat år åt att välja rätt gevär, välja optik och välja ammunition. Varje beslut i din utrustning är väl genomtänkt. Varför skulle ammunitionsförvaringen vara den svaga länken?</p>
                     </div>
-                    <div class="slide-up" style="animation-delay: 0.4s;">
-                        <h3 class="text-xl font-bold mb-2 text-mustard-gold hover-glow flex items-center">
+                    <div class="stagger-reveal">
+                        <h3 class="text-xl font-bold mb-2 text-mustard-gold hover-smooth flex items-center">
                             <i class="fas fa-wrench mr-3"></i>
                             Adapterad Interiör
                         </h3>
                         <p class="text-white">Våra ammunitionsetui passar alla typer av patroner och kan tillverkas snabbt även för mer ovanliga typer.</p>
                     </div>
-                    <div class="slide-up" style="animation-delay: 0.5s;">
-                        <h3 class="text-xl font-bold mb-2 text-mustard-gold hover-glow flex items-center">
+                    <div class="stagger-reveal">
+                        <h3 class="text-xl font-bold mb-2 text-mustard-gold hover-smooth flex items-center">
                             <i class="fas fa-user-check mr-3"></i>
                             Jägarens Val
                         </h3>
@@ -953,8 +1085,10 @@
             
             <!-- Video Presentation Section -->
             <div class="max-w-4xl mx-auto mb-16 video-section">
-                <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 text-mustard-gold slide-up">SE VÅRA PRODUKTER I AKTION</h3>
-                <div class="relative overflow-hidden rounded-lg shadow-2xl hover-lift">
+                <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 text-mustard-gold text-reveal smooth-reveal">
+                    <span>SE VÅRA PRODUKTER I AKTION</span>
+                </h3>
+                <div class="relative overflow-hidden rounded-lg shadow-2xl video-hover product-card-enhanced">
                     <video 
                         id="video1"
                         class="w-full h-auto" 
@@ -971,7 +1105,7 @@
             
             <!-- Second Video Presentation Section -->
             <div class="max-w-4xl mx-auto mb-16 video-section">
-                <div class="relative overflow-hidden rounded-lg shadow-2xl hover-lift">
+                <div class="relative overflow-hidden rounded-lg shadow-2xl video-hover product-card-enhanced">
                     <video 
                         id="video2"
                         class="w-full h-auto" 
@@ -988,9 +1122,13 @@
             
             <!-- Unik Pryl Section -->
             <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-mustard-gold slide-up">Unik pryl</h2>
-                <p class="text-xl text-white mb-8 slide-up">En produkt som ger jägaren det lilla extra.</p>
-                <a href="design/design.html" class="btn-hunter text-white px-8 py-3 rounded-full font-medium inline-block scale-in hover-lift hover-glow slide-up">BESTÄLL DIN EGEN IDAG</a>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-mustard-gold text-reveal smooth-reveal">
+                    <span>Unik pryl</span>
+                </h2>
+                <p class="text-xl text-white mb-8 text-reveal smooth-reveal">
+                    <span>En produkt som ger jägaren det lilla extra.</span>
+                </p>
+                <a href="design/design.html" class="btn-enhanced btn-hunter text-white px-8 py-3 rounded-full font-medium inline-block hover-smooth">BESTÄLL DIN EGEN IDAG</a>
             </div>
         </div>
     </section>
@@ -1000,23 +1138,29 @@
    
 
     <!-- About Section -->
-            <section id="om-oss" class="py-20 section" style="background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('images/elk1.jpg'); background-position: center 70%; background-size: cover;">
+            <section id="om-oss" class="py-20 section-fade" style="background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('images/elk1.jpg'); background-position: center 70%; background-size: cover;">
         <div class="container mx-auto px-4">
-            <div class="max-w-3xl mx-auto bg-dark-green bg-opacity-50 rounded-lg p-10 border border-hunter-brown border-opacity-20 text-center">
-                <h2 class="text-3xl md:text-4xl font-bold mb-8">Nordkaliber</h2>
-                <p class="text-lg leading-relaxed">Vi är ett varumärke som sätter kunden i första plats. Nordkaliber levererar en unik produkt som komplementerar jakten på ett sätt som inte finns på marknaden just nu.</p>
+            <div class="max-w-3xl mx-auto bg-dark-green bg-opacity-50 rounded-lg p-10 border border-hunter-brown border-opacity-20 text-center product-card-enhanced">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8 text-reveal smooth-reveal">
+                    <span>Nordkaliber</span>
+                </h2>
+                <p class="text-lg leading-relaxed text-reveal smooth-reveal">
+                    <span>Vi är ett varumärke som sätter kunden i första plats. Nordkaliber levererar en unik produkt som komplementerar jakten på ett sätt som inte finns på marknaden just nu.</span>
+                </p>
             </div>
         </div>
     </section>
 
     <!-- Features Section -->
-    <section class="py-20 section">
+    <section class="py-20 section-fade">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">VARFÖR VÄLJA NORDKALIBER?</h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-reveal smooth-reveal">
+                <span>VARFÖR VÄLJA NORDKALIBER?</span>
+            </h2>
             
             <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-10">
                 <div class="text-center">
-                    <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6">
+                    <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6 hover-smooth">
                         <i class="fas fa-shield-alt text-mustard-gold text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold mb-3">Trygg Handel</h3>
@@ -1024,15 +1168,15 @@
                 </div>
                 
                 <div class="text-center">
-                    <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6">
+                    <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6 hover-smooth">
                         <i class="fas fa-truck text-mustard-gold text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold mb-3">Effektiv Leverans</h3>
-                    <p class="text-gray-400">Snabb hantering och snabb leverans av dina beställningar.</p>
+                    <p class="text-gray-400">Snabb hantering och snabb leverans av dina beställningar. <span class="text-mustard-gold font-semibold">Frakt är gratis.</span></p>
                 </div>
                 
                 <div class="text-center">
-                    <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6">
+                    <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6 hover-smooth">
                         <i class="fas fa-headset text-mustard-gold text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold mb-3">24/7 E-post Support</h3>
@@ -1040,7 +1184,7 @@
                 </div>
                 
                 <div class="text-center">
-                    <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6">
+                    <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6 hover-smooth">
                         <i class="fas fa-undo text-mustard-gold text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold mb-3">Enkel Retur</h3>
@@ -1051,46 +1195,50 @@
     </section>
 
     <!-- Contact Section -->
-    <section id="kontakt" class="py-20 section">
+    <section id="kontakt" class="py-20 section-fade">
         <div class="container mx-auto px-4">
             <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
-                <div class="blur-bg rounded-lg p-8 border border-hunter-brown border-opacity-20">
-                    <h2 class="text-3xl font-bold mb-6">KONTAKTA OSS</h2>
+                <div class="bg-premium-black bg-opacity-70 rounded-lg p-8 border border-hunter-brown border-opacity-20 product-card-enhanced">
+                    <h2 class="text-3xl font-bold mb-6 text-reveal smooth-reveal">
+                        <span>KONTAKTA OSS</span>
+                    </h2>
                     <form>
                         <div class="mb-4">
                             <label for="name" class="block mb-2">Namn</label>
-                            <input type="text" id="name" class="w-full bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-hunter-brown">
+                            <input type="text" id="name" class="w-full bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-hunter-brown transition-all duration-300">
                         </div>
                         <div class="mb-4">
                             <label for="email" class="block mb-2">E-post</label>
-                            <input type="email" id="email" class="w-full bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-hunter-brown">
+                            <input type="email" id="email" class="w-full bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-hunter-brown transition-all duration-300">
                         </div>
                         <div class="mb-4">
                             <label for="message" class="block mb-2">Meddelande</label>
-                            <textarea id="message" rows="4" class="w-full bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-hunter-brown"></textarea>
+                            <textarea id="message" rows="4" class="w-full bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-hunter-brown transition-all duration-300"></textarea>
                         </div>
-                        <button type="submit" class="btn-hunter text-white px-6 py-3 rounded-full font-medium w-full">SKICKA</button>
+                        <button type="submit" class="btn-enhanced btn-hunter text-white px-6 py-3 rounded-full font-medium w-full hover-smooth">SKICKA</button>
                     </form>
                 </div>
                 
-                <div class="blur-bg rounded-lg p-8 border border-hunter-brown border-opacity-20">
-                    <h2 class="text-2xl md:text-3xl font-bold mb-6 text-center md:text-left">KONTAKTUPPGIFTER</h2>
+                <div class="bg-premium-black bg-opacity-70 rounded-lg p-8 border border-hunter-brown border-opacity-20 product-card-enhanced">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-6 text-center md:text-left text-reveal smooth-reveal">
+                        <span>KONTAKTUPPGIFTER</span>
+                    </h2>
                     <div class="space-y-6">
-                        <div class="flex items-start">
+                        <div class="flex items-start stagger-reveal">
                             <i class="fas fa-map-marker-alt text-mustard-gold mt-1 mr-4 flex-shrink-0"></i>
                             <div>
                                 <h3 class="font-bold">Adress</h3>
                                 <p class="text-gray-400">Farkostvägen 7<br>SE-181 35 Lidingö SE</p>
                             </div>
                         </div>
-                        <div class="flex items-start">
+                        <div class="flex items-start stagger-reveal">
                             <i class="fas fa-phone-alt text-mustard-gold mt-1 mr-4 flex-shrink-0"></i>
                             <div>
                                 <h3 class="font-bold">Telefon</h3>
                                 <p class="text-gray-400">+46 79 040 46 16</p>
                             </div>
                         </div>
-                        <div class="flex items-start">
+                        <div class="flex items-start stagger-reveal">
                             <i class="fas fa-envelope text-mustard-gold mt-1 mr-4 flex-shrink-0"></i>
                             <div>
                                 <h3 class="font-bold">E-post</h3>
@@ -1106,51 +1254,55 @@
 
 
     <!-- Newsletter Section -->
-    <section class="py-20 section">
+    <section class="py-20 section-fade">
         <div class="container mx-auto px-4">
-            <div class="max-w-3xl mx-auto blur-bg rounded-lg p-10 border border-hunter-brown border-opacity-20 text-center">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">PRENUMERERA PÅ VÅRT NYHETSBREV</h2>
-                <p class="mb-8">Få exklusiva erbjudanden, nyheter om våra produkter och jaktrelaterade tips direkt till din inkorg.</p>
+            <div class="max-w-3xl mx-auto bg-premium-black bg-opacity-70 rounded-lg p-10 border border-hunter-brown border-opacity-20 text-center product-card-enhanced">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-reveal smooth-reveal">
+                    <span>PRENUMERERA PÅ VÅRT NYHETSBREV</span>
+                </h2>
+                <p class="mb-8 text-reveal smooth-reveal">
+                    <span>Få exklusiva erbjudanden, nyheter om våra produkter och jaktrelaterade tips direkt till din inkorg.</span>
+                </p>
                 <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                    <input type="email" placeholder="Din e-postadress" class="flex-grow bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-hunter-brown">
-                    <button type="submit" class="btn-hunter text-white px-6 py-2 rounded-full font-medium whitespace-nowrap">PRENUMERERA</button>
+                    <input type="email" placeholder="Din e-postadress" class="flex-grow bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-hunter-brown transition-all duration-300">
+                    <button type="submit" class="btn-enhanced btn-hunter text-white px-6 py-2 rounded-full font-medium whitespace-nowrap hover-smooth">PRENUMERERA</button>
                 </form>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-premium-black border-t border-hunter-brown border-opacity-20 py-12">
+    <footer class="bg-premium-black border-t border-hunter-brown border-opacity-20 py-12 section-fade">
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
-                <div>
+                <div class="stagger-reveal">
                     <h3 class="text-xl font-bold text-mustard-gold mb-4">NORDKALIBER</h3>
                     <p class="text-gray-400">Premium ammunitionsetui för den kräsne jägaren. Nordisk kvalitet sedan 2025.</p>
                 </div>
-                <div>
+                <div class="stagger-reveal">
                     <h3 class="text-lg font-bold mb-4">Länkar</h3>
                     <ul class="space-y-2">
-                        <li><a href="#hem" class="text-gray-400 hover:text-mustard-gold transition">Hem</a></li>
-                        <li><a href="#overview" class="text-gray-400 hover:text-mustard-gold transition">Översikt</a></li>
-                        <li><a href="#om-oss" class="text-gray-400 hover:text-mustard-gold transition">Om Oss</a></li>
-                        <li><a href="#kontakt" class="text-gray-400 hover:text-mustard-gold transition">Kontakt</a></li>
+                        <li><a href="#hem" class="text-gray-400 hover:text-mustard-gold transition nav-smooth">Hem</a></li>
+                        <li><a href="#overview" class="text-gray-400 hover:text-mustard-gold transition nav-smooth">Översikt</a></li>
+                        <li><a href="#om-oss" class="text-gray-400 hover:text-mustard-gold transition nav-smooth">Om Oss</a></li>
+                        <li><a href="#kontakt" class="text-gray-400 hover:text-mustard-gold transition nav-smooth">Kontakt</a></li>
                     </ul>
                 </div>
-                <div>
+                <div class="stagger-reveal">
                     <h3 class="text-lg font-bold mb-4">Support</h3>
                     <ul class="space-y-2">
-                        <li><a href="policies.html" class="text-gray-400 hover:text-mustard-gold transition">Policies & Villkor</a></li>
-                        <li><a href="policies.html" class="text-gray-400 hover:text-mustard-gold transition">Frakt & Leverans</a></li>
-                        <li><a href="policies.html" class="text-gray-400 hover:text-mustard-gold transition">Integritetspolicy</a></li>
+                        <li><a href="policies.html" class="text-gray-400 hover:text-mustard-gold transition nav-smooth">Policies & Villkor</a></li>
+                        <li><a href="policies.html" class="text-gray-400 hover:text-mustard-gold transition nav-smooth">Frakt & Leverans</a></li>
+                        <li><a href="policies.html" class="text-gray-400 hover:text-mustard-gold transition nav-smooth">Integritetspolicy</a></li>
                     </ul>
                 </div>
-                <div>
+                <div class="stagger-reveal">
                     <h3 class="text-lg font-bold mb-4">Följ Oss</h3>
                     <div class="flex space-x-4">
-                                            <a href="#" class="text-gray-400 hover:text-mustard-gold transition text-xl"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://www.instagram.com/nordkaliber?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-mustard-gold transition text-xl"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-mustard-gold transition text-xl"><i class="fab fa-youtube"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-mustard-gold transition text-xl"><i class="fab fa-linkedin-in"></i></a>
+                                            <a href="#" class="text-gray-400 hover:text-mustard-gold transition text-xl nav-smooth"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/nordkaliber?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-mustard-gold transition text-xl nav-smooth"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-mustard-gold transition text-xl nav-smooth"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-mustard-gold transition text-xl nav-smooth"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
             </div>
@@ -1193,7 +1345,7 @@
     </div>
 
     <!-- Scroll to top button -->
-    <button id="scrollToTop" class="fixed bottom-8 right-8 bg-hunter-brown text-white p-3 rounded-full shadow-lg hover-lift hover-glow opacity-0 transition-opacity duration-300 z-50">
+    <button id="scrollToTop" class="fixed bottom-8 right-8 bg-hunter-brown text-white p-3 rounded-full shadow-lg hover-smooth opacity-0 transition-all duration-500 z-50">
         <i class="fas fa-arrow-up"></i>
     </button>
 
@@ -1224,8 +1376,8 @@
             });
         });
         
-        // Scroll animation
-        const sections = document.querySelectorAll('.section');
+        // Enhanced scroll animation with smooth reveals
+        const sections = document.querySelectorAll('.section, .section-fade');
         
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -1234,11 +1386,29 @@
                 }
             });
         }, {
-            threshold: 0.1
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
         });
         
         sections.forEach(section => {
             observer.observe(section);
+        });
+        
+        // Enhanced smooth reveal animations
+        const smoothRevealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+        
+        // Observe all animated elements
+        document.querySelectorAll('.smooth-reveal, .stagger-reveal, .text-reveal').forEach(el => {
+            smoothRevealObserver.observe(el);
         });
         
         // Automatic slideshow
@@ -1300,7 +1470,7 @@
             if (isMobile && mobileSlideshow) {
                 let touchStartX = 0;
                 let touchEndX = 0;
-                const threshold = 40; // minimal swipe distance in px
+                const threshold = 40; // px
                 mobileSlideshow.addEventListener('touchstart', (e) => {
                     touchStartX = e.changedTouches[0].screenX;
                 }, { passive: true });
@@ -1308,12 +1478,9 @@
                     touchEndX = e.changedTouches[0].screenX;
                     const delta = touchEndX - touchStartX;
                     if (Math.abs(delta) > threshold) {
-                        // On swipe, move to next or previous logically by adjusting index
                         if (delta < 0) {
-                            // next
                             showSlides();
                         } else {
-                            // previous: decrement index by 2 because showSlides() will +1
                             slideIndex = Math.max(0, slideIndex - 2);
                             showSlides();
                         }
@@ -1432,46 +1599,18 @@
         const videoModal = document.getElementById('videoModal');
         const closeVideoModal = document.getElementById('closeVideoModal');
         const expandedVideo = document.getElementById('expandedVideo');
-        // Ensure container looks clickable
-        if (videoContainer) { videoContainer.style.cursor = 'pointer'; }
-
+        
         function openVideoModal() {
             try { console.log('[NK] openVideoModal called'); } catch(e) {}
             if (!videoModal || !expandedVideo) return;
             if (!videoModal.classList.contains('hidden')) return;
-            // Ensure modal is at end of body to avoid stacking/transform contexts
             if (videoModal.parentElement !== document.body) {
                 document.body.appendChild(videoModal);
             }
-            // Lock scroll AFTER we show the modal (we pre-scroll first)
-            const currentY = window.scrollY || window.pageYOffset || 0;
-            document.documentElement.style.overflow = 'hidden';
-            document.body.style.overflow = 'hidden';
-            document.body.classList.add('no-transform');
-            document.body.dataset.scrollY = String(currentY);
-            document.body.style.position = 'fixed';
-            document.body.style.top = `-${currentY}px`;
-            document.body.style.left = '0';
-            document.body.style.right = '0';
-            document.body.style.width = '100%';
-            // Force layout as viewport overlay
-            videoModal.style.position = 'fixed';
-            videoModal.style.left = '0';
-            videoModal.style.top = '0';
-            videoModal.style.width = '100vw';
-            videoModal.style.height = '100vh';
-            videoModal.style.display = 'flex';
-            videoModal.style.alignItems = 'center';
-            videoModal.style.justifyContent = 'center';
-            videoModal.style.zIndex = '2147483647';
-            videoModal.classList.remove('hidden');
-            try { console.log('[NK] videoModal shown'); } catch(e) {}
-            // Animate in
+            // Lock after show (we will pre-scroll)
             setTimeout(() => {
                 const modalContent = videoModal.querySelector('div');
                 if (modalContent) modalContent.style.transform = 'scale(1)';
-                // Fallback autoscroll only if somehow not centered
-                // Now lock scroll in place
                 const currentY = window.scrollY || window.pageYOffset || 0;
                 document.documentElement.style.overflow = 'hidden';
                 document.body.style.overflow = 'hidden';
@@ -1483,7 +1622,6 @@
                 document.body.style.right = '0';
                 document.body.style.width = '100%';
             }, 10);
-            // Start video reliably
             try {
                 expandedVideo.pause();
                 expandedVideo.currentTime = 0;
@@ -1509,13 +1647,10 @@
                 }
             }, 600);
         }
-        // Expose to inline onclick
         window.__openNVModal = openVideoModal;
         
-        // Smooth scroll helper
         function smoothScrollTo(targetY, done) {
             try { console.log('[NK] smoothScrollTo', targetY); } catch(e) {}
-            const start = window.scrollY || window.pageYOffset || 0;
             const maxY = Math.max(0, Math.min(targetY, document.body.scrollHeight - window.innerHeight));
             window.scrollTo({ top: maxY, behavior: 'smooth' });
             let elapsed = 0;
@@ -1534,11 +1669,10 @@
         function scrollAndOpen() {
             if (!videoContainer) return openVideoModal();
             const containerTop = (window.scrollY || window.pageYOffset || 0) + videoContainer.getBoundingClientRect().top;
-            const targetY = containerTop - 80; // offset for header
+            const targetY = containerTop - 80;
             smoothScrollTo(targetY, openVideoModal);
         }
         
-        // Open video modal (with robust playback to avoid gray screen)
         videoContainer.addEventListener('click', (evt) => {
             evt.preventDefault();
             evt.stopPropagation();
@@ -1546,9 +1680,9 @@
             scrollAndOpen();
         });
 
-        // Also open modal when clicking directly on the video
         if (adVideo) {
             adVideo.setAttribute('onclick', 'window.__openNVModal && window.__openNVModal()');
+            adVideo.style.cursor = 'pointer';
             adVideo.addEventListener('click', (evt) => {
                 evt.preventDefault();
                 evt.stopPropagation();
@@ -1556,7 +1690,6 @@
                 scrollAndOpen();
             });
         }
-        // Keyboard activation
         if (videoContainer) {
             videoContainer.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
@@ -1576,9 +1709,8 @@
                 document.documentElement.style.overflow = '';
                 document.body.style.overflow = '';
                 document.body.classList.remove('no-transform');
-                // Clear forced inline styles
+                try { expandedVideo.pause(); } catch (_) {}
                 videoModal.removeAttribute('style');
-                // Restore body scroll position
                 const y = parseInt(document.body.dataset.scrollY || '0', 10);
                 document.body.style.position = '';
                 document.body.style.top = '';
@@ -1586,7 +1718,6 @@
                 document.body.style.right = '';
                 document.body.style.width = '';
                 window.scrollTo(0, y);
-                try { expandedVideo.pause(); } catch (_) {}
             }, 300);
         }
         
