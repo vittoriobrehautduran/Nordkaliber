@@ -1,6 +1,9 @@
 {
   "version": 2,
   "cleanUrls": true,
+  "comment": "Updated routing to serve designpage.html for /design route",
+  "buildCommand": "echo 'No build step needed'",
+  "outputDirectory": "public",
   "routes": [
     {
       "src": "/design/design.html",
@@ -9,35 +12,35 @@
     },
     {
       "src": "/design/designpage",
-      "dest": "/public/design/designpage.html"
+      "dest": "/designpage.html"
     },
     {
       "src": "/images/(.*)",
-      "dest": "/public/images/$1"
+      "dest": "/images/$1"
     },
     {
       "src": "/design",
-      "dest": "/public/design/designpage.html"
+      "dest": "/designpage.html"
     },
     {
       "src": "/checkout",
-      "dest": "/public/checkout.html"
+      "dest": "/checkout.html"
     },
     {
       "src": "/success",
-      "dest": "/public/success.html"
+      "dest": "/success.html"
     },
     {
       "src": "/policies",
-      "dest": "/public/policies.html"
+      "dest": "/policies.html"
     },
     {
       "src": "/test-email",
-      "dest": "/public/test-email.html"
+      "dest": "/test-email.html"
     },
     {
       "src": "/",
-      "dest": "/public/index.html"
+      "dest": "/index.html"
     }
   ]
 } 
