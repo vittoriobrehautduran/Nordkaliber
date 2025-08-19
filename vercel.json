@@ -1,7 +1,6 @@
 {
   "version": 2,
   "cleanUrls": true,
-  "comment": "Updated routing to serve designpage.html for /design route",
   "buildCommand": "echo 'No build step needed'",
   "outputDirectory": "public",
   "routes": [
