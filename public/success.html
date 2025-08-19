@@ -148,7 +148,7 @@
 
             <!-- Action Buttons -->
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="/design" class="bg-gradient-to-r from-mustard-gold to-dark-green text-white px-8 py-4 rounded-lg font-semibold hover:from-dark-green hover:to-mustard-gold transition-all duration-300 transform hover:scale-105">
+                <a href="#" onclick="redirectToDesign(event)" class="bg-gradient-to-r from-mustard-gold to-dark-green text-white px-8 py-4 rounded-lg font-semibold hover:from-dark-green hover:to-mustard-gold transition-all duration-300 transform hover:scale-105">
                     Beställ en till
                 </a>
                 <a href="/" class="bg-premium-black border border-hunter-brown border-opacity-30 text-white px-8 py-4 rounded-lg font-semibold hover:bg-dark-green transition-colors">
@@ -159,6 +159,12 @@
     </div>
 
     <script>
+        // Function to redirect to the new design page
+        function redirectToDesign(event) {
+            event.preventDefault();
+            window.location.href = 'design/designpage.html';
+        }
+        
         // Load order details and send emails when page loads
         document.addEventListener('DOMContentLoaded', function() {
             loadOrderDetails();

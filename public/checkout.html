@@ -14,6 +14,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://js.stripe.com/v3/"></script>
     <script>
+        // Function to redirect to the new design page
+        function redirectToDesign(event) {
+            event.preventDefault();
+            window.location.href = 'design/designpage.html';
+        }
+        
         tailwind.config = {
             theme: {
                 extend: {
@@ -88,7 +94,7 @@
     <header class="bg-white border-b border-gray-200">
         <div class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
-                <a href="/design" class="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors">
+                <a href="#" onclick="redirectToDesign(event)" class="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors">
                     <i class="fas fa-arrow-left text-xl"></i>
                     <span class="text-xl font-semibold">NORDKALIBER</span>
                 </a>
@@ -258,18 +264,33 @@
 
         // Load order data from localStorage
         function loadOrderData() {
-            const cartData = localStorage.getItem('nordkaliberCart');
-            if (cartData) {
-                orderData = JSON.parse(cartData);
+            const productsData = localStorage.getItem('nordkaliberProducts');
+            if (productsData) {
+                const products = JSON.parse(productsData);
+                orderData = {
+                    items: products.map(product => ({
+                        type: product.type,
+                        caliber: product.selections.caliber || product.selections.caliberSpecial || 'Ej valt',
+                        primaryColor: product.selections.primaryColor ? product.selections.primaryColor.name : (product.selections.primaryColorSpecial || 'Ej valt'),
+                        secondaryColor: product.selections.secondaryColor ? product.selections.secondaryColor.name : (product.selections.secondaryColorSpecial || 'Ej valt'),
+                        design: product.selections.design ? product.selections.design.name : (product.selections.designSpecial || 'Ej valt'),
+                        initials: product.selections.initials || product.selections.initialsSpecial || 'Inga',
+                        price: product.totalPrice
+                    })),
+                    total: products.reduce((sum, product) => sum + product.totalPrice, 0)
+                };
+                console.log('Loaded products from localStorage:', orderData);
             } else {
-                // Create demo data if no cart data exists
+                // Create demo data if no products data exists
                 orderData = {
                     items: [
                         {
+                            type: 'Ammunitionsetui',
                             caliber: '6.5x55 Swedish Mauser',
-                            primaryColor: 'green',
-                            secondaryColor: 'black',
-                            initials: '',
+                            primaryColor: 'Grön',
+                            secondaryColor: 'Svart',
+                            design: 'Design 1',
+                            initials: 'Inga',
                             price: 850
                         }
                     ],
@@ -491,14 +512,34 @@
             // Add items
             orderData.items.forEach(item => {
                 const itemElement = document.createElement('div');
-                itemElement.className = 'flex justify-between items-center';
+                itemElement.className = 'border border-gray-200 rounded-lg p-4 mb-3 bg-gray-50';
                 itemElement.innerHTML = `
-                    <div>
-                        <div class="font-medium text-gray-900">${item.caliber}</div>
-                        <div class="text-sm text-gray-600">${item.primaryColor}/${item.secondaryColor}</div>
-                        ${item.initials ? `<div class="text-sm text-gray-600">Initialer: ${item.initials}</div>` : ''}
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-semibold text-gray-900 text-lg">${item.type}</h4>
+                        <span class="font-bold text-blue-600 text-lg">${item.price} kr</span>
                     </div>
-                    <div class="font-semibold text-gray-900">${item.price} kr</div>
+                    <div class="space-y-2 text-sm text-gray-700">
+                        <div class="flex justify-between">
+                            <span class="font-medium">Kaliber:</span>
+                            <span>${item.caliber}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="font-medium">Primär Färg:</span>
+                            <span>${item.primaryColor}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="font-medium">Sekundär Färg:</span>
+                            <span>${item.secondaryColor}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="font-medium">Design:</span>
+                            <span>${item.design}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="font-medium">Initialer:</span>
+                            <span>${item.initials}</span>
+                        </div>
+                    </div>
                 `;
                 orderItemsContainer.appendChild(itemElement);
             });

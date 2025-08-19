@@ -937,7 +937,7 @@
                         <a href="#overview" class="nav-link text-gray-300 hover:text-mustard-gold transition flex items-center">Översikt</a>
                         <a href="#om-oss" class="nav-link text-gray-300 hover:text-mustard-gold transition flex items-center">Om Oss</a>
                         <a href="#kontakt" class="nav-link text-gray-300 hover:text-mustard-gold transition flex items-center">Kontakt</a>
-                        <a href="design/design.html" id="navbarDesignBtn" class="w-12 h-12 bg-gradient-to-br from-hunter-brown via-dark-green to-hunter-brown rounded-full shadow-2xl flex items-center justify-center transition-all duration-3000 ease-in-out cursor-pointer hover:shadow-3xl overflow-hidden relative btn-enhanced hover-smooth">
+                        <a href="#" id="navbarDesignBtn" onclick="redirectToDesign(event)" class="w-12 h-12 bg-gradient-to-br from-hunter-brown via-dark-green to-hunter-brown rounded-full shadow-2xl flex items-center justify-center transition-all duration-3000 ease-in-out cursor-pointer hover:shadow-3xl overflow-hidden relative btn-enhanced hover-smooth">
                             <!-- Plus icon -->
                             <i id="navbarBtnIcon" class="fas fa-plus text-white text-xl transition-all duration-500 ease-out relative z-10"></i>
                             <!-- Text that appears -->
@@ -949,7 +949,7 @@
                     
                     <!-- Mobile Menu Button -->
                     <div class="md:hidden flex items-center space-x-3 h-full">
-                        <a href="design/design.html" class="btn-enhanced bg-gradient-to-r from-hunter-brown to-dark-green text-white px-4 py-2 rounded-full font-semibold transition-all duration-300 text-sm hover:from-dark-green hover:to-hunter-brown flex items-center justify-center hover-smooth">
+                        <a href="#" onclick="redirectToDesign(event)" class="btn-enhanced bg-gradient-to-r from-hunter-brown to-dark-green text-white px-4 py-2 rounded-full font-semibold transition-all duration-300 text-sm hover:from-dark-green hover:to-hunter-brown flex items-center justify-center hover-smooth">
                             Designa din egen nu
                         </a>
                         <div class="hamburger w-6 flex flex-col justify-center items-center h-6">
@@ -1149,7 +1149,7 @@
                     <p class="text-xl text-white mb-8 text-reveal smooth-reveal">
                         <span>En produkt som ger jägaren det lilla extra.</span>
                     </p>
-                    <a href="design/design.html" class="btn-enhanced btn-hunter text-white px-8 py-3 rounded-full font-medium inline-block hover-smooth">BESTÄLL DIN EGEN IDAG</a>
+                    <a href="#" onclick="redirectToDesign(event)" class="btn-enhanced btn-hunter text-white px-8 py-3 rounded-full font-medium inline-block hover-smooth">BESTÄLL DIN EGEN IDAG</a>
                 </div>
             </div>
         </section>
@@ -1372,6 +1372,11 @@
 
         <script>
 
+                    // Function to redirect to the new design page
+        function redirectToDesign(event) {
+            event.preventDefault();
+            window.location.href = 'design/designpage.html';
+        }
             
             // Smooth scrolling for anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
