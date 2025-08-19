@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "cleanUrls": true,
   "buildCommand": "echo 'Deploying latest changes'",
   "outputDirectory": "public",
   "routes": [
