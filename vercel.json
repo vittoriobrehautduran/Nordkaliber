@@ -8,12 +8,16 @@
       "status": 301
     },
     {
+      "src": "/design/designpage",
+      "dest": "/public/design/designpage.html"
+    },
+    {
       "src": "/images/(.*)",
       "dest": "/public/images/$1"
     },
     {
       "src": "/design",
-      "dest": "/public/design/design.html"
+      "dest": "/public/design/designpage.html"
     },
     {
       "src": "/checkout",
