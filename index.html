@@ -40,6 +40,13 @@
         }
     </script>
     <style>
+        /*
+         * FONT & BASIC SETUP
+         * We're grabbing the 'Inter' font from Google Fonts.
+         * Then, we lock the native scroll on the html and body,
+         * and set up our own custom scrolling container called '.page-wrapper'.
+         * This gives us more control over the scroll behavior.
+         */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         
         html, body {
@@ -964,7 +971,7 @@
                 <div class="mobile-menu md:hidden mt-4">
                     <div class="flex flex-col space-y-4 pb-4">
                         <a href="#hem" class="text-gray-300 hover:text-mustard-gold transition flex items-center">Hem</a>
-                        <a href="#produkter" class="text-gray-300 hover:text-mustard-gold transition flex items-center">Produkter</a>
+                        <a href="#overview" class="text-gray-300 hover:text-mustard-gold transition flex items-center">Översikt</a>
                         <a href="#om-oss" class="text-gray-300 hover:text-mustard-gold transition flex items-center">Om Oss</a>
                         <a href="#kontakt" class="text-gray-300 hover:text-mustard-gold transition flex items-center">Kontakt</a>
                     </div>
@@ -987,11 +994,11 @@
                         <span>Premium ammunitionsetui för den seriösa jägaren</span>
                     </p>
                     <!-- Button for mobile - positioned normally -->
-                    <a href="#overview" class="btn-enhanced btn-hunter text-white px-4 sm:px-6 md:px-8 py-2 md:py-3 rounded-full font-medium inline-block hover-smooth text-sm sm:text-base hide-on-low-height md:hidden">UPPTÄCK VÅRA PRODUKTER</a>
+                    <a href="#overview" class="btn-enhanced btn-hunter text-white px-4 sm:px-6 md:px-8 py-2 md:py-3 rounded-full font-medium inline-block hover-smooth text-sm sm:text-base hide-on-low-height md:hidden">UPPTÄCK VÅR PRODUKT</a>
                 </div>
                 <!-- Button positioned absolutely for larger screens -->
                 <div class="absolute left-1/2 transform -translate-x-1/2 hidden md:block" style="top: 60%;">
-                    <a href="#overview" class="btn-enhanced btn-hunter text-white px-4 sm:px-6 md:px-8 py-2 md:py-3 rounded-full font-medium inline-block hover-smooth text-sm sm:text-base hide-on-low-height">UPPTÄCK VÅRA PRODUKTER</a>
+                    <a href="#overview" class="btn-enhanced btn-hunter text-white px-4 sm:px-6 md:px-8 py-2 md:py-3 rounded-full font-medium inline-block hover-smooth text-sm sm:text-base hide-on-low-height">UPPTÄCK VÅR PRODUKT</a>
                 </div>
             </div>
         </section>
@@ -1076,12 +1083,12 @@
                                 <i class="fas fa-shield-alt mr-3"></i>
                                 Praxis Först
                             </h3>
-                            <p class="text-white">Du behöver ammunitionsförvaring som tål väder. Den robusta konstruktionen säkerställer att din ammunition skyddas mot alla väderförhållanden.</p>
+                            <p class="text-white">Ammunition ska plockas fram smidigt. Den här produkten förenklar hanteringen av din ammunition.</p>
                         </div>
                         <div class="stagger-reveal">
                             <h3 class="text-xl font-bold mb-2 text-mustard-gold hover-smooth flex items-center">
                                 <i class="fas fa-link mr-3"></i>
-                                Missing Link
+                                Felande Länk
                             </h3>
                             <p class="text-white">Du har ägnat år åt att välja rätt gevär, välja optik och välja ammunition. Varje beslut i din utrustning är väl genomtänkt. Varför skulle ammunitionsförvaringen vara den svaga länken?</p>
                         </div>
@@ -1141,10 +1148,10 @@
                     </div>
                 </div>
                 
-                <!-- Unik Pryl Section -->
+                <!-- Unik Produkt Section -->
                 <div class="max-w-4xl mx-auto text-center">
                     <h2 class="text-3xl md:text-4xl font-bold mb-4 text-mustard-gold text-reveal smooth-reveal">
-                        <span>Unik pryl</span>
+                        <span>Unik produkt</span>
                     </h2>
                     <p class="text-xl text-white mb-8 text-reveal smooth-reveal">
                         <span>En produkt som ger jägaren det lilla extra.</span>
@@ -1161,13 +1168,52 @@
         <!-- About Section -->
             <section id="om-oss" class="py-20 section-fade" style="background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('images/elk1.jpg'); background-position: center 70%; background-size: cover;">
             <div class="container mx-auto px-4">
-                <div class="max-w-3xl mx-auto bg-dark-green bg-opacity-50 rounded-lg p-10 border border-hunter-brown border-opacity-20 text-center product-card-enhanced">
-                    <h2 class="text-3xl md:text-4xl font-bold mb-8 text-reveal smooth-reveal">
-                        <span>Nordkaliber</span>
-                    </h2>
-                    <p class="text-lg leading-relaxed text-reveal smooth-reveal">
-                        <span>Vi är ett varumärke som sätter kunden i första plats. Nordkaliber levererar en unik produkt som komplementerar jakten på ett sätt som inte finns på marknaden just nu.</span>
-                    </p>
+                <div class="max-w-4xl mx-auto bg-dark-green bg-opacity-50 rounded-lg p-10 border border-hunter-brown border-opacity-20 product-card-enhanced">
+                    <div class="text-left">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center text-reveal smooth-reveal">
+                            <span>Om Oss</span>
+                        </h2>
+                        
+                        <div class="space-y-8">
+                            <p class="text-lg leading-relaxed text-reveal smooth-reveal">
+                                <span>Nordkaliber är ett modernt varumärke som tillhandahåller jakttillbehör med nordisk kvalitet i varje detalj.</span>
+                            </p>
+                            
+                            <div class="stagger-reveal">
+                                <h3 class="text-2xl font-bold mb-4 text-mustard-gold">Vår vision</h3>
+                                <p class="text-lg leading-relaxed">Resan påbörjade med en enkel men kraftfull vision – att förbättra jägarens utrustning.</p>
+                                <p class="text-lg leading-relaxed mt-2">Orden "Av jägare för jägare" blev mottot.</p>
+                            </div>
+                            
+                            <div class="stagger-reveal">
+                                <h3 class="text-2xl font-bold mb-4 text-mustard-gold">Vår mission</h3>
+                                <p class="text-lg leading-relaxed">För jägaren som saknar det lilla extra har vi skapat unika ammunitionsetuier, som eljest inte finns på marknaden, genom en kombination av gediget hantverk, fortlöpande innovation och avancerad teknik.</p>
+                                <p class="text-lg leading-relaxed mt-4">Vi lägger tid och resurser för att varenda kund ska få sina exakta behov och önskemål bemötta, utan att kompromissa strikta kvalitetsmått.</p>
+                                <p class="text-lg leading-relaxed mt-4">Genom vår skräddarsydda produkt, formad av själva jägaren, skapar vi inte bara en accessoar – utan ger jägaren ett sätt att visa sin identitet.</p>
+                            </div>
+                            
+                            <div class="stagger-reveal">
+                                <h3 class="text-2xl font-bold mb-4 text-mustard-gold">Våra värderingar</h3>
+                                
+                                <div class="space-y-6">
+                                    <div>
+                                        <h4 class="text-xl font-semibold mb-2 text-white">Kundfokus</h4>
+                                        <p class="text-lg leading-relaxed">Vi sätter alltid kunden först. Varje beställning bemöts med full respekt för efterfrågan – det är så vi skiljer oss och säkerställer högsta kvalitet.</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <h4 class="text-xl font-semibold mb-2 text-white">Autenticitet</h4>
+                                        <p class="text-lg leading-relaxed">Nordkaliber bygger på att skapa unika produkter som bär kundens egen stil och identitet.</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <h4 class="text-xl font-semibold mb-2 text-white">Löften</h4>
+                                        <p class="text-lg leading-relaxed">Vi håller vad vi lovar. Därför erbjuder vi <strong>livstidsgaranti</strong> för alla våra produkter, samt <strong>öppet köp</strong> på våra standardprodukter i en månad.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1200,7 +1246,7 @@
                         <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6 hover-smooth">
                             <i class="fas fa-headset text-mustard-gold text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-bold mb-3">24/7 E-post Support</h3>
+                        <h3 class="text-xl font-bold mb-3">E-post Support</h3>
                         <p class="text-gray-400">Vårt team är alltid tillgängligt för dina frågor eller bekymmer.</p>
                     </div>
                     
@@ -1209,7 +1255,7 @@
                             <i class="fas fa-undo text-mustard-gold text-2xl"></i>
                         </div>
                         <h3 class="text-xl font-bold mb-3">Enkel Retur</h3>
-                        <p class="text-gray-400">Smidig retur- och bytepolitik för din tillfredsställelse.</p>
+                        <p class="text-gray-400">Smidig retur- och bytespolicy för din tillfredsställelse.</p>
                     </div>
                 </div>
             </div>
@@ -1388,10 +1434,19 @@
                     
                     const targetElement = document.querySelector(targetId);
                     if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 80,
-                            behavior: 'smooth'
-                        });
+                        const pageWrapper = document.querySelector('.page-wrapper');
+                        if (pageWrapper) {
+                            pageWrapper.scrollTo({
+                                top: targetElement.offsetTop - 80,
+                                behavior: 'smooth'
+                            });
+                        } else {
+                            // Fallback to window scroll if page-wrapper not found
+                            window.scrollTo({
+                                top: targetElement.offsetTop - 80,
+                                behavior: 'smooth'
+                            });
+                        }
                         
                         // Close mobile menu if open
                         if (mobileMenu.classList.contains('open')) {
@@ -1638,7 +1693,8 @@
                 setTimeout(() => {
                     const modalContent = videoModal.querySelector('div');
                     if (modalContent) modalContent.style.transform = 'scale(1)';
-                    const currentY = window.scrollY || window.pageYOffset || 0;
+                    const pageWrapper = document.querySelector('.page-wrapper');
+                    const currentY = pageWrapper ? pageWrapper.scrollTop : (window.scrollY || window.pageYOffset || 0);
                     document.documentElement.style.overflow = 'hidden';
                     document.body.style.overflow = 'hidden';
                     document.body.classList.add('no-transform');
@@ -1678,26 +1734,52 @@
             
             function smoothScrollTo(targetY, done) {
                 try { console.log('[NK] smoothScrollTo', targetY); } catch(e) {}
-                const maxY = Math.max(0, Math.min(targetY, document.body.scrollHeight - window.innerHeight));
-                window.scrollTo({ top: maxY, behavior: 'smooth' });
-                let elapsed = 0;
-                const step = 50;
-                const maxWait = 1200;
-                const timer = setInterval(() => {
-                    elapsed += step;
-                    const y = window.scrollY || window.pageYOffset || 0;
-                    if (Math.abs(y - maxY) < 4 || elapsed >= maxWait) {
-                        clearInterval(timer);
-                        setTimeout(done, 50);
-                    }
-                }, step);
+                const pageWrapper = document.querySelector('.page-wrapper');
+                if (pageWrapper) {
+                    const maxY = Math.max(0, Math.min(targetY, pageWrapper.scrollHeight - pageWrapper.clientHeight));
+                    pageWrapper.scrollTo({ top: maxY, behavior: 'smooth' });
+                    let elapsed = 0;
+                    const step = 50;
+                    const maxWait = 1200;
+                    const timer = setInterval(() => {
+                        elapsed += step;
+                        const y = pageWrapper.scrollTop || 0;
+                        if (Math.abs(y - maxY) < 4 || elapsed >= maxWait) {
+                            clearInterval(timer);
+                            setTimeout(done, 50);
+                        }
+                    }, step);
+                } else {
+                    // Fallback to window scroll if page-wrapper not found
+                    const maxY = Math.max(0, Math.min(targetY, document.body.scrollHeight - window.innerHeight));
+                    window.scrollTo({ top: maxY, behavior: 'smooth' });
+                    let elapsed = 0;
+                    const step = 50;
+                    const maxWait = 1200;
+                    const timer = setInterval(() => {
+                        elapsed += step;
+                        const y = window.scrollY || window.pageYOffset || 0;
+                        if (Math.abs(y - maxY) < 4 || elapsed >= maxWait) {
+                            clearInterval(timer);
+                            setTimeout(done, 50);
+                        }
+                    }, step);
+                }
             }
             
             function scrollAndOpen() {
                 if (!videoContainer) return openVideoModal();
-                const containerTop = (window.scrollY || window.pageYOffset || 0) + videoContainer.getBoundingClientRect().top;
-                const targetY = containerTop - 80;
-                smoothScrollTo(targetY, openVideoModal);
+                const pageWrapper = document.querySelector('.page-wrapper');
+                if (pageWrapper) {
+                    const containerTop = pageWrapper.scrollTop + videoContainer.getBoundingClientRect().top;
+                    const targetY = containerTop - 80;
+                    smoothScrollTo(targetY, openVideoModal);
+                } else {
+                    // Fallback to window scroll if page-wrapper not found
+                    const containerTop = (window.scrollY || window.pageYOffset || 0) + videoContainer.getBoundingClientRect().top;
+                    const targetY = containerTop - 80;
+                    smoothScrollTo(targetY, openVideoModal);
+                }
             }
             
             videoContainer.addEventListener('click', (evt) => {
@@ -1744,7 +1826,12 @@
                     document.body.style.left = '';
                     document.body.style.right = '';
                     document.body.style.width = '';
-                    window.scrollTo(0, y);
+                    const pageWrapper = document.querySelector('.page-wrapper');
+                    if (pageWrapper) {
+                        pageWrapper.scrollTo(0, y);
+                    } else {
+                        window.scrollTo(0, y);
+                    }
                 }, 300);
             }
             
