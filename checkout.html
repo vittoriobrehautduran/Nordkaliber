@@ -17,7 +17,7 @@
         // Function to redirect to the new design page
         function redirectToDesign(event) {
             event.preventDefault();
-            window.location.href = 'design/designpage.html';
+            window.location.href = '/design/designpage';
         }
         
         tailwind.config = {
@@ -212,7 +212,7 @@
                         <div class="flex items-start space-x-3">
                             <input type="checkbox" id="terms" required class="mt-1">
                             <label for="terms" class="text-sm text-gray-700">
-                                Jag accepterar <a href="#" class="text-blue-600 hover:underline">användarvillkoren</a> och <a href="#" class="text-blue-600 hover:underline">integritetspolicyn</a> *
+                                Jag accepterar <a href="/policies" class="text-blue-600 hover:underline">användarvillkoren</a> och <a href="/policies" class="text-blue-600 hover:underline">integritetspolicyn</a> *
                             </label>
                         </div>
                     </div>
@@ -425,7 +425,7 @@
                 const { error } = await stripe.confirmPayment({
                     elements,
                     confirmParams: {
-                        return_url: `${window.location.origin}/success.html`,
+                        return_url: `${window.location.origin}/success`,
                         payment_method_data: {
                             billing_details: {
                                 name: document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value,

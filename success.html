@@ -82,7 +82,7 @@
     <header class="bg-premium-black border-b border-hunter-brown border-opacity-30">
         <div class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
-                <a href="index.html" class="flex items-center space-x-2 text-mustard-gold hover:text-white transition-colors">
+                <a href="/" class="flex items-center space-x-2 text-mustard-gold hover:text-white transition-colors">
                     <i class="fas fa-home text-xl"></i>
                     <span class="text-xl font-semibold">NORDKALIBER</span>
                 </a>
@@ -166,7 +166,7 @@
                 <a href="#" onclick="redirectToDesign(event)" class="bg-gradient-to-r from-mustard-gold to-dark-green text-white px-8 py-4 rounded-lg font-semibold hover:from-dark-green hover:to-mustard-gold transition-all duration-300 transform hover:scale-105">
                     Beställ en till
                 </a>
-                <a href="index.html" class="bg-premium-black border border-hunter-brown border-opacity-30 text-white px-8 py-4 rounded-lg font-semibold hover:bg-dark-green transition-colors">
+                <a href="/" class="bg-premium-black border border-hunter-brown border-opacity-30 text-white px-8 py-4 rounded-lg font-semibold hover:bg-dark-green transition-colors">
                     Tillbaka till startsidan
                 </a>
             </div>
@@ -177,7 +177,7 @@
         // Function to redirect to the new design page
         function redirectToDesign(event) {
             event.preventDefault();
-            window.location.href = 'design/designpage.html';
+            window.location.href = '/design/designpage';
         }
         
         // Get order details from URL parameters or localStorage

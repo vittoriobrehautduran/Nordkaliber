@@ -97,21 +97,6 @@
             background: linear-gradient(135deg, rgba(230, 177, 122, 0.2), rgba(16, 185, 129, 0.2));
             border-color: var(--primary-color);
             box-shadow: 0 0 25px rgba(230, 177, 122, 0.3);
-            animation: optionSelected 0.4s ease-out;
-        }
-
-        @keyframes optionSelected {
-            0% {
-                transform: scale(0.95);
-                opacity: 0.8;
-            }
-            50% {
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
         }
 
         .color-option {
@@ -134,21 +119,6 @@
             border-color: var(--primary-color);
             box-shadow: 0 0 20px rgba(230, 177, 122, 0.4);
             transform: scale(1.1);
-            animation: colorSelected 0.4s ease-out;
-        }
-
-        @keyframes colorSelected {
-            0% {
-                transform: scale(0.9);
-                opacity: 0.8;
-            }
-            50% {
-                transform: scale(1.15);
-            }
-            100% {
-                transform: scale(1.1);
-                opacity: 1;
-            }
         }
 
         .design-option img {
@@ -380,31 +350,6 @@
             margin-bottom: 0.5rem;
             padding: 0.25rem 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* Fade-in animations */
-        .fade-in-detail {
-            animation: fadeInDetail 0.5s ease-in-out;
-        }
-
-        @keyframes fadeInDetail {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Image transition styles */
-        .preview-image {
-            transition: opacity 0.5s ease-in-out;
-        }
-
-        .preview-placeholder {
-            transition: opacity 0.5s ease-in-out;
         }
 
         /* Cart Panel Styles */
@@ -693,13 +638,6 @@
                         <h1 class="step-title">STEG 4</h1>
                         <h2 class="step-subtitle">VÄLJ DIN DESIGN</h2>
                         
-                        <div class="text-center mb-3">
-                            <p class="text-white small">
-                                <i class="fas fa-info-circle me-1"></i>
-                                Dessa designs kommer att ersätta logotypen i förhandsvisningen
-                            </p>
-                        </div>
-                        
                         <div class="row g-3 mb-4" id="design-options">
                             <!-- Design options will be populated by JavaScript -->
                         </div>
@@ -847,29 +785,24 @@
                     ".300 Winchester Magnum", "6.5x55 Swedish Mauser", "12 Gauge (Hagel)"
                 ],
                 primaryColors: [
-                    { name: 'Svart', value: 'black', img: '../images/primarycolors/blackbox.PNG' },
-                    { name: 'Vit', value: 'white', img: '../images/primarycolors/boxwhite.PNG' },
-                    { name: 'Grå', value: 'gray', img: '../images/primarycolors/graybox.PNG' },
-                    { name: 'Grön', value: 'green', img: '../images/primarycolors/greenbox.PNG' },
-                    { name: 'Röd', value: 'red', img: '../images/primarycolors/boxred.PNG' },
-                    { name: 'Mörkgrön', value: 'darkgreen', img: '../images/primarycolors/darkgreenbox.PNG' }
+                    { name: 'Svart', value: 'black' }, { name: 'Vit', value: 'white' },
+                    { name: 'Grå', value: 'gray' }, { name: 'Grön', value: 'green' },
+                    { name: 'Röd', value: 'red' }, { name: 'Mörkgrön', value: 'darkgreen' }
                 ],
                 secondaryColors: [
-                    { name: 'Guld', value: 'gold', img: '../images/secondarycolors/goldbutton.PNG', logo: '../images/secondarycolors/goldlogo.PNG' },
-                    { name: 'Röd', value: 'red', img: '../images/secondarycolors/redbutton.PNG', logo: '../images/secondarycolors/redlogo.png' },
-                    { name: 'Orange', value: 'orange', img: '../images/secondarycolors/orangebutton.PNG', logo: '../images/secondarycolors/orangelogo.PNG' },
-                    { name: 'Svart', value: 'black', img: '../images/secondarycolors/blackbutton.PNG', logo: '../images/secondarycolors/blacklogo.PNG' },
-                    { name: 'Vit', value: 'white', img: '../images/secondarycolors/whitebutton.PNG', logo: '../images/secondarycolors/whitelogo.PNG' }
+                    { name: 'Guld', value: 'gold' }, { name: 'Röd', value: 'red' },
+                    { name: 'Orange', value: 'orange' }, { name: 'Svart', value: 'black' },
+                    { name: 'Vit', value: 'white' }
                 ],
                 designs: [
-                    { name: 'Design 1', id: 'alg_logo', img: '../images/alg_logo.svg' },
-                    { name: 'Design 2', id: 'alg_design', img: '../images/alg_design.svg' },
-                    { name: 'Design 3', id: 'alg_jagare', img: '../images/alg_jagare.svg' },
-                    { name: 'Design 4', id: 'alg_majestic', img: '../images/alg_majestic.svg' },
-                    { name: 'Design 5', id: 'fagel_design', img: '../images/fagel_design.png' },
-                    { name: 'Design 6', id: 'jagare_hund', img: '../images/jagare_hund.svg' },
-                    { name: 'Design 7', id: 'algfavvo', img: '../images/algfavvo.svg' },
-                    { name: 'Design 8', id: 'your_text', img: '../images/your_text_design.png' },
+                    { name: 'Design 1', id: 'alg_logo', img: '/images/alg_logo.svg' },
+                    { name: 'Design 2', id: 'alg_design', img: '/images/alg_design.svg' },
+                    { name: 'Design 3', id: 'alg_jagare', img: '/images/alg_jagare.svg' },
+                    { name: 'Design 4', id: 'alg_majestic', img: '/images/alg_majestic.svg' },
+                    { name: 'Design 5', id: 'fagel_design', img: '/images/fagel_design.png' },
+                    { name: 'Design 6', id: 'jagare_hund', img: '/images/jagare_hund.svg' },
+                    { name: 'Design 7', id: 'algfavvo', img: '/images/algfavvo.svg' },
+                    { name: 'Design 8', id: 'your_text', img: '/images/your_text_design.png' },
                     { name: 'Ingen Design', id: 'none', img: null }
                 ]
             };
@@ -1017,11 +950,10 @@
                 // Primary color selection
                 document.querySelectorAll('.primary-color-option').forEach(option => {
                     option.addEventListener('click', function() {
-                        const colorValue = this.dataset.color;
-                        const color = data.primaryColors.find(c => c.value === colorValue);
-                        if (color) {
-                            selectOption(this, 'primaryColor', color);
-                        }
+                        selectOption(this, 'primaryColor', {
+                            name: this.dataset.name,
+                            value: this.dataset.color
+                        });
                         clearSpecialRequest(2);
                     });
                 });
@@ -1029,11 +961,10 @@
                 // Secondary color selection
                 document.querySelectorAll('.secondary-color-option').forEach(option => {
                     option.addEventListener('click', function() {
-                        const colorValue = this.dataset.color;
-                        const color = data.secondaryColors.find(c => c.value === colorValue);
-                        if (color) {
-                            selectOption(this, 'secondaryColor', color);
-                        }
+                        selectOption(this, 'secondaryColor', {
+                            name: this.dataset.name,
+                            value: this.dataset.color
+                        });
                         clearSpecialRequest(3);
                     });
                 });
@@ -1041,11 +972,10 @@
                 // Design selection
                 document.querySelectorAll('.design-option').forEach(option => {
                     option.addEventListener('click', function() {
-                        const designId = this.dataset.design;
-                        const design = data.designs.find(d => d.id === designId);
-                        if (design) {
-                            selectOption(this, 'design', design);
-                        }
+                        selectOption(this, 'design', {
+                            name: this.querySelector('span').textContent,
+                            id: this.dataset.design
+                        });
                         clearSpecialRequest(4);
                     });
                 });
@@ -1239,7 +1169,7 @@
 
                 if (checkoutBtn) {
                     checkoutBtn.addEventListener('click', () => {
-                        window.location.href = '/checkout';
+                        window.location.href = '/checkout.html';
                     });
                 }
             }
@@ -1513,76 +1443,55 @@
 
                 if (!previewPlaceholder || !previewBase || !previewLogo || !previewButton || !previewDetails) return;
 
-                console.log('Updating preview with selections:', app.selections);
-
                 // Clear previous preview details
                 previewDetails.innerHTML = '';
 
                 let hasSelections = false;
 
-                // Update preview images and details with fade-in animations
+                // Update preview images and details
                 if (app.selections.primaryColor) {
-                    fadeInImage(previewBase, app.selections.primaryColor.img);
+                    previewPlaceholder.style.display = 'none';
+                    previewBase.src = `/images/primarycolors/${app.selections.primaryColor.value}box.PNG`;
+                    previewBase.style.display = 'block';
                     hasSelections = true;
+
+                    // Add primary color detail
                     addPreviewDetail('Primär Färg', app.selections.primaryColor.name);
-                } else if (app.selections.primaryColorSpecial) {
-                    fadeInImage(previewBase, '../images/primarycolors/blackbox.PNG');
-                    hasSelections = true;
-                    addPreviewDetail('Primär Färg', 'Specialförfrågan');
                 } else {
-                    fadeOutImage(previewBase);
+                    previewBase.style.display = 'none';
                 }
 
-                if (app.selections.secondaryColor) {
-                    // Show both button and logo for secondary color
-                    fadeInImage(previewButton, app.selections.secondaryColor.img);
-                    fadeInImage(previewLogo, app.selections.secondaryColor.logo);
-                    
+                if (app.selections.secondaryColor && app.selections.design && app.selections.design.id !== 'none') {
+                    previewLogo.src = `/images/secondarycolors/${app.selections.secondaryColor.value}logo.PNG`;
+                    previewButton.src = `/images/secondarycolors/${app.selections.secondaryColor.value}button.PNG`;
+                    previewLogo.style.display = 'block';
+                    previewButton.style.display = 'block';
                     hasSelections = true;
+
+                    // Add secondary color and design details
                     addPreviewDetail('Sekundär Färg', app.selections.secondaryColor.name);
-                } else if (app.selections.secondaryColorSpecial) {
-                    fadeInImage(previewButton, '../images/secondarycolors/blackbutton.PNG');
-                    fadeInImage(previewLogo, '../images/secondarycolors/blacklogo.PNG');
-                    hasSelections = true;
-                    addPreviewDetail('Sekundär Färg', 'Specialförfrågan');
-                } else {
-                    fadeOutImage(previewButton);
-                    fadeOutImage(previewLogo);
-                }
-
-                // Handle design display (designs are not shown in preview, only in details)
-                if (app.selections.design && app.selections.design.id !== 'none') {
-                    hasSelections = true;
                     addPreviewDetail('Design', app.selections.design.name);
-                } else if (app.selections.designSpecial) {
-                    hasSelections = true;
-                    addPreviewDetail('Design', 'Specialförfrågan');
-                } else if (app.selections.design && app.selections.design.id === 'none') {
-                    hasSelections = true;
-                    addPreviewDetail('Design', 'Ingen Design');
+                } else {
+                    previewLogo.style.display = 'none';
+                    previewButton.style.display = 'none';
                 }
 
                 if (app.selections.caliber) {
                     addPreviewDetail('Kaliber', app.selections.caliber);
-                    hasSelections = true;
-                } else if (app.selections.caliberSpecial) {
-                    addPreviewDetail('Kaliber', 'Specialförfrågan');
                     hasSelections = true;
                 }
 
                 if (app.selections.initials) {
                     addPreviewDetail('Initialer', app.selections.initials);
                     hasSelections = true;
-                } else if (app.selections.initialsSpecial) {
-                    addPreviewDetail('Initialer', 'Specialförfrågan');
-                    hasSelections = true;
                 }
 
-                // Show/hide placeholder with fade effect
-                if (hasSelections) {
-                    fadeOutElement(previewPlaceholder);
-                } else {
-                    fadeInElement(previewPlaceholder);
+                // Show placeholder if no selections
+                if (!hasSelections) {
+                    previewPlaceholder.style.display = 'flex';
+                    previewBase.style.display = 'none';
+                    previewLogo.style.display = 'none';
+                    previewButton.style.display = 'none';
                 }
             }
 
@@ -1592,77 +1501,12 @@
                 if (!previewDetails) return;
 
                 const detail = document.createElement('div');
-                detail.className = 'preview-detail fade-in-detail';
+                detail.className = 'preview-detail';
                 detail.innerHTML = `
                     <span>${label}:</span>
                     <span class="fw-bold">${value}</span>
                 `;
                 previewDetails.appendChild(detail);
-            }
-
-            // Fade in image with smooth animation
-            function fadeInImage(imgElement, src) {
-                if (!imgElement) return;
-                
-                console.log('Fading in image:', src, 'for element:', imgElement.id);
-                
-                // Set opacity to 0 and show element
-                imgElement.style.opacity = '0';
-                imgElement.style.display = 'block';
-                
-                // Set the new image source
-                imgElement.src = src;
-                
-                // Wait for image to load before fading in
-                imgElement.onload = function() {
-                    console.log('Image loaded successfully:', src);
-                    imgElement.style.transition = 'opacity 0.5s ease-in-out';
-                    imgElement.style.opacity = '1';
-                };
-                
-                // Fallback if image fails to load
-                imgElement.onerror = function() {
-                    console.error('Failed to load image:', src);
-                    imgElement.style.display = 'none';
-                };
-            }
-
-            // Fade out image with smooth animation
-            function fadeOutImage(imgElement) {
-                if (!imgElement) return;
-                
-                imgElement.style.transition = 'opacity 0.3s ease-in-out';
-                imgElement.style.opacity = '0';
-                
-                // Hide element after fade out
-                setTimeout(() => {
-                    imgElement.style.display = 'none';
-                }, 300);
-            }
-
-            // Fade in element with smooth animation
-            function fadeInElement(element) {
-                if (!element) return;
-                
-                element.style.opacity = '0';
-                element.style.display = 'flex';
-                
-                setTimeout(() => {
-                    element.style.transition = 'opacity 0.5s ease-in-out';
-                    element.style.opacity = '1';
-                }, 50);
-            }
-
-            // Fade out element with smooth animation
-            function fadeOutElement(element) {
-                if (!element) return;
-                
-                element.style.transition = 'opacity 0.3s ease-in-out';
-                element.style.opacity = '0';
-                
-                setTimeout(() => {
-                    element.style.display = 'none';
-                }, 300);
             }
 
             // Finish design

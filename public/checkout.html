@@ -17,7 +17,7 @@
         // Function to redirect to the new design page
         function redirectToDesign(event) {
             event.preventDefault();
-            window.location.href = 'design/designpage.html';
+            window.location.href = '/design/designpage';
         }
         
         tailwind.config = {
@@ -194,17 +194,17 @@
                     <div class="mb-8">
                         <h3 class="text-lg font-semibold mb-4 text-gray-900">Betalningsmetod</h3>
                         
-                        <!-- Stripe Payment Element -->
-                        <div class="bg-white border border-gray-300 rounded-lg p-4">
-                            <div id="payment-element">
-                                <!-- Stripe Payment Element will be inserted here -->
-                            </div>
-                            <div id="payment-message" class="text-red-600 text-sm mt-4"></div>
-                            <div id="payment-status" class="text-sm text-gray-600 mt-2">
-                                <i class="fas fa-spinner fa-spin mr-1"></i>
-                                Laddar betalningsmetoder...
-                            </div>
+                                            <!-- Stripe Payment Element -->
+                    <div class="bg-white border border-gray-300 rounded-lg p-4">
+                        <div id="payment-element">
+                            <!-- Stripe Payment Element will be inserted here -->
                         </div>
+                        <div id="payment-message" class="text-red-600 text-sm mt-4"></div>
+                        <div id="payment-status" class="text-sm text-gray-600 mt-2">
+                            <i class="fas fa-spinner fa-spin mr-1"></i>
+                            Laddar betalningsmetoder...
+                        </div>
+                    </div>
                     </div>
 
                     <!-- Terms and Conditions -->
@@ -212,7 +212,7 @@
                         <div class="flex items-start space-x-3">
                             <input type="checkbox" id="terms" required class="mt-1">
                             <label for="terms" class="text-sm text-gray-700">
-                                Jag accepterar <a href="#" class="text-blue-600 hover:underline">användarvillkoren</a> och <a href="#" class="text-blue-600 hover:underline">integritetspolicyn</a> *
+                                Jag accepterar <a href="/policies" class="text-blue-600 hover:underline">användarvillkoren</a> och <a href="/policies" class="text-blue-600 hover:underline">integritetspolicyn</a> *
                             </label>
                         </div>
                     </div>
@@ -226,6 +226,8 @@
             </div>
         </div>
     </div>
+
+
 
     <script>
         // Global variables
@@ -314,9 +316,13 @@
                 const config = await response.json();
                 console.log('✅ Got Stripe config:', config.publishableKey ? 'Key received' : 'No key');
                 
+                if (!config.publishableKey) {
+                    throw new Error('No Stripe publishable key received');
+                }
+                
                 stripe = Stripe(config.publishableKey);
                 
-                // Create payment intent
+                // Create payment intent with customer data
                 const paymentIntentResponse = await fetch('/api/create-payment-intent', {
                     method: 'POST',
                     headers: {
@@ -324,16 +330,31 @@
                     },
                     body: JSON.stringify({
                         items: orderData.items,
-                        customerEmail: document.getElementById('email').value || 'test@example.com'
+                        customerEmail: document.getElementById('email').value || 'test@example.com',
+                        customerName: document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value,
+                        customerPhone: document.getElementById('phone').value,
+                        customerAddress: {
+                            line1: document.getElementById('address').value,
+                            postal_code: document.getElementById('postalCode').value,
+                            city: document.getElementById('city').value,
+                            country: document.getElementById('country').value,
+                        }
                     })
                 });
 
                 if (!paymentIntentResponse.ok) {
                     const errorData = await paymentIntentResponse.json();
+                    console.error('❌ Payment intent error:', errorData);
                     throw new Error(`Payment intent creation failed: ${errorData.details || 'Unknown error'}`);
                 }
 
-                const { clientSecret } = await paymentIntentResponse.json();
+                const paymentIntentData = await paymentIntentResponse.json();
+                const { clientSecret } = paymentIntentData;
+                
+                if (!clientSecret) {
+                    throw new Error('No client secret received from payment intent');
+                }
+                
                 console.log('✅ Payment Intent created, clientSecret:', clientSecret ? 'Received' : 'Missing');
                 
                 // Create elements with clean white appearance
@@ -360,7 +381,21 @@
                         defaultCollapsed: false,
                         spacedAccordionItems: false,
                     },
-                    paymentMethodOrder: ['card', 'paypal', 'klarna', 'apple_pay', 'google_pay'],
+                    fields: {
+                        billingDetails: {
+                            name: 'auto',
+                            email: 'auto',
+                            phone: 'auto',
+                            address: {
+                                country: 'auto',
+                                line1: 'auto',
+                                line2: 'auto',
+                                city: 'auto',
+                                state: 'auto',
+                                postalCode: 'auto'
+                            }
+                        }
+                    }
                 });
                 
                 paymentElement.mount('#payment-element');
@@ -386,30 +421,6 @@
             setLoading(true);
 
             try {
-                // Get customer information
-                const customer = {
-                    firstName: document.getElementById('firstName').value,
-                    lastName: document.getElementById('lastName').value,
-                    email: document.getElementById('email').value,
-                    phone: document.getElementById('phone').value,
-                    address: document.getElementById('address').value,
-                    postalCode: document.getElementById('postalCode').value,
-                    city: document.getElementById('city').value,
-                    country: document.getElementById('country').value
-                };
-
-                // Create complete order data
-                const completeOrderData = {
-                    orderId: 'NK-' + Date.now(),
-                    customer: customer,
-                    items: orderData.items,
-                    total: orderData.total,
-                    orderDate: new Date().toISOString()
-                };
-
-                // Save order data to localStorage for success page
-                localStorage.setItem('orderDetails', JSON.stringify(completeOrderData));
-
                 // Confirm payment
                 const { error } = await stripe.confirmPayment({
                     elements,
@@ -417,14 +428,14 @@
                         return_url: `${window.location.origin}/success`,
                         payment_method_data: {
                             billing_details: {
-                                name: customer.firstName + ' ' + customer.lastName,
-                                email: customer.email,
-                                phone: customer.phone,
+                                name: document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value,
+                                email: document.getElementById('email').value,
+                                phone: document.getElementById('phone').value,
                                 address: {
-                                    line1: customer.address,
-                                    postal_code: customer.postalCode,
-                                    city: customer.city,
-                                    country: customer.country,
+                                    line1: document.getElementById('address').value,
+                                    postal_code: document.getElementById('postalCode').value,
+                                    city: document.getElementById('city').value,
+                                    country: document.getElementById('country').value,
                                 }
                             }
                         }
@@ -497,6 +508,10 @@
                 messageContainer.classList.add('hidden');
             }, 4000);
         }
+
+
+
+
 
         // Update order summary
         function updateOrderSummary() {
