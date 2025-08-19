@@ -1,0 +1,3 @@
+Last deployment: $(date)
+Trigger: Force redeploy to fix design page routing
+Status: Active 
