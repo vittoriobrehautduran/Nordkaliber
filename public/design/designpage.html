@@ -1248,8 +1248,9 @@
             function updateCart() {
                 const cartItems = document.getElementById('cart-items');
                 const cartTotal = document.getElementById('cart-total-price');
+                const checkoutBtn = document.getElementById('go-to-checkout');
 
-                if (!cartItems || !cartTotal) return;
+                if (!cartItems || !cartTotal || !checkoutBtn) return;
 
                 // Clear current items
                 cartItems.innerHTML = '';
@@ -1271,6 +1272,13 @@
                 }
 
                 cartTotal.textContent = `${total}kr`;
+
+                // Enable/disable checkout button
+                if (app.savedProducts.length > 0) {
+                    checkoutBtn.disabled = false;
+                } else {
+                    checkoutBtn.disabled = true;
+                }
             }
 
             // Add saved product to cart
