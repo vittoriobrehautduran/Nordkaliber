@@ -1,48 +1,31 @@
 {
   "version": 2,
   "cleanUrls": true,
-  "buildCommand": "echo 'No build step needed'",
-  "outputDirectory": "public",
+  "buildCommand": "echo 'Deploying latest changes'",
   "routes": [
     {
-      "src": "/design/design.html",
-      "dest": "/design",
-      "status": 301
+      "src": "/design",
+      "dest": "/public/designpage.html"
     },
     {
       "src": "/design/designpage",
-      "dest": "/designpage.html"
-    },
-    {
-      "src": "/images/(.*)",
-      "dest": "/images/$1"
-    },
-    {
-      "src": "/design",
-      "dest": "/designpage.html",
-      "headers": {
-        "Cache-Control": "no-cache, no-store, must-revalidate"
-      }
+      "dest": "/public/designpage.html"
     },
     {
       "src": "/checkout",
-      "dest": "/checkout.html"
+      "dest": "/public/checkout.html"
     },
     {
       "src": "/success",
-      "dest": "/success.html"
+      "dest": "/public/success.html"
     },
     {
       "src": "/policies",
-      "dest": "/policies.html"
-    },
-    {
-      "src": "/test-email",
-      "dest": "/test-email.html"
+      "dest": "/public/policies.html"
     },
     {
       "src": "/",
-      "dest": "/index.html"
+      "dest": "/public/index.html"
     }
   ]
 } 
