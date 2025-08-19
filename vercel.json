@@ -2,30 +2,31 @@
   "version": 2,
   "cleanUrls": true,
   "buildCommand": "echo 'Deploying latest changes'",
+  "outputDirectory": "public",
   "routes": [
     {
       "src": "/design",
-      "dest": "/public/designpage.html"
+      "dest": "/designpage.html"
     },
     {
       "src": "/design/designpage",
-      "dest": "/public/designpage.html"
+      "dest": "/designpage.html"
     },
     {
       "src": "/checkout",
-      "dest": "/public/checkout.html"
+      "dest": "/checkout.html"
     },
     {
       "src": "/success",
-      "dest": "/public/success.html"
+      "dest": "/success.html"
     },
     {
       "src": "/policies",
-      "dest": "/public/policies.html"
+      "dest": "/policies.html"
     },
     {
       "src": "/",
-      "dest": "/public/index.html"
+      "dest": "/index.html"
     }
   ]
 } 
