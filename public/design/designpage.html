@@ -879,6 +879,14 @@
                 // Load saved products from localStorage
                 loadSavedProducts();
                 
+                // Initialize checkout button state
+                const checkoutBtn = document.getElementById('go-to-checkout');
+                if (checkoutBtn) {
+                    checkoutBtn.disabled = true;
+                    checkoutBtn.classList.remove('btn-custom');
+                    checkoutBtn.classList.add('btn-secondary');
+                }
+                
                 populateOptions();
                 setupEventListeners();
                 updateStepIndicator();
@@ -1276,8 +1284,14 @@
                 // Enable/disable checkout button
                 if (app.savedProducts.length > 0) {
                     checkoutBtn.disabled = false;
+                    checkoutBtn.classList.remove('btn-secondary');
+                    checkoutBtn.classList.add('btn-custom');
+                    console.log('Checkout button enabled - products in cart:', app.savedProducts.length);
                 } else {
                     checkoutBtn.disabled = true;
+                    checkoutBtn.classList.remove('btn-custom');
+                    checkoutBtn.classList.add('btn-secondary');
+                    console.log('Checkout button disabled - no products in cart');
                 }
             }
 
