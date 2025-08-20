@@ -4,11 +4,11 @@
   "outputDirectory": "public",
   "routes": [
     {
-      "src": "/design/designpage.html",
+      "src": "/designpage",
       "dest": "/designpage.html"
     },
     {
-      "src": "/design/designpage",
+      "src": "/designpage",
       "dest": "/designpage.html"
     },
     {
@@ -28,7 +28,11 @@
       "dest": "/policies.html"
     },
     {
-      "src": "/",
+      "src": "/gallery",
+      "dest": "/gallery.html"
+    },
+    {
+      "src": "/home",
       "dest": "/index.html"
     }
   ]

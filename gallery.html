@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - Nordkaliber</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="images/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png">
+    <link rel="shortcut icon" type="image/png" href="images/favicon-32x32.png">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --hunter-brown: #8B4513;
+            --dark-green: #1B4332;
+            --forest-green: #2D5A46;
+            --mustard-gold: #E6B17A;
+            --cream: #F5F5DC;
+            --premium-black: #1a1a1a;
+            --text-light: #e5e5e5;
+            --glass-bg: rgba(26, 26, 26, 0.95);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+            color: var(--text-light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .nav-header {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 1rem 2rem;
+            margin: 1rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 1rem;
+            z-index: 100;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .back-arrow {
+            color: var(--mustard-gold);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 0.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+        }
+
+        .back-arrow:hover {
+            color: white;
+            background: rgba(230, 177, 122, 0.2);
+            transform: translateX(-3px);
+        }
+
+        .nordkaliber-text {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--mustard-gold);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin: 0;
+            text-shadow: 0 2px 10px rgba(230, 177, 122, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .nordkaliber-logo:hover .nordkaliber-text {
+            transform: scale(1.05);
+            text-shadow: 0 4px 20px rgba(230, 177, 122, 0.5);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 800;
+            color: var(--mustard-gold);
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease-out 0.3s forwards;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.25rem, 3vw, 1.75rem);
+            color: var(--text-light);
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease-out 0.6s forwards;
+        }
+
+        /* Gallery Grid */
+        .gallery-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .gallery-item {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .gallery-item:nth-child(1) { animation-delay: 0.1s; }
+        .gallery-item:nth-child(2) { animation-delay: 0.2s; }
+        .gallery-item:nth-child(3) { animation-delay: 0.3s; }
+        .gallery-item:nth-child(4) { animation-delay: 0.4s; }
+        .gallery-item:nth-child(5) { animation-delay: 0.5s; }
+        .gallery-item:nth-child(6) { animation-delay: 0.6s; }
+        .gallery-item:nth-child(7) { animation-delay: 0.7s; }
+        .gallery-item:nth-child(8) { animation-delay: 0.8s; }
+        .gallery-item:nth-child(9) { animation-delay: 0.9s; }
+        .gallery-item:nth-child(10) { animation-delay: 1.0s; }
+        .gallery-item:nth-child(11) { animation-delay: 1.1s; }
+        .gallery-item:nth-child(12) { animation-delay: 1.2s; }
+
+        .gallery-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(230, 177, 122, 0.2);
+            border-color: var(--mustard-gold);
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: all 0.4s ease;
+        }
+
+        .gallery-item:hover .gallery-image {
+            transform: scale(1.05);
+        }
+
+        .gallery-content {
+            padding: 1.5rem;
+        }
+
+        .gallery-category {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--mustard-gold);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .gallery-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .gallery-arrow {
+            width: 24px;
+            height: 24px;
+            background: var(--mustard-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--premium-black);
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-arrow {
+            transform: translateX(5px);
+            background: var(--text-light);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            margin: 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            color: var(--mustard-gold);
+            margin-bottom: 1rem;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--mustard-gold), var(--hunter-brown));
+            color: var(--premium-black);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.125rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(230, 177, 122, 0.4);
+        }
+
+        .cta-arrow {
+            width: 20px;
+            height: 20px;
+            background: var(--premium-black);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--mustard-gold);
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover .cta-arrow {
+            transform: translateX(3px);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            margin: 2rem;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--mustard-gold);
+            margin-bottom: 1rem;
+        }
+
+        .footer-text {
+            color: var(--text-light);
+            opacity: 0.8;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .hero-section {
+                padding: 2rem 1rem;
+            }
+            
+            .gallery-container {
+                padding: 1rem;
+            }
+            
+            .nav-header {
+                margin: 0.5rem;
+                padding: 0.75rem 1rem;
+            }
+            
+            .nordkaliber-text {
+                font-size: 1.75rem;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--premium-black);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--mustard-gold);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--hunter-brown);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-header">
+        <div class="nav-content">
+            <a href="/" class="back-arrow">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <div class="nordkaliber-logo">
+                <span class="nordkaliber-text">NORDKALIBER</span>
+            </div>
+            <div class="spacer"></div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <h1 class="hero-title">Gallery</h1>
+        <p class="hero-subtitle">Capturing the essence of hunting and outdoor adventure</p>
+    </section>
+
+    <!-- Gallery Grid -->
+    <div class="gallery-container">
+        <div class="gallery-grid">
+            <!-- Gallery Item 1 -->
+            <div class="gallery-item">
+                <img src="images/Gallery/IMG_7130.webp" alt="Hunting Scene 1" class="gallery-image">
+                <div class="gallery-content">
+                    <div class="gallery-category">Wildlife</div>
+                    <div class="gallery-title">
+                        <span>Nature's Beauty</span>
+                        <div class="gallery-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gallery Item 2 -->
+            <div class="gallery-item">
+                <img src="images/Gallery/IMG_7131.webp" alt="Hunting Scene 2" class="gallery-image">
+                <div class="gallery-content">
+                    <div class="gallery-category">Adventure</div>
+                    <div class="gallery-title">
+                        <span>Outdoor Pursuits</span>
+                        <div class="gallery-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gallery Item 3 -->
+            <div class="gallery-item">
+                <img src="images/Gallery/image00001.jpeg" alt="Hunting Scene 3" class="gallery-image">
+                <div class="gallery-content">
+                    <div class="gallery-category">Hunting</div>
+                    <div class="gallery-title">
+                        <span>Traditional Skills</span>
+                        <div class="gallery-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gallery Item 4 -->
+            <div class="gallery-item">
+                <img src="images/Gallery/image00002.jpeg" alt="Hunting Scene 4" class="gallery-image">
+                <div class="gallery-content">
+                    <div class="gallery-category">Wilderness</div>
+                    <div class="gallery-title">
+                        <span>Untamed Land</span>
+                        <div class="gallery-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gallery Item 5 -->
+            <div class="gallery-item">
+                <img src="images/Gallery/image00003.jpeg" alt="Hunting Scene 5" class="gallery-image">
+                <div class="gallery-content">
+                    <div class="gallery-category">Heritage</div>
+                    <div class="gallery-title">
+                        <span>Time-Honored</span>
+                        <div class="gallery-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gallery Item 6 -->
+            <div class="gallery-item">
+                <img src="images/Gallery/image00004.jpeg" alt="Hunting Scene 6" class="gallery-image">
+                <div class="gallery-content">
+                    <div class="gallery-category">Expedition</div>
+                    <div class="gallery-title">
+                        <span>Wild Journey</span>
+                        <div class="gallery-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gallery Item 7 -->
+            <div class="gallery-item">
+                <img src="images/Gallery/image00005.jpeg" alt="Hunting Scene 7" class="gallery-image">
+                <div class="gallery-content">
+                    <div class="gallery-category">Conservation</div>
+                    <div class="gallery-title">
+                        <span>Nature's Balance</span>
+                        <div class="gallery-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gallery Item 8 -->
+            <div class="gallery-item">
+                <img src="images/Gallery/image00006.jpeg" alt="Hunting Scene 8" class="gallery-image">
+                <div class="gallery-content">
+                    <div class="gallery-category">Exploration</div>
+                    <div class="gallery-title">
+                        <span>Frontier Spirit</span>
+                        <div class="gallery-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gallery Item 9 -->
+            <div class="gallery-item">
+                <img src="images/Gallery/image00007.jpeg" alt="Hunting Scene 9" class="gallery-image">
+                <div class="gallery-content">
+                    <div class="gallery-category">Adventure</div>
+                    <div class="gallery-title">
+                        <span>Outdoor Life</span>
+                        <div class="gallery-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gallery Item 10 -->
+            <div class="gallery-item">
+                <img src="images/Gallery/image00008.jpeg" alt="Hunting Scene 10" class="gallery-image">
+                <div class="gallery-content">
+                    <div class="gallery-category">Wilderness</div>
+                    <div class="gallery-title">
+                        <span>Natural World</span>
+                        <div class="gallery-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gallery Item 11 -->
+            <div class="gallery-item">
+                <img src="images/Gallery/image00009.jpeg" alt="Hunting Scene 11" class="gallery-image">
+                <div class="gallery-content">
+                    <div class="gallery-category">Heritage</div>
+                    <div class="gallery-title">
+                        <span>Traditional Ways</span>
+                        <div class="gallery-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gallery Item 12 -->
+            <div class="gallery-item">
+                <img src="images/Gallery/image00010.jpeg" alt="Hunting Scene 12" class="gallery-image">
+                <div class="gallery-content">
+                    <div class="gallery-category">Adventure</div>
+                    <div class="gallery-title">
+                        <span>Wild Pursuits</span>
+                        <div class="gallery-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2 class="cta-title">Ready to Start Your Adventure?</h2>
+        <a href="/designpage" class="cta-button">
+            <span>Let's Get Started</span>
+            <div class="cta-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-logo">NORDKALIBER</div>
+        <p class="footer-text">Premium hunting equipment and outdoor adventure gear</p>
+    </footer>
+
+    <script>
+        // Intersection Observer for smooth animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all gallery items
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            observer.observe(item);
+        });
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add hover effects for gallery items
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html> 
