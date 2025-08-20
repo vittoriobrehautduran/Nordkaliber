@@ -43,6 +43,75 @@
             padding: 1rem;
         }
 
+        /* Navigation Header Styles */
+        .nav-header {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 1rem 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-arrow {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 0.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+        }
+
+        .back-arrow:hover {
+            color: white;
+            background: rgba(230, 177, 122, 0.2);
+            transform: translateX(-3px);
+        }
+
+        .nordkaliber-text {
+            font-family: 'Anton', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin: 0;
+            text-shadow: 0 2px 10px rgba(230, 177, 122, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .nordkaliber-logo:hover .nordkaliber-text {
+            transform: scale(1.05);
+            text-shadow: 0 4px 20px rgba(230, 177, 122, 0.5);
+        }
+
+        .spacer {
+            width: 50px;
+        }
+
+        /* Fix layout alignment and height distribution */
+        .row {
+            align-items: stretch; /* Make all columns the same height */
+        }
+
+        .col-lg-8 {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .step {
+            display: none;
+            flex: 1; /* Take up available space */
+        }
+
+        .step.active {
+            display: block;
+        }
+
         .step-container {
             background: var(--glass-bg);
             backdrop-filter: blur(15px);
@@ -51,7 +120,83 @@
             padding: 2rem;
             margin-bottom: 2rem;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            height: 100%; /* Fill available height */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Distribute content evenly */
         }
+
+        /* Mobile spacing improvements */
+        @media (max-width: 991.98px) {
+            .step-container {
+                margin-bottom: 1.5rem; /* Reduce spacing on mobile */
+                padding: 1.5rem; /* Slightly reduce padding on mobile */
+            }
+            
+            .preview-container,
+            .cart-container {
+                margin-bottom: 1.5rem; /* Match step container spacing */
+                padding: 1.5rem;
+            }
+            
+            .main-container {
+                padding: 0.75rem; /* Reduce main container padding on mobile */
+            }
+        }
+
+        /* Ensure the step content fills the container */
+        .step-container > *:last-child {
+            margin-top: auto; /* Push buttons to bottom */
+        }
+
+        /* Step content spacing */
+        .step-container .step-title {
+            margin-bottom: 1.5rem;
+        }
+
+        .step-container .step-subtitle {
+            margin-bottom: 2rem;
+        }
+
+        .step-container .special-request-container {
+            margin: 2rem 0;
+            flex: 1; /* Take up remaining space */
+        }
+
+        /* Navigation buttons at bottom */
+        .step-container .text-center,
+        .step-container .d-flex.gap-3.justify-content-center {
+            margin-top: auto;
+            padding-top: 1rem;
+        }
+
+        /* Right sidebar alignment */
+        .col-lg-4 {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Ensure proper spacing between main content and bottom cart */
+        .col-lg-8 {
+            margin-bottom: 2rem;
+        }
+
+        /* Mobile spacing for main content */
+        @media (max-width: 991.98px) {
+            .col-lg-8 {
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .col-lg-8 {
+                margin-bottom: 1rem;
+            }
+        }
+
+
+
+
 
         .step-title {
             font-family: 'Anton', sans-serif;
@@ -325,8 +470,11 @@
             border: 1px solid var(--glass-border);
             border-radius: 20px;
             padding: 2rem;
+            margin-bottom: 1.5rem;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             height: 100%;
+            display: flex;
+            flex-direction: column;
         }
 
         .preview-title {
@@ -415,7 +563,7 @@
             border-radius: 20px;
             padding: 2rem;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            margin-top: 2rem;
+            margin-bottom: 1rem;
         }
 
         .cart-title {
@@ -470,6 +618,19 @@
                 padding: 0.5rem;
             }
 
+            .nav-header {
+                padding: 0.75rem 1rem;
+            }
+
+            .back-arrow {
+                width: 40px;
+                height: 40px;
+            }
+
+            .nordkaliber-text {
+                font-size: 2rem;
+            }
+
             .step-container,
             .preview-container,
             .cart-container {
@@ -519,10 +680,24 @@
                 padding: 0.25rem;
             }
 
+            .nav-header {
+                padding: 0.5rem 0.75rem;
+            }
+
+            .back-arrow {
+                width: 35px;
+                height: 35px;
+            }
+
+            .nordkaliber-text {
+                font-size: 1.75rem;
+            }
+
             .step-container,
             .preview-container,
             .cart-container {
                 padding: 1rem;
+                margin-bottom: 1rem;
             }
 
             .step-title {
@@ -570,19 +745,23 @@
                 transform: translateY(0);
             }
         }
-
-        .step {
-            display: none;
-        }
-
-        .step.active {
-            display: block;
-            animation: fadeIn 0.5s ease-out;
-        }
     </style>
 </head>
 <body>
     <div class="main-container">
+        <!-- Navigation Header -->
+        <div class="nav-header mb-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <a href="../index.html" class="back-arrow">
+                    <i class="fas fa-arrow-left fa-2x"></i>
+                </a>
+                <div class="nordkaliber-logo">
+                    <h1 class="nordkaliber-text">NORDKALIBER</h1>
+                </div>
+                <div class="spacer"></div>
+            </div>
+        </div>
+
         <!-- Step Indicator -->
         <div class="step-indicator">
             <span id="current-step">1</span> av 5
@@ -790,7 +969,7 @@
         </div>
 
         <!-- Cart Section -->
-        <div class="cart-container">
+        <div class="cart-container" style="margin-top: 2rem;">
             <h3 class="cart-title">
                 <i class="fas fa-shopping-cart me-2"></i>Din Varukorg
             </h3>
@@ -1431,6 +1610,7 @@
 
             // Clear all current selections
             function clearAllSelections() {
+                // Clear app selections
                 app.selections = {
                     caliber: null,
                     primaryColor: null,
@@ -1444,48 +1624,36 @@
                     initialsSpecial: ''
                 };
 
-                // Clear visual selections
-                document.querySelectorAll('.option-card.selected, .color-option.selected').forEach(opt => {
-                    opt.classList.remove('selected');
+                // Clear all selected visual states
+                document.querySelectorAll('.option-card.selected, .color-option.selected').forEach(element => {
+                    element.classList.remove('selected');
                 });
 
-                // Clear special request textboxes
+                // Clear all special request textboxes
                 for (let i = 1; i <= 5; i++) {
                     const textbox = document.getElementById(`special-request-${i}`);
                     if (textbox) {
                         textbox.value = '';
                         textbox.classList.remove('active');
                     }
+                }
 
+                // Clear special request status badges
+                for (let i = 1; i <= 5; i++) {
                     const status = document.getElementById(`special-status-${i}`);
                     if (status) {
                         status.classList.add('d-none');
-                        status.classList.remove('bg-success');
-                    }
-
-                    const step = document.getElementById(`step-${i}`);
-                    if (step) {
-                        step.classList.remove('disabled');
                     }
                 }
 
-                // Clear initials input
-                const initialsInput = document.getElementById('initials-input');
-                if (initialsInput) {
-                    initialsInput.value = '';
-                }
+                // Re-enable all steps
+                document.querySelectorAll('.step').forEach(step => {
+                    step.classList.remove('disabled');
+                });
 
-                // Disable all next buttons
-                for (let i = 1; i <= 4; i++) {
-                    const nextBtn = document.getElementById(`next-btn-${i}`);
-                    if (nextBtn) {
-                        nextBtn.disabled = true;
-                    }
-                }
-
-                // Update cart and preview
-                updateCart();
+                // Update preview and cart
                 updatePreview();
+                updateCart();
             }
 
             // Remove product from cart
@@ -1709,6 +1877,9 @@
 
                 // Update cart
                 updateCart();
+
+                // Clear all selections and reset form
+                clearAllSelections();
 
                 // Auto-scroll to varukorg
                 const cartContainer = document.getElementById('cart-container');
