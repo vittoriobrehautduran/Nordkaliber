@@ -8,6 +8,10 @@
       "dest": "/designpage.html"
     },
     {
+      "src": "/design/designpage",
+      "dest": "/designpage.html"
+    },
+    {
       "src": "/design",
       "dest": "/designpage.html"
     },
