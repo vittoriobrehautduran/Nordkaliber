@@ -43,6 +43,25 @@
             padding: 1rem;
         }
 
+        /* Fix layout alignment and height distribution */
+        .row {
+            align-items: stretch; /* Make all columns the same height */
+        }
+
+        .col-lg-8 {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .step {
+            display: none;
+            flex: 1; /* Take up available space */
+        }
+
+        .step.active {
+            display: block;
+        }
+
         .step-container {
             background: var(--glass-bg);
             backdrop-filter: blur(15px);
@@ -51,7 +70,83 @@
             padding: 2rem;
             margin-bottom: 2rem;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            height: 100%; /* Fill available height */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Distribute content evenly */
         }
+
+        /* Mobile spacing improvements */
+        @media (max-width: 991.98px) {
+            .step-container {
+                margin-bottom: 1.5rem; /* Reduce spacing on mobile */
+                padding: 1.5rem; /* Slightly reduce padding on mobile */
+            }
+            
+            .preview-container,
+            .cart-container {
+                margin-bottom: 1.5rem; /* Match step container spacing */
+                padding: 1.5rem;
+            }
+            
+            .main-container {
+                padding: 0.75rem; /* Reduce main container padding on mobile */
+            }
+        }
+
+        /* Ensure the step content fills the container */
+        .step-container > *:last-child {
+            margin-top: auto; /* Push buttons to bottom */
+        }
+
+        /* Step content spacing */
+        .step-container .step-title {
+            margin-bottom: 1rem;
+        }
+
+        .step-container .step-subtitle {
+            margin-bottom: 2rem;
+        }
+
+        .step-container .special-request-container {
+            margin: 2rem 0;
+            flex: 1; /* Take up remaining space */
+        }
+
+        /* Navigation buttons at bottom */
+        .step-container .text-center,
+        .step-container .d-flex.gap-3.justify-content-center {
+            margin-top: auto;
+            padding-top: 1rem;
+        }
+
+        /* Right sidebar alignment */
+        .col-lg-4 {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Ensure proper spacing between main content and bottom cart */
+        .col-lg-8 {
+            margin-bottom: 2rem;
+        }
+
+        /* Mobile spacing for main content */
+        @media (max-width: 991.98px) {
+            .col-lg-8 {
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .col-lg-8 {
+                margin-bottom: 1rem;
+            }
+        }
+
+
+
+
 
         .step-title {
             font-family: 'Anton', sans-serif;
@@ -325,8 +420,11 @@
             border: 1px solid var(--glass-border);
             border-radius: 20px;
             padding: 2rem;
+            margin-bottom: 1.5rem;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             height: 100%;
+            display: flex;
+            flex-direction: column;
         }
 
         .preview-title {
@@ -415,7 +513,7 @@
             border-radius: 20px;
             padding: 2rem;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            margin-top: 2rem;
+            margin-bottom: 1rem;
         }
 
         .cart-title {
@@ -523,6 +621,7 @@
             .preview-container,
             .cart-container {
                 padding: 1rem;
+                margin-bottom: 1rem;
             }
 
             .step-title {
@@ -569,15 +668,6 @@
                 opacity: 1;
                 transform: translateY(0);
             }
-        }
-
-        .step {
-            display: none;
-        }
-
-        .step.active {
-            display: block;
-            animation: fadeIn 0.5s ease-out;
         }
     </style>
 </head>
@@ -790,7 +880,7 @@
         </div>
 
         <!-- Cart Section -->
-        <div class="cart-container">
+        <div class="cart-container" style="margin-top: 2rem;">
             <h3 class="cart-title">
                 <i class="fas fa-shopping-cart me-2"></i>Din Varukorg
             </h3>
@@ -1431,6 +1521,7 @@
 
             // Clear all current selections
             function clearAllSelections() {
+                // Clear app selections
                 app.selections = {
                     caliber: null,
                     primaryColor: null,
@@ -1444,48 +1535,36 @@
                     initialsSpecial: ''
                 };
 
-                // Clear visual selections
-                document.querySelectorAll('.option-card.selected, .color-option.selected').forEach(opt => {
-                    opt.classList.remove('selected');
+                // Clear all selected visual states
+                document.querySelectorAll('.option-card.selected, .color-option.selected').forEach(element => {
+                    element.classList.remove('selected');
                 });
 
-                // Clear special request textboxes
+                // Clear all special request textboxes
                 for (let i = 1; i <= 5; i++) {
                     const textbox = document.getElementById(`special-request-${i}`);
                     if (textbox) {
                         textbox.value = '';
                         textbox.classList.remove('active');
                     }
+                }
 
+                // Clear special request status badges
+                for (let i = 1; i <= 5; i++) {
                     const status = document.getElementById(`special-status-${i}`);
                     if (status) {
                         status.classList.add('d-none');
-                        status.classList.remove('bg-success');
-                    }
-
-                    const step = document.getElementById(`step-${i}`);
-                    if (step) {
-                        step.classList.remove('disabled');
                     }
                 }
 
-                // Clear initials input
-                const initialsInput = document.getElementById('initials-input');
-                if (initialsInput) {
-                    initialsInput.value = '';
-                }
+                // Re-enable all steps
+                document.querySelectorAll('.step').forEach(step => {
+                    step.classList.remove('disabled');
+                });
 
-                // Disable all next buttons
-                for (let i = 1; i <= 4; i++) {
-                    const nextBtn = document.getElementById(`next-btn-${i}`);
-                    if (nextBtn) {
-                        nextBtn.disabled = true;
-                    }
-                }
-
-                // Update cart and preview
-                updateCart();
+                // Update preview and cart
                 updatePreview();
+                updateCart();
             }
 
             // Remove product from cart
@@ -1709,6 +1788,9 @@
 
                 // Update cart
                 updateCart();
+
+                // Clear all selections and reset form
+                clearAllSelections();
 
                 // Auto-scroll to varukorg
                 const cartContainer = document.getElementById('cart-container');
