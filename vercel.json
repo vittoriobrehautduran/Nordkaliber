@@ -4,10 +4,6 @@
   "outputDirectory": "public",
   "routes": [
     {
-      "src": "/design/designpage",
-      "dest": "/designpage.html"
-    },
-    {
       "src": "/design/designpage.html",
       "dest": "/designpage.html"
     },
@@ -30,16 +26,6 @@
     {
       "src": "/",
       "dest": "/index.html"
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/design/designpage",
-      "destination": "/designpage.html"
-    },
-    {
-      "source": "/design",
-      "destination": "/designpage.html"
     }
   ]
 } 
