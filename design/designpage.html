@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Designa Din Egen - Nordkaliber</title>
+    <title>Designa Din Egen - Nordkaliber (Updated + Speed Insights)</title>
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-    <link rel="icon" type="image/png" sizes="48x48" href="images/favicon-48x48.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png">
-    <link rel="shortcut icon" type="image/png" href="images/favicon-32x32.png">
-    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../images/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="../images/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="../images/favicon-96x96.png">
+    <link rel="shortcut icon" type="image/png" href="../images/favicon-32x32.png">
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -44,18 +44,6 @@
             color: var(--text-light);
             min-height: 100vh;
             overflow-x: hidden;
-            animation: pageLoad 0.8s ease-in-out;
-        }
-        
-        @keyframes pageLoad {
-            0% {
-                opacity: 0;
-                transform: translateY(15px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .main-container {
@@ -150,6 +138,165 @@
             font-weight: bold;
         }
 
+        /* Cart Sidebar Styles */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border-left: 1px solid var(--glass-border);
+            z-index: 9999;
+            transition: right 0.3s ease-in-out;
+            overflow-y: auto;
+        }
+
+        .cart-sidebar.open {
+            right: 0;
+        }
+
+        .cart-sidebar-header {
+            padding: 2rem;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-sidebar-title {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .cart-sidebar-close {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .cart-sidebar-close:hover {
+            color: var(--primary-color);
+            background: rgba(230, 177, 122, 0.1);
+        }
+
+        .cart-sidebar-content {
+            padding: 2rem;
+        }
+
+        .cart-sidebar-footer {
+            padding: 2rem;
+            border-top: 1px solid var(--glass-border);
+            position: sticky;
+            bottom: 0;
+            background: var(--glass-bg);
+        }
+
+        .cart-sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .cart-sidebar-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Responsive cart sidebar */
+        @media (max-width: 768px) {
+            .cart-sidebar {
+                width: 100vw;
+                right: -100vw;
+            }
+        }
+
+        /* Configured Combinations Styles */
+        .configured-combinations-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .configured-combo-option {
+            background: rgba(40, 40, 40, 0.9);
+            border: 2px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .configured-combo-option:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+            box-shadow: 0 10px 30px rgba(230, 177, 122, 0.2);
+        }
+
+        .configured-combo-option.selected {
+            background: linear-gradient(135deg, rgba(230, 177, 122, 0.2), rgba(16, 185, 129, 0.2));
+            border-color: var(--primary-color);
+            box-shadow: 0 0 25px rgba(230, 177, 122, 0.3);
+            animation: optionSelected 0.4s ease-out;
+        }
+
+        .combo-color-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .combo-color-circle.selected {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px rgba(230, 177, 122, 0.4);
+            transform: scale(1.1);
+        }
+
+        .combo-color-circle.black-blaze {
+            background: linear-gradient(45deg, #000 50%, #f59e0b 50%);
+        }
+
+        .combo-color-circle.nordic-frost {
+            background: linear-gradient(45deg, #000 50%, #ffffff 50%);
+        }
+
+        .combo-color-circle.winter-sun {
+            background: linear-gradient(45deg, #000 50%, #fbbf24 50%);
+        }
+
+        .combo-color-circle.midnight-gold {
+            background: linear-gradient(45deg, #000 50%, #f59e0b 50%);
+        }
+
         /* Fix layout alignment and height distribution */
         .row {
             align-items: stretch; /* Make all columns the same height */
@@ -163,15 +310,10 @@
         .step {
             display: none;
             flex: 1; /* Take up available space */
-            opacity: 0;
-            transform: translateX(15px);
-            transition: all 0.3s ease-in-out;
         }
 
         .step.active {
             display: block;
-            opacity: 1;
-            transform: translateX(0);
         }
 
         .step-container {
@@ -286,7 +428,7 @@
             border-radius: 15px;
             padding: 1.5rem;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            transition: all 0.3s ease;
             text-align: center;
             height: 100%;
             display: flex;
@@ -313,7 +455,7 @@
                 opacity: 0.8;
             }
             50% {
-                transform: scale(1.08);
+                transform: scale(1.05);
             }
             100% {
                 transform: scale(1);
@@ -327,7 +469,7 @@
             border-radius: 50%;
             cursor: pointer;
             border: 3px solid transparent;
-            transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            transition: all 0.3s ease;
             margin: 0 auto 0.5rem;
             position: relative;
         }
@@ -350,7 +492,7 @@
                 opacity: 0.8;
             }
             50% {
-                transform: scale(1.2);
+                transform: scale(1.15);
             }
             100% {
                 transform: scale(1.1);
@@ -379,7 +521,7 @@
             border-radius: 12px;
             font-size: 1.1rem;
             letter-spacing: 0.5px;
-            transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            transition: all 0.3s ease;
             text-transform: uppercase;
         }
 
@@ -405,7 +547,7 @@
             border-radius: 12px;
             font-size: 1.1rem;
             letter-spacing: 0.5px;
-            transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            transition: all 0.3s ease;
             text-transform: uppercase;
         }
 
@@ -461,127 +603,23 @@
             font-style: italic;
         }
 
-        /* Clear special request button styles */
-        .btn-outline-warning {
-            border-color: var(--accent-color);
-            color: var(--accent-color);
-            background: transparent;
-            transition: all 0.3s ease;
-        }
-
-        .btn-outline-warning:hover {
-            background: var(--accent-color);
-            color: white;
-            border-color: var(--accent-color);
-        }
-
         .step.disabled .option-card,
         .step.disabled .color-option,
         .step.disabled .design-option {
-            opacity: 0.3 !important;
-            filter: grayscale(100%) !important;
-            transform: scale(0.95) !important;
-            pointer-events: none !important;
-            cursor: not-allowed !important;
-        }
-
-        /* More specific selectors for step 1 (caliber) */
-        #step-1.disabled .caliber-option {
-            opacity: 0.3 !important;
-            filter: grayscale(100%) !important;
-            transform: scale(0.95) !important;
-            pointer-events: none !important;
-            cursor: not-allowed !important;
-        }
-
-        #step-1.disabled .caliber-option:hover {
-            opacity: 0.3 !important;
-            filter: grayscale(100%) !important;
-            transform: scale(0.95) !important;
-        }
-
-        /* Test with even more specific selectors */
-        #step-1.disabled .caliber-option,
-        #step-1.disabled .option-card {
-            opacity: 0.3 !important;
-            filter: grayscale(100%) !important;
-            transform: scale(0.95) !important;
-            pointer-events: none !important;
-            cursor: not-allowed !important;
+            opacity: 0.3;
+            filter: grayscale(100%);
+            transform: scale(0.95);
+            pointer-events: auto;
+            cursor: pointer;
         }
 
         .step.disabled .option-card:hover,
         .step.disabled .color-option:hover,
         .step.disabled .design-option:hover {
-            opacity: 0.3 !important;
-            filter: grayscale(100%) !important;
-            transform: scale(0.95) !important;
-            border-color: var(--glass-border) !important;
-        }
-
-        /* Additional specific rules to ensure disabled state works */
-        #step-3.disabled .primary-color-option,
-        #step-4.disabled .secondary-color-option {
-            opacity: 0.3 !important;
-            filter: grayscale(100%) !important;
-            transform: scale(0.95) !important;
-            pointer-events: none !important;
-            cursor: not-allowed !important;
-        }
-
-        #step-3.disabled .primary-color-option:hover,
-        #step-4.disabled .secondary-color-option:hover {
-            opacity: 0.3 !important;
-            filter: grayscale(100%) !important;
-            transform: scale(0.95) !important;
-            border-color: var(--glass-border) !important;
-        }
-
-        /* Gray out configured combinations when any step has special request */
-        .step.disabled ~ #configured-combinations .configured-combo-option {
-            opacity: 0.3 !important;
-            filter: grayscale(100%) !important;
-            transform: scale(0.95) !important;
-            pointer-events: none !important;
-            cursor: not-allowed !important;
-        }
-
-        .step.disabled ~ #configured-combinations .configured-combo-option:hover {
-            opacity: 0.3 !important;
-            filter: grayscale(100%) !important;
-            transform: scale(0.95) !important;
-        }
-
-        /* Alternative selector for configured combinations when steps are disabled */
-        #step-3.disabled ~ #configured-combinations .configured-combo-option,
-        #step-4.disabled ~ #configured-combinations .configured-combo-option {
-            opacity: 0.3 !important;
-            filter: grayscale(100%) !important;
-            transform: scale(0.95) !important;
-            pointer-events: none !important;
-            cursor: not-allowed !important;
-        }
-
-        #step-3.disabled ~ #configured-combinations .configured-combo-option:hover,
-        #step-4.disabled ~ #configured-combinations .configured-combo-option:hover {
-            opacity: 0.3 !important;
-            filter: grayscale(100%) !important;
-            transform: scale(0.95) !important;
-        }
-
-        /* Style configured combinations when they have disabled class */
-        #configured-combinations.disabled .configured-combo-option {
-            opacity: 0.3 !important;
-            filter: grayscale(100%) !important;
-            transform: scale(0.95) !important;
-            pointer-events: none !important;
-            cursor: not-allowed !important;
-        }
-
-        #configured-combinations.disabled .configured-combo-option:hover {
-            opacity: 0.3 !important;
-            filter: grayscale(100%) !important;
-            transform: scale(0.95) !important;
+            opacity: 0.7;
+            filter: grayscale(50%);
+            transform: scale(1);
+            border-color: var(--accent-color);
         }
 
         .step.disabled .special-request-textbox {
@@ -659,23 +697,6 @@
             border-radius: 12px;
             overflow: hidden;
             margin-bottom: 1.5rem;
-            transition: all 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
-        }
-        
-        .preview-box.loading {
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(230, 177, 122, 0.1));
-            animation: previewPulse 2s ease-in-out infinite;
-        }
-        
-
-        
-        @keyframes previewPulse {
-            0%, 100% {
-                background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(230, 177, 122, 0.1));
-            }
-            50% {
-                background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(230, 177, 122, 0.2));
-            }
         }
 
         .preview-placeholder {
@@ -700,8 +721,6 @@
             height: 100%;
             object-fit: contain;
         }
-        
-
 
         .preview-summary {
             font-size: 0.9rem;
@@ -715,9 +734,30 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Removed fade-in animations */
+        /* Fade-in animations */
+        .fade-in-detail {
+            animation: fadeInDetail 0.5s ease-in-out;
+        }
 
-        /* Removed image transition styles */
+        @keyframes fadeInDetail {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Image transition styles */
+        .preview-image {
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .preview-placeholder {
+            transition: opacity 0.5s ease-in-out;
+        }
 
         /* Cart Panel Styles */
         .cart-container {
@@ -894,210 +934,15 @@
             }
         }
 
-        /* Cart Sidebar Styles */
-        .cart-sidebar {
-            position: fixed;
-            top: 0;
-            right: -400px;
-            width: 400px;
-            height: 100vh;
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            border-left: 1px solid var(--glass-border);
-            z-index: 9999;
-            transition: right 0.3s ease-in-out;
-            overflow-y: auto;
-        }
-
-        .cart-sidebar.open {
-            right: 0;
-        }
-
-        .cart-sidebar-header {
-            padding: 2rem;
-            border-bottom: 1px solid var(--glass-border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .cart-sidebar-title {
-            color: var(--primary-color);
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin: 0;
-        }
-
-        .cart-sidebar-close {
-            background: none;
-            border: none;
-            color: var(--text-light);
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-
-        .cart-sidebar-close:hover {
-            color: var(--primary-color);
-            background: rgba(230, 177, 122, 0.1);
-        }
-
-        .cart-sidebar-content {
-            padding: 2rem;
-        }
-
-        .cart-sidebar-footer {
-            padding: 2rem;
-            border-top: 1px solid var(--glass-border);
-            position: sticky;
-            bottom: 0;
-            background: var(--glass-bg);
-        }
-
-        .cart-sidebar-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 9998;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .cart-sidebar-overlay.open {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* Responsive cart sidebar */
-        @media (max-width: 768px) {
-            .cart-sidebar {
-                width: 100vw;
-                right: -100vw;
-            }
-        }
-
-        /* Configured Combinations Styles */
-        .configured-combinations-container {
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-
-        .configured-combo-option {
-            background: transparent;
-            border: none;
-            padding: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-            height: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .configured-combo-option:hover {
-            transform: scale(1.05);
-        }
-
-        .configured-combo-option.selected {
-            transform: scale(1.1);
-        }
-
-        .combo-color-circle {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            margin-bottom: 1rem;
-            position: relative;
-            overflow: hidden;
-            border: 3px solid rgba(255, 255, 255, 0.15);
-            transition: all 0.3s ease;
-            background-clip: padding-box;
-        }
-
-        .combo-color-circle:hover {
-            transform: scale(1.05);
-            border-color: rgba(230, 177, 122, 0.4);
-        }
-
-        .combo-color-circle.selected {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 20px rgba(230, 177, 122, 0.4);
-            transform: scale(1.1);
-        }
-
-        .combo-color-circle.black-blaze {
-            background: #000000;
-        }
-        .combo-color-circle.black-blaze::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 50%;
-            background: #f59e0b;
-        }
-
-        .combo-color-circle.nordic-frost {
-            background: #000000;
-        }
-        .combo-color-circle.nordic-frost::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 50%;
-            background: #ffffff;
-        }
-
-        .combo-color-circle.winter-sun {
-            background: #ffffff;
-        }
-        .combo-color-circle.winter-sun::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 50%;
-            background: #D4AF37;
-        }
-
-        .combo-color-circle.midnight-gold {
-            background: #000000;
-        }
-        .combo-color-circle.midnight-gold::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 50%;
-            background: #D4AF37;
-        }
-
         /* Animation classes */
         .fade-in {
-            animation: fadeIn 0.9s cubic-bezier(0.4, 0.0, 0.2, 1);
+            animation: fadeIn 0.8s ease-out;
         }
 
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(25px);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
@@ -1131,6 +976,8 @@
             <span id="current-step">1</span> av 5
         </div>
 
+
+
         <div class="row">
             <!-- Main Content Column -->
             <div class="col-lg-8">
@@ -1154,13 +1001,6 @@
                                 class="special-request-textbox" 
                                 placeholder="Klicka här för att skriva en specialförfrågan... (Detta kommer att återställa alla valda alternativ)"
                             ></textarea>
-                            <button id="clear-special-1" class="btn btn-sm btn-outline-warning mt-2 d-none" onclick="clearSpecialRequest(1)">
-                                <i class="fas fa-times me-1"></i>Rensa Specialförfrågan
-                            </button>
-                            <small class="text-muted mt-2 d-block">
-                                <i class="fas fa-info-circle me-1"></i>
-                                Tryck ESC för att avbryta, eller klicka på "Rensa Specialförfrågan"
-                            </small>
                         </div>
                         
                         <div class="text-center">
@@ -1180,7 +1020,8 @@
                         <div class="text-center mb-3">
                             <p class="text-white small">
                                 <i class="fas fa-info-circle me-1"></i>
-                                Motiv 10 finns endast i svart                            </p>
+                                Motiv 10 finns endast i svart
+                            </p>
                         </div>
                         
                         <div class="row g-3 mb-4" id="design-options">
@@ -1197,13 +1038,6 @@
                                 class="special-request-textbox" 
                                 placeholder="Klicka här för att skriva en specialförfrågan... (Detta kommer att återställa alla valda alternativ)"
                             ></textarea>
-                            <button id="clear-special-2" class="btn btn-sm btn-outline-warning mt-2 d-none" onclick="clearSpecialRequest(2)">
-                                <i class="fas fa-times me-1"></i>Rensa Specialförfrågan
-                            </button>
-                            <small class="text-muted mt-2 d-block">
-                                <i class="fas fa-info-circle me-1"></i>
-                                Tryck ESC för att avbryta, eller klicka på "Rensa Specialförfrågan"
-                            </small>
                         </div>
                         
                         <div class="d-flex gap-3 justify-content-center">
@@ -1237,13 +1071,6 @@
                                 class="special-request-textbox" 
                                 placeholder="Klicka här för att skriva en specialförfrågan... (Detta kommer att återställa alla valda alternativ)"
                             ></textarea>
-                            <button id="clear-special-3" class="btn btn-sm btn-outline-warning mt-2 d-none" onclick="clearSpecialRequest(3)">
-                                <i class="fas fa-times me-1"></i>Rensa Specialförfrågan
-                            </button>
-                            <small class="text-muted mt-2 d-block">
-                                <i class="fas fa-info-circle me-1"></i>
-                                Tryck ESC för att avbryta, eller klicka på "Rensa Specialförfrågan"
-                            </small>
                         </div>
                         
                         <div class="d-flex gap-3 justify-content-center">
@@ -1277,13 +1104,6 @@
                                 class="special-request-textbox" 
                                 placeholder="Klicka här för att skriva en specialförfrågan... (Detta kommer att återställa alla valda alternativ)"
                             ></textarea>
-                            <button id="clear-special-4" class="btn btn-sm btn-outline-warning mt-2 d-none" onclick="clearSpecialRequest(4)">
-                                <i class="fas fa-times me-1"></i>Rensa Specialförfrågan
-                            </button>
-                            <small class="text-muted mt-2 d-block">
-                                <i class="fas fa-info-circle me-1"></i>
-                                Tryck ESC för att avbryta, eller klicka på "Rensa Specialförfrågan"
-                            </small>
                         </div>
                         
                         <div class="d-flex gap-3 justify-content-center">
@@ -1321,13 +1141,6 @@
                                 class="special-request-textbox" 
                                 placeholder="Klicka här för att skriva en specialförfrågan... (Detta kommer att återställa alla valda alternativ)"
                             ></textarea>
-                            <button id="clear-special-5" class="btn btn-sm btn-outline-warning mt-2 d-none" onclick="clearSpecialRequest(5)">
-                                <i class="fas fa-times me-1"></i>Rensa Specialförfrågan
-                            </button>
-                            <small class="text-muted mt-2 d-block">
-                                <i class="fas fa-info-circle me-1"></i>
-                                Tryck ESC för att avbryta, eller klicka på "Rensa Specialförfrågan"
-                            </small>
                         </div>
                         
                         <div class="d-flex gap-3 justify-content-center">
@@ -1353,11 +1166,8 @@
                             <i class="fas fa-box fa-3x text-muted"></i>
                             <p class="mt-2 text-muted">Välj alternativ för att se förhandsvisning</p>
                         </div>
-                        <!-- Base image layers -->
                         <img id="preview-base" class="preview-layer" src="" alt="Låda bas" style="display: none;">
-                        <!-- Logo/Design layers -->
                         <img id="preview-logo" class="preview-layer" src="" alt="Låda logo" style="display: none;">
-                        <!-- Button layers -->
                         <img id="preview-button" class="preview-layer" src="" alt="Låda knapp" style="display: none;">
                     </div>
                     <div class="preview-summary">
@@ -1368,8 +1178,6 @@
                 </div>
             </div>
         </div>
-
-
 
         <!-- Configured Combinations Section - Full Width -->
         <div id="configured-combinations" class="configured-combinations-container mb-4">
@@ -1405,7 +1213,7 @@
             <div id="cart-sidebar-items">
                 <!-- Cart items will be populated here -->
             </div>
-            </div>
+        </div>
         <div class="cart-sidebar-footer">
             <div class="cart-total mb-3">
                 <span id="cart-sidebar-total">0kr</span>
@@ -1416,7 +1224,7 @@
                 </button>
                 <button class="btn btn-custom" id="go-to-checkout-sidebar">
                     <i class="fas fa-credit-card me-2"></i>Gå till kassan
-                    </button>
+                </button>
             </div>
         </div>
     </div>
@@ -1427,9 +1235,17 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
+    <!-- Vercel Speed Insights -->
+    <script type="module">
+        import { SpeedInsights } from "@vercel/speed-insights/next";
+        // Initialize Speed Insights
+        SpeedInsights();
+    </script>
+    
     <script>
-                    // Main application logic
-            document.addEventListener('DOMContentLoaded', function() {
+        // Main application logic
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Clean Bootstrap Design loaded');
             
             // Application state
             const app = {
@@ -1468,11 +1284,11 @@
                     { name: 'Mörkgrön', value: 'darkgreen', img: '../images/primarycolors/darkgreenbox.PNG' }
                 ],
                 secondaryColors: [
-                    { name: 'Svart', value: 'black', img: '../images/secondarycolors/blackbutton.PNG', logo: '../images/secondarycolors/blacklogo.PNG' },
-                    { name: 'Vit', value: 'white', img: '../images/secondarycolors/whitebutton.PNG', logo: '../images/secondarycolors/whitelogo.PNG' },
                     { name: 'Guld', value: 'gold', img: '../images/secondarycolors/goldbutton.PNG', logo: '../images/secondarycolors/goldlogo.PNG' },
                     { name: 'Orange', value: 'orange', img: '../images/secondarycolors/orangebutton.PNG', logo: '../images/secondarycolors/orangelogo.PNG' },
-                    { name: 'Röd', value: 'red', img: '../images/secondarycolors/redbutton.PNG', logo: '../images/secondarycolors/redlogo.png' }
+                    { name: 'Röd', value: 'red', img: '../images/secondarycolors/redbutton.PNG', logo: '../images/secondarycolors/redlogo.png' },
+                    { name: 'Svart', value: 'black', img: '../images/secondarycolors/blackbutton.PNG', logo: '../images/secondarycolors/blacklogo.PNG' },
+                    { name: 'Vit', value: 'white', img: '../images/secondarycolors/whitebutton.PNG', logo: '../images/secondarycolors/whitelogo.PNG' }
                 ],
                 configuredCombinations: [
                     { 
@@ -1490,7 +1306,7 @@
                     { 
                         id: 'winter-sun', 
                         name: 'Winter Sun', 
-                        primaryColor: { name: 'Vit', value: 'white', img: '../images/primarycolors/boxwhite.PNG' },
+                        primaryColor: { name: 'Svart', value: 'black', img: '../images/primarycolors/blackbox.PNG' },
                         secondaryColor: { name: 'Guld', value: 'gold', img: '../images/secondarycolors/goldbutton.PNG', logo: '../images/secondarycolors/goldlogo.PNG' }
                     },
                     { 
@@ -1501,126 +1317,15 @@
                     }
                 ],
                 designs: [
-                    { 
-                        name: 'Motiv 1', 
-                        id: 'M1', 
-                        optionImg: '../images/motiv/M1/M1.png',
-                        variants: {
-                            black: '../images/motiv/M1/M1svart.PNG',
-                            white: '../images/motiv/M1/M1vit.PNG',
-                            gold: '../images/motiv/M1/guldM1.2.png',
-                            orange: '../images/motiv/M1/orangeM1.png',
-                            red: '../images/motiv/M1/rödM1.png'
-                        }
-                    },
-                    { 
-                        name: 'Motiv 2', 
-                        id: 'M2', 
-                        optionImg: '../images/motiv/M2/M2.png',
-                        variants: {
-                            black: '../images/motiv/M2/M2svart.PNG',
-                            white: '../images/motiv/M2/M2vit.PNG',
-                            gold: '../images/motiv/M2/M2guld.png',
-                            orange: '../images/motiv/M2/M2orange.png',
-                            red: '../images/motiv/M2/M2röd.png'
-                        }
-                    },
-                    { 
-                        name: 'Motiv 3', 
-                        id: 'M3', 
-                        optionImg: '../images/motiv/M3/M3.svg',
-                        variants: {
-                            black: '../images/motiv/M3/M3svart.PNG',
-                            white: '../images/motiv/M3/M3vit.PNG',
-                            gold: '../images/motiv/M3/guldM3.png',
-                            orange: '../images/motiv/M3/orangeM3.png',
-                            red: '../images/motiv/M3/rödM3.png'
-                        }
-                    },
-                    { 
-                        name: 'Motiv 4', 
-                        id: 'M4', 
-                        optionImg: '../images/motiv/M4/M4.svg',
-                        variants: {
-                            black: '../images/motiv/M4/M4svart.PNG',
-                            white: '../images/motiv/M4/M4vit.PNG',
-                            gold: '../images/motiv/M4/M4guld.PNG',
-                            orange: '../images/motiv/M4/M4orange.PNG',
-                            red: '../images/motiv/M4/M4röd.PNG'
-                        }
-                    },
-                    { 
-                        name: 'Motiv 5', 
-                        id: 'M5', 
-                        optionImg: '../images/motiv/M5/M5.PNG',
-                        variants: {
-                            black: '../images/motiv/M5/M5svart.PNG',
-                            white: '../images/motiv/M5/M5vit.PNG',
-                            gold: '../images/motiv/M5/M5guld.PNG',
-                            orange: '../images/motiv/M5/M5orange.PNG',
-                            red: '../images/motiv/M5/M5röd.PNG'
-                        }
-                    },
-                    { 
-                        name: 'Motiv 6', 
-                        id: 'M6', 
-                        optionImg: '../images/motiv/M6/M6.PNG',
-                        variants: {
-                            black: '../images/motiv/M6/M6svart.PNG',
-                            white: '../images/motiv/M6/M6vit.PNG',
-                            gold: '../images/motiv/M6/M6guld.PNG',
-                            orange: '../images/motiv/M6/M6orange.PNG',
-                            red: '../images/motiv/M6/M6röd.PNG'
-                        }
-                    },
-                    { 
-                        name: 'Motiv 7', 
-                        id: 'M7', 
-                        optionImg: '../images/motiv/M7/M7.svg',
-                        variants: {
-                            black: '../images/motiv/M7/M7svart.PNG',
-                            white: '../images/motiv/M7/M7vit.PNG',
-                            gold: '../images/motiv/M7/M7guld.PNG',
-                            orange: '../images/motiv/M7/M7orange.PNG',
-                            red: '../images/motiv/M7/M7röd.PNG'
-                        }
-                    },
-                    { 
-                        name: 'Motiv 8', 
-                        id: 'M8', 
-                        optionImg: '../images/motiv/M8/M8.svg',
-                        variants: {
-                            black: '../images/motiv/M8/M8svart.PNG',
-                            white: '../images/motiv/M8/M8vit.PNG',
-                            gold: '../images/motiv/M8/M8guld.PNG',
-                            orange: '../images/motiv/M8/M8orange.PNG',
-                            red: '../images/motiv/M8/M8röd.PNG'
-                        }
-                    },
-                    { 
-                        name: 'Motiv 9', 
-                        id: 'M9', 
-                        optionImg: '../images/motiv/M9/M9.svg',
-                        isSpecial: true, // This one combines grund + color
-                        variants: {
-                            black: '../images/motiv/M9/M9svart.PNG',
-                            white: '../images/motiv/M9/M9vit.PNG',
-                            gold: '../images/motiv/M9/M9guld.PNG',
-                            orange: '../images/motiv/M9/M9orange.PNG',
-                            red: '../images/motiv/M9/M9röd.PNG'
-                        },
-                        base: '../images/motiv/M9/M9grund.PNG'
-                    },
-                    { 
-                        name: 'Motiv 10', 
-                        id: 'M10', 
-                        optionImg: '../images/motiv/M10/M10.svg',
-                        isSpecial: true, // This one only has one color
-                        variants: {
-                            black: '../images/motiv/M10/M10svart.PNG'
-                        }
-                    },
-                    { name: 'Inget motiv', id: 'none', optionImg: null, variants: {} }
+                    { name: 'Motiv 1', id: 'alg_logo', img: '../images/alg_logo.svg' },
+                    { name: 'Motiv 2', id: 'alg_design', img: '../images/alg_design.svg' },
+                    { name: 'Motiv 3', id: 'alg_jagare', img: '../images/alg_jagare.svg' },
+                    { name: 'Motiv 4', id: 'alg_majestic', img: '../images/alg_majestic.svg' },
+                    { name: 'Motiv 5', id: 'fagel_design', img: '../images/fagel_design.png' },
+                    { name: 'Motiv 6', id: 'jagare_hund', img: '../images/alg_jagare.svg' },
+                    { name: 'Motiv 7', id: 'algfavvo', img: '../images/algfavvo.svg' },
+                    { name: 'Motiv 8', id: 'your_text', img: '../images/your_text_design.png' },
+                    { name: 'Ingen Design', id: 'none', img: null }
                 ]
             };
 
@@ -1629,28 +1334,13 @@
                 // Load saved products from localStorage
                 loadSavedProducts();
                 
-                // Set default selections
-                setDefaultSelections();
-                
                 populateOptions();
                 setupEventListeners();
                 updateStepIndicator();
                 updateCart();
-                
-                // Preload common images for smoother transitions
-                preloadCommonImages();
-                
-                // Wait a bit for default selections to be applied, then update preview
-                setTimeout(() => {
                 updatePreview();
-                    
-                    // Force show some images for testing
-                    setTimeout(() => {
-                        forceShowPreview();
-                    }, 1000);
-                }, 500);
                 
-                // Initialize button states (this will disable next buttons initially)
+                // Initialize button states
                 updateAllButtonStates();
                 
                 // Initialize configured combinations visibility
@@ -1663,258 +1353,6 @@
                 if (savedProducts) {
                     app.savedProducts = JSON.parse(savedProducts);
                 }
-            }
-
-            // Preload common images for smoother transitions
-            function preloadCommonImages() {
-
-                
-                // Preload primary colors
-                data.primaryColors.forEach(color => {
-                    if (color.img) {
-                        const img = new Image();
-                        img.src = color.img;
-                    }
-                });
-                
-                // Preload secondary colors
-                data.secondaryColors.forEach(color => {
-                    if (color.img) {
-                        const img = new Image();
-                        img.src = color.img;
-                    }
-                    if (color.logo) {
-                        const img = new Image();
-                        img.src = color.logo;
-                    }
-                });
-                
-                // Preload design variants
-                data.designs.forEach(design => {
-                    if (design.variants) {
-                        Object.values(design.variants).forEach(variant => {
-                            if (variant) {
-                                const img = new Image();
-                                img.src = variant;
-                            }
-                        });
-                    }
-                    if (design.base) {
-                        const img = new Image();
-                        img.src = design.base;
-                    }
-                });
-                
-
-            }
-
-            // Set standard selections for special request (without UI selection)
-            function setStandardSelectionsForSpecialRequest(stepNum) {
-                switch(stepNum) {
-                    case 1: // Caliber - no visual change needed
-                        break;
-                    case 2: // Design - set to Motiv 8
-                        app.selections.design = data.designs.find(d => d.id === 'M8');
-                        break;
-                    case 3: // Primary Color - set to Grå
-                        app.selections.primaryColor = data.primaryColors.find(c => c.value === 'gray');
-                        break;
-                    case 4: // Secondary Color - set to Svart
-                        app.selections.secondaryColor = data.secondaryColors.find(c => c.name === 'Svart');
-                        break;
-                    case 5: // Initials - no visual change needed
-                        break;
-                }
-            }
-
-            // Clear special request for a specific step type
-            function clearSpecialRequestForStep(type) {
-                let stepNum = 0;
-                
-                // Map type to step number
-                switch(type) {
-                    case 'caliber': stepNum = 1; break;
-                    case 'design': stepNum = 2; break;
-                    case 'primaryColor': stepNum = 3; break;
-                    case 'secondaryColor': stepNum = 4; break;
-                    case 'initials': stepNum = 5; break;
-                }
-                
-                if (stepNum > 0) {
-                    const textbox = document.getElementById(`special-request-${stepNum}`);
-                    const status = document.getElementById(`special-status-${stepNum}`);
-                    const step = document.getElementById(`step-${stepNum}`);
-                    const clearButton = document.getElementById(`clear-special-${stepNum}`);
-                    
-                    if (textbox && status && step) {
-                        // Clear special request
-                        textbox.value = '';
-                        textbox.classList.remove('active');
-                        status.classList.add('d-none');
-                        status.classList.remove('bg-success');
-                        step.classList.remove('disabled');
-                        
-                        // Hide clear button
-                        if (clearButton) {
-                            clearButton.classList.add('d-none');
-                        }
-                        
-                        // Clear special request from selections
-                        switch(stepNum) {
-                            case 1: app.selections.caliberSpecial = ''; break;
-                            case 2: app.selections.designSpecial = ''; break;
-                            case 3: app.selections.primaryColorSpecial = ''; break;
-                            case 4: app.selections.secondaryColorSpecial = ''; break;
-                            case 5: app.selections.initialsSpecial = ''; break;
-                        }
-                        
-                        // Update configured combinations disabled state
-                        updateConfiguredCombinationsDisabledState();
-                        
-                        // Update preview and cart
-                        updatePreview();
-                        updateCart();
-                        
-                        // Update button states
-                        updateAllButtonStates();
-                    }
-                }
-                }
-
-            // Check if there are any visual selections (UI selected state) for a step
-            function checkVisualSelections(stepNum) {
-                switch(stepNum) {
-                    case 1:
-                        return document.querySelector('.caliber-option.selected') !== null;
-                    case 2:
-                        return document.querySelector('.design-option.selected') !== null;
-                    case 3:
-                        return document.querySelector('.primary-color-option.selected') !== null || 
-                               document.querySelector('.configured-combo-option.selected') !== null;
-                    case 4:
-                        return document.querySelector('.secondary-color-option.selected') !== null;
-                    case 5:
-                        return document.getElementById('initials-input').value.trim() !== '';
-                    default:
-                        return false;
-                }
-            }
-
-            // Check if a special request is active for a step
-            function checkSpecialRequestActive(stepNum) {
-                const textbox = document.getElementById(`special-request-${stepNum}`);
-                if (!textbox) return false;
-                
-                return textbox.value.trim().length > 0;
-            }
-
-            // Update configured combinations disabled state based on any disabled step
-            function updateConfiguredCombinationsDisabledState() {
-                const configuredCombinations = document.getElementById('configured-combinations');
-                if (!configuredCombinations) return;
-                
-                // Check if any step is disabled
-                const hasDisabledStep = document.querySelector('.step.disabled') !== null;
-                
-                if (hasDisabledStep) {
-                    configuredCombinations.classList.add('disabled');
-                } else {
-                    configuredCombinations.classList.remove('disabled');
-                }
-            }
-
-
-
-            // Set default selections for better user experience
-            function setDefaultSelections() {
-                // Set default primary color (gray)
-                app.selections.primaryColor = data.primaryColors.find(c => c.value === 'gray');
-                
-                // Set default secondary color (black)
-                app.selections.secondaryColor = data.secondaryColors.find(c => c.name === 'Svart');
-                
-                // Set default design (Motiv 8)
-                app.selections.design = data.designs.find(d => d.id === 'M8');
-                
-
-                
-                // Show loading state initially
-                const previewBox = document.getElementById('preview-box');
-                if (previewBox) {
-                    previewBox.classList.add('loading');
-                }
-                
-                // DO NOT mark these as selected in the UI - they should only show in preview
-                // The standards are set in app.selections but not visually selected
-                
-                // Remove loading state after a short delay
-                setTimeout(() => {
-                    if (previewBox) {
-                        previewBox.classList.remove('loading');
-                    }
-                }, 500);
-            }
-
-            // Set default selections without loading state (for reset scenarios)
-            function setDefaultSelectionsSilent() {
-                // Set default primary color (gray)
-                app.selections.primaryColor = data.primaryColors.find(c => c.value === 'gray');
-                
-                // Set default secondary color (black)
-                app.selections.secondaryColor = data.secondaryColors.find(c => c.name === 'Svart');
-                
-                // Set default design (Motiv 8)
-                app.selections.design = data.designs.find(d => d.id === 'M8');
-                
-
-            }
-
-            // Get design image based on secondary color
-            function getDesignImage(design, secondaryColor) {
-                if (!design || design.id === 'none') return null;
-                
-
-                
-                // If no secondary color is selected, show black version
-                if (!secondaryColor) {
-                    return design.variants.black;
-                }
-                
-                // Map secondary color names to variant keys
-                const colorMap = {
-                    'Svart': 'black',
-                    'Vit': 'white',
-                    'Guld': 'gold',
-                    'Orange': 'orange',
-                    'Röd': 'red'
-                };
-                
-                const colorKey = colorMap[secondaryColor.name];
-                
-                if (colorKey && design.variants[colorKey]) {
-                    return design.variants[colorKey];
-                }
-                
-                // Fallback to black if color not found
-                return design.variants.black;
-            }
-
-            // Populate configured combinations
-            function populateConfiguredCombinations() {
-                const container = document.getElementById('configured-combination-options');
-                if (!container) return;
-
-                data.configuredCombinations.forEach(combo => {
-                    const col = document.createElement('div');
-                    col.className = 'col-6 col-md-3';
-                    col.innerHTML = `
-                        <div class="configured-combo-option" data-combo="${combo.id}">
-                            <div class="combo-color-circle ${combo.id}"></div>
-                            <span class="fw-semibold">${combo.name}</span>
-                        </div>
-                    `;
-                    container.appendChild(col);
-                });
             }
 
             // Populate all option containers
@@ -1976,14 +1414,32 @@
                     col.className = 'col-6 col-md-4 col-lg-3';
                     col.innerHTML = `
                         <div class="option-card design-option" data-design="${design.id}">
-                            ${design.optionImg ? 
-                                `<img src="${design.optionImg}" alt="${design.name}" class="mb-2">` : 
+                            ${design.img ? 
+                                `<img src="${design.img}" alt="${design.name}" class="mb-2">` : 
                                 `<div class="h-100 d-flex align-items-center justify-content-center"><i class="fas fa-times fa-3x text-muted"></i></div>`
                             }
                             <span class="fw-semibold">${design.name}</span>
                         </div>
                     `;
                     designContainer.appendChild(col);
+                });
+            }
+
+            // Populate configured combinations
+            function populateConfiguredCombinations() {
+                const container = document.getElementById('configured-combination-options');
+                if (!container) return;
+
+                data.configuredCombinations.forEach(combo => {
+                    const col = document.createElement('div');
+                    col.className = 'col-6 col-md-3';
+                    col.innerHTML = `
+                        <div class="configured-combo-option" data-combo="${combo.id}">
+                            <div class="combo-color-circle ${combo.id}"></div>
+                            <span class="fw-semibold">${combo.name}</span>
+                        </div>
+                    `;
+                    container.appendChild(col);
                 });
             }
 
@@ -2031,351 +1487,6 @@
                 if (finishBtn) {
                     finishBtn.addEventListener('click', finishDesign);
                 }
-            }
-
-            // Setup option selection
-            function setupOptionSelection() {
-                // Caliber selection
-                document.querySelectorAll('.caliber-option').forEach(option => {
-                    option.addEventListener('click', function() {
-                        selectOption(this, 'caliber', this.dataset.caliber);
-                        clearSpecialRequest(1);
-                        // Don't update preview for caliber selection - it's just text
-                    });
-                });
-
-                // Primary color selection
-                document.querySelectorAll('.primary-color-option').forEach(option => {
-                    option.addEventListener('click', function() {
-                        // If this option is grayed out and a configured combo is selected, clear the combo first
-                        if (this.style.opacity === '0.3' && app.selections.configuredCombo) {
-                            clearConfiguredCombo();
-                        }
-                        
-                        // Clear special request for primary color step
-                        clearSpecialRequest(3);
-                        
-                        const colorValue = this.dataset.color;
-                        const color = data.primaryColors.find(c => c.value === colorValue);
-                        if (color) {
-                            selectOption(this, 'primaryColor', color);
-                        }
-                    });
-                });
-
-                // Secondary color selection
-                document.querySelectorAll('.secondary-color-option').forEach(option => {
-                    option.addEventListener('click', function() {
-                        // If this option is grayed out and a configured combo is selected, clear the combo first
-                        if (this.style.opacity === '0.3' && app.selections.configuredCombo) {
-                            clearConfiguredCombo();
-                        }
-                        
-                        // Clear special request for secondary color step
-                        clearSpecialRequest(4);
-                        
-                        const colorValue = this.dataset.color;
-                        const color = data.secondaryColors.find(c => c.value === colorValue);
-                        if (color) {
-                            selectOption(this, 'secondaryColor', color);
-                        }
-                    });
-                });
-
-                // Configured combination selection
-                document.querySelectorAll('.configured-combo-option').forEach(option => {
-                    option.addEventListener('click', function() {
-                        const comboId = this.dataset.combo;
-                        const combo = data.configuredCombinations.find(c => c.id === comboId);
-                        if (combo) {
-                            selectConfiguredCombo(this, combo);
-                        }
-                    });
-                });
-
-                // Design selection
-                document.querySelectorAll('.design-option').forEach(option => {
-                    option.addEventListener('click', function() {
-                        // Clear special request for design step
-                        clearSpecialRequest(2);
-                        
-                        const designId = this.dataset.design;
-                        const design = data.designs.find(d => d.id === designId);
-                        if (design) {
-                            selectOption(this, 'design', design);
-                            // If a configured combo is selected, the design will show in that color
-                            // If no combo is selected, it will show in the selected secondary color
-                        }
-                    });
-                });
-            }
-
-            // Select a configured combination
-            function selectConfiguredCombo(element, combo) {
-                // Clear all previous color selections
-                clearAllColorSelections();
-                
-                // Clear configured combo selections
-                document.querySelectorAll('.configured-combo-option').forEach(opt => {
-                    opt.classList.remove('selected');
-                });
-
-                // Select the clicked combo
-                element.classList.add('selected');
-                app.selections.configuredCombo = combo;
-                app.selections.primaryColor = combo.primaryColor;
-                app.selections.secondaryColor = combo.secondaryColor;
-
-                // Clear any special requests for color steps
-                clearSpecialRequestForStep('primaryColor');
-                clearSpecialRequestForStep('secondaryColor');
-
-                // Gray out other options in the current step
-                grayOutOtherOptions();
-
-                // Enable next button for current step
-                enableNextButton(app.currentStep);
-
-                // Update cart and preview
-                updateCart();
-                updatePreview();
-                
-                // Update button states
-                updateAllButtonStates();
-                
-                // If a design is already selected, it will now show in the combo's secondary color
-                // This is handled in updatePreview() function
-            }
-
-            // Select an option
-            function selectOption(element, type, value) {
-                // Clear previous selections of the same type
-                const container = element.closest('.row');
-                container.querySelectorAll('.option-card, .color-option').forEach(opt => {
-                    opt.classList.remove('selected');
-                });
-
-                // If selecting individual colors, clear configured combo
-                if (type === 'primaryColor' || type === 'secondaryColor') {
-                    if (app.selections.configuredCombo) {
-                        app.selections.configuredCombo = null;
-                        document.querySelectorAll('.configured-combo-option.selected').forEach(opt => {
-                            opt.classList.remove('selected');
-                        });
-                        restoreOtherOptions();
-                    }
-                }
-                
-                // If selecting secondary color, update design preview
-                if (type === 'secondaryColor' && app.selections.design && app.selections.design.id !== 'none') {
-                    // Update preview immediately for smooth color change
-                    updatePreview();
-                }
-
-                // Select the clicked option
-                element.classList.add('selected');
-                app.selections[type] = value;
-
-                // Clear any special request for this step when selecting normal option
-                clearSpecialRequestForStep(type);
-
-                // Enable next button for current step
-                enableNextButton(app.currentStep);
-
-                // Update cart
-                updateCart();
-                
-                // Only update preview for visual elements (not caliber)
-                if (type !== 'caliber') {
-                updatePreview();
-                }
-                
-                // Update button states
-                updateAllButtonStates();
-                
-                // Update visibility
-                updateConfiguredCombinationsVisibility();
-            }
-
-            // Setup special requests
-            function setupSpecialRequests() {
-                for (let i = 1; i <= 5; i++) {
-                    const textbox = document.getElementById(`special-request-${i}`);
-                    if (textbox) {
-                        textbox.addEventListener('focus', () => {
-                            activateSpecialRequest(i);
-                        });
-
-                        textbox.addEventListener('input', () => {
-                            handleSpecialRequestInput(i);
-                        });
-                        
-                        // Add blur event to deactivate special request when leaving textbox
-                        textbox.addEventListener('blur', () => {
-                            setTimeout(() => {
-                                clearSpecialRequest(i);
-                            }, 100);
-                        });
-                    }
-                }
-                
-                // Add keyboard shortcut (Escape key) to clear special requests
-                document.addEventListener('keydown', (event) => {
-                    if (event.key === 'Escape') {
-                        for (let i = 1; i <= 5; i++) {
-                            const textbox = document.getElementById(`special-request-${i}`);
-                            if (textbox && textbox === document.activeElement) {
-                                clearSpecialRequest(i);
-                                break;
-                            }
-                        }
-                    }
-                });
-            }
-
-            // Activate special request for a step
-            function activateSpecialRequest(stepNum) {
-                const step = document.getElementById(`step-${stepNum}`);
-                const textbox = document.getElementById(`special-request-${stepNum}`);
-                const status = document.getElementById(`special-status-${stepNum}`);
-                const clearButton = document.getElementById(`clear-special-${stepNum}`);
-
-
-
-                // Clear all selections for this step
-                clearStepSelections(stepNum);
-
-                // Set standard selections for special request (without UI selection)
-                setStandardSelectionsForSpecialRequest(stepNum);
-
-                // Disable the step (this grays out the options)
-                step.classList.add('disabled');
-
-                // Also clear configured combo selections when special request is active
-                if (app.selections.configuredCombo) {
-                    clearConfiguredCombo();
-                }
-
-                // Activate the textbox
-                textbox.classList.add('active');
-
-                // Show status and clear button
-                status.classList.remove('d-none');
-                status.classList.add('bg-success');
-                if (clearButton) {
-                    clearButton.classList.remove('d-none');
-                }
-
-                // Update cart
-                updateCart();
-                
-                // Only update preview for visual elements (not caliber)
-                if (stepNum !== 1) {
-                updatePreview();
-                }
-                
-                // Update button states (this will enable next button for special request)
-                updateAllButtonStates();
-                
-                // Update configured combinations disabled state
-                updateConfiguredCombinationsDisabledState();
-            }
-
-                        // Handle special request input
-            function handleSpecialRequestInput(stepNum) {
-                const textbox = document.getElementById(`special-request-${stepNum}`);
-                const text = textbox.value.trim();
-                const clearButton = document.getElementById(`clear-special-${stepNum}`);
-
-
-
-                if (text.length > 0) {
-                    // Save special request
-                    switch(stepNum) {
-                        case 1: app.selections.caliberSpecial = text; break;
-                        case 2: app.selections.designSpecial = text; break;
-                        case 3: app.selections.primaryColorSpecial = text; break;
-                        case 4: app.selections.secondaryColorSpecial = text; break;
-                        case 5: app.selections.initialsSpecial = text; break;
-                    }
-                    
-                    // Make sure the step is disabled when typing
-                    const step = document.getElementById(`step-${stepNum}`);
-                    if (step) {
-                        step.classList.add('disabled');
-                    }
-                    
-                    // Show clear button when there's text
-                    if (clearButton) {
-                        clearButton.classList.remove('d-none');
-                    }
-                    
-                    // Also clear configured combo selections when special request is active
-                    if (app.selections.configuredCombo) {
-                        clearConfiguredCombo();
-                    }
-                    
-                    // Force update preview to show "Specialförfrågan"
-                    updatePreview();
-                } else {
-                    // Clear special request
-                    clearSpecialRequest(stepNum);
-                }
-
-                updateCart();
-                
-                // Update button states
-                updateAllButtonStates();
-                
-                // Update configured combinations disabled state
-                updateConfiguredCombinationsDisabledState();
-            }
-
-            // Clear special request for a step
-            function clearSpecialRequest(stepNum) {
-                const step = document.getElementById(`step-${stepNum}`);
-                const textbox = document.getElementById(`special-request-${stepNum}`);
-                const status = document.getElementById(`special-status-${stepNum}`);
-                const clearButton = document.getElementById(`clear-special-${stepNum}`);
-
-                // Re-enable the step
-                step.classList.remove('disabled');
-
-                // Deactivate the textbox
-                textbox.classList.remove('active');
-                textbox.value = '';
-
-                // Hide status and clear button
-                status.classList.add('d-none');
-                status.classList.remove('bg-success');
-                if (clearButton) {
-                    clearButton.classList.add('d-none');
-                }
-
-                // Clear special request from selections
-                switch(stepNum) {
-                    case 1: app.selections.caliberSpecial = ''; break;
-                    case 2: app.selections.designSpecial = ''; break;
-                    case 3: app.selections.primaryColorSpecial = ''; break;
-                    case 4: app.selections.secondaryColorSpecial = ''; break;
-                    case 5: app.selections.initialsSpecial = ''; break;
-                }
-
-                // Check if next button should be enabled
-                enableNextButton(stepNum);
-
-                updateCart();
-                
-                // Only update preview for visual elements (not caliber)
-                if (stepNum !== 1) {
-                updatePreview();
-                }
-                
-                // Update button states
-                updateAllButtonStates();
-                
-                // Update configured combinations disabled state
-                updateConfiguredCombinationsDisabledState();
             }
 
             // Gray out other options when a combo is selected
@@ -2436,11 +1547,252 @@
                 updateConfiguredCombinationsVisibility();
             }
 
+            // Setup option selection
+            function setupOptionSelection() {
+                // Caliber selection
+                document.querySelectorAll('.caliber-option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        selectOption(this, 'caliber', this.dataset.caliber);
+                        clearSpecialRequest(1);
+                    });
+                });
+
+                // Primary color selection
+                document.querySelectorAll('.primary-color-option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        // If this option is grayed out and a configured combo is selected, clear the combo first
+                        if (this.style.opacity === '0.3' && app.selections.configuredCombo) {
+                            clearConfiguredCombo();
+                        }
+                        
+                        const colorValue = this.dataset.color;
+                        const color = data.primaryColors.find(c => c.value === colorValue);
+                        if (color) {
+                            selectOption(this, 'primaryColor', color);
+                        }
+                        clearSpecialRequest(3);
+                    });
+                });
+
+                // Secondary color selection
+                document.querySelectorAll('.secondary-color-option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        // If this option is grayed out and a configured combo is selected, clear the combo first
+                        if (this.style.opacity === '0.3' && app.selections.configuredCombo) {
+                            clearConfiguredCombo();
+                        }
+                        
+                        const colorValue = this.dataset.color;
+                        const color = data.secondaryColors.find(c => c.value === colorValue);
+                        if (color) {
+                            selectOption(this, 'secondaryColor', color);
+                        }
+                        clearSpecialRequest(4);
+                    });
+                });
+
+                // Configured combination selection
+                document.querySelectorAll('.configured-combo-option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        const comboId = this.dataset.combo;
+                        const combo = data.configuredCombinations.find(c => c.id === comboId);
+                        if (combo) {
+                            selectConfiguredCombo(this, combo);
+                        }
+                    });
+                });
+
+                // Design selection
+                document.querySelectorAll('.design-option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        const designId = this.dataset.design;
+                        const design = data.designs.find(d => d.id === designId);
+                        if (design) {
+                            selectOption(this, 'design', design);
+                        }
+                        clearSpecialRequest(2);
+                    });
+                });
+            }
+
+            // Select an option
+            function selectOption(element, type, value) {
+                // Clear previous selections of the same type
+                const container = element.closest('.row');
+                container.querySelectorAll('.option-card, .color-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+
+                // If selecting individual colors, clear configured combo
+                if (type === 'primaryColor' || type === 'secondaryColor') {
+                    if (app.selections.configuredCombo) {
+                        app.selections.configuredCombo = null;
+                        document.querySelectorAll('.configured-combo-option.selected').forEach(opt => {
+                            opt.classList.remove('selected');
+                        });
+                        restoreOtherOptions();
+                    }
+                }
+
+                // Select the clicked option
+                element.classList.add('selected');
+                app.selections[type] = value;
+
+                // Enable next button for current step
+                enableNextButton(app.currentStep);
+
+                // Update cart and preview
+                updateCart();
+                updatePreview();
+                
+                // Update button states
+                updateAllButtonStates();
+                
+                // Update visibility
+                updateConfiguredCombinationsVisibility();
+            }
+
+            // Select a configured combination
+            function selectConfiguredCombo(element, combo) {
+                // Clear all previous color selections
+                clearAllColorSelections();
+                
+                // Clear configured combo selections
+                document.querySelectorAll('.configured-combo-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+
+                // Select the clicked combo
+                element.classList.add('selected');
+                app.selections.configuredCombo = combo;
+                app.selections.primaryColor = combo.primaryColor;
+                app.selections.secondaryColor = combo.secondaryColor;
+
+                // Gray out other options in the current step
+                grayOutOtherOptions();
+
+                // Enable next button for current step
+                enableNextButton(app.currentStep);
+
+                // Update cart and preview
+                updateCart();
+                updatePreview();
+                
+                // Update button states
+                updateAllButtonStates();
+            }
+
+            // Setup special requests
+            function setupSpecialRequests() {
+                for (let i = 1; i <= 5; i++) {
+                    const textbox = document.getElementById(`special-request-${i}`);
+                    if (textbox) {
+                        textbox.addEventListener('focus', () => {
+                            activateSpecialRequest(i);
+                        });
+
+                        textbox.addEventListener('input', () => {
+                            handleSpecialRequestInput(i);
+                        });
+                    }
+                }
+            }
+
+            // Activate special request for a step
+            function activateSpecialRequest(stepNum) {
+                const step = document.getElementById(`step-${stepNum}`);
+                const textbox = document.getElementById(`special-request-${stepNum}`);
+                const status = document.getElementById(`special-status-${stepNum}`);
+
+                // Clear all selections for this step
+                clearStepSelections(stepNum);
+
+                // Disable the step
+                step.classList.add('disabled');
+
+                // Activate the textbox
+                textbox.classList.add('active');
+
+                // Show status
+                status.classList.remove('d-none');
+                status.classList.add('bg-success');
+
+                // Enable next button
+                enableNextButton(stepNum);
+
+                // Update cart and preview
+                updateCart();
+                updatePreview();
+                
+                // Update button states
+                updateAllButtonStates();
+            }
+
+            // Handle special request input
+            function handleSpecialRequestInput(stepNum) {
+                const textbox = document.getElementById(`special-request-${stepNum}`);
+                const text = textbox.value.trim();
+
+                if (text.length > 0) {
+                    // Save special request
+                    switch(stepNum) {
+                        case 1: app.selections.caliberSpecial = text; break;
+                        case 2: app.selections.primaryColorSpecial = text; break;
+                        case 3: app.selections.secondaryColorSpecial = text; break;
+                        case 4: app.selections.designSpecial = text; break;
+                        case 5: app.selections.initialsSpecial = text; break;
+                    }
+                } else {
+                    // Clear special request
+                    clearSpecialRequest(stepNum);
+                }
+
+                updateCart();
+                updatePreview();
+                
+                // Update button states
+                updateAllButtonStates();
+            }
+
+            // Clear special request for a step
+            function clearSpecialRequest(stepNum) {
+                const step = document.getElementById(`step-${stepNum}`);
+                const textbox = document.getElementById(`special-request-${stepNum}`);
+                const status = document.getElementById(`special-status-${stepNum}`);
+
+                // Re-enable the step
+                step.classList.remove('disabled');
+
+                // Deactivate the textbox
+                textbox.classList.remove('active');
+                textbox.value = '';
+
+                // Hide status
+                status.classList.add('d-none');
+                status.classList.remove('bg-success');
+
+                // Clear special request from selections
+                switch(stepNum) {
+                    case 1: app.selections.caliberSpecial = ''; break;
+                    case 2: app.selections.primaryColorSpecial = ''; break;
+                    case 3: app.selections.secondaryColorSpecial = ''; break;
+                    case 4: app.selections.designSpecial = ''; break;
+                    case 5: app.selections.initialsSpecial = ''; break;
+                }
+
+                // Check if next button should be enabled
+                enableNextButton(stepNum);
+
+                updateCart();
+                updatePreview();
+                
+                // Update button states
+                updateAllButtonStates();
+            }
+
             // Clear step selections
             function clearStepSelections(stepNum) {
                 const step = document.getElementById(`step-${stepNum}`);
-                
-
                 
                 switch(stepNum) {
                     case 1:
@@ -2469,21 +1821,6 @@
                         document.getElementById('initials-input').value = '';
                         app.selections.initials = '';
                         break;
-                }
-                
-                // Clear configured combo selections for all steps
-                document.querySelectorAll('.configured-combo-option.selected').forEach(opt => {
-                    opt.classList.remove('selected');
-                });
-                app.selections.configuredCombo = null;
-                
-
-            }
-
-            // Update all button states
-            function updateAllButtonStates() {
-                for (let i = 1; i <= 4; i++) {
-                    enableNextButton(i);
                 }
             }
 
@@ -2515,12 +1852,6 @@
                     case 5:
                         // Step 5 doesn't have a next button, it has the finish button
                         return;
-                }
-
-                // For special requests, we don't need visual selections - just the special request text
-                const hasSpecialRequest = checkSpecialRequestActive(stepNum);
-                if (hasSpecialRequest) {
-                    shouldEnable = true;
                 }
 
                 nextBtn.disabled = !shouldEnable;
@@ -2587,6 +1918,13 @@
                 }
             }
 
+            // Update all button states
+            function updateAllButtonStates() {
+                for (let i = 1; i <= 4; i++) {
+                    enableNextButton(i);
+                }
+            }
+
             // Setup cart functionality
             function setupCartFunctionality() {
                 // Cart icon click
@@ -2622,30 +1960,6 @@
                 }
             }
 
-            // Open cart sidebar
-            function openCartSidebar() {
-                const cartSidebar = document.getElementById('cart-sidebar');
-                const cartSidebarOverlay = document.getElementById('cart-sidebar-overlay');
-                
-                if (cartSidebar && cartSidebarOverlay) {
-                    cartSidebar.classList.add('open');
-                    cartSidebarOverlay.classList.add('open');
-                    document.body.style.overflow = 'hidden';
-                }
-            }
-
-            // Close cart sidebar
-            function closeCartSidebar() {
-                const cartSidebar = document.getElementById('cart-sidebar');
-                const cartSidebarOverlay = document.getElementById('cart-sidebar-overlay');
-                
-                if (cartSidebar && cartSidebarOverlay) {
-                    cartSidebar.classList.remove('open');
-                    cartSidebarOverlay.classList.remove('open');
-                    document.body.style.overflow = '';
-                }
-            }
-
             // Update cart
             function updateCart() {
                 updateCartSidebar();
@@ -2673,8 +1987,11 @@
                     });
                 }
 
-                            // Show current selections if any
-            // Removed "aktuella val" section
+                // Show current selections if any
+                if (hasCurrentSelections()) {
+                    addCartSidebarSeparator();
+                    addCurrentSelectionsToCartSidebar();
+                }
 
                 cartSidebarTotal.textContent = `${total}kr`;
 
@@ -2765,31 +2082,83 @@
                 cartSidebarItems.appendChild(productDiv);
             }
 
-            // Removed "aktuella val" functions
+            // Add cart sidebar separator
+            function addCartSidebarSeparator() {
+                const cartSidebarItems = document.getElementById('cart-sidebar-items');
+                if (!cartSidebarItems) return;
 
-            // Removed hasCurrentSelections function
+                const separator = document.createElement('div');
+                separator.className = 'cart-separator my-3';
+                separator.innerHTML = `
+                    <div class="text-center">
+                        <span class="badge bg-secondary px-3 py-2">Aktuella val</span>
+                    </div>
+                `;
+                cartSidebarItems.appendChild(separator);
+            }
 
-            // Clear all color selections
-            function clearAllColorSelections() {
-                // Clear primary color selections
-                document.querySelectorAll('.primary-color-option.selected').forEach(opt => {
-                    opt.classList.remove('selected');
-                });
-                
-                // Clear secondary color selections
-                document.querySelectorAll('.secondary-color-option.selected').forEach(opt => {
-                    opt.classList.remove('selected');
-                });
+            // Add current selections to cart sidebar
+            function addCurrentSelectionsToCartSidebar() {
+                const cartSidebarItems = document.getElementById('cart-sidebar-items');
+                if (!cartSidebarItems) return;
 
-                // Clear configured combo selections
-                document.querySelectorAll('.configured-combo-option.selected').forEach(opt => {
-                    opt.classList.remove('selected');
-                });
+                let total = app.basePrice;
 
-                // Clear app selections
-                app.selections.primaryColor = null;
-                app.selections.secondaryColor = null;
-                app.selections.configuredCombo = null;
+                // Add caliber
+                if (app.selections.caliber) {
+                    addCartSidebarItem('Kaliber', app.selections.caliber);
+                } else if (app.selections.caliberSpecial) {
+                    addCartSidebarItem('Kaliber', 'Specialförfrågan');
+                    total += 200;
+                }
+
+                // Add configured combo or individual colors
+                if (app.selections.configuredCombo) {
+                    addCartSidebarItem('Färdig Kombination', app.selections.configuredCombo.name);
+                } else {
+                    // Add primary color
+                    if (app.selections.primaryColor) {
+                        addCartSidebarItem('Primär Färg', app.selections.primaryColor.name);
+                    } else if (app.selections.primaryColorSpecial) {
+                        addCartSidebarItem('Primär Färg', 'Specialförfrågan');
+                        total += 200;
+                    }
+
+                    // Add secondary color
+                    if (app.selections.secondaryColor) {
+                        addCartSidebarItem('Sekundär Färg', app.selections.secondaryColor.name);
+                    } else if (app.selections.secondaryColorSpecial) {
+                        addCartSidebarItem('Sekundär Färg', 'Specialförfrågan');
+                        total += 200;
+                    }
+                }
+
+                // Add design
+                if (app.selections.design) {
+                    addCartSidebarItem('Design', app.selections.design.name);
+                } else if (app.selections.designSpecial) {
+                    addCartSidebarItem('Design', 'Specialförfrågan');
+                    total += 200;
+                }
+
+                // Add initials
+                if (app.selections.initials) {
+                    addCartSidebarItem('Initialer', app.selections.initials);
+                    total += 100;
+                } else if (app.selections.initialsSpecial) {
+                    addCartSidebarItem('Initialer', 'Specialförfrågan');
+                    total += 200;
+                }
+            }
+
+            // Check if there are current selections
+            function hasCurrentSelections() {
+                return app.selections.caliber || app.selections.primaryColor || 
+                       app.selections.secondaryColor || app.selections.configuredCombo || 
+                       app.selections.design || app.selections.initials || 
+                       app.selections.caliberSpecial || app.selections.primaryColorSpecial || 
+                       app.selections.secondaryColorSpecial || app.selections.designSpecial || 
+                       app.selections.initialsSpecial;
             }
 
             // Clear all current selections
@@ -2839,18 +2208,12 @@
                 // Restore other options
                 restoreOtherOptions();
 
-                // Reset to default selections for preview
-                setDefaultSelectionsSilent();
-
                 // Update preview and cart
                 updatePreview();
                 updateCart();
                 
                 // Update button states
                 updateAllButtonStates();
-                
-                // Update configured combinations disabled state
-                updateConfiguredCombinationsDisabledState();
             }
 
             // Remove product from cart
@@ -2863,9 +2226,6 @@
 
             // Make removeProduct globally accessible
             window.removeProduct = removeProduct;
-            
-            // Make clearSpecialRequest globally accessible
-            window.clearSpecialRequest = clearSpecialRequest;
 
             // Add item to cart sidebar
             function addCartSidebarItem(label, value) {
@@ -2881,11 +2241,27 @@
                 cartSidebarItems.appendChild(item);
             }
 
-            // Setup configured combinations
-            function setupConfiguredCombinations() {
-                const clearBtn = document.getElementById('clear-configured-combo');
-                if (clearBtn) {
-                    clearBtn.addEventListener('click', clearConfiguredCombo);
+            // Open cart sidebar
+            function openCartSidebar() {
+                const cartSidebar = document.getElementById('cart-sidebar');
+                const cartSidebarOverlay = document.getElementById('cart-sidebar-overlay');
+                
+                if (cartSidebar && cartSidebarOverlay) {
+                    cartSidebar.classList.add('open');
+                    cartSidebarOverlay.classList.add('open');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+
+            // Close cart sidebar
+            function closeCartSidebar() {
+                const cartSidebar = document.getElementById('cart-sidebar');
+                const cartSidebarOverlay = document.getElementById('cart-sidebar-overlay');
+                
+                if (cartSidebar && cartSidebarOverlay) {
+                    cartSidebar.classList.remove('open');
+                    cartSidebarOverlay.classList.remove('open');
+                    document.body.style.overflow = '';
                 }
             }
 
@@ -2918,6 +2294,31 @@
                 }
             }
 
+            // Clear all color selections
+            function clearAllColorSelections() {
+                // Clear primary color selections
+                document.querySelectorAll('.primary-color-option.selected').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Clear secondary color selections
+                document.querySelectorAll('.secondary-color-option.selected').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+
+                // Clear configured combo selections
+                document.querySelectorAll('.configured-combo-option.selected').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+
+                // Clear app selections
+                app.selections.primaryColor = null;
+                app.selections.secondaryColor = null;
+                app.selections.configuredCombo = null;
+            }
+
+
+
             // Setup initials input
             function setupInitialsInput() {
                 const initialsInput = document.getElementById('initials-input');
@@ -2933,6 +2334,16 @@
                 }
             }
 
+            // Setup configured combinations
+            function setupConfiguredCombinations() {
+                const clearBtn = document.getElementById('clear-configured-combo');
+                if (clearBtn) {
+                    clearBtn.addEventListener('click', clearConfiguredCombo);
+                }
+            }
+
+
+
             // Update preview
             function updatePreview() {
                 const previewPlaceholder = document.getElementById('preview-placeholder');
@@ -2941,9 +2352,9 @@
                 const previewButton = document.getElementById('preview-button');
                 const previewDetails = document.getElementById('preview-details');
 
-                if (!previewPlaceholder || !previewBase || !previewLogo || !previewButton || !previewDetails) {
-                    return;
-                }
+                if (!previewPlaceholder || !previewBase || !previewLogo || !previewButton || !previewDetails) return;
+
+                console.log('Updating preview with selections:', app.selections);
 
                 // Clear previous preview details
                 previewDetails.innerHTML = '';
@@ -2955,125 +2366,67 @@
                     // Show configured combo
                     fadeInImage(previewBase, app.selections.configuredCombo.primaryColor.img);
                     fadeInImage(previewButton, app.selections.configuredCombo.secondaryColor.img);
-                    
-                    // If a design is selected, show it in the combo's secondary color
-                    if (app.selections.design && app.selections.design.id !== 'none') {
-                        const designImage = getDesignImage(app.selections.design, app.selections.configuredCombo.secondaryColor);
-                        if (designImage) {
-                            if (app.selections.design.isSpecial && app.selections.design.id === 'M9') {
-                                // For M9, show base + color
-                                fadeInImage(previewLogo, app.selections.design.base);
-                                fadeInImage(previewButton, designImage);
-                            } else if (app.selections.design.isSpecial && app.selections.design.id === 'M10') {
-                                // M10 only has one color
-                                fadeInImage(previewLogo, designImage);
-                            } else {
-                                // Regular designs replace the logo
-                                fadeInImage(previewLogo, designImage);
-                            }
-                        }
-                    } else {
-                        // No design selected, show the combo's secondary color logo
-                        fadeInImage(previewLogo, app.selections.configuredCombo.secondaryColor.logo);
-                    }
+                    fadeInImage(previewLogo, app.selections.configuredCombo.secondaryColor.logo);
                     
                     hasSelections = true;
                     addPreviewDetail('Färdig Kombination', app.selections.configuredCombo.name);
                 } else {
                     // Show individual color selections
-                    if (app.selections.primaryColorSpecial) {
-                        // Show standard gray box for special request
-                        fadeInImage(previewBase, '../images/primarycolors/graybox.PNG');
-                    hasSelections = true;
-                    addPreviewDetail('Primär Färg', 'Specialförfrågan');
-                    } else if (app.selections.primaryColor) {
+                    if (app.selections.primaryColor) {
                         fadeInImage(previewBase, app.selections.primaryColor.img);
                         hasSelections = true;
                         addPreviewDetail('Primär Färg', app.selections.primaryColor.name);
-                } else {
-                    fadeOutImage(previewBase);
-                }
+                    } else if (app.selections.primaryColorSpecial) {
+                        fadeInImage(previewBase, '../images/primarycolors/blackbox.PNG');
+                        hasSelections = true;
+                        addPreviewDetail('Primär Färg', 'Specialförfrågan');
+                    } else {
+                        fadeOutImage(previewBase);
+                    }
 
-                    if (app.selections.secondaryColorSpecial) {
-                        // Show standard black button/logo for special request
-                        fadeInImage(previewButton, '../images/secondarycolors/blackbutton.PNG');
-                        
-                        // Only show logo if no design is selected
-                        if (!app.selections.design || app.selections.design.id === 'none') {
-                            fadeInImage(previewLogo, '../images/secondarycolors/blacklogo.PNG');
-                        }
+                    if (app.selections.secondaryColor) {
+                        // Show both button and logo for secondary color
+                        fadeInImage(previewButton, app.selections.secondaryColor.img);
+                        fadeInImage(previewLogo, app.selections.secondaryColor.logo);
                         
                         hasSelections = true;
+                        addPreviewDetail('Sekundär Färg', app.selections.secondaryColor.name);
+                    } else if (app.selections.secondaryColorSpecial) {
+                        fadeInImage(previewButton, '../images/secondarycolors/blackbutton.PNG');
+                        fadeInImage(previewLogo, '../images/secondarycolors/blacklogo.PNG');
+                        hasSelections = true;
                         addPreviewDetail('Sekundär Färg', 'Specialförfrågan');
-                    } else if (app.selections.secondaryColor) {
-                        // Show button for secondary color (this will be visible)
-                    fadeInImage(previewButton, app.selections.secondaryColor.img);
-                        
-                        // Only show logo if no design is selected
-                        if (!app.selections.design || app.selections.design.id === 'none') {
-                    fadeInImage(previewLogo, app.selections.secondaryColor.logo);
-                        }
-                    
-                    hasSelections = true;
-                    addPreviewDetail('Sekundär Färg', app.selections.secondaryColor.name);
-                } else {
-                    fadeOutImage(previewButton);
-                    fadeOutImage(previewLogo);
+                    } else {
+                        fadeOutImage(previewButton);
+                        fadeOutImage(previewLogo);
                     }
                 }
 
-                // Handle design display
-                if (app.selections.designSpecial) {
-                    hasSelections = true;
-                    addPreviewDetail('Design', 'Specialförfrågan');
-                    
-                    // Show standard Motiv 8 for design special request
-                    const standardDesign = data.designs.find(d => d.id === 'M8');
-                    if (standardDesign) {
-                        const designImage = getDesignImage(standardDesign, app.selections.secondaryColor);
-                        if (designImage) {
-                            fadeInImage(previewLogo, designImage);
-                        }
-                    }
-                } else if (app.selections.design && app.selections.design.id !== 'none') {
+                // Handle design display (designs are not shown in preview, only in details)
+                if (app.selections.design && app.selections.design.id !== 'none') {
                     hasSelections = true;
                     addPreviewDetail('Design', app.selections.design.name);
-                    
-                    // Show the design in the preview
-                    const designImage = getDesignImage(app.selections.design, app.selections.secondaryColor);
-                    
-                    if (designImage) {
-                        // For M9, we need to show both base and color
-                        if (app.selections.design.isSpecial && app.selections.design.id === 'M9') {
-                            fadeInImage(previewLogo, app.selections.design.base);
-                            fadeInImage(previewButton, designImage);
-                        } else if (app.selections.design.isSpecial && app.selections.design.id === 'M10') {
-                            // M10 only has one color
-                            fadeInImage(previewLogo, designImage);
-                        } else {
-                            // Regular designs replace the logo, but keep the button visible
-                            fadeInImage(previewLogo, designImage);
-                            // Don't fade out the button - keep it visible
-                        }
-                    }
+                } else if (app.selections.designSpecial) {
+                    hasSelections = true;
+                    addPreviewDetail('Design', 'Specialförfrågan');
                 } else if (app.selections.design && app.selections.design.id === 'none') {
                     hasSelections = true;
-                    addPreviewDetail('Design', 'Inget motiv');
+                    addPreviewDetail('Design', 'Ingen Design');
                 }
 
-                if (app.selections.caliberSpecial) {
-                    addPreviewDetail('Kaliber', 'Specialförfrågan');
-                    hasSelections = true;
-                } else if (app.selections.caliber) {
+                if (app.selections.caliber) {
                     addPreviewDetail('Kaliber', app.selections.caliber);
                     hasSelections = true;
+                } else if (app.selections.caliberSpecial) {
+                    addPreviewDetail('Kaliber', 'Specialförfrågan');
+                    hasSelections = true;
                 }
 
-                if (app.selections.initialsSpecial) {
-                    addPreviewDetail('Initialer', 'Specialförfrågan');
-                    hasSelections = true;
-                } else if (app.selections.initials) {
+                if (app.selections.initials) {
                     addPreviewDetail('Initialer', app.selections.initials);
+                    hasSelections = true;
+                } else if (app.selections.initialsSpecial) {
+                    addPreviewDetail('Initialer', 'Specialförfrågan');
                     hasSelections = true;
                 }
 
@@ -3091,7 +2444,7 @@
                 if (!previewDetails) return;
 
                 const detail = document.createElement('div');
-                detail.className = 'preview-detail';
+                detail.className = 'preview-detail fade-in-detail';
                 detail.innerHTML = `
                     <span>${label}:</span>
                     <span class="fw-bold">${value}</span>
@@ -3099,73 +2452,69 @@
                 previewDetails.appendChild(detail);
             }
 
-            // Force show preview for testing
-            function forceShowPreview() {
-                const previewBase = document.getElementById('preview-base');
-                const previewButton = document.getElementById('preview-button');
-                const previewLogo = document.getElementById('preview-logo');
-                
-                if (previewBase) {
-                    previewBase.src = '../images/primarycolors/graybox.PNG';
-                    previewBase.style.display = 'block';
-                    previewBase.style.opacity = '1';
-                    previewBase.style.transition = 'none';
-                }
-                
-                if (previewButton) {
-                    previewButton.src = '../images/secondarycolors/blackbutton.PNG';
-                    previewButton.style.display = 'block';
-                    previewButton.style.opacity = '1';
-                    previewButton.style.transition = 'none';
-                }
-                
-                if (previewLogo) {
-                    previewLogo.src = '../images/motiv/M8/M8svart.PNG';
-                    previewLogo.style.display = 'block';
-                    previewLogo.style.opacity = '1';
-                    previewLogo.style.transition = 'none';
-                }
-            }
-
-            // Simple direct image loading function (no transitions)
+            // Fade in image with smooth animation
             function fadeInImage(imgElement, src) {
                 if (!imgElement) return;
                 
-                // If this is the same image, don't change
-                if (imgElement.src === src) {
-                    return;
-                }
+                console.log('Fading in image:', src, 'for element:', imgElement.id);
                 
-                // Direct image change - no transitions
-                imgElement.src = src;
+                // Set opacity to 0 and show element
+                imgElement.style.opacity = '0';
                 imgElement.style.display = 'block';
-                imgElement.style.opacity = '1';
+                
+                // Set the new image source
+                imgElement.src = src;
+                
+                // Wait for image to load before fading in
+                imgElement.onload = function() {
+                    console.log('Image loaded successfully:', src);
+                    imgElement.style.transition = 'opacity 0.5s ease-in-out';
+                    imgElement.style.opacity = '1';
+                };
+                
+                // Fallback if image fails to load
+                imgElement.onerror = function() {
+                    console.error('Failed to load image:', src);
+                    imgElement.style.display = 'none';
+                };
             }
 
             // Fade out image with smooth animation
-            // Hide image instantly (no transitions)
             function fadeOutImage(imgElement) {
                 if (!imgElement) return;
                 
-                // Hide element instantly
-                imgElement.style.display = 'none';
+                imgElement.style.transition = 'opacity 0.3s ease-in-out';
                 imgElement.style.opacity = '0';
+                
+                // Hide element after fade out
+                setTimeout(() => {
+                    imgElement.style.display = 'none';
+                }, 300);
             }
 
-            // Show element instantly (no transitions)
+            // Fade in element with smooth animation
             function fadeInElement(element) {
                 if (!element) return;
                 
+                element.style.opacity = '0';
                 element.style.display = 'flex';
-                element.style.opacity = '1';
+                
+                setTimeout(() => {
+                    element.style.transition = 'opacity 0.5s ease-in-out';
+                    element.style.opacity = '1';
+                }, 50);
             }
 
-            // Hide element instantly (no transitions)
+            // Fade out element with smooth animation
             function fadeOutElement(element) {
                 if (!element) return;
                 
-                element.style.display = 'none';
+                element.style.transition = 'opacity 0.3s ease-in-out';
                 element.style.opacity = '0';
+                
+                setTimeout(() => {
+                    element.style.display = 'none';
+                }, 300);
             }
 
             // Finish design
@@ -3235,8 +2584,6 @@
             // Initialize the application
             init();
         });
-
-
     </script>
 </body>
 </html> 
