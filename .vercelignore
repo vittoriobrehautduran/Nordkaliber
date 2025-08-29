@@ -30,5 +30,16 @@ node_modules/
 .DS_Store
 Thumbs.db
 
+# Large files that might cause build issues
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Large image files (if causing issues)
+images/motiv/*.zip
+images/motiv/*.PNG
+images/motiv/*.png
+
 # Force GitHub deployment
 DEPLOYMENT_SOURCE=github 

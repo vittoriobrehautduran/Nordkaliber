@@ -1,0 +1,8 @@
+# Webhook Test File
+# This file tests if GitHub webhook is properly connected to Vercel
+# Created: 2025-08-29 21:37
+# Test webhook delivery
+
+WEBHOOK_TEST=true
+TIMESTAMP=2025-08-29T21:37:00Z
+STATUS=testing 

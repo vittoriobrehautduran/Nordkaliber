@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "echo 'Force fresh build from GitHub commit d8dae2b - $(date)'",
+  "buildCommand": "npm run vercel-build",
   "outputDirectory": "public",
   "git": {
     "deploymentEnabled": true,
@@ -8,9 +8,15 @@
   },
   "functions": {
     "api/*.js": {
-      "maxDuration": 10
+      "maxDuration": 30
     }
   },
+  "builds": [
+    {
+      "src": "public/**",
+      "use": "@vercel/static"
+    }
+  ],
   "routes": [
     {
       "src": "/designpage",
