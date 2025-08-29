@@ -1,0 +1,12 @@
+# Build Cache Buster - Force Fresh Deployment
+# This file prevents Vercel from using cached builds
+# Last updated: 2025-08-29 21:25
+# Target commit: d8dae2b
+# Force GitHub deployment, ignore Vercel cache
+
+BUILD_CACHE_BUSTER=true
+FORCE_FRESH_BUILD=true
+IGNORE_CACHE=true
+TARGET_COMMIT=d8dae2b
+TIMESTAMP=2025-08-29T21:25:00Z
+CACHE_INVALIDATION=true 

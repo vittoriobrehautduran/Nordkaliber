@@ -1,10 +1,15 @@
 {
   "version": 2,
-  "buildCommand": "echo 'Deploying latest changes from GitHub commit 373a652'",
+  "buildCommand": "echo 'Force fresh build from GitHub commit d8dae2b - $(date)'",
   "outputDirectory": "public",
   "git": {
     "deploymentEnabled": true,
     "autoAlias": true
+  },
+  "functions": {
+    "api/*.js": {
+      "maxDuration": 10
+    }
   },
   "routes": [
     {
