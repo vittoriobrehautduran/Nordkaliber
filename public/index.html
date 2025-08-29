@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-    <!-- Force Vercel redeploy - Updated routing configuration -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nordkaliber - Jakttillbehör med Nordisk Kvalitet</title>
+    <title>Nordkaliber - Premium Jaktutrustning (Force Fresh Deploy - d8dae2b)</title>
     <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
     <link rel="icon" type="image/png" sizes="48x48" href="images/favicon-48x48.png">
@@ -244,30 +243,14 @@
             position: relative;
         }
         
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -2px;
-            left: 0;
-            background-color: #A0522D;
-            transition: width 0.3s ease;
-        }
-        
-        .nav-link:hover::after {
-            width: 100%;
-        }
+
         
         .btn-hunter {
             background: linear-gradient(45deg, #A0522D, #1B4D3E);
             will-change: transform;
         }
         
-        .btn-hunter:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 5px 10px -3px rgba(0, 0, 0, 0.3);
-        }
+
         
         .section {
             opacity: 0;
@@ -850,26 +833,7 @@
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
         }
         
-        /* Enhanced product card animations */
-        .product-card-enhanced {
-            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            transform: translateZ(0);
-        }
-        
-        .product-card-enhanced:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-        
-        /* Enhanced video hover effects */
-        .video-hover {
-            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        
-        .video-hover:hover {
-            transform: scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        }
+
         
         /* Smooth navigation transitions */
         .nav-smooth {
@@ -941,10 +905,10 @@
                     
                     <!-- Desktop Navigation -->
                     <div class="hidden md:flex items-center space-x-8 h-full">
-                        <a href="#hem" class="nav-link text-gray-300 hover:text-mustard-gold transition flex items-center">Hem</a>
-                        <a href="#overview" class="nav-link text-gray-300 hover:text-mustard-gold transition flex items-center">Översikt</a>
-                        <a href="#om-oss" class="nav-link text-gray-300 hover:text-mustard-gold transition flex items-center">Om Oss</a>
-                                        <a href="#kontakt" class="nav-link text-gray-300 hover:text-mustard-gold transition flex items-center">Kontakt</a>
+                                                <a href="#hem" class="nav-link text-gray-300 transition flex items-center">Hem</a>
+                        <a href="#overview" class="nav-link text-gray-300 transition flex items-center">Översikt</a>
+                        <a href="#om-oss" class="nav-link text-gray-300 transition flex items-center">Om Oss</a>
+                        <a href="#kontakt" class="nav-link text-gray-300 transition flex items-center">Kontakt</a>
                 <span style="color: #E6B17A; font-size: 20px; margin: 0 15px;">●</span>
                 <a href="#" id="navbarDesignBtn" onclick="redirectToDesign(event)" class="w-12 h-12 bg-gradient-to-br from-hunter-brown via-dark-green to-hunter-brown rounded-full shadow-2xl flex items-center justify-center transition-all duration-3000 ease-in-out cursor-pointer hover:shadow-3xl overflow-hidden relative btn-enhanced hover-smooth">
                             <!-- Plus icon -->
@@ -972,10 +936,10 @@
                 <!-- Mobile Menu -->
                 <div class="mobile-menu md:hidden mt-4">
                     <div class="flex flex-col space-y-4 pb-4">
-                        <a href="#hem" class="text-gray-300 hover:text-mustard-gold transition flex items-center">Hem</a>
-                        <a href="#overview" class="text-gray-300 hover:text-mustard-gold transition flex items-center">Översikt</a>
-                        <a href="#om-oss" class="text-gray-300 hover:text-mustard-gold transition flex items-center">Om Oss</a>
-                        <a href="#kontakt" class="text-gray-300 hover:text-mustard-gold transition flex items-center">Kontakt</a>
+                        <a href="#hem" class="text-gray-300 transition flex items-center">Hem</a>
+                        <a href="#overview" class="text-gray-300 transition flex items-center">Översikt</a>
+                        <a href="#om-oss" class="text-gray-300 transition flex items-center">Om Oss</a>
+                        <a href="#kontakt" class="text-gray-300 transition flex items-center">Kontakt</a>
                     </div>
                 </div>
             </div>
@@ -1170,7 +1134,7 @@
         <!-- About Section -->
             <section id="om-oss" class="py-20 section-fade" style="background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('images/elk1.jpg'); background-position: center 70%; background-size: cover;">
             <div class="container mx-auto px-4">
-                <div class="max-w-4xl mx-auto bg-dark-green bg-opacity-50 rounded-lg p-10 border border-hunter-brown border-opacity-20 product-card-enhanced">
+                <div class="max-w-4xl mx-auto bg-dark-green bg-opacity-50 rounded-lg p-10 border border-hunter-brown border-opacity-20">
                     <div class="text-left">
                         <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center text-reveal smooth-reveal">
                             <span>Om Oss</span>
@@ -1229,7 +1193,7 @@
                 
                 <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-10">
                     <div class="text-center">
-                        <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6 hover-smooth">
+                        <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6">
                             <i class="fas fa-shield-alt text-mustard-gold text-2xl"></i>
                         </div>
                         <h3 class="text-xl font-bold mb-3">Trygg Handel</h3>
@@ -1237,7 +1201,7 @@
                     </div>
                     
                     <div class="text-center">
-                        <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6 hover-smooth">
+                        <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6">
                             <i class="fas fa-truck text-mustard-gold text-2xl"></i>
                         </div>
                         <h3 class="text-xl font-bold mb-3">Effektiv Leverans</h3>
@@ -1245,7 +1209,7 @@
                     </div>
                     
                     <div class="text-center">
-                        <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6 hover-smooth">
+                        <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6">
                             <i class="fas fa-headset text-mustard-gold text-2xl"></i>
                         </div>
                         <h3 class="text-xl font-bold mb-3">E-post Support</h3>
@@ -1253,7 +1217,7 @@
                     </div>
                     
                     <div class="text-center">
-                        <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6 hover-smooth">
+                        <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6">
                             <i class="fas fa-undo text-mustard-gold text-2xl"></i>
                         </div>
                         <h3 class="text-xl font-bold mb-3">Enkel Retur</h3>
@@ -1267,7 +1231,7 @@
         <section id="kontakt" class="py-20 section-fade">
             <div class="container mx-auto px-4">
                 <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
-                    <div class="bg-premium-black bg-opacity-70 rounded-lg p-8 border border-hunter-brown border-opacity-20 product-card-enhanced">
+                    <div class="bg-premium-black bg-opacity-70 rounded-lg p-8 border border-hunter-brown border-opacity-20">
                         <h2 class="text-3xl font-bold mb-6 text-reveal smooth-reveal">
                             <span>KONTAKTA OSS</span>
                         </h2>
@@ -1288,7 +1252,7 @@
                         </form>
                     </div>
                     
-                    <div class="bg-premium-black bg-opacity-70 rounded-lg p-8 border border-hunter-brown border-opacity-20 product-card-enhanced">
+                    <div class="bg-premium-black bg-opacity-70 rounded-lg p-8 border border-hunter-brown border-opacity-20">
                         <h2 class="text-2xl md:text-3xl font-bold mb-6 text-center md:text-left text-reveal smooth-reveal">
                             <span>KONTAKTUPPGIFTER</span>
                         </h2>
@@ -1351,27 +1315,27 @@
                     <div class="stagger-reveal">
                         <h3 class="text-lg font-bold mb-4">Länkar</h3>
                         <ul class="space-y-2">
-                            <li><a href="#hem" class="text-gray-400 hover:text-mustard-gold transition nav-smooth">Hem</a></li>
-                            <li><a href="#overview" class="text-gray-400 hover:text-mustard-gold transition nav-smooth">Översikt</a></li>
-                            <li><a href="#om-oss" class="text-gray-400 hover:text-mustard-gold transition nav-smooth">Om Oss</a></li>
-                            <li><a href="#kontakt" class="text-gray-400 hover:text-mustard-gold transition nav-smooth">Kontakt</a></li>
+                                                    <li><a href="#hem" class="text-gray-400 transition nav-smooth">Hem</a></li>
+                        <li><a href="#overview" class="text-gray-400 transition nav-smooth">Översikt</a></li>
+                        <li><a href="#om-oss" class="text-gray-400 transition nav-smooth">Om Oss</a></li>
+                        <li><a href="#kontakt" class="text-gray-400 transition nav-smooth">Kontakt</a></li>
                         </ul>
                     </div>
                     <div class="stagger-reveal">
                         <h3 class="text-lg font-bold mb-4">Support</h3>
                         <ul class="space-y-2">
-                            <li><a href="/policies" class="text-gray-400 hover:text-mustard-gold transition nav-smooth">Policies & Villkor</a></li>
-                            <li><a href="/policies" class="text-gray-400 hover:text-mustard-gold transition nav-smooth">Frakt & Leverans</a></li>
-                            <li><a href="/policies" class="text-gray-400 hover:text-mustard-gold transition nav-smooth">Integritetspolicy</a></li>
+                                                    <li><a href="/policies" class="text-gray-400 transition nav-smooth">Policies & Villkor</a></li>
+                        <li><a href="/policies" class="text-gray-400 transition nav-smooth">Frakt & Leverans</a></li>
+                        <li><a href="/policies" class="text-gray-400 transition nav-smooth">Integritetspolicy</a></li>
                         </ul>
                     </div>
                     <div class="stagger-reveal">
                         <h3 class="text-lg font-bold mb-4">Följ Oss</h3>
                         <div class="flex space-x-4">
-                                            <a href="#" class="text-gray-400 hover:text-mustard-gold transition text-xl nav-smooth"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://www.instagram.com/nordkaliber?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-mustard-gold transition text-xl nav-smooth"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-mustard-gold transition text-xl nav-smooth"><i class="fab fa-youtube"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-mustard-gold transition text-xl nav-smooth"><i class="fab fa-linkedin-in"></i></a>
+                                            <a href="#" class="text-gray-400 transition text-xl nav-smooth"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/nordkaliber?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" class="text-gray-400 transition text-xl nav-smooth"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 transition text-xl nav-smooth"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="text-gray-400 transition text-xl nav-smooth"><i class="fab fa-linkedin-in"></i></a>
                         </div>
                     </div>
                 </div>
@@ -1423,7 +1387,7 @@
                     // Function to redirect to the new design page
         function redirectToDesign(event) {
             event.preventDefault();
-            window.location.href = 'designpage.html';
+            window.location.href = '/design/designpage';
         }
             
             // Smooth scrolling for anchor links
@@ -1896,6 +1860,13 @@
             
         });
             
+        </script>
+        
+        <!-- Vercel Speed Insights -->
+        <script type="module">
+            import { SpeedInsights } from "@vercel/speed-insights/next";
+            // Initialize Speed Insights
+            SpeedInsights();
         </script>
     </div>
 </body>
