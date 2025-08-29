@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Fake Order - Nordkaliber</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #1B4D3E;
+        }
+        .header h1 {
+            color: #1B4D3E;
+            margin: 0;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+        input[type="email"], input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        input[type="email"]:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: #1B4D3E;
+            box-shadow: 0 0 5px rgba(27, 77, 62, 0.3);
+        }
+        button {
+            background: linear-gradient(135deg, #1B4D3E, #2E7D32);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(27, 77, 62, 0.4);
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 5px;
+            display: none;
+        }
+        .result.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .result.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #1B4D3E;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .info-box {
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .info-box h3 {
+            margin: 0 0 10px 0;
+            color: #0066cc;
+        }
+        .info-box ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .info-box li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 Test Fake Order API</h1>
+            <p>Testa att skapa en fake beställning och skicka bekräftelsemejl</p>
+        </div>
+
+        <div class="info-box">
+            <h3>ℹ️ Information</h3>
+            <ul>
+                <li>Detta skapar en fake beställning med 2 ammunitionlådor</li>
+                <li>Ett bekräftelsemejl skickas till den angivna e-postadressen</li>
+                <li>Mejlet skickas från nordkaliber@gmail.com</li>
+                <li>Ingen riktig order skapas i systemet</li>
+                <li>Används endast för testning av e-postfunktionalitet</li>
+            </ul>
+        </div>
+
+        <form id="fakeOrderForm">
+            <div class="form-group">
+                <label for="customerEmail">E-postadress *</label>
+                <input type="email" id="customerEmail" name="customerEmail" required 
+                       placeholder="test@example.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="customerName">Kundnamn (valfritt)</label>
+                <input type="text" id="customerName" name="customerName" 
+                       placeholder="Förnamn Efternamn">
+            </div>
+            
+            <button type="submit" id="submitBtn">
+                🎯 Skapa Fake Order & Skicka Mejl
+            </button>
+        </form>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Skapar fake order och skickar bekräftelsemejl...</p>
+        </div>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('fakeOrderForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const loading = document.getElementById('loading');
+            const result = document.getElementById('result');
+            
+            // Get form data
+            const customerEmail = document.getElementById('customerEmail').value;
+            const customerName = document.getElementById('customerName').value;
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            loading.style.display = 'block';
+            result.style.display = 'none';
+            
+            try {
+                // Make API call to create fake order
+                const response = await fetch('/api/create-fake-order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        customerEmail: customerEmail,
+                        customerName: customerName
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Success
+                    result.className = 'result success';
+                    result.innerHTML = `
+                        <h3>✅ Fake Order Skapad Framgångsrikt!</h3>
+                        <p><strong>Ordernummer:</strong> ${data.order.orderId}</p>
+                        <p><strong>Kund:</strong> ${data.order.customerName}</p>
+                        <p><strong>E-post:</strong> ${data.order.customerEmail}</p>
+                        <p><strong>Antal produkter:</strong> ${data.order.totalItems}</p>
+                        <p><strong>Totalt belopp:</strong> ${data.order.totalAmount} kr</p>
+                        <p><strong>Status:</strong> ${data.order.status}</p>
+                        <p><strong>Beräknad leverans:</strong> ${data.order.estimatedDelivery}</p>
+                        <p><strong>Mejl skickat till:</strong> ${data.email.sentTo}</p>
+                        <p><strong>Mejl ID:</strong> ${data.email.messageId}</p>
+                        <hr>
+                        <p><em>Kontrollera din e-post för bekräftelsemejlet!</em></p>
+                    `;
+                } else {
+                    // Error
+                    result.className = 'result error';
+                    result.innerHTML = `
+                        <h3>❌ Fel vid skapande av fake order</h3>
+                        <p><strong>Fel:</strong> ${data.error}</p>
+                        ${data.message ? `<p><strong>Meddelande:</strong> ${data.message}</p>` : ''}
+                        ${data.details ? `<p><strong>Detaljer:</strong> <pre>${data.details}</pre></p>` : ''}
+                    `;
+                }
+                
+            } catch (error) {
+                // Network or other error
+                result.className = 'result error';
+                result.innerHTML = `
+                    <h3>❌ Nätverksfel</h3>
+                    <p><strong>Fel:</strong> ${error.message}</p>
+                    <p>Kontrollera att servern är igång och att API:et är tillgängligt.</p>
+                `;
+            } finally {
+                // Hide loading state and enable submit button
+                loading.style.display = 'none';
+                submitBtn.disabled = false;
+                result.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html> 
