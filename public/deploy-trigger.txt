@@ -1,3 +1,10 @@
-Last deployment: $(date)
-Trigger: Force redeploy to fix design page routing
-Status: Active 
+# Vercel Deployment Trigger
+# This file forces Vercel to redeploy from GitHub
+# Last updated: 2025-08-29 21:23
+# Commit: 373a652 - Add Vercel Speed Insights and force fresh deployment
+# Force GitHub deployment, not Vercel account deployment
+
+DEPLOYMENT_SOURCE=github
+FORCE_REDEPLOY=true
+COMMIT_HASH=373a652
+TIMESTAMP=2025-08-29T21:23:00Z

@@ -1,7 +1,11 @@
 {
   "version": 2,
-  "buildCommand": "echo 'Deploying latest changes'",
+  "buildCommand": "echo 'Deploying latest changes from GitHub commit 373a652'",
   "outputDirectory": "public",
+  "git": {
+    "deploymentEnabled": true,
+    "autoAlias": true
+  },
   "routes": [
     {
       "src": "/designpage",

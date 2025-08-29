@@ -1,0 +1,34 @@
+# Vercel ignore file to ensure proper GitHub integration
+# Ignore files that might cause Vercel to use its own deployment
+
+# Development files
+*.log
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Build artifacts
+dist/
+build/
+.next/
+out/
+
+# Dependencies
+node_modules/
+
+# Git files
+.git/
+.gitignore
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Force GitHub deployment
+DEPLOYMENT_SOURCE=github 
