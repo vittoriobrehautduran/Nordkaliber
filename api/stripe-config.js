@@ -1,27 +1,52 @@
-module.exports = (req, res) => {
+exports.handler = async (event, context) => {
   // Enable CORS
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
+  };
 
   // Handle preflight requests
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers,
+      body: ''
+    };
   }
 
-  // Get Stripe publishable key from environment
-  const publishableKey = process.env.STRIPE_PUBLISHABLE_KEY;
-  
-  if (!publishableKey) {
-    console.error('STRIPE_PUBLISHABLE_KEY not found in environment variables');
-    return res.status(500).json({ 
-      error: 'Stripe configuration not found',
-      details: 'Publishable key not configured'
-    });
-  }
+  try {
+    // Get Stripe publishable key from environment
+    const publishableKey = process.env.STRIPE_PUBLISHABLE_KEY;
+    
+    if (!publishableKey) {
+      console.error('STRIPE_PUBLISHABLE_KEY not found in environment variables');
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({ 
+          error: 'Stripe configuration not found',
+          details: 'Publishable key not configured'
+        })
+      };
+    }
 
-  res.json({
-    publishableKey: publishableKey
-  });
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify({
+        publishableKey: publishableKey
+      })
+    };
+  } catch (error) {
+    console.error('Error in stripe-config:', error);
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify({ 
+        error: 'Internal server error',
+        details: error.message
+      })
+    };
+  }
 }; 

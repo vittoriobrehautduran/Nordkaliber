@@ -308,7 +308,7 @@
                 console.log('🔄 Initializing Stripe...');
                 
                 // Get Stripe config from server
-                const response = await fetch('/api/stripe-config');
+                const response = await fetch('/.netlify/functions/stripe-config');
                 if (!response.ok) {
                     throw new Error('Failed to get Stripe configuration');
                 }
@@ -323,7 +323,7 @@
                 stripe = Stripe(config.publishableKey);
                 
                 // Create payment intent with customer data
-                const paymentIntentResponse = await fetch('/api/create-payment-intent', {
+                const paymentIntentResponse = await fetch('/.netlify/functions/create-payment-intent', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

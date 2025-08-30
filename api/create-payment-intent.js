@@ -4,28 +4,41 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY, {
     maxNetworkRetries: 3
 });
 
-module.exports = async (req, res) => {
+exports.handler = async (event, context) => {
   // Enable CORS
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
+  };
 
   // Handle preflight requests
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers,
+      body: ''
+    };
   }
 
   // Only allow POST requests
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  if (event.httpMethod !== 'POST') {
+    return {
+      statusCode: 405,
+      headers,
+      body: JSON.stringify({ error: 'Method not allowed' })
+    };
   }
 
-  try {
-    const { items, customerEmail, customerName, customerPhone, customerAddress } = req.body;
+      try {
+      const { items, customerEmail, customerName, customerPhone, customerAddress } = JSON.parse(event.body);
 
     if (!items || !Array.isArray(items) || items.length === 0) {
-      return res.status(400).json({ error: 'Invalid items data' });
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: 'Invalid items data' })
+      };
     }
 
     // Calculate total amount and convert to cents (Stripe expects smallest currency unit)
@@ -70,15 +83,23 @@ module.exports = async (req, res) => {
       status: paymentIntent.status
     });
 
-    res.json({ 
-      clientSecret: paymentIntent.client_secret,
-      paymentIntentId: paymentIntent.id
-    });
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify({ 
+        clientSecret: paymentIntent.client_secret,
+        paymentIntentId: paymentIntent.id
+      })
+    };
   } catch (error) {
     console.error('❌ Error creating payment intent:', error);
-    res.status(500).json({ 
-      error: 'Failed to create payment intent',
-      details: error.message
-    });
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify({ 
+        error: 'Failed to create payment intent',
+        details: error.message
+      })
+    };
   }
 }; 

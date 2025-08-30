@@ -1,36 +1,49 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { sendOrderEmails } = require('./email-service');
 
-module.exports = async (req, res) => {
+exports.handler = async (event, context) => {
   // Enable CORS
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Stripe-Signature');
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type, Stripe-Signature',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS'
+  };
 
   // Handle preflight requests
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers,
+      body: ''
+    };
   }
 
   // Only allow POST requests
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  if (event.httpMethod !== 'POST') {
+    return {
+      statusCode: 405,
+      headers,
+      body: JSON.stringify({ error: 'Method not allowed' })
+    };
   }
 
-  const sig = req.headers['stripe-signature'];
-  let event;
+  const sig = event.headers['stripe-signature'];
+  let stripeEvent;
 
   try {
     // Check if webhook secret is configured
     if (!process.env.STRIPE_WEBHOOK_SECRET) {
       console.error('❌ STRIPE_WEBHOOK_SECRET not configured');
-      return res.status(500).json({ error: 'Webhook secret not configured' });
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({ error: 'Webhook secret not configured' })
+      };
     }
 
     // Verify webhook signature
-    event = stripe.webhooks.constructEvent(
-      req.body,
+    stripeEvent = stripe.webhooks.constructEvent(
+      event.body,
       sig,
       process.env.STRIPE_WEBHOOK_SECRET
     );
@@ -40,55 +53,63 @@ module.exports = async (req, res) => {
     console.error('❌ Webhook signature verification failed:', err.message);
     console.error('❌ Webhook secret configured:', !!process.env.STRIPE_WEBHOOK_SECRET);
     console.error('❌ Request signature:', sig ? 'Present' : 'Missing');
-    return res.status(400).send(`Webhook Error: ${err.message}`);
+    return {
+      statusCode: 400,
+      headers,
+      body: `Webhook Error: ${err.message}`
+    };
   }
 
-  console.log('📦 Webhook event received:', event.type);
+  console.log('📦 Webhook event received:', stripeEvent.type);
 
   // Handle the event
-  switch (event.type) {
+  switch (stripeEvent.type) {
     case 'payment_intent.succeeded':
-      console.log('💰 Processing payment success for:', event.data.object.id);
-      await handlePaymentSucceeded(event.data.object);
+      console.log('💰 Processing payment success for:', stripeEvent.data.object.id);
+      await handlePaymentSucceeded(stripeEvent.data.object);
       break;
     
     case 'payment_intent.payment_failed':
-      console.log('❌ Processing payment failure for:', event.data.object.id);
-      await handlePaymentFailed(event.data.object);
+      console.log('❌ Processing payment failure for:', stripeEvent.data.object.id);
+      await handlePaymentRequiresAction(stripeEvent.data.object);
       break;
     
     case 'payment_intent.requires_action':
-      console.log('⏳ Payment requires action for:', event.data.object.id);
-      await handlePaymentRequiresAction(event.data.object);
+      console.log('⏳ Payment requires action for:', stripeEvent.data.object.id);
+      await handlePaymentRequiresAction(stripeEvent.data.object);
       break;
     
     case 'payment_intent.created':
-      console.log('📝 Payment intent created:', event.data.object.id);
+      console.log('📝 Payment intent created:', stripeEvent.data.object.id);
       // Log the payment intent details for debugging
       console.log('📊 Payment intent details:', {
-        id: event.data.object.id,
-        amount: event.data.object.amount,
-        currency: event.data.object.currency,
-        status: event.data.object.status,
-        payment_method_types: event.data.object.payment_method_types
+        id: stripeEvent.data.object.id,
+        amount: stripeEvent.data.object.amount,
+        currency: stripeEvent.data.object.currency,
+        status: stripeEvent.data.object.status,
+        payment_method_types: stripeEvent.data.object.payment_method_types
       });
       break;
     
     case 'payment_method.attached':
-      console.log('✅ Payment method attached:', event.data.object.id);
+      console.log('✅ Payment method attached:', stripeEvent.data.object.id);
       break;
     
     case 'checkout.session.completed':
-      console.log('🛒 Checkout session completed:', event.data.object.id);
-      await handleCheckoutSessionCompleted(event.data.object);
+      console.log('🛒 Checkout session completed:', stripeEvent.data.object.id);
+      await handleCheckoutSessionCompleted(stripeEvent.data.object);
       break;
     
     default:
-      console.log(`📋 Unhandled event type: ${event.type} for object:`, event.data.object.id);
+      console.log(`📋 Unhandled event type: ${stripeEvent.type} for object:`, stripeEvent.data.object.id);
   }
 
   // Return a 200 response to acknowledge receipt of the event
-  res.json({ received: true });
+  return {
+    statusCode: 200,
+    headers,
+    body: JSON.stringify({ received: true })
+  };
 };
 
 async function handlePaymentSucceeded(paymentIntent) {
