@@ -1,0 +1,1841 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Designa Din Egen - Nordkaliber</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;500;600;700&family=Oswald:wght@300;400;500;600;700&family=Anton&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #E6B17A;
+            --secondary-color: #1a1a1a;
+            --accent-color: #f59e0b;
+            --success-color: #10b981;
+            --text-light: #e5e5e5;
+            --text-dark: #1a1a1a;
+            --glass-bg: rgba(26, 26, 26, 0.95);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto Condensed', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .main-container {
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        /* Fix layout alignment and height distribution */
+        .row {
+            align-items: stretch; /* Make all columns the same height */
+        }
+
+        .col-lg-8 {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .step {
+            display: none;
+            flex: 1; /* Take up available space */
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        .step-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            height: 100%; /* Fill available height */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Distribute content evenly */
+        }
+
+        /* Mobile spacing improvements */
+        @media (max-width: 991.98px) {
+            .step-container {
+                margin-bottom: 1.5rem; /* Reduce spacing on mobile */
+                padding: 1.5rem; /* Slightly reduce padding on mobile */
+            }
+            
+            .preview-container,
+            .cart-container {
+                margin-bottom: 1.5rem; /* Match step container spacing */
+                padding: 1.5rem;
+            }
+            
+            .main-container {
+                padding: 0.75rem; /* Reduce main container padding on mobile */
+            }
+        }
+
+        /* Ensure the step content fills the container */
+        .step-container > *:last-child {
+            margin-top: auto; /* Push buttons to bottom */
+        }
+
+        /* Step content spacing */
+        .step-container .step-title {
+            margin-bottom: 1rem;
+        }
+
+        .step-container .step-subtitle {
+            margin-bottom: 2rem;
+        }
+
+        .step-container .special-request-container {
+            margin: 2rem 0;
+            flex: 1; /* Take up remaining space */
+        }
+
+        /* Navigation buttons at bottom */
+        .step-container .text-center,
+        .step-container .d-flex.gap-3.justify-content-center {
+            margin-top: auto;
+            padding-top: 1rem;
+        }
+
+        /* Right sidebar alignment */
+        .col-lg-4 {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .preview-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            height: 100%; /* Match the height of step containers */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            margin-top: auto; /* Push to bottom of sidebar */
+        }
+
+        .step-title {
+            font-family: 'Anton', sans-serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 0.5rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .step-subtitle {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(1.25rem, 3vw, 1.5rem);
+            color: var(--text-light);
+            text-align: center;
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .option-card {
+            background: rgba(40, 40, 40, 0.9);
+            border: 2px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .option-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+            box-shadow: 0 10px 30px rgba(230, 177, 122, 0.2);
+        }
+
+        .option-card.selected {
+            background: linear-gradient(135deg, rgba(230, 177, 122, 0.2), rgba(16, 185, 129, 0.2));
+            border-color: var(--primary-color);
+            box-shadow: 0 0 25px rgba(230, 177, 122, 0.3);
+            animation: optionSelected 0.4s ease-out;
+        }
+
+        @keyframes optionSelected {
+            0% {
+                transform: scale(0.95);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .color-option {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+            margin: 0 auto 0.5rem;
+            position: relative;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+            border-color: var(--primary-color);
+        }
+
+        .color-option.selected {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px rgba(230, 177, 122, 0.4);
+            transform: scale(1.1);
+            animation: colorSelected 0.4s ease-out;
+        }
+
+        @keyframes colorSelected {
+            0% {
+                transform: scale(0.9);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.15);
+            }
+            100% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+        }
+
+        .design-option img {
+            width: 100%;
+            height: 120px;
+            object-fit: contain;
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .design-option:hover img {
+            transform: scale(1.05);
+        }
+
+        .btn-custom {
+            background: linear-gradient(135deg, var(--primary-color), #A0522D);
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .btn-custom:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(230, 177, 122, 0.3);
+            color: white;
+        }
+
+        .btn-custom:disabled {
+            background: #555;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            background: rgba(85, 85, 85, 0.8);
+            border: none;
+            color: white;
+            font-weight: 500;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(120, 120, 120, 0.9);
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        .special-request-container {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .special-request-label {
+            color: var(--accent-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .special-request-textbox {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 80px;
+            transition: all 0.3s ease;
+        }
+
+        .special-request-textbox:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .special-request-textbox.active {
+            border-color: var(--success-color);
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.4);
+            background: rgba(0, 0, 0, 0.9);
+        }
+
+        .special-request-textbox::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+            font-style: italic;
+        }
+
+        .step.disabled .option-card,
+        .step.disabled .color-option,
+        .step.disabled .design-option {
+            opacity: 0.3;
+            filter: grayscale(100%);
+            transform: scale(0.95);
+            pointer-events: auto;
+            cursor: pointer;
+        }
+
+        .step.disabled .option-card:hover,
+        .step.disabled .color-option:hover,
+        .step.disabled .design-option:hover {
+            opacity: 0.7;
+            filter: grayscale(50%);
+            transform: scale(1);
+            border-color: var(--accent-color);
+        }
+
+        .step.disabled .special-request-textbox {
+            opacity: 1;
+            filter: none;
+            transform: none;
+            border-color: var(--success-color);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .step-indicator {
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid var(--primary-color);
+            border-radius: 25px;
+            padding: 0.75rem 1.5rem;
+            color: white;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(230, 177, 122, 0.3);
+        }
+
+        .initials-input {
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto 2rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid var(--glass-border);
+            border-radius: 12px;
+            color: white;
+            font-size: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .initials-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px rgba(230, 177, 122, 0.3);
+        }
+
+        .initials-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Preview Panel Styles */
+        .preview-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            height: 100%;
+        }
+
+        .preview-title {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .preview-box {
+            position: relative;
+            width: 100%;
+            padding-top: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .preview-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+        }
+
+        .preview-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .preview-summary {
+            font-size: 0.9rem;
+        }
+
+        .preview-detail {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            padding: 0.25rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Fade-in animations */
+        .fade-in-detail {
+            animation: fadeInDetail 0.5s ease-in-out;
+        }
+
+        @keyframes fadeInDetail {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Image transition styles */
+        .preview-image {
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .preview-placeholder {
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        /* Cart Panel Styles */
+        .cart-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            margin-top: 2rem;
+        }
+
+        .cart-title {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cart-total {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-align: center;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            border-top: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Saved Product Styles */
+        .saved-product {
+            background: rgba(16, 185, 129, 0.1) !important;
+            border: 1px solid rgba(16, 185, 129, 0.3) !important;
+        }
+
+        .saved-product .spec-item {
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        .saved-product .specs-container {
+            margin: 0.5rem 0;
+        }
+
+        .cart-separator {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 0.5rem;
+            }
+
+            .step-container,
+            .preview-container,
+            .cart-container {
+                padding: 1.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .step-title {
+                font-size: 2rem;
+            }
+
+            .step-subtitle {
+                font-size: 1.25rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .option-card {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .color-option {
+                width: 60px;
+                height: 60px;
+            }
+
+            .btn-custom,
+            .btn-secondary {
+                padding: 0.75rem 1.5rem;
+                font-size: 1rem;
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+
+            .special-request-textbox {
+                padding: 0.75rem;
+                min-height: 60px;
+            }
+
+            .preview-box {
+                padding-top: 60%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-container {
+                padding: 0.25rem;
+            }
+
+            .step-container,
+            .preview-container,
+            .cart-container {
+                padding: 1rem;
+            }
+
+            .step-title {
+                font-size: 1.75rem;
+            }
+
+            .step-subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 1rem;
+            }
+
+            .option-card {
+                padding: 0.75rem;
+            }
+
+            .color-option {
+                width: 50px;
+                height: 50px;
+            }
+
+            .btn-custom,
+            .btn-secondary {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .special-request-textbox {
+                padding: 0.75rem;
+                min-height: 60px;
+            }
+        }
+
+        /* Animation classes */
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Step Indicator -->
+        <div class="step-indicator">
+            <span id="current-step">1</span> av 5
+        </div>
+
+        <div class="row">
+            <!-- Main Content Column -->
+            <div class="col-lg-8">
+                <!-- Step 1: Caliber Selection -->
+                <div id="step-1" class="step active">
+                    <div class="step-container">
+                        <h1 class="step-title">STEG 1</h1>
+                        <h2 class="step-subtitle">VÄLJ DIN KALIBER</h2>
+                        
+                        <div class="row g-3 mb-4" id="caliber-options">
+                            <!-- Caliber options will be populated by JavaScript -->
+                        </div>
+                        
+                        <div class="special-request-container">
+                            <label for="special-request-1" class="special-request-label">
+                                <i class="fas fa-magic me-2"></i>Specialförfrågan för Kaliber
+                                <span id="special-status-1" class="badge bg-success ms-2 d-none">Aktiv</span>
+                            </label>
+                            <textarea 
+                                id="special-request-1" 
+                                class="special-request-textbox" 
+                                placeholder="Klicka här för att skriva en specialförfrågan... (Detta kommer att återställa alla valda alternativ)"
+                            ></textarea>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button id="next-btn-1" class="btn btn-custom" disabled>
+                                Nästa <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Primary Color -->
+                <div id="step-2" class="step">
+                    <div class="step-container">
+                        <h1 class="step-title">STEG 2</h1>
+                        <h2 class="step-subtitle">VÄLJ PRIMÄR FÄRG</h2>
+                        
+                        <div class="row g-3 mb-4" id="primary-color-options">
+                            <!-- Primary color options will be populated by JavaScript -->
+                        </div>
+                        
+                        <div class="special-request-container">
+                            <label for="special-request-2" class="special-request-label">
+                                <i class="fas fa-magic me-2"></i>Specialförfrågan för Primär Färg
+                                <span id="special-status-2" class="badge bg-success ms-2 d-none">Aktiv</span>
+                            </label>
+                            <textarea 
+                                id="special-request-2" 
+                                class="special-request-textbox" 
+                                placeholder="Klicka här för att skriva en specialförfrågan... (Detta kommer att återställa alla valda alternativ)"
+                            ></textarea>
+                        </div>
+                        
+                        <div class="d-flex gap-3 justify-content-center">
+                            <button id="prev-btn-2" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Tillbaka
+                            </button>
+                            <button id="next-btn-2" class="btn btn-custom" disabled>
+                                Nästa <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Secondary Color -->
+                <div id="step-3" class="step">
+                    <div class="step-container">
+                        <h1 class="step-title">STEG 3</h1>
+                        <h2 class="step-subtitle">VÄLJ SEKUNDÄR FÄRG</h2>
+                        
+                        <div class="row g-3 mb-4" id="secondary-color-options">
+                            <!-- Secondary color options will be populated by JavaScript -->
+                        </div>
+                        
+                        <div class="special-request-container">
+                            <label for="special-request-3" class="special-request-label">
+                                <i class="fas fa-magic me-2"></i>Specialförfrågan för Sekundär Färg
+                                <span id="special-status-3" class="badge bg-success ms-2 d-none">Aktiv</span>
+                            </label>
+                            <textarea 
+                                id="special-request-3" 
+                                class="special-request-textbox" 
+                                placeholder="Klicka här för att skriva en specialförfrågan... (Detta kommer att återställa alla valda alternativ)"
+                            ></textarea>
+                        </div>
+                        
+                        <div class="d-flex gap-3 justify-content-center">
+                            <button id="prev-btn-3" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Tillbaka
+                            </button>
+                            <button id="next-btn-3" class="btn btn-custom" disabled>
+                                Nästa <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Design -->
+                <div id="step-4" class="step">
+                    <div class="step-container">
+                        <h1 class="step-title">STEG 4</h1>
+                        <h2 class="step-subtitle">VÄLJ DIN DESIGN</h2>
+                        
+                        <div class="text-center mb-3">
+                            <p class="text-white small">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Motiv 10 finns endast i svart
+                            </p>
+                        </div>
+                        
+                        <div class="row g-3 mb-4" id="design-options">
+                            <!-- Design options will be populated by JavaScript -->
+                        </div>
+                        
+                        <div class="special-request-container">
+                            <label for="special-request-4" class="special-request-label">
+                                <i class="fas fa-magic me-2"></i>Specialförfrågan för Design
+                                <span id="special-status-4" class="badge bg-success ms-2 d-none">Aktiv</span>
+                            </label>
+                            <textarea 
+                                id="special-request-4" 
+                                class="special-request-textbox" 
+                                placeholder="Klicka här för att skriva en specialförfrågan... (Detta kommer att återställa alla valda alternativ)"
+                            ></textarea>
+                        </div>
+                        
+                        <div class="d-flex gap-3 justify-content-center">
+                            <button id="prev-btn-4" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Tillbaka
+                            </button>
+                            <button id="next-btn-4" class="btn btn-custom" disabled>
+                                Nästa <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Initials & Summary -->
+                <div id="step-5" class="step">
+                    <div class="step-container">
+                        <h1 class="step-title">STEG 5</h1>
+                        <h2 class="step-subtitle">LÄGG TILL INITIALER (VALFRITT)</h2>
+                        
+                        <div class="text-center mb-4">
+                            <input type="text" 
+                                   id="initials-input" 
+                                   class="initials-input" 
+                                   placeholder="T.EX. J.S." 
+                                   maxlength="5">
+                        </div>
+                        
+                        <div class="special-request-container">
+                            <label for="special-request-5" class="special-request-label">
+                                <i class="fas fa-magic me-2"></i>Specialförfrågan för Initialer
+                                <span id="special-status-5" class="badge bg-success ms-2 d-none">Aktiv</span>
+                            </label>
+                            <textarea 
+                                id="special-request-5" 
+                                class="special-request-textbox" 
+                                placeholder="Klicka här för att skriva en specialförfrågan... (Detta kommer att återställa alla valda alternativ)"
+                            ></textarea>
+                        </div>
+                        
+                        <div class="d-flex gap-3 justify-content-center">
+                            <button id="prev-btn-5" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Tillbaka
+                            </button>
+                            <button id="finish-btn" class="btn btn-custom">
+                                <i class="fas fa-shopping-cart me-2"></i>Slutför & Lägg i Varukorg
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview Column -->
+            <div class="col-lg-4">
+                <div class="preview-container">
+                    <h3 class="preview-title">
+                        <i class="fas fa-eye me-2"></i>Förhandsvisning
+                    </h3>
+                    <div class="preview-box">
+                        <div id="preview-placeholder" class="preview-placeholder">
+                            <i class="fas fa-box fa-3x text-muted"></i>
+                            <p class="mt-2 text-muted">Välj alternativ för att se förhandsvisning</p>
+                        </div>
+                        <img id="preview-base" class="preview-layer" src="" alt="Låda bas" style="display: none;">
+                        <img id="preview-logo" class="preview-layer" src="" alt="Låda logo" style="display: none;">
+                        <img id="preview-button" class="preview-layer" src="" alt="Låda knapp" style="display: none;">
+                    </div>
+                    <div class="preview-summary">
+                        <div id="preview-details">
+                            <!-- Preview details will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cart Section -->
+        <div class="cart-container">
+            <h3 class="cart-title">
+                <i class="fas fa-shopping-cart me-2"></i>Din Varukorg
+            </h3>
+            <div id="cart-items">
+                <!-- Cart items will be populated here -->
+            </div>
+            <div class="cart-total">
+                <span id="cart-total-price">0kr</span>
+            </div>
+            <div class="row g-3">
+                <div class="col-12">
+                    <button class="btn btn-custom w-100" id="go-to-checkout">
+                        <i class="fas fa-credit-card me-2"></i>Gå till Kassan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Main application logic
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Clean Bootstrap Design loaded');
+            
+            // Application state
+            const app = {
+                currentStep: 1,
+                totalSteps: 5,
+                selections: {
+                    caliber: null,
+                    primaryColor: null,
+                    secondaryColor: null,
+                    design: null,
+                    initials: '',
+                    caliberSpecial: '',
+                    primaryColorSpecial: '',
+                    primaryColorSpecial: '',
+                    secondaryColorSpecial: '',
+                    designSpecial: '',
+                    initialsSpecial: ''
+                },
+                basePrice: 850,
+                savedProducts: [] // Array to store completed products
+            };
+
+            // Data for options
+            const data = {
+                calibers: [
+                    ".308 Winchester", ".223 Remington", "9.3x62 Mauser", "7x57 Mauser", 
+                    ".340 Weatherby Magnum", "8x57 Mauser", ".30-06 Springfield", 
+                    ".300 Winchester Magnum", "6.5x55 Swedish Mauser", "12 Gauge (Hagel)"
+                ],
+                primaryColors: [
+                    { name: 'Svart', value: 'black', img: '../images/primarycolors/blackbox.PNG' },
+                    { name: 'Vit', value: 'white', img: '../images/primarycolors/boxwhite.PNG' },
+                    { name: 'Grå', value: 'gray', img: '../images/primarycolors/graybox.PNG' },
+                    { name: 'Grön', value: 'green', img: '../images/primarycolors/greenbox.PNG' },
+                    { name: 'Röd', value: 'red', img: '../images/primarycolors/boxred.PNG' },
+                    { name: 'Mörkgrön', value: 'darkgreen', img: '../images/primarycolors/darkgreenbox.PNG' }
+                ],
+                secondaryColors: [
+                    { name: 'Guld', value: 'gold', img: '../images/secondarycolors/goldbutton.PNG', logo: '../images/secondarycolors/goldlogo.PNG' },
+                    { name: 'Röd', value: 'red', img: '../images/secondarycolors/redbutton.PNG', logo: '../images/secondarycolors/redlogo.png' },
+                    { name: 'Orange', value: 'orange', img: '../images/secondarycolors/orangebutton.PNG', logo: '../images/secondarycolors/orangelogo.PNG' },
+                    { name: 'Svart', value: 'black', img: '../images/secondarycolors/blackbutton.PNG', logo: '../images/secondarycolors/blacklogo.PNG' },
+                    { name: 'Vit', value: 'white', img: '../images/secondarycolors/whitebutton.PNG', logo: '../images/secondarycolors/whitelogo.PNG' }
+                ],
+                designs: [
+                    { name: 'Design 1', id: 'alg_logo', img: '../images/alg_logo.svg' },
+                    { name: 'Design 2', id: 'alg_design', img: '../images/alg_design.svg' },
+                    { name: 'Design 3', id: 'alg_jagare', img: '../images/alg_jagare.svg' },
+                    { name: 'Design 4', id: 'alg_majestic', img: '../images/alg_majestic.svg' },
+                    { name: 'Design 5', id: 'fagel_design', img: '../images/fagel_design.png' },
+                    { name: 'Design 6', id: 'jagare_hund', img: '../images/jagare_hund.svg' },
+                    { name: 'Design 7', id: 'algfavvo', img: '../images/algfavvo.svg' },
+                    { name: 'Design 8', id: 'your_text', img: '../images/your_text_design.png' },
+                    { name: 'Ingen Design', id: 'none', img: null }
+                ]
+            };
+
+            // Initialize the application
+            function init() {
+                // Load saved products from localStorage
+                loadSavedProducts();
+                
+                // Initialize checkout button state
+                const checkoutBtn = document.getElementById('go-to-checkout');
+                if (checkoutBtn) {
+                    checkoutBtn.disabled = true;
+                    checkoutBtn.classList.remove('btn-custom');
+                    checkoutBtn.classList.add('btn-secondary');
+                }
+                
+                populateOptions();
+                setupEventListeners();
+                updateStepIndicator();
+                updateCart();
+                updatePreview();
+            }
+
+            // Load saved products from localStorage
+            function loadSavedProducts() {
+                const savedProducts = localStorage.getItem('nordkaliberProducts');
+                if (savedProducts) {
+                    app.savedProducts = JSON.parse(savedProducts);
+                }
+            }
+
+            // Populate all option containers
+            function populateOptions() {
+                // Populate caliber options
+                const caliberContainer = document.getElementById('caliber-options');
+                data.calibers.forEach(caliber => {
+                    const col = document.createElement('div');
+                    col.className = 'col-6 col-md-4 col-lg-3';
+                    col.innerHTML = `
+                        <div class="option-card caliber-option" data-caliber="${caliber}">
+                            <span class="fw-semibold">${caliber}</span>
+                        </div>
+                    `;
+                    caliberContainer.appendChild(col);
+                });
+
+                // Populate primary color options
+                const primaryContainer = document.getElementById('primary-color-options');
+                data.primaryColors.forEach(color => {
+                    const col = document.createElement('div');
+                    col.className = 'col-4 col-md-3 col-lg-2';
+                    col.innerHTML = `
+                        <div class="text-center">
+                            <div class="color-option primary-color-option" 
+                                 style="background-color: ${color.value}" 
+                                 data-color="${color.value}" 
+                                 data-name="${color.name}"></div>
+                            <span class="mt-2 d-block">${color.name}</span>
+                        </div>
+                    `;
+                    primaryContainer.appendChild(col);
+                });
+
+                // Populate secondary color options
+                const secondaryContainer = document.getElementById('secondary-color-options');
+                data.secondaryColors.forEach(color => {
+                    const col = document.createElement('div');
+                    col.className = 'col-4 col-md-3 col-lg-2';
+                    col.innerHTML = `
+                        <div class="text-center">
+                            <div class="color-option secondary-color-option" 
+                                 style="background-color: ${color.value}" 
+                                 data-color="${color.value}" 
+                                 data-name="${color.name}"></div>
+                            <span class="mt-2 d-block">${color.name}</span>
+                        </div>
+                    `;
+                    secondaryContainer.appendChild(col);
+                });
+
+                // Populate design options
+                const designContainer = document.getElementById('design-options');
+                data.designs.forEach(design => {
+                    const col = document.createElement('div');
+                    col.className = 'col-6 col-md-4 col-lg-3';
+                    col.innerHTML = `
+                        <div class="option-card design-option" data-design="${design.id}">
+                            ${design.img ? 
+                                `<img src="${design.img}" alt="${design.name}" class="mb-2">` : 
+                                `<div class="h-100 d-flex align-items-center justify-content-center"><i class="fas fa-times fa-3x text-muted"></i></div>`
+                            }
+                            <span class="fw-semibold">${design.name}</span>
+                        </div>
+                    `;
+                    designContainer.appendChild(col);
+                });
+            }
+
+            // Setup all event listeners
+            function setupEventListeners() {
+                // Step navigation
+                setupStepNavigation();
+                
+                // Option selection
+                setupOptionSelection();
+                
+                // Special request handling
+                setupSpecialRequests();
+                
+                // Cart functionality
+                setupCartFunctionality();
+                
+                // Initials input
+                setupInitialsInput();
+            }
+
+            // Setup step navigation
+            function setupStepNavigation() {
+                // Next buttons
+                for (let i = 1; i <= 4; i++) {
+                    const nextBtn = document.getElementById(`next-btn-${i}`);
+                    if (nextBtn) {
+                        nextBtn.addEventListener('click', () => goToStep(i + 1));
+                    }
+                }
+
+                // Previous buttons
+                for (let i = 2; i <= 5; i++) {
+                    const prevBtn = document.getElementById(`prev-btn-${i}`);
+                    if (prevBtn) {
+                        prevBtn.addEventListener('click', () => goToStep(i - 1));
+                    }
+                }
+
+                // Finish button
+                const finishBtn = document.getElementById('finish-btn');
+                if (finishBtn) {
+                    finishBtn.addEventListener('click', finishDesign);
+                }
+            }
+
+            // Setup option selection
+            function setupOptionSelection() {
+                // Caliber selection
+                document.querySelectorAll('.caliber-option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        selectOption(this, 'caliber', this.dataset.caliber);
+                        clearSpecialRequest(1);
+                    });
+                });
+
+                // Primary color selection
+                document.querySelectorAll('.primary-color-option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        const colorValue = this.dataset.color;
+                        const color = data.primaryColors.find(c => c.value === colorValue);
+                        if (color) {
+                            selectOption(this, 'primaryColor', color);
+                        }
+                        clearSpecialRequest(2);
+                    });
+                });
+
+                // Secondary color selection
+                document.querySelectorAll('.secondary-color-option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        const colorValue = this.dataset.color;
+                        const color = data.secondaryColors.find(c => c.value === colorValue);
+                        if (color) {
+                            selectOption(this, 'secondaryColor', color);
+                        }
+                        clearSpecialRequest(3);
+                    });
+                });
+
+                // Design selection
+                document.querySelectorAll('.design-option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        const designId = this.dataset.design;
+                        const design = data.designs.find(d => d.id === designId);
+                        if (design) {
+                            selectOption(this, 'design', design);
+                        }
+                        clearSpecialRequest(4);
+                    });
+                });
+            }
+
+            // Select an option
+            function selectOption(element, type, value) {
+                // Clear previous selections of the same type
+                const container = element.closest('.row');
+                container.querySelectorAll('.option-card, .color-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+
+                // Select the clicked option
+                element.classList.add('selected');
+                app.selections[type] = value;
+
+                // Enable next button for current step
+                enableNextButton(app.currentStep);
+
+                // Update cart and preview
+                updateCart();
+                updatePreview();
+            }
+
+            // Setup special requests
+            function setupSpecialRequests() {
+                for (let i = 1; i <= 5; i++) {
+                    const textbox = document.getElementById(`special-request-${i}`);
+                    if (textbox) {
+                        textbox.addEventListener('focus', () => {
+                            activateSpecialRequest(i);
+                        });
+
+                        textbox.addEventListener('input', () => {
+                            handleSpecialRequestInput(i);
+                        });
+                    }
+                }
+            }
+
+            // Activate special request for a step
+            function activateSpecialRequest(stepNum) {
+                const step = document.getElementById(`step-${stepNum}`);
+                const textbox = document.getElementById(`special-request-${stepNum}`);
+                const status = document.getElementById(`special-status-${stepNum}`);
+
+                // Clear all selections for this step
+                clearStepSelections(stepNum);
+
+                // Disable the step
+                step.classList.add('disabled');
+
+                // Activate the textbox
+                textbox.classList.add('active');
+
+                // Show status
+                status.classList.remove('d-none');
+                status.classList.add('bg-success');
+
+                // Enable next button
+                enableNextButton(stepNum);
+
+                // Update cart and preview
+                updateCart();
+                updatePreview();
+            }
+
+            // Handle special request input
+            function handleSpecialRequestInput(stepNum) {
+                const textbox = document.getElementById(`special-request-${stepNum}`);
+                const text = textbox.value.trim();
+
+                if (text.length > 0) {
+                    // Save special request
+                    switch(stepNum) {
+                        case 1: app.selections.caliberSpecial = text; break;
+                        case 2: app.selections.primaryColorSpecial = text; break;
+                        case 3: app.selections.secondaryColorSpecial = text; break;
+                        case 4: app.selections.designSpecial = text; break;
+                        case 5: app.selections.initialsSpecial = text; break;
+                    }
+                } else {
+                    // Clear special request
+                    clearSpecialRequest(stepNum);
+                }
+
+                updateCart();
+                updatePreview();
+            }
+
+            // Clear special request for a step
+            function clearSpecialRequest(stepNum) {
+                const step = document.getElementById(`step-${stepNum}`);
+                const textbox = document.getElementById(`special-request-${stepNum}`);
+                const status = document.getElementById(`special-status-${stepNum}`);
+
+                // Re-enable the step
+                step.classList.remove('disabled');
+
+                // Deactivate the textbox
+                textbox.classList.remove('active');
+                textbox.value = '';
+
+                // Hide status
+                status.classList.add('d-none');
+                status.classList.remove('bg-success');
+
+                // Clear special request from selections
+                switch(stepNum) {
+                    case 1: app.selections.caliberSpecial = ''; break;
+                    case 2: app.selections.primaryColorSpecial = ''; break;
+                    case 3: app.selections.secondaryColorSpecial = ''; break;
+                    case 4: app.selections.designSpecial = ''; break;
+                    case 5: app.selections.initialsSpecial = ''; break;
+                }
+
+                // Check if next button should be enabled
+                enableNextButton(stepNum);
+
+                updateCart();
+                updatePreview();
+            }
+
+            // Clear step selections
+            function clearStepSelections(stepNum) {
+                const step = document.getElementById(`step-${stepNum}`);
+                
+                switch(stepNum) {
+                    case 1:
+                        step.querySelectorAll('.caliber-option').forEach(opt => opt.classList.remove('selected'));
+                        app.selections.caliber = null;
+                        break;
+                    case 2:
+                        step.querySelectorAll('.primary-color-option').forEach(opt => opt.classList.remove('selected'));
+                        app.selections.primaryColor = null;
+                        break;
+                    case 3:
+                        step.querySelectorAll('.secondary-color-option').forEach(opt => opt.classList.remove('selected'));
+                        app.selections.secondaryColor = null;
+                        break;
+                    case 4:
+                        step.querySelectorAll('.design-option').forEach(opt => opt.classList.remove('selected'));
+                        app.selections.design = null;
+                        break;
+                    case 5:
+                        document.getElementById('initials-input').value = '';
+                        app.selections.initials = '';
+                        break;
+                }
+            }
+
+            // Enable next button for a step
+            function enableNextButton(stepNum) {
+                const nextBtn = document.getElementById(`next-btn-${stepNum}`);
+                if (nextBtn) {
+                    nextBtn.disabled = false;
+                }
+            }
+
+            // Go to a specific step
+            function goToStep(stepNum) {
+                if (stepNum < 1 || stepNum > app.totalSteps) return;
+
+                // Hide current step
+                const currentStep = document.getElementById(`step-${app.currentStep}`);
+                currentStep.classList.remove('active');
+
+                // Update current step
+                app.currentStep = stepNum;
+
+                // Show new step
+                const newStep = document.getElementById(`step-${stepNum}`);
+                newStep.classList.add('active');
+
+                // Update step indicator
+                updateStepIndicator();
+            }
+
+            // Update step indicator
+            function updateStepIndicator() {
+                const indicator = document.getElementById('current-step');
+                if (indicator) {
+                    indicator.textContent = app.currentStep;
+                }
+            }
+
+            // Setup cart functionality
+            function setupCartFunctionality() {
+                const checkoutBtn = document.getElementById('go-to-checkout');
+
+                if (checkoutBtn) {
+                    checkoutBtn.addEventListener('click', () => {
+                        window.location.href = '/checkout';
+                    });
+                }
+            }
+
+            // Update cart
+            function updateCart() {
+                const cartItems = document.getElementById('cart-items');
+                const cartTotal = document.getElementById('cart-total-price');
+                const checkoutBtn = document.getElementById('go-to-checkout');
+
+                if (!cartItems || !cartTotal || !checkoutBtn) return;
+
+                // Clear current items
+                cartItems.innerHTML = '';
+
+                let total = 0;
+
+                // Display saved products
+                if (app.savedProducts.length > 0) {
+                    app.savedProducts.forEach((product, index) => {
+                        addSavedProductToCart(product, index);
+                        total += product.totalPrice;
+                    });
+                }
+
+                // Show current selections if any
+                if (hasCurrentSelections()) {
+                    addCartSeparator();
+                    addCurrentSelectionsToCart();
+                }
+
+                cartTotal.textContent = `${total}kr`;
+
+                // Enable/disable checkout button
+                if (app.savedProducts.length > 0) {
+                    checkoutBtn.disabled = false;
+                    checkoutBtn.classList.remove('btn-secondary');
+                    checkoutBtn.classList.add('btn-custom');
+                    console.log('Checkout button enabled - products in cart:', app.savedProducts.length);
+                } else {
+                    checkoutBtn.disabled = true;
+                    checkoutBtn.classList.remove('btn-custom');
+                    checkoutBtn.classList.add('btn-secondary');
+                    console.log('Checkout button disabled - no products in cart');
+                }
+            }
+
+            // Add saved product to cart
+            function addSavedProductToCart(product, index) {
+                const cartItems = document.getElementById('cart-items');
+                if (!cartItems) return;
+
+                const productDiv = document.createElement('div');
+                productDiv.className = 'saved-product mb-3 p-3 border border-success rounded';
+                productDiv.style.background = 'rgba(16, 185, 129, 0.1)';
+
+                let specsHtml = '';
+                if (product.selections.caliber) {
+                    specsHtml += `<div class="spec-item"><strong>Kaliber:</strong> ${product.selections.caliber}</div>`;
+                } else if (product.selections.caliberSpecial) {
+                    specsHtml += `<div class="spec-item"><strong>Kaliber:</strong> Specialförfrågan</div>`;
+                }
+
+                if (product.selections.primaryColor) {
+                    specsHtml += `<div class="spec-item"><strong>Primär Färg:</strong> ${product.selections.primaryColor.name}</div>`;
+                } else if (product.selections.primaryColorSpecial) {
+                    specsHtml += `<div class="spec-item"><strong>Primär Färg:</strong> Specialförfrågan</div>`;
+                }
+
+                if (product.selections.secondaryColor) {
+                    specsHtml += `<div class="spec-item"><strong>Sekundär Färg:</strong> ${product.selections.secondaryColor.name}</div>`;
+                } else if (product.selections.secondaryColorSpecial) {
+                    specsHtml += `<div class="spec-item"><strong>Sekundär Färg:</strong> Specialförfrågan</div>`;
+                }
+
+                if (product.selections.design) {
+                    specsHtml += `<div class="spec-item"><strong>Design:</strong> ${product.selections.design.name}</div>`;
+                } else if (product.selections.designSpecial) {
+                    specsHtml += `<div class="spec-item"><strong>Design:</strong> Specialförfrågan</div>`;
+                }
+
+                if (product.selections.initials) {
+                    specsHtml += `<div class="spec-item"><strong>Initialer:</strong> ${product.selections.initials}</div>`;
+                } else if (product.selections.initialsSpecial) {
+                    specsHtml += `<div class="spec-item"><strong>Initialer:</strong> Specialförfrågan</div>`;
+                }
+
+                productDiv.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h6 class="mb-0 text-success">
+                            <i class="fas fa-check-circle me-2"></i>${product.type}
+                        </h6>
+                        <button class="btn btn-sm btn-outline-danger" onclick="removeProduct(${index})" title="Ta bort">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                    <div class="specs-container">
+                        ${specsHtml}
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <small class="text-muted">${product.timestamp}</small>
+                        <span class="fw-bold text-success">${product.totalPrice}kr</span>
+                    </div>
+                `;
+
+                cartItems.appendChild(productDiv);
+            }
+
+            // Add cart separator
+            function addCartSeparator() {
+                const cartItems = document.getElementById('cart-items');
+                if (!cartItems) return;
+
+                const separator = document.createElement('div');
+                separator.className = 'cart-separator my-3';
+                separator.innerHTML = `
+                    <div class="text-center">
+                        <span class="badge bg-secondary px-3 py-2">Aktuella val</span>
+                    </div>
+                `;
+                cartItems.appendChild(separator);
+            }
+
+            // Add current selections to cart
+            function addCurrentSelectionsToCart() {
+                const cartItems = document.getElementById('cart-items');
+                if (!cartItems) return;
+
+                let total = app.basePrice;
+
+                // Add caliber
+                if (app.selections.caliber) {
+                    addCartItem('Kaliber', app.selections.caliber);
+                } else if (app.selections.caliberSpecial) {
+                    addCartItem('Kaliber', 'Specialförfrågan');
+                    total += 200;
+                }
+
+                // Add primary color
+                if (app.selections.primaryColor) {
+                    addCartItem('Primär Färg', app.selections.primaryColor.name);
+                } else if (app.selections.primaryColorSpecial) {
+                    addCartItem('Primär Färg', 'Specialförfrågan');
+                    total += 200;
+                }
+
+                // Add secondary color
+                if (app.selections.secondaryColor) {
+                    addCartItem('Sekundär Färg', app.selections.secondaryColor.name);
+                } else if (app.selections.secondaryColorSpecial) {
+                    addCartItem('Sekundär Färg', 'Specialförfrågan');
+                    total += 200;
+                }
+
+                // Add design
+                if (app.selections.design) {
+                    addCartItem('Design', app.selections.design.name);
+                } else if (app.selections.designSpecial) {
+                    addCartItem('Design', 'Specialförfrågan');
+                    total += 200;
+                }
+
+                // Add initials
+                if (app.selections.initials) {
+                    addCartItem('Initialer', app.selections.initials);
+                    total += 100;
+                } else if (app.selections.initialsSpecial) {
+                    addCartItem('Initialer', 'Specialförfrågan');
+                    total += 200;
+                }
+            }
+
+            // Check if there are current selections
+            function hasCurrentSelections() {
+                return app.selections.caliber || app.selections.primaryColor || 
+                       app.selections.secondaryColor || app.selections.design || 
+                       app.selections.initials || app.selections.caliberSpecial || 
+                       app.selections.primaryColorSpecial || app.selections.secondaryColorSpecial || 
+                       app.selections.designSpecial || app.selections.initialsSpecial;
+            }
+
+            // Clear all current selections
+            function clearAllSelections() {
+                // Clear app selections
+                app.selections = {
+                    caliber: null,
+                    primaryColor: null,
+                    secondaryColor: null,
+                    design: null,
+                    initials: '',
+                    caliberSpecial: '',
+                    primaryColorSpecial: '',
+                    secondaryColorSpecial: '',
+                    designSpecial: '',
+                    initialsSpecial: ''
+                };
+
+                // Clear all selected visual states
+                document.querySelectorAll('.option-card.selected, .color-option.selected').forEach(element => {
+                    element.classList.remove('selected');
+                });
+
+                // Clear all special request textboxes
+                for (let i = 1; i <= 5; i++) {
+                    const textbox = document.getElementById(`special-request-${i}`);
+                    if (textbox) {
+                        textbox.value = '';
+                        textbox.classList.remove('active');
+                    }
+                }
+
+                // Clear special request status badges
+                for (let i = 1; i <= 5; i++) {
+                    const status = document.getElementById(`special-status-${i}`);
+                    if (status) {
+                        status.classList.add('d-none');
+                    }
+                }
+
+                // Re-enable all steps
+                document.querySelectorAll('.step').forEach(step => {
+                    step.classList.remove('disabled');
+                });
+
+                // Update preview and cart
+                updatePreview();
+                updateCart();
+            }
+
+            // Remove product from cart
+            function removeProduct(index) {
+                app.savedProducts.splice(index, 1);
+                localStorage.setItem('nordkaliberProducts', JSON.stringify(app.savedProducts));
+                updateCart();
+                showNotification('Produkt borttagen från varukorg', 'info');
+            }
+
+            // Make removeProduct globally accessible
+            window.removeProduct = removeProduct;
+
+            // Add item to cart
+            function addCartItem(label, value) {
+                const cartItems = document.getElementById('cart-items');
+                if (!cartItems) return;
+
+                const item = document.createElement('div');
+                item.className = 'cart-item';
+                item.innerHTML = `
+                    <span>${label}:</span>
+                    <span class="fw-bold">${value}</span>
+                `;
+                cartItems.appendChild(item);
+            }
+
+            // Setup initials input
+            function setupInitialsInput() {
+                const initialsInput = document.getElementById('initials-input');
+                if (initialsInput) {
+                    initialsInput.addEventListener('input', function() {
+                        app.selections.initials = this.value;
+                        updateCart();
+                        updatePreview();
+                    });
+                }
+            }
+
+            // Update preview
+            function updatePreview() {
+                const previewPlaceholder = document.getElementById('preview-placeholder');
+                const previewBase = document.getElementById('preview-base');
+                const previewLogo = document.getElementById('preview-logo');
+                const previewButton = document.getElementById('preview-button');
+                const previewDetails = document.getElementById('preview-details');
+
+                if (!previewPlaceholder || !previewBase || !previewLogo || !previewButton || !previewDetails) return;
+
+                console.log('Updating preview with selections:', app.selections);
+
+                // Clear previous preview details
+                previewDetails.innerHTML = '';
+
+                let hasSelections = false;
+
+                // Update preview images and details with fade-in animations
+                if (app.selections.primaryColor) {
+                    fadeInImage(previewBase, app.selections.primaryColor.img);
+                    hasSelections = true;
+                    addPreviewDetail('Primär Färg', app.selections.primaryColor.name);
+                } else if (app.selections.primaryColorSpecial) {
+                    fadeInImage(previewBase, '../images/primarycolors/blackbox.PNG');
+                    hasSelections = true;
+                    addPreviewDetail('Primär Färg', 'Specialförfrågan');
+                } else {
+                    fadeOutImage(previewBase);
+                }
+
+                if (app.selections.secondaryColor) {
+                    // Show both button and logo for secondary color
+                    fadeInImage(previewButton, app.selections.secondaryColor.img);
+                    fadeInImage(previewLogo, app.selections.secondaryColor.logo);
+                    
+                    hasSelections = true;
+                    addPreviewDetail('Sekundär Färg', app.selections.secondaryColor.name);
+                } else if (app.selections.secondaryColorSpecial) {
+                    fadeInImage(previewButton, '../images/secondarycolors/blackbutton.PNG');
+                    fadeInImage(previewLogo, '../images/secondarycolors/blacklogo.PNG');
+                    hasSelections = true;
+                    addPreviewDetail('Sekundär Färg', 'Specialförfrågan');
+                } else {
+                    fadeOutImage(previewButton);
+                    fadeOutImage(previewLogo);
+                }
+
+                // Handle design display (designs are not shown in preview, only in details)
+                if (app.selections.design && app.selections.design.id !== 'none') {
+                    hasSelections = true;
+                    addPreviewDetail('Design', app.selections.design.name);
+                } else if (app.selections.designSpecial) {
+                    hasSelections = true;
+                    addPreviewDetail('Design', 'Specialförfrågan');
+                } else if (app.selections.design && app.selections.design.id === 'none') {
+                    hasSelections = true;
+                    addPreviewDetail('Design', 'Ingen Design');
+                }
+
+                if (app.selections.caliber) {
+                    addPreviewDetail('Kaliber', app.selections.caliber);
+                    hasSelections = true;
+                } else if (app.selections.caliberSpecial) {
+                    addPreviewDetail('Kaliber', 'Specialförfrågan');
+                    hasSelections = true;
+                }
+
+                if (app.selections.initials) {
+                    addPreviewDetail('Initialer', app.selections.initials);
+                    hasSelections = true;
+                } else if (app.selections.initialsSpecial) {
+                    addPreviewDetail('Initialer', 'Specialförfrågan');
+                    hasSelections = true;
+                }
+
+                // Show/hide placeholder with fade effect
+                if (hasSelections) {
+                    fadeOutElement(previewPlaceholder);
+                } else {
+                    fadeInElement(previewPlaceholder);
+                }
+            }
+
+            // Add preview detail
+            function addPreviewDetail(label, value) {
+                const previewDetails = document.getElementById('preview-details');
+                if (!previewDetails) return;
+
+                const detail = document.createElement('div');
+                detail.className = 'preview-detail fade-in-detail';
+                detail.innerHTML = `
+                    <span>${label}:</span>
+                    <span class="fw-bold">${value}</span>
+                `;
+                previewDetails.appendChild(detail);
+            }
+
+            // Fade in image with smooth animation
+            function fadeInImage(imgElement, src) {
+                if (!imgElement) return;
+                
+                console.log('Fading in image:', src, 'for element:', imgElement.id);
+                
+                // Set opacity to 0 and show element
+                imgElement.style.opacity = '0';
+                imgElement.style.display = 'block';
+                
+                // Set the new image source
+                imgElement.src = src;
+                
+                // Wait for image to load before fading in
+                imgElement.onload = function() {
+                    console.log('Image loaded successfully:', src);
+                    imgElement.style.transition = 'opacity 0.5s ease-in-out';
+                    imgElement.style.opacity = '1';
+                };
+                
+                // Fallback if image fails to load
+                imgElement.onerror = function() {
+                    console.error('Failed to load image:', src);
+                    imgElement.style.display = 'none';
+                };
+            }
+
+            // Fade out image with smooth animation
+            function fadeOutImage(imgElement) {
+                if (!imgElement) return;
+                
+                imgElement.style.transition = 'opacity 0.3s ease-in-out';
+                imgElement.style.opacity = '0';
+                
+                // Hide element after fade out
+                setTimeout(() => {
+                    imgElement.style.display = 'none';
+                }, 300);
+            }
+
+            // Fade in element with smooth animation
+            function fadeInElement(element) {
+                if (!element) return;
+                
+                element.style.opacity = '0';
+                element.style.display = 'flex';
+                
+                setTimeout(() => {
+                    element.style.transition = 'opacity 0.5s ease-in-out';
+                    element.style.opacity = '1';
+                }, 50);
+            }
+
+            // Fade out element with smooth animation
+            function fadeOutElement(element) {
+                if (!element) return;
+                
+                element.style.transition = 'opacity 0.3s ease-in-out';
+                element.style.opacity = '0';
+                
+                setTimeout(() => {
+                    element.style.display = 'none';
+                }, 300);
+            }
+
+            // Finish design
+            function finishDesign() {
+                // Create product object
+                const product = {
+                    id: Date.now(), // Unique ID for the product
+                    type: 'Ammunitionsetui',
+                    selections: { ...app.selections }, // Copy selections
+                    totalPrice: calculateTotalPrice(),
+                    timestamp: new Date().toLocaleString('sv-SE')
+                };
+
+                // Add to saved products
+                app.savedProducts.push(product);
+
+                // Save to localStorage
+                localStorage.setItem('nordkaliberProducts', JSON.stringify(app.savedProducts));
+
+                // Show success message
+                showNotification('Ammunitionsetui tillagt i varukorg!', 'success');
+
+                // Update cart
+                updateCart();
+
+                // Clear all selections and reset form
+                clearAllSelections();
+
+                // Auto-scroll to varukorg
+                const cartContainer = document.getElementById('cart-container');
+                if (cartContainer) {
+                    cartContainer.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'start' 
+                    });
+                }
+
+                // Reset to step 1
+                goToStep(1);
+            }
+
+            // Calculate total price
+            function calculateTotalPrice() {
+                let total = app.basePrice;
+
+                if (app.selections.initials) total += 100;
+                if (app.selections.caliberSpecial) total += 200;
+                if (app.selections.primaryColorSpecial) total += 200;
+                if (app.selections.secondaryColorSpecial) total += 200;
+                if (app.selections.designSpecial) total += 200;
+                if (app.selections.initialsSpecial) total += 200;
+
+                return total;
+            }
+
+            // Show notification
+            function showNotification(message, type = 'success') {
+                const notification = document.createElement('div');
+                notification.className = `alert alert-${type} position-fixed`;
+                notification.style.cssText = 'top: 2rem; right: 2rem; z-index: 9999; min-width: 300px;';
+                notification.innerHTML = `
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'} me-2"></i>
+                    ${message}
+                `;
+
+                document.body.appendChild(notification);
+
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
+            }
+
+            // Initialize the application
+            init();
+        });
+    </script>
+</body>
+</html> 

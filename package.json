@@ -1,23 +1,21 @@
 {
-  "name": "nordkaliber-backend",
+  "name": "nordkaliber-netlify",
   "version": "1.0.0",
-  "description": "Backend for Nordkaliber website with Stripe integration",
+  "description": "Nordkaliber website with Stripe integration for Netlify",
   "main": "api/index.js",
   "scripts": {
-    "start": "node api/index.js",
-    "dev": "nodemon api/index.js",
-    "vercel-build": "echo 'Starting build...' && echo 'Build complete' && exit 0"
+    "build": "echo 'Build complete'",
+    "start": "node api/index.js"
   },
   "keywords": [
     "nordkaliber",
     "stripe",
     "ecommerce",
-    "nodejs"
+    "netlify"
   ],
   "author": "Vittoriobre",
   "license": "MIT",
   "dependencies": {
-    "@vercel/speed-insights": "^1.2.0",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
@@ -27,8 +25,5 @@
     "node-fetch": "^2.7.0",
     "nodemailer": "^7.0.5",
     "stripe": "^14.10.0"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.2"
   }
-}
+} 
