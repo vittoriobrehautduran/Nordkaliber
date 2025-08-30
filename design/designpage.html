@@ -44,19 +44,9 @@
             color: var(--text-light);
             min-height: 100vh;
             overflow-x: hidden;
-            animation: pageLoad 0.8s ease-in-out;
         }
         
-        @keyframes pageLoad {
-            0% {
-                opacity: 0;
-                transform: translateY(15px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+
 
         .main-container {
             min-height: 100vh;
@@ -699,8 +689,8 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            transition: opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            will-change: opacity;
+            transition: none;
+            will-change: auto;
         }
         
         .preview-next {
@@ -720,29 +710,18 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Fade-in animations */
+        /* Removed fade-in animations for immediate display */
         .fade-in-detail {
-            animation: fadeInDetail 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+            /* No animation - immediate display */
         }
 
-        @keyframes fadeInDetail {
-            from {
-                opacity: 0;
-                transform: translateY(15px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Image transition styles */
+        /* Image transition styles - removed for immediate changes */
         .preview-image {
-            transition: opacity 0.5s ease-in-out;
+            transition: none;
         }
 
         .preview-placeholder {
-            transition: opacity 0.5s ease-in-out;
+            transition: none;
         }
 
         /* Cart Panel Styles */
@@ -1434,7 +1413,7 @@
             <div id="cart-sidebar-items">
                 <!-- Cart items will be populated here -->
             </div>
-        </div>
+            </div>
         <div class="cart-sidebar-footer">
             <div class="cart-total mb-3">
                 <span id="cart-sidebar-total">0kr</span>
@@ -1445,7 +1424,7 @@
                 </button>
                 <button class="btn btn-custom" id="go-to-checkout-sidebar">
                     <i class="fas fa-credit-card me-2"></i>Gå till kassan
-                </button>
+                    </button>
             </div>
         </div>
     </div>
@@ -1457,8 +1436,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // Main application logic
-        document.addEventListener('DOMContentLoaded', function() {
+                    // Main application logic
+            document.addEventListener('DOMContentLoaded', function() {
             
             // Application state
             const app = {
@@ -1672,7 +1651,7 @@
                 // Wait a bit for default selections to be applied, then update preview
                 setTimeout(() => {
                 updatePreview();
-                
+                    
                     // Force show some images for testing
                     setTimeout(() => {
                         forceShowPreview();
@@ -2310,7 +2289,7 @@
                 updateConfiguredCombinationsDisabledState();
             }
 
-            // Handle special request input
+                        // Handle special request input
             function handleSpecialRequestInput(stepNum) {
                 const textbox = document.getElementById(`special-request-${stepNum}`);
                 const text = textbox.value.trim();
@@ -2709,7 +2688,7 @@
                     });
                 }
 
-                // Show current selections if any
+                            // Show current selections if any
             // Removed "aktuella val" section
 
                 cartSidebarTotal.textContent = `${total}kr`;
@@ -3010,7 +2989,7 @@
                         }
                     } else {
                         // No design selected, show the combo's secondary color logo
-                    fadeInImage(previewLogo, app.selections.configuredCombo.secondaryColor.logo);
+                        fadeInImage(previewLogo, app.selections.configuredCombo.secondaryColor.logo);
                     }
                     
                     hasSelections = true;
@@ -3026,9 +3005,9 @@
                         fadeInImage(previewBase, app.selections.primaryColor.img);
                         hasSelections = true;
                         addPreviewDetail('Primär Färg', app.selections.primaryColor.name);
-                    } else {
-                        fadeOutImage(previewBase);
-                    }
+                } else {
+                    fadeOutImage(previewBase);
+                }
 
                     if (app.selections.secondaryColorSpecial) {
                         // Show standard black button/logo for special request
@@ -3043,18 +3022,18 @@
                         addPreviewDetail('Sekundär Färg', 'Specialförfrågan');
                     } else if (app.selections.secondaryColor) {
                         // Show button for secondary color (this will be visible)
-                        fadeInImage(previewButton, app.selections.secondaryColor.img);
+                    fadeInImage(previewButton, app.selections.secondaryColor.img);
                         
                         // Only show logo if no design is selected
                         if (!app.selections.design || app.selections.design.id === 'none') {
-                        fadeInImage(previewLogo, app.selections.secondaryColor.logo);
+                    fadeInImage(previewLogo, app.selections.secondaryColor.logo);
                         }
-                        
-                        hasSelections = true;
-                        addPreviewDetail('Sekundär Färg', app.selections.secondaryColor.name);
-                    } else {
-                        fadeOutImage(previewButton);
-                        fadeOutImage(previewLogo);
+                    
+                    hasSelections = true;
+                    addPreviewDetail('Sekundär Färg', app.selections.secondaryColor.name);
+                } else {
+                    fadeOutImage(previewButton);
+                    fadeOutImage(previewLogo);
                     }
                 }
 
@@ -3163,7 +3142,7 @@
                 }
             }
 
-            // True crossfade image loading function
+            // Immediate image loading function - no transitions
             function fadeInImage(imgElement, src) {
                 if (!imgElement) return;
                 
@@ -3172,58 +3151,22 @@
                     return;
                 }
                 
-                // Get the corresponding "next" layer
+                // Change image immediately without any transitions
+                imgElement.src = src;
+                imgElement.style.display = 'block';
+                imgElement.style.opacity = '1';
+                imgElement.style.transition = 'none';
+                
+                // Also update the next layer if it exists
                 const nextElement = document.getElementById(imgElement.id + '-next');
-                if (!nextElement) {
-                    // Fallback if no next layer exists
-                imgElement.src = src;
-                    return;
+                if (nextElement) {
+                    nextElement.style.display = 'none';
+                    nextElement.style.opacity = '0';
+                    nextElement.style.transition = 'none';
                 }
-                
-                // Create a temporary image element for preloading
-                const tempImg = new Image();
-                
-                tempImg.onload = function() {
-                    // Load the new image into the next layer
-                    nextElement.src = src;
-                    nextElement.style.display = 'block';
-                    
-                    // Ensure both layers are ready before starting transition
-                    requestAnimationFrame(() => {
-                        // Start crossfade: fade in next layer while fading out current
-                        // Fade in the next layer with smooth easing
-                        nextElement.style.transition = 'opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-                        nextElement.style.opacity = '1';
-                        
-                        // Simultaneously fade out the current layer with same timing
-                        imgElement.style.transition = 'opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-                imgElement.style.opacity = '0';
-                
-                        // After transition completes, swap the layers
-                        setTimeout(() => {
-                            // Update current layer with new image
-                imgElement.src = src;
-                    imgElement.style.opacity = '1';
-                            imgElement.style.transition = 'none';
-                
-                            // Hide and reset next layer
-                            nextElement.style.display = 'none';
-                            nextElement.style.opacity = '0';
-                            nextElement.style.transition = 'none';
-                        }, 500); // Match the transition duration exactly
-                    });
-                };
-                
-                tempImg.onerror = function() {
-                    console.error('Failed to preload image:', src);
-                    // Fallback: direct load
-                    imgElement.src = src;
-                };
-                
-                tempImg.src = src;
             }
 
-            // Fade out image with smooth animation
+            // Hide image immediately - no transitions
             function fadeOutImage(imgElement) {
                 if (!imgElement) return;
                 
@@ -3234,38 +3177,28 @@
                     nextElement.style.opacity = '0';
                 }
                 
-                imgElement.style.transition = 'opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                // Hide element immediately without transitions
+                imgElement.style.transition = 'none';
                 imgElement.style.opacity = '0';
-                
-                // Hide element after fade out
-                setTimeout(() => {
-                    imgElement.style.display = 'none';
-                }, 500);
+                imgElement.style.display = 'none';
             }
 
-            // Fade in element with smooth animation
+            // Show element immediately - no transitions
             function fadeInElement(element) {
                 if (!element) return;
                 
-                element.style.opacity = '0';
+                element.style.transition = 'none';
+                element.style.opacity = '1';
                 element.style.display = 'flex';
-                
-                requestAnimationFrame(() => {
-                    element.style.transition = 'opacity 0.6s cubic-bezier(0.4, 0.0, 0.2, 1)';
-                    element.style.opacity = '1';
-                });
             }
 
-            // Fade out element with smooth animation
+            // Hide element immediately - no transitions
             function fadeOutElement(element) {
                 if (!element) return;
                 
-                element.style.transition = 'opacity 0.5s cubic-bezier(0.4, 0.0, 0.2, 1)';
+                element.style.transition = 'none';
                 element.style.opacity = '0';
-                
-                setTimeout(() => {
-                    element.style.display = 'none';
-                }, 500);
+                element.style.display = 'none';
             }
 
             // Finish design
