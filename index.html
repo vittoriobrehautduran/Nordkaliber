@@ -994,21 +994,22 @@
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center justify-center mx-auto video-section">
                         <!-- Nordkaliber Ad Video -->
                         <div class="lg:col-span-1">
-                            <div id="videoContainer" class="relative overflow-hidden rounded-lg shadow-2xl video-hover product-card-enhanced h-[500px] cursor-pointer" role="button" tabindex="0" aria-label="Öppna video" onclick="window.__openNVModal && window.__openNVModal()">
+                            <div id="videoContainer" class="relative overflow-hidden rounded-lg shadow-2xl h-[500px] cursor-pointer" role="button" tabindex="0" aria-label="Öppna video" onclick="window.__openNVModal && window.__openNVModal()">
                                 <video 
                                     id="adVideo"
                                     class="w-full h-full object-cover" 
                                     muted 
                                     playsinline
-                                    preload="auto"
-                                    poster="images/oppen-gra-box.jpg">
+                                    preload="metadata"
+                                    autoplay
+                                    loop>
                                     <source src="images/nordkaliber_ad.mp4" type="video/mp4">
                                     Din webbläsare stöder inte video-elementet.
                                 </video>
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
                                 <!-- Play overlay -->
                                 <div class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
-                                    <div class="bg-cool-grey bg-opacity-70 rounded-full p-4 hover-smooth">
+                                    <div class="bg-cool-grey bg-opacity-70 rounded-full p-4">
                                         <i class="fas fa-expand text-white text-2xl"></i>
                                     </div>
                                 </div>
@@ -1017,7 +1018,7 @@
                         
                         <!-- Slideshow -->
                         <div class="lg:col-span-1">
-                            <div class="relative overflow-hidden rounded-lg shadow-2xl h-[500px] product-card-enhanced">
+                            <div class="relative overflow-hidden rounded-lg shadow-2xl h-[500px]">
                             <div class="slideshow-container w-full h-full" id="mobileSlideshow">
                             <div class="slide fade">
                                 <img src="images/oppen-gra-box.jpg" 
@@ -1045,10 +1046,10 @@
                             </div>
                         </div>
                         <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
-                            <span class="dot w-3 h-3 rounded-full bg-warm-grey cursor-pointer hover-smooth"></span>
-                            <span class="dot w-3 h-3 rounded-full bg-warm-grey cursor-pointer hover-smooth"></span>
-                            <span class="dot w-3 h-3 rounded-full bg-warm-grey cursor-pointer hover-smooth"></span>
-                            <span class="dot w-3 h-3 rounded-full bg-warm-grey cursor-pointer hover-smooth"></span>
+                            <span class="dot w-3 h-3 rounded-full bg-warm-grey cursor-pointer"></span>
+                            <span class="dot w-3 h-3 rounded-full bg-warm-grey cursor-pointer"></span>
+                            <span class="dot w-3 h-3 rounded-full bg-warm-grey cursor-pointer"></span>
+                            <span class="dot w-3 h-3 rounded-full bg-warm-grey cursor-pointer"></span>
                         </div>
                     </div>
                         </div>
@@ -1059,28 +1060,28 @@
                 <div class="max-w-4xl mx-auto mb-20">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                         <div class="stagger-reveal">
-                            <h3 class="text-xl font-bold mb-2 text-mustard-gold hover-smooth flex items-center">
+                            <h3 class="text-xl font-bold mb-2 text-mustard-gold flex items-center">
                                 <i class="fas fa-shield-alt mr-3"></i>
                                 Praxis Först
                             </h3>
                             <p class="text-white">Ammunition ska plockas fram smidigt. Den här produkten förenklar hanteringen av din ammunition.</p>
                         </div>
                         <div class="stagger-reveal">
-                            <h3 class="text-xl font-bold mb-2 text-mustard-gold hover-smooth flex items-center">
+                            <h3 class="text-xl font-bold mb-2 text-mustard-gold flex items-center">
                                 <i class="fas fa-link mr-3"></i>
                                 Felande Länk
                             </h3>
                             <p class="text-white">Du har ägnat år åt att välja rätt gevär, välja optik och välja ammunition. Varje beslut i din utrustning är väl genomtänkt. Varför skulle ammunitionsförvaringen vara den svaga länken?</p>
                         </div>
                         <div class="stagger-reveal">
-                            <h3 class="text-xl font-bold mb-2 text-mustard-gold hover-smooth flex items-center">
+                            <h3 class="text-xl font-bold mb-2 text-mustard-gold flex items-center">
                                 <i class="fas fa-wrench mr-3"></i>
                                 Adapterad Interiör
                             </h3>
                             <p class="text-white">Våra ammunitionsetui passar alla typer av patroner och kan tillverkas snabbt även för mer ovanliga typer.</p>
                         </div>
                         <div class="stagger-reveal">
-                            <h3 class="text-xl font-bold mb-2 text-mustard-gold hover-smooth flex items-center">
+                            <h3 class="text-xl font-bold mb-2 text-mustard-gold flex items-center">
                                 <i class="fas fa-user-check mr-3"></i>
                                 Jägarens Val
                             </h3>
@@ -1096,14 +1097,13 @@
                     <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 text-mustard-gold text-reveal smooth-reveal">
                         <span>SE VÅRA PRODUKTER I AKTION</span>
                     </h3>
-                    <div class="relative overflow-hidden rounded-lg shadow-2xl video-hover product-card-enhanced">
+                    <div class="relative overflow-hidden rounded-lg shadow-2xl">
                         <video 
                             id="video1"
                             class="w-full h-auto" 
                             muted 
                             playsinline
-                            preload="auto"
-                            poster="images/oppen-gra-box.jpg">
+                            preload="metadata">
                             <source src="images/sequence_presentation.mp4" type="video/mp4">
                             Din webbläsare stöder inte video-elementet.
                         </video>
@@ -1113,14 +1113,13 @@
                 
                 <!-- Second Video Presentation Section -->
                 <div class="max-w-4xl mx-auto mb-16 video-section">
-                    <div class="relative overflow-hidden rounded-lg shadow-2xl video-hover product-card-enhanced">
+                    <div class="relative overflow-hidden rounded-lg shadow-2xl">
                         <video 
                             id="video2"
                             class="w-full h-auto" 
                             muted 
                             playsinline
-                            preload="auto"
-                            poster="images/oppen-gro-box.jpg">
+                            preload="metadata">
                             <source src="images/video_presentation2.mp4" type="video/mp4">
                             Din webbläsare stöder inte video-elementet.
                         </video>
@@ -1148,7 +1147,7 @@
         <!-- About Section -->
             <section id="om-oss" class="py-20 section-fade" style="background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('images/elk1.jpg'); background-position: center 70%; background-size: cover;">
             <div class="container mx-auto px-4">
-                <div class="max-w-4xl mx-auto bg-dark-green bg-opacity-50 rounded-lg p-10 border border-hunter-brown border-opacity-20 product-card-enhanced">
+                <div class="max-w-4xl mx-auto bg-dark-green bg-opacity-50 rounded-lg p-10 border border-hunter-brown border-opacity-20">
                     <div class="text-left">
                         <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center text-reveal smooth-reveal">
                             <span>Om Oss</span>
@@ -1207,7 +1206,7 @@
                 
                 <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-10">
                     <div class="text-center">
-                        <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6 hover-smooth">
+                        <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6">
                             <i class="fas fa-shield-alt text-mustard-gold text-2xl"></i>
                         </div>
                         <h3 class="text-xl font-bold mb-3">Trygg Handel</h3>
@@ -1215,7 +1214,7 @@
                     </div>
                     
                     <div class="text-center">
-                        <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6 hover-smooth">
+                        <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6">
                             <i class="fas fa-truck text-mustard-gold text-2xl"></i>
                         </div>
                         <h3 class="text-xl font-bold mb-3">Effektiv Leverans</h3>
@@ -1223,7 +1222,7 @@
                     </div>
                     
                     <div class="text-center">
-                        <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6 hover-smooth">
+                        <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6">
                             <i class="fas fa-headset text-mustard-gold text-2xl"></i>
                         </div>
                         <h3 class="text-xl font-bold mb-3">E-post Support</h3>
@@ -1231,7 +1230,7 @@
                     </div>
                     
                     <div class="text-center">
-                        <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6 hover-smooth">
+                        <div class="w-20 h-20 bg-light-grey rounded-full flex items-center justify-center mx-auto mb-6">
                             <i class="fas fa-undo text-mustard-gold text-2xl"></i>
                         </div>
                         <h3 class="text-xl font-bold mb-3">Enkel Retur</h3>
@@ -1245,7 +1244,7 @@
         <section id="kontakt" class="py-20 section-fade">
             <div class="container mx-auto px-4">
                 <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
-                    <div class="bg-premium-black bg-opacity-70 rounded-lg p-8 border border-hunter-brown border-opacity-20 product-card-enhanced">
+                    <div class="bg-premium-black bg-opacity-70 rounded-lg p-8 border border-hunter-brown border-opacity-20">
                         <h2 class="text-3xl font-bold mb-6 text-reveal smooth-reveal">
                             <span>KONTAKTA OSS</span>
                         </h2>
@@ -1262,11 +1261,11 @@
                                 <label for="message" class="block mb-2">Meddelande</label>
                                 <textarea id="message" rows="4" class="w-full bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-hunter-brown transition-all duration-300"></textarea>
                             </div>
-                            <button type="submit" class="btn-enhanced btn-hunter text-white px-6 py-3 rounded-full font-medium w-full hover-smooth">SKICKA</button>
+                            <button type="submit" class="btn-enhanced btn-hunter text-white px-6 py-3 rounded-full font-medium w-full">SKICKA</button>
                         </form>
                     </div>
                     
-                    <div class="bg-premium-black bg-opacity-70 rounded-lg p-8 border border-hunter-brown border-opacity-20 product-card-enhanced">
+                    <div class="bg-premium-black bg-opacity-70 rounded-lg p-8 border border-hunter-brown border-opacity-20">
                         <h2 class="text-2xl md:text-3xl font-bold mb-6 text-center md:text-left text-reveal smooth-reveal">
                             <span>KONTAKTUPPGIFTER</span>
                         </h2>
@@ -1303,7 +1302,7 @@
         <!-- Newsletter Section -->
         <section class="py-20 section-fade">
             <div class="container mx-auto px-4">
-                <div class="max-w-3xl mx-auto bg-premium-black bg-opacity-70 rounded-lg p-10 border border-hunter-brown border-opacity-20 text-center product-card-enhanced">
+                <div class="max-w-3xl mx-auto bg-premium-black bg-opacity-70 rounded-lg p-10 border border-hunter-brown border-opacity-20 text-center">
                     <h2 class="text-3xl md:text-4xl font-bold mb-4 text-reveal smooth-reveal">
                         <span>PRENUMERERA PÅ VÅRT NYHETSBREV</span>
                     </h2>
@@ -1312,7 +1311,7 @@
                     </p>
                     <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
                         <input type="email" placeholder="Din e-postadress" class="flex-grow bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-hunter-brown transition-all duration-300">
-                        <button type="submit" class="btn-enhanced btn-hunter text-white px-6 py-2 rounded-full font-medium whitespace-nowrap hover-smooth">PRENUMERERA</button>
+                        <button type="submit" class="btn-enhanced btn-hunter text-white px-6 py-2 rounded-full font-medium whitespace-nowrap">PRENUMERERA</button>
                     </form>
                 </div>
             </div>
@@ -1329,27 +1328,27 @@
                     <div class="stagger-reveal">
                         <h3 class="text-lg font-bold mb-4">Länkar</h3>
                         <ul class="space-y-2">
-                            <li><a href="#hem" class="text-gray-400 hover:text-mustard-gold transition nav-smooth">Hem</a></li>
-                            <li><a href="#overview" class="text-gray-400 hover:text-mustard-gold transition nav-smooth">Översikt</a></li>
-                            <li><a href="#om-oss" class="text-gray-400 hover:text-mustard-gold transition nav-smooth">Om Oss</a></li>
-                            <li><a href="#kontakt" class="text-gray-400 hover:text-mustard-gold transition nav-smooth">Kontakt</a></li>
+                            <li><a href="#hem" class="text-gray-400 transition">Hem</a></li>
+                            <li><a href="#overview" class="text-gray-400 transition">Översikt</a></li>
+                            <li><a href="#om-oss" class="text-gray-400 transition">Om Oss</a></li>
+                            <li><a href="#kontakt" class="text-gray-400 transition">Kontakt</a></li>
                         </ul>
                     </div>
                     <div class="stagger-reveal">
                         <h3 class="text-lg font-bold mb-4">Support</h3>
                         <ul class="space-y-2">
-                            <li><a href="/policies" class="text-gray-400 hover:text-mustard-gold transition nav-smooth">Policies & Villkor</a></li>
-                            <li><a href="/policies" class="text-gray-400 hover:text-mustard-gold transition nav-smooth">Frakt & Leverans</a></li>
-                            <li><a href="/policies" class="text-gray-400 hover:text-mustard-gold transition nav-smooth">Integritetspolicy</a></li>
+                            <li><a href="/policies" class="text-gray-400 transition">Policies & Villkor</a></li>
+                            <li><a href="/policies" class="text-gray-400 transition">Frakt & Leverans</a></li>
+                            <li><a href="/policies" class="text-gray-400 transition">Integritetspolicy</a></li>
                         </ul>
                     </div>
                     <div class="stagger-reveal">
                         <h3 class="text-lg font-bold mb-4">Följ Oss</h3>
                         <div class="flex space-x-4">
-                                            <a href="#" class="text-gray-400 hover:text-mustard-gold transition text-xl nav-smooth"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://www.instagram.com/nordkaliber?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-mustard-gold transition text-xl nav-smooth"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-mustard-gold transition text-xl nav-smooth"><i class="fab fa-youtube"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-mustard-gold transition text-xl nav-smooth"><i class="fab fa-linkedin-in"></i></a>
+                                            <a href="#" class="text-gray-400 transition text-xl"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/nordkaliber?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" class="text-gray-400 transition text-xl"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 transition text-xl"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="text-gray-400 transition text-xl"><i class="fab fa-linkedin-in"></i></a>
                         </div>
                     </div>
                 </div>
@@ -1381,7 +1380,7 @@
                         loop 
                         playsinline
                         controls
-                        preload="auto">
+                        preload="metadata">
                         <source src="images/nordkaliber_ad.mp4" type="video/mp4">
                         Din webbläsare stöder inte video-elementet.
                     </video>
