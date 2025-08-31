@@ -83,20 +83,20 @@
         }
 
         .nordkaliber-text {
-            font-family: 'Anton', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--primary-color);
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #E6B17A;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 0.5px;
             margin: 0;
-            text-shadow: 0 2px 10px rgba(230, 177, 122, 0.3);
             transition: all 0.3s ease;
+            opacity: 0.9;
         }
 
-        .nordkaliber-logo:hover .nordkaliber-text {
-            transform: scale(1.05);
-            text-shadow: 0 4px 20px rgba(230, 177, 122, 0.5);
+        .nordkaliber-text:hover {
+            color: #DAA520;
+            opacity: 1;
         }
 
         .spacer {
@@ -1116,11 +1116,11 @@
         <!-- Navigation Header -->
         <div class="nav-header mb-4">
             <div class="d-flex justify-content-between align-items-center">
-                <a href="../index.html" class="back-arrow">
-                    <i class="fas fa-arrow-left fa-2x"></i>
-                </a>
-                <div class="nordkaliber-logo">
-                    <h1 class="nordkaliber-text">NORDKALIBER</h1>
+                <div class="d-flex align-items-center">
+                    <a href="../index.html" class="back-arrow me-3">
+                        <i class="fas fa-arrow-left fa-2x"></i>
+                    </a>
+                    <span class="nordkaliber-text">NORDKALIBER</span>
                 </div>
                 <div class="cart-icon-container">
                     <button id="cart-icon" class="cart-icon-btn" title="Öppna varukorg">
@@ -2574,6 +2574,12 @@
                 
                 // Show/hide configured combinations based on current step
                 updateConfiguredCombinationsVisibility();
+                
+                // Scroll to top of the page smoothly
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
             }
 
             // Go to previous step with smart navigation
