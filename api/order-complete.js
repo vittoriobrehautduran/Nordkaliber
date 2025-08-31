@@ -50,10 +50,10 @@ exports.handler = async (event, context) => {
       statusCode: 200,
       headers,
       body: JSON.stringify({
-        success: true,
-        orderId: orderData.orderId,
-        emailsSent: emailResults,
-        message: 'Order processed successfully'
+      success: true,
+      orderId: orderData.orderId,
+      emailsSent: emailResults,
+      message: 'Order processed successfully'
       })
     };
 
@@ -63,8 +63,8 @@ exports.handler = async (event, context) => {
       statusCode: 500,
       headers,
       body: JSON.stringify({ 
-        error: 'Failed to process order completion',
-        details: error.message
+      error: 'Failed to process order completion',
+      details: error.message
       })
     };
   }

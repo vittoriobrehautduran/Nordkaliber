@@ -1706,25 +1706,29 @@
                         expandedVideo.load();
                     }
                 }
+                
+                // Ensure modal is in the right place
                 if (videoModal.parentElement !== document.body) {
                     document.body.appendChild(videoModal);
                 }
-                // Lock after show (we will pre-scroll)
-                setTimeout(() => {
-                    const modalContent = videoModal.querySelector('div');
-                    if (modalContent) modalContent.style.transform = 'scale(1)';
-                    const pageWrapper = document.querySelector('.page-wrapper');
-                    const currentY = pageWrapper ? pageWrapper.scrollTop : (window.scrollY || window.pageYOffset || 0);
-                    document.documentElement.style.overflow = 'hidden';
-                    document.body.style.overflow = 'hidden';
-                    document.body.classList.add('no-transform');
-                    document.body.dataset.scrollY = String(currentY);
-                    document.body.style.position = 'fixed';
-                    document.body.style.top = `-${currentY}px`;
-                    document.body.style.left = '0';
-                    document.body.style.right = '0';
-                    document.body.style.width = '100%';
-                }, 10);
+                
+                // Show modal with simple animation
+                videoModal.classList.remove('hidden');
+                videoModal.classList.add('flex');
+                
+                // Simple scale animation
+                const modalContent = videoModal.querySelector('div');
+                if (modalContent) {
+                    modalContent.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        modalContent.style.transform = 'scale(1)';
+                    }, 10);
+                }
+                
+                // Prevent body scroll
+                document.body.style.overflow = 'hidden';
+                
+                // Start video
                 try {
                     expandedVideo.pause();
                     expandedVideo.currentTime = 0;
@@ -1734,79 +1738,20 @@
                         playPromise.catch(() => {
                             expandedVideo.controls = true;
                             expandedVideo.muted = false;
-                            try { console.log('[NK] autoplay blocked; showing controls'); } catch(e) {}
                         });
                     }
                 } catch (_) {
                     expandedVideo.controls = true;
                     expandedVideo.muted = false;
-                    try { console.log('[NK] error starting video'); } catch(e) {}
                 }
-                setTimeout(() => {
-                    if (expandedVideo.readyState < 2 || expandedVideo.paused) {
-                        try { expandedVideo.currentTime = 0.001; } catch(_) {}
-                        expandedVideo.controls = true;
-                        try { console.log('[NK] fallback seek applied'); } catch(e) {}
-                    }
-                }, 600);
             }
             window.__openNVModal = openVideoModal;
             
-            function smoothScrollTo(targetY, done) {
-                try { console.log('[NK] smoothScrollTo', targetY); } catch(e) {}
-                const pageWrapper = document.querySelector('.page-wrapper');
-                if (pageWrapper) {
-                    const maxY = Math.max(0, Math.min(targetY, pageWrapper.scrollHeight - pageWrapper.clientHeight));
-                    pageWrapper.scrollTo({ top: maxY, behavior: 'smooth' });
-                    let elapsed = 0;
-                    const step = 50;
-                    const maxWait = 1200;
-                    const timer = setInterval(() => {
-                        elapsed += step;
-                        const y = pageWrapper.scrollTop || 0;
-                        if (Math.abs(y - maxY) < 4 || elapsed >= maxWait) {
-                            clearInterval(timer);
-                            setTimeout(done, 50);
-                        }
-                    }, step);
-                } else {
-                    // Fallback to window scroll if page-wrapper not found
-                    const maxY = Math.max(0, Math.min(targetY, document.body.scrollHeight - window.innerHeight));
-                    window.scrollTo({ top: maxY, behavior: 'smooth' });
-                    let elapsed = 0;
-                    const step = 50;
-                    const maxWait = 1200;
-                    const timer = setInterval(() => {
-                        elapsed += step;
-                        const y = window.scrollY || window.pageYOffset || 0;
-                        if (Math.abs(y - maxY) < 4 || elapsed >= maxWait) {
-                            clearInterval(timer);
-                            setTimeout(done, 50);
-                        }
-                    }, step);
-                }
-            }
-            
-            function scrollAndOpen() {
-                if (!videoContainer) return openVideoModal();
-                const pageWrapper = document.querySelector('.page-wrapper');
-                if (pageWrapper) {
-                    const containerTop = pageWrapper.scrollTop + videoContainer.getBoundingClientRect().top;
-                    const targetY = containerTop - 80;
-                    smoothScrollTo(targetY, openVideoModal);
-                } else {
-                    // Fallback to window scroll if page-wrapper not found
-                    const containerTop = (window.scrollY || window.pageYOffset || 0) + videoContainer.getBoundingClientRect().top;
-                    const targetY = containerTop - 80;
-                    smoothScrollTo(targetY, openVideoModal);
-                }
-            }
-            
+            // Simple direct modal opening without scroll manipulation
             videoContainer.addEventListener('click', (evt) => {
                 evt.preventDefault();
                 evt.stopPropagation();
-                try { console.log('[NK] container click'); } catch(e) {}
-                scrollAndOpen();
+                openVideoModal();
             });
 
             if (adVideo) {
@@ -1815,44 +1760,43 @@
                 adVideo.addEventListener('click', (evt) => {
                     evt.preventDefault();
                     evt.stopPropagation();
-                    try { console.log('[NK] video click'); } catch(e) {}
-                    scrollAndOpen();
+                    openVideoModal();
                 });
             }
+            
             if (videoContainer) {
                 videoContainer.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
-                        scrollAndOpen();
+                        openVideoModal();
                     }
                 });
             }
             
             // Close video modal
             function closeModal() {
+                // Simple scale animation for closing
                 const modalContent = videoModal.querySelector('div');
-                modalContent.style.transform = 'scale(0.95)';
+                if (modalContent) {
+                    modalContent.style.transform = 'scale(0.95)';
+                }
                 
                 setTimeout(() => {
+                    // Hide modal
                     videoModal.classList.add('hidden');
-                    document.documentElement.style.overflow = '';
+                    videoModal.classList.remove('flex');
+                    
+                    // Restore body scroll
                     document.body.style.overflow = '';
-                    document.body.classList.remove('no-transform');
+                    
+                    // Pause video
                     try { expandedVideo.pause(); } catch (_) {}
-                    videoModal.removeAttribute('style');
-                    const y = parseInt(document.body.dataset.scrollY || '0', 10);
-                    document.body.style.position = '';
-                    document.body.style.top = '';
-                    document.body.style.left = '';
-                    document.body.style.right = '';
-                    document.body.style.width = '';
-                    const pageWrapper = document.querySelector('.page-wrapper');
-                    if (pageWrapper) {
-                        pageWrapper.scrollTo(0, y);
-                    } else {
-                        window.scrollTo(0, y);
+                    
+                    // Reset modal content transform
+                    if (modalContent) {
+                        modalContent.style.transform = '';
                     }
-                }, 300);
+                }, 200);
             }
             
             closeVideoModal.addEventListener('click', closeModal);

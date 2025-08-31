@@ -1122,8 +1122,8 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
                     <a href="../index.html" class="back-arrow me-3">
-                        <i class="fas fa-arrow-left fa-2x"></i>
-                    </a>
+                    <i class="fas fa-arrow-left fa-2x"></i>
+                </a>
                     <span class="nordkaliber-text">NORDKALIBER</span>
                 </div>
                 <div class="cart-icon-container">
@@ -1417,7 +1417,7 @@
             <div id="cart-sidebar-items">
                 <!-- Cart items will be populated here -->
             </div>
-            </div>
+        </div>
         <div class="cart-sidebar-footer">
             <div class="cart-total mb-3">
                 <span id="cart-sidebar-total">0kr</span>
@@ -1428,7 +1428,7 @@
                 </button>
                 <button class="btn btn-custom" id="go-to-checkout-sidebar">
                     <i class="fas fa-credit-card me-2"></i>Gå till kassan
-                    </button>
+                </button>
             </div>
         </div>
     </div>
@@ -1440,8 +1440,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-                    // Main application logic
-            document.addEventListener('DOMContentLoaded', function() {
+        // Main application logic
+        document.addEventListener('DOMContentLoaded', function() {
             
             // Application state
             const app = {
@@ -1655,7 +1655,7 @@
                 // Wait a bit for default selections to be applied, then update preview
                 setTimeout(() => {
                 updatePreview();
-                    
+                
                     // Force show some images for testing
                     setTimeout(() => {
                         forceShowPreview();
@@ -2293,7 +2293,7 @@
                 updateConfiguredCombinationsDisabledState();
             }
 
-                        // Handle special request input
+            // Handle special request input
             function handleSpecialRequestInput(stepNum) {
                 const textbox = document.getElementById(`special-request-${stepNum}`);
                 const text = textbox.value.trim();
@@ -2698,7 +2698,7 @@
                     });
                 }
 
-                            // Show current selections if any
+                // Show current selections if any
             // Removed "aktuella val" section
 
                 cartSidebarTotal.textContent = `${total}kr`;
@@ -2999,7 +2999,7 @@
                         }
                     } else {
                         // No design selected, show the combo's secondary color logo
-                        fadeInImage(previewLogo, app.selections.configuredCombo.secondaryColor.logo);
+                    fadeInImage(previewLogo, app.selections.configuredCombo.secondaryColor.logo);
                     }
                     
                     hasSelections = true;
@@ -3015,9 +3015,9 @@
                         fadeInImage(previewBase, app.selections.primaryColor.img);
                         hasSelections = true;
                         addPreviewDetail('Primär Färg', app.selections.primaryColor.name);
-                } else {
-                    fadeOutImage(previewBase);
-                }
+                    } else {
+                        fadeOutImage(previewBase);
+                    }
 
                     if (app.selections.secondaryColorSpecial) {
                         // Show standard black button/logo for special request
@@ -3032,18 +3032,18 @@
                         addPreviewDetail('Sekundär Färg', 'Specialförfrågan');
                     } else if (app.selections.secondaryColor) {
                         // Show button for secondary color (this will be visible)
-                    fadeInImage(previewButton, app.selections.secondaryColor.img);
+                        fadeInImage(previewButton, app.selections.secondaryColor.img);
                         
                         // Only show logo if no design is selected
                         if (!app.selections.design || app.selections.design.id === 'none') {
-                    fadeInImage(previewLogo, app.selections.secondaryColor.logo);
+                        fadeInImage(previewLogo, app.selections.secondaryColor.logo);
                         }
-                    
-                    hasSelections = true;
-                    addPreviewDetail('Sekundär Färg', app.selections.secondaryColor.name);
-                } else {
-                    fadeOutImage(previewButton);
-                    fadeOutImage(previewLogo);
+                        
+                        hasSelections = true;
+                        addPreviewDetail('Sekundär Färg', app.selections.secondaryColor.name);
+                    } else {
+                        fadeOutImage(previewButton);
+                        fadeOutImage(previewLogo);
                     }
                 }
 
@@ -3164,7 +3164,7 @@
                 // Change image immediately without any transitions
                 imgElement.src = src;
                 imgElement.style.display = 'block';
-                imgElement.style.opacity = '1';
+                    imgElement.style.opacity = '1';
                 imgElement.style.transition = 'none';
                 
                 // Also update the next layer if it exists
@@ -3190,7 +3190,7 @@
                 // Hide element immediately without transitions
                 imgElement.style.transition = 'none';
                 imgElement.style.opacity = '0';
-                imgElement.style.display = 'none';
+                    imgElement.style.display = 'none';
             }
 
             // Show element immediately - no transitions
@@ -3198,7 +3198,7 @@
                 if (!element) return;
                 
                 element.style.transition = 'none';
-                element.style.opacity = '1';
+                    element.style.opacity = '1';
                 element.style.display = 'flex';
             }
 
@@ -3208,7 +3208,7 @@
                 
                 element.style.transition = 'none';
                 element.style.opacity = '0';
-                element.style.display = 'none';
+                    element.style.display = 'none';
             }
 
             // Finish design

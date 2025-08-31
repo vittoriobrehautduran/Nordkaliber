@@ -30,7 +30,7 @@ exports.handler = async (event, context) => {
     };
   }
 
-      try {
+  try {
       const { items, customerEmail, customerName, customerPhone, customerAddress } = JSON.parse(event.body);
 
     if (!items || !Array.isArray(items) || items.length === 0) {
@@ -87,8 +87,8 @@ exports.handler = async (event, context) => {
       statusCode: 200,
       headers,
       body: JSON.stringify({ 
-        clientSecret: paymentIntent.client_secret,
-        paymentIntentId: paymentIntent.id
+      clientSecret: paymentIntent.client_secret,
+      paymentIntentId: paymentIntent.id
       })
     };
   } catch (error) {
@@ -97,8 +97,8 @@ exports.handler = async (event, context) => {
       statusCode: 500,
       headers,
       body: JSON.stringify({ 
-        error: 'Failed to create payment intent',
-        details: error.message
+      error: 'Failed to create payment intent',
+      details: error.message
       })
     };
   }

@@ -16,26 +16,26 @@ exports.handler = async (event, context) => {
   }
 
   try {
-    // Get Stripe publishable key from environment
-    const publishableKey = process.env.STRIPE_PUBLISHABLE_KEY;
-    
-    if (!publishableKey) {
-      console.error('STRIPE_PUBLISHABLE_KEY not found in environment variables');
+  // Get Stripe publishable key from environment
+  const publishableKey = process.env.STRIPE_PUBLISHABLE_KEY;
+  
+  if (!publishableKey) {
+    console.error('STRIPE_PUBLISHABLE_KEY not found in environment variables');
       return {
         statusCode: 500,
         headers,
         body: JSON.stringify({ 
-          error: 'Stripe configuration not found',
-          details: 'Publishable key not configured'
+      error: 'Stripe configuration not found',
+      details: 'Publishable key not configured'
         })
       };
-    }
+  }
 
     return {
       statusCode: 200,
       headers,
       body: JSON.stringify({
-        publishableKey: publishableKey
+    publishableKey: publishableKey
       })
     };
   } catch (error) {

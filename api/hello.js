@@ -18,7 +18,7 @@ exports.handler = async (event, context) => {
     headers,
     body: JSON.stringify({ 
       message: 'Hello from Netlify Functions!',
-      timestamp: new Date().toISOString(),
+    timestamp: new Date().toISOString(),
       method: event.httpMethod,
       url: event.path
     })
