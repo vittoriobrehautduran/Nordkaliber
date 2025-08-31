@@ -10,10 +10,11 @@
   to = "/.netlify/functions/:splat"
   status = 200
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# Remove the catch-all redirect that was preventing direct access to HTML files
+# [[redirects]]
+#   from = "/*"
+#   to = "/index.html"
+#   status = 200
 
 [functions]
   node_bundler = "esbuild" 
