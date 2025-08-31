@@ -155,7 +155,7 @@ app.post('/create-checkout-session', async (req, res) => {
             line_items: lineItems,
             mode: 'payment',
             success_url: `${req.headers.origin}/success.html?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${req.headers.origin}/design/design.html`,
+            cancel_url: `${req.headers.origin}/designpage.html`,
             customer_email: customerEmail,
             metadata: {
                 order_type: 'custom_ammunition_box',
