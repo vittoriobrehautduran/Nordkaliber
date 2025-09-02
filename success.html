@@ -14,6 +14,32 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
+        // Security: Only allow access from your domain
+        (function() {
+            const allowedDomains = ['nordkaliber.store', 'localhost', '127.0.0.1'];
+            const currentDomain = window.location.hostname;
+            const referrer = document.referrer;
+            
+            // Check if current domain is allowed
+            const isAllowedDomain = allowedDomains.some(domain => 
+                currentDomain === domain || currentDomain.endsWith('.' + domain)
+            );
+            
+            // Check if referrer is from your domain
+            const isFromYourDomain = referrer && (
+                referrer.includes('nordkaliber.store') || 
+                referrer.includes('localhost') ||
+                referrer.includes('127.0.0.1')
+            );
+            
+            // If not from allowed domain or not from your site, redirect
+            if (!isAllowedDomain || (!isFromYourDomain && referrer !== '')) {
+                console.log('Unauthorized access attempt blocked');
+                window.location.href = '/';
+                return;
+            }
+        })();
+        
         tailwind.config = {
             theme: {
                 extend: {

@@ -83,3 +83,22 @@
   to = "/index.html"
   status = 302
   conditions = {Referer = "!https://nordkaliber.store/*"}
+
+# Block direct access to sensitive pages
+[[redirects]]
+  from = "/success.html"
+  to = "/index.html"
+  status = 302
+  conditions = {Referer = "!https://nordkaliber.store/*"}
+
+[[redirects]]
+  from = "/policies.html"
+  to = "/index.html"
+  status = 302
+  conditions = {Referer = "!https://nordkaliber.store/*"}
+
+[[redirects]]
+  from = "/test-order-flow.html"
+  to = "/index.html"
+  status = 302
+  conditions = {Referer = "!https://nordkaliber.store/*"}
