@@ -1954,6 +1954,13 @@
                             if (entry.isIntersecting) {
                                 const img = entry.target;
                                 console.log('Image intersecting:', img.src, 'High-res:', img.dataset.highRes);
+                                
+                                // Skip graybox and blackbutton as they are already high-quality
+                                if (img.src.includes('graybox.webp') || img.src.includes('blackbutton.webp')) {
+                                    imageObserver.unobserve(img);
+                                    return;
+                                }
+                                
                                 if (img.dataset.highRes && img.src !== img.dataset.highRes) {
                                     loadHighQualityImage(img);
                                 }
@@ -2002,8 +2009,13 @@
                     }
                 });
                 
-                // Use lazy loading for other images
+                // Use lazy loading for other images (skip graybox and blackbutton which are already high-quality)
                 document.querySelectorAll('img[data-high-res]:not(.design-option img)').forEach(img => {
+                    // Skip graybox and blackbutton as they are already high-quality
+                    if (img.src.includes('graybox.webp') || img.src.includes('blackbutton.webp')) {
+                        return;
+                    }
+                    
                     if (imageObserver) {
                         imageObserver.observe(img);
                     } else {
@@ -2026,9 +2038,9 @@
                 // Skip primary color options - they should use solid colors, not images
                 // Primary colors are already set with background-color in the HTML
                 
-                // Upgrade secondary color options
+                // Upgrade secondary color options (except blackbutton which is already high-quality)
                 document.querySelectorAll('.secondary-color-option').forEach(option => {
-                    if (option.dataset.highRes) {
+                    if (option.dataset.highRes && option.dataset.name !== 'Svart') {
                         // Create a high-quality background image
                         const highResImg = new Image();
                         highResImg.onload = () => {
