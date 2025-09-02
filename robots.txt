@@ -1,0 +1,27 @@
+User-agent: *
+Allow: /
+Disallow: /checkout.html
+Disallow: /success.html
+Disallow: /policies.html
+Disallow: /test-order-flow.html
+Disallow: /api/
+Disallow: /images/NordkaliberLogga.png
+Disallow: /images/SiteLogo.png
+Disallow: /images/site-logo-png.png
+Disallow: /images/primarycolors/
+Disallow: /images/secondarycolors/
+Disallow: /images/motiv/
+Disallow: /images/Gallery/
+Disallow: /images/ammocasse*
+Disallow: /images/elk1*
+Disallow: /images/backgroundforest*
+Disallow: /images/sequence_presentation*
+Disallow: /images/video_presentation*
+Disallow: /images/nordkaliber_ad*
+
+# Allow main pages
+Allow: /index.html
+Allow: /designpage.html
+Allow: /gallery.html
+
+Sitemap: https://nordkaliber.store/sitemap.xml

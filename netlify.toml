@@ -33,3 +33,53 @@
   from = "/design"
   to = "/designpage.html"
   status = 301
+
+# Block access to sensitive pages
+[[headers]]
+  for = "/checkout.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow, noarchive, nosnippet"
+
+[[headers]]
+  for = "/success.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow, noarchive, nosnippet"
+
+[[headers]]
+  for = "/policies.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow, noarchive, nosnippet"
+
+[[headers]]
+  for = "/test-order-flow.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow, noarchive, nosnippet"
+
+# Block access to API directory
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+# Block access to image directories
+[[headers]]
+  for = "/images/primarycolors/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/images/secondarycolors/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/images/motiv/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+# Redirect direct access to checkout (only allow from your domain)
+[[redirects]]
+  from = "/checkout.html"
+  to = "/index.html"
+  status = 302
+  conditions = {Referer = "!https://nordkaliber.store/*"}
