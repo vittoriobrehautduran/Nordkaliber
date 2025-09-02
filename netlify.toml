@@ -84,6 +84,13 @@
   status = 302
   conditions = {Referer = "!https://nordkaliber.store/*"}
 
+# Additional redirect for checkout without referrer (direct access)
+[[redirects]]
+  from = "/checkout.html"
+  to = "/index.html"
+  status = 302
+  conditions = {Referer = ""}
+
 # Block direct access to sensitive pages
 [[redirects]]
   from = "/success.html"
@@ -92,7 +99,25 @@
   conditions = {Referer = "!https://nordkaliber.store/*"}
 
 [[redirects]]
+  from = "/success.html"
+  to = "/index.html"
+  status = 302
+  conditions = {Referer = ""}
+
+[[redirects]]
   from = "/policies.html"
+  to = "/index.html"
+  status = 302
+  conditions = {Referer = "!https://nordkaliber.store/*"}
+
+[[redirects]]
+  from = "/policies.html"
+  to = "/index.html"
+  status = 302
+  conditions = {Referer = ""}
+
+[[redirects]]
+  from = "/test-order-flow.html"
   to = "/index.html"
   status = 302
   conditions = {Referer = "!https://nordkaliber.store/*"}
@@ -101,4 +126,4 @@
   from = "/test-order-flow.html"
   to = "/index.html"
   status = 302
-  conditions = {Referer = "!https://nordkaliber.store/*"}
+  conditions = {Referer = ""}

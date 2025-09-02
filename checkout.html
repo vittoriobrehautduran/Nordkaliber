@@ -26,15 +26,15 @@
                 currentDomain === domain || currentDomain.endsWith('.' + domain)
             );
             
-            // Check if referrer is from your domain
-            const isFromYourDomain = referrer && (
+            // Check if referrer is from your domain (or empty for direct access)
+            const isFromYourDomain = !referrer || (
                 referrer.includes('nordkaliber.store') || 
                 referrer.includes('localhost') ||
                 referrer.includes('127.0.0.1')
             );
             
-            // If not from allowed domain or not from your site, redirect
-            if (!isAllowedDomain || (!isFromYourDomain && referrer !== '')) {
+            // Block if not from allowed domain OR if there's a referrer that's not from your site
+            if (!isAllowedDomain || !isFromYourDomain) {
                 console.log('Unauthorized access attempt blocked');
                 window.location.href = '/';
                 return;
