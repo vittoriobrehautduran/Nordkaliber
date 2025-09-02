@@ -1867,7 +1867,7 @@
                 preloadStepImages(app.currentStep);
                 
                 // Also start loading high-quality images for current step
-                if (app.currentStep >= 3) {
+                if (app.currentStep >= 2) {
                     upgradeImageQuality();
                 }
             }
@@ -1953,6 +1953,7 @@
                         entries.forEach(entry => {
                             if (entry.isIntersecting) {
                                 const img = entry.target;
+                                console.log('Image intersecting:', img.src, 'High-res:', img.dataset.highRes);
                                 if (img.dataset.highRes && img.src !== img.dataset.highRes) {
                                     loadHighQualityImage(img);
                                 }
@@ -1960,17 +1961,22 @@
                             }
                         });
                     }, {
-                        rootMargin: '50px 0px',
-                        threshold: 0.1
+                        rootMargin: '100px 0px',
+                        threshold: 0.01
                     });
                 }
             }
             
             function loadHighQualityImage(img) {
+                console.log('Loading high-res image:', img.dataset.highRes);
                 const highResImg = new Image();
                 highResImg.onload = () => {
+                    console.log('High-res image loaded:', img.dataset.highRes);
                     img.src = img.dataset.highRes;
                     img.classList.add('loaded');
+                };
+                highResImg.onerror = () => {
+                    console.error('Failed to load high-res image:', img.dataset.highRes);
                 };
                 highResImg.src = img.dataset.highRes;
             }
