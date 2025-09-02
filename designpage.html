@@ -1649,13 +1649,13 @@
                 primaryColors: [
                     { name: 'Svart', value: '#000000', img: 'images/primarycolors/blackbox.webp', thumbnail: 'images/primarycolors/blackbox-hq.webp' },
                     { name: 'Vit', value: '#f5f5f5', img: 'images/primarycolors/whitebox.webp', thumbnail: 'images/primarycolors/whitebox-hq.webp' },
-                    { name: 'Grå', value: '#4a5568', img: 'images/primarycolors/graybox.webp', thumbnail: 'images/primarycolors/graybox.webp' },
+                    { name: 'Grå', value: '#4a5568', img: 'images/primarycolors/graybox-low.webp', thumbnail: 'images/primarycolors/graybox-hq.webp' },
                     { name: 'Grön', value: '#2d5a27', img: 'images/primarycolors/greenbox.webp', thumbnail: 'images/primarycolors/greenbox-hq.webp' },
                     { name: 'Röd', value: '#b91c1c', img: 'images/primarycolors/redbox.webp', thumbnail: 'images/primarycolors/redbox-hq.webp' },
                     { name: 'Mörkgrön', value: '#1a3d1a', img: 'images/primarycolors/darkgreenbox.webp', thumbnail: 'images/primarycolors/darkgreenbox-hq.webp' }
                 ],
                 secondaryColors: [
-                    { name: 'Svart', value: '#000000', img: 'images/secondarycolors/blackbutton.webp', thumbnail: 'images/secondarycolors/blackbutton.webp' },
+                    { name: 'Svart', value: '#000000', img: 'images/secondarycolors/blackbutton-low.webp', thumbnail: 'images/secondarycolors/blackbutton-hq.webp' },
                     { name: 'Vit', value: '#f5f5f5', img: 'images/secondarycolors/whitebutton.webp', thumbnail: 'images/secondarycolors/whitebutton-hq.webp' },
                     { name: 'Guld', value: '#d4af37', img: 'images/secondarycolors/goldbutton.webp', thumbnail: 'images/secondarycolors/goldbutton-hq.webp' },
                     { name: 'Orange', value: '#ff8c00', img: 'images/secondarycolors/orangebutton.webp', thumbnail: 'images/secondarycolors/orangebutton-hq.webp' },
@@ -1840,6 +1840,9 @@
                 // Smart progressive loading based on current step
                 startProgressiveLoading();
                 
+                // Immediately upgrade graybox and blackbutton to high-quality
+                upgradeGrayboxAndBlackbutton();
+                
                 // Update preview immediately for faster loading
                 updatePreview();
                 
@@ -1955,8 +1958,10 @@
                                 const img = entry.target;
                                 console.log('Image intersecting:', img.src, 'High-res:', img.dataset.highRes);
                                 
-                                // Skip graybox and blackbutton as they are already high-quality
-                                if (img.src.includes('graybox.webp') || img.src.includes('blackbutton.webp')) {
+                                // Immediately upgrade graybox and blackbutton to high-quality
+                                if (img.src.includes('graybox-low.webp') || img.src.includes('blackbutton-low.webp')) {
+                                    console.log('IntersectionObserver: Immediately upgrading graybox/blackbutton to high-quality:', img.dataset.highRes);
+                                    loadHighQualityImage(img);
                                     imageObserver.unobserve(img);
                                     return;
                                 }
@@ -2015,10 +2020,12 @@
                     }
                 });
                 
-                // Use lazy loading for other images (skip graybox and blackbutton which are already high-quality)
+                // Immediately upgrade graybox and blackbutton to high-quality
                 document.querySelectorAll('img[data-high-res]:not(.design-option img):not(.preview-layer)').forEach(img => {
-                    // Skip graybox and blackbutton as they are already high-quality
-                    if (img.src.includes('graybox.webp') || img.src.includes('blackbutton.webp')) {
+                    // Immediately upgrade graybox and blackbutton to high-quality
+                    if (img.src.includes('graybox-low.webp') || img.src.includes('blackbutton-low.webp')) {
+                        console.log('Immediately upgrading graybox/blackbutton to high-quality:', img.dataset.highRes);
+                        loadHighQualityImage(img);
                         return;
                     }
                     
@@ -2039,15 +2046,22 @@
                 debouncedUpdatePreview();
             }
             
-            // Upgrade color options to high quality
-            function upgradeColorOptions() {
-                // Skip primary color options - they should use solid colors, not images
-                // Primary colors are already set with background-color in the HTML
+            // Immediately upgrade graybox and blackbutton to high-quality on page load
+            function upgradeGrayboxAndBlackbutton() {
+                console.log('Immediately upgrading graybox and blackbutton to high-quality...');
                 
-                // Upgrade secondary color options (except blackbutton which is already high-quality)
-                document.querySelectorAll('.secondary-color-option').forEach(option => {
-                    if (option.dataset.highRes && option.dataset.name !== 'Svart') {
-                        // Create a high-quality background image
+                // Upgrade all graybox and blackbutton images immediately
+                document.querySelectorAll('img[data-high-res]').forEach(img => {
+                    if (img.src.includes('graybox-low.webp') || img.src.includes('blackbutton-low.webp')) {
+                        console.log('Immediately upgrading to high-quality:', img.dataset.highRes);
+                        loadHighQualityImage(img);
+                    }
+                });
+                
+                // Upgrade graybox and blackbutton color options immediately
+                document.querySelectorAll('.primary-color-option, .secondary-color-option').forEach(option => {
+                    if (option.dataset.highRes && (option.dataset.name === 'Grå' || option.dataset.name === 'Svart')) {
+                        console.log('Immediately upgrading color option to high-quality:', option.dataset.highRes);
                         const highResImg = new Image();
                         highResImg.onload = () => {
                             option.style.backgroundImage = `url(${option.dataset.highRes})`;
@@ -2055,6 +2069,38 @@
                             option.style.backgroundPosition = 'center';
                         };
                         highResImg.src = option.dataset.highRes;
+                    }
+                });
+            }
+            
+            // Upgrade color options to high quality
+            function upgradeColorOptions() {
+                // Skip primary color options - they should use solid colors, not images
+                // Primary colors are already set with background-color in the HTML
+                
+                // Upgrade secondary color options
+                document.querySelectorAll('.secondary-color-option').forEach(option => {
+                    if (option.dataset.highRes) {
+                        // Immediately upgrade blackbutton to high-quality
+                        if (option.dataset.name === 'Svart') {
+                            console.log('Immediately upgrading blackbutton color option to high-quality:', option.dataset.highRes);
+                            const highResImg = new Image();
+                            highResImg.onload = () => {
+                                option.style.backgroundImage = `url(${option.dataset.highRes})`;
+                                option.style.backgroundSize = 'cover';
+                                option.style.backgroundPosition = 'center';
+                            };
+                            highResImg.src = option.dataset.highRes;
+                        } else {
+                            // Create a high-quality background image for other colors
+                            const highResImg = new Image();
+                            highResImg.onload = () => {
+                                option.style.backgroundImage = `url(${option.dataset.highRes})`;
+                                option.style.backgroundSize = 'cover';
+                                option.style.backgroundPosition = 'center';
+                            };
+                            highResImg.src = option.dataset.highRes;
+                        }
                     }
                 });
                 
