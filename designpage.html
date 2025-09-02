@@ -1961,6 +1961,12 @@
                                     return;
                                 }
                                 
+                                // Skip preview layers as they are handled separately
+                                if (img.classList.contains('preview-layer')) {
+                                    imageObserver.unobserve(img);
+                                    return;
+                                }
+                                
                                 if (img.dataset.highRes && img.src !== img.dataset.highRes) {
                                     loadHighQualityImage(img);
                                 }
@@ -2010,7 +2016,7 @@
                 });
                 
                 // Use lazy loading for other images (skip graybox and blackbutton which are already high-quality)
-                document.querySelectorAll('img[data-high-res]:not(.design-option img)').forEach(img => {
+                document.querySelectorAll('img[data-high-res]:not(.design-option img):not(.preview-layer)').forEach(img => {
                     // Skip graybox and blackbutton as they are already high-quality
                     if (img.src.includes('graybox.webp') || img.src.includes('blackbutton.webp')) {
                         return;
