@@ -1990,10 +1990,20 @@
                 }, 50);
             }
             
-            // Upgrade image quality when user reaches step 3 or 4
+            // Upgrade image quality when user reaches step 2 or higher
             function upgradeImageQuality() {
-                // Use lazy loading for better performance
-                document.querySelectorAll('img[data-high-res]').forEach(img => {
+                console.log('Upgrading image quality for step:', app.currentStep);
+                
+                // Force load high-res images immediately for design options
+                document.querySelectorAll('.design-option img[data-high-res]').forEach(img => {
+                    if (img.dataset.highRes && img.src !== img.dataset.highRes) {
+                        console.log('Force loading design high-res image:', img.dataset.highRes);
+                        loadHighQualityImage(img);
+                    }
+                });
+                
+                // Use lazy loading for other images
+                document.querySelectorAll('img[data-high-res]:not(.design-option img)').forEach(img => {
                     if (imageObserver) {
                         imageObserver.observe(img);
                     } else {
@@ -3361,23 +3371,32 @@
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
                             const img = entry.target;
+                            console.log('Design image intersecting:', img.src, 'High-res:', img.dataset.highRes);
                             if (img.dataset.highRes && img.src !== img.dataset.highRes) {
+                                console.log('Loading design high-res image:', img.dataset.highRes);
                                 // Load high quality image
                                 const highResImg = new Image();
                                 highResImg.onload = () => {
+                                    console.log('Design high-res image loaded:', img.dataset.highRes);
                                     img.src = img.dataset.highRes;
+                                };
+                                highResImg.onerror = () => {
+                                    console.error('Failed to load design high-res image:', img.dataset.highRes);
                                 };
                                 highResImg.src = img.dataset.highRes;
                             }
                         }
                     });
                 }, {
-                    threshold: 0.1,
-                    rootMargin: '50px'
+                    threshold: 0.01,
+                    rootMargin: '100px'
                 });
                 
                 // Observe all design option images
-                document.querySelectorAll('.design-option img[data-high-res]').forEach(img => {
+                const designImages = document.querySelectorAll('.design-option img[data-high-res]');
+                console.log('Found design images to observe:', designImages.length);
+                designImages.forEach((img, index) => {
+                    console.log(`Observing design image ${index + 1}:`, img.src, '→', img.dataset.highRes);
                     observer.observe(img);
                 });
             }
