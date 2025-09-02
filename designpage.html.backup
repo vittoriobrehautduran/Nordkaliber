@@ -10,12 +10,12 @@
     <!-- Version: 2024-01-27 - Updated header styling -->
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.webp">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.webp">
-    <link rel="icon" type="image/png" sizes="48x48" href="images/favicon-48x48.webp">
-    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.webp">
-    <link rel="shortcut icon" type="image/png" href="images/favicon-32x32.webp">
-    <link rel="apple-touch-icon" href="images/apple-touch-icon.webp">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="images/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png">
+    <link rel="shortcut icon" type="image/png" href="images/favicon-32x32.png">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -1206,7 +1206,7 @@
             left: 0;
             right: 0;
             height: 50%;
-            background: #ff8c00;
+            background: #f59e0b;
         }
 
         .combo-color-circle.nordic-frost {
@@ -1219,11 +1219,11 @@
             left: 0;
             right: 0;
             height: 50%;
-            background: #f5f5f5;
+            background: #ffffff;
         }
 
         .combo-color-circle.winter-sun {
-            background: #f5f5f5;
+            background: #ffffff;
         }
         .combo-color-circle.winter-sun::after {
             content: '';
@@ -1232,7 +1232,7 @@
             left: 0;
             right: 0;
             height: 50%;
-            background: #d4af37;
+            background: #D4AF37;
         }
 
         .combo-color-circle.midnight-gold {
@@ -1245,37 +1245,12 @@
             left: 0;
             right: 0;
             height: 50%;
-            background: #d4af37;
+            background: #D4AF37;
         }
 
         /* Animation classes */
         .fade-in {
             animation: fadeIn 0.9s cubic-bezier(0.4, 0.0, 0.2, 1);
-        }
-        
-        /* Loading states for better UX */
-        img[data-high-res] {
-            transition: opacity 0.3s ease;
-        }
-        
-        img[data-high-res]:not(.loaded) {
-            opacity: 0.8;
-        }
-        
-        img[data-high-res].loaded {
-            opacity: 1;
-        }
-        
-        /* Smooth loading placeholder */
-        .loading-placeholder {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-        }
-        
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
         }
 
         @keyframes fadeIn {
@@ -1647,174 +1622,174 @@
                     ".300 Winchester Magnum", "6.5x55 Swedish Mauser", "12 Gauge (Hagel)"
                 ],
                 primaryColors: [
-                    { name: 'Svart', value: '#000000', img: 'images/primarycolors/blackbox.webp', thumbnail: 'images/primarycolors/blackbox.webp' },
-                                         { name: 'Vit', value: '#f5f5f5', img: 'images/primarycolors/whitebox.webp', thumbnail: 'images/primarycolors/whitebox.webp' },
-                    { name: 'Grå', value: '#4a5568', img: 'images/primarycolors/graybox.webp', thumbnail: 'images/primarycolors/graybox.webp' },
-                    { name: 'Grön', value: '#2d5a27', img: 'images/primarycolors/greenbox.webp', thumbnail: 'images/primarycolors/greenbox.webp' },
-                                         { name: 'Röd', value: '#b91c1c', img: 'images/primarycolors/redbox.webp', thumbnail: 'images/primarycolors/redbox.webp' },
-                    { name: 'Mörkgrön', value: '#1a3d1a', img: 'images/primarycolors/darkgreenbox.webp', thumbnail: 'images/primarycolors/darkgreenbox.webp' }
+                    { name: 'Svart', value: 'black', img: 'images/primarycolors/blackbox.PNG', thumbnail: 'images/primarycolors/blackbox.PNG' },
+                    { name: 'Vit', value: 'white', img: 'images/primarycolors/boxwhite.PNG', thumbnail: 'images/primarycolors/boxwhite.PNG' },
+                    { name: 'Grå', value: 'gray', img: 'images/primarycolors/graybox.PNG', thumbnail: 'images/primarycolors/graybox.PNG' },
+                    { name: 'Grön', value: 'green', img: 'images/primarycolors/greenbox.PNG', thumbnail: 'images/primarycolors/greenbox.PNG' },
+                    { name: 'Röd', value: 'red', img: 'images/primarycolors/boxred.PNG', thumbnail: 'images/primarycolors/boxred.PNG' },
+                    { name: 'Mörkgrön', value: 'darkgreen', img: 'images/primarycolors/darkgreenbox.PNG', thumbnail: 'images/primarycolors/darkgreenbox.PNG' }
                 ],
                 secondaryColors: [
-                    { name: 'Svart', value: '#000000', img: 'images/secondarycolors/blackbutton.webp', thumbnail: 'images/secondarycolors/blackbutton.webp' },
-                    { name: 'Vit', value: '#f5f5f5', img: 'images/secondarycolors/whitebutton.webp', thumbnail: 'images/secondarycolors/whitebutton.webp' },
-                    { name: 'Guld', value: '#d4af37', img: 'images/secondarycolors/goldbutton.webp', thumbnail: 'images/secondarycolors/goldbutton.webp' },
-                    { name: 'Orange', value: '#ff8c00', img: 'images/secondarycolors/orangebutton.webp', thumbnail: 'images/secondarycolors/orangebutton.webp' },
-                    { name: 'Röd', value: '#b91c1c', img: 'images/secondarycolors/redbutton.webp', thumbnail: 'images/secondarycolors/redbutton.webp' }
+                    { name: 'Svart', value: 'black', img: 'images/secondarycolors/blackbutton.PNG', logo: 'images/secondarycolors/blacklogo.PNG', thumbnail: 'images/secondarycolors/blackbutton.PNG' },
+                    { name: 'Vit', value: 'white', img: 'images/secondarycolors/whitebutton.PNG', logo: 'images/secondarycolors/whitelogo.PNG', thumbnail: 'images/secondarycolors/whitebutton.PNG' },
+                    { name: 'Guld', value: 'gold', img: 'images/secondarycolors/goldbutton.PNG', logo: 'images/secondarycolors/goldlogo.PNG', thumbnail: 'images/secondarycolors/goldbutton.PNG' },
+                    { name: 'Orange', value: 'orange', img: 'images/secondarycolors/orangebutton.PNG', logo: 'images/secondarycolors/orangelogo.PNG', thumbnail: 'images/secondarycolors/orangebutton.PNG' },
+                    { name: 'Röd', value: 'red', img: 'images/secondarycolors/redbutton.PNG', logo: 'images/secondarycolors/redlogo.png', thumbnail: 'images/secondarycolors/redbutton.PNG' }
                 ],
                 configuredCombinations: [
                     { 
                         id: 'black-blaze', 
                         name: 'Black Blaze', 
-                        primaryColor: { name: 'Svart', value: '#000000', img: 'images/primarycolors/blackbox.webp', thumbnail: 'images/primarycolors/blackbox.webp' },
-                        secondaryColor: { name: 'Orange', value: '#ff8c00', img: 'images/secondarycolors/orangebutton.webp', thumbnail: 'images/secondarycolors/orangebutton.webp' }
+                        primaryColor: { name: 'Svart', value: 'black', img: 'images/primarycolors/blackbox.PNG', thumbnail: 'images/primarycolors/blackbox.PNG' },
+                        secondaryColor: { name: 'Orange', value: 'orange', img: 'images/secondarycolors/orangebutton.PNG', logo: 'images/secondarycolors/orangelogo.PNG', thumbnail: 'images/secondarycolors/orangebutton.PNG' }
                     },
                     { 
                         id: 'nordic-frost', 
                         name: 'Nordic Frost', 
-                        primaryColor: { name: 'Svart', value: '#000000', img: 'images/primarycolors/blackbox.webp', thumbnail: 'images/primarycolors/blackbox.webp' },
-                        secondaryColor: { name: 'Vit', value: '#f5f5f5', img: 'images/secondarycolors/whitebutton.webp', thumbnail: 'images/secondarycolors/whitebutton.webp' }
+                        primaryColor: { name: 'Svart', value: 'black', img: 'images/primarycolors/blackbox.PNG', thumbnail: 'images/primarycolors/blackbox.PNG' },
+                        secondaryColor: { name: 'Vit', value: 'white', img: 'images/secondarycolors/whitebutton.PNG', logo: 'images/secondarycolors/whitelogo.PNG', thumbnail: 'images/secondarycolors/whitebutton.PNG' }
                     },
                     { 
                         id: 'winter-sun', 
                         name: 'Winter Sun', 
-                        primaryColor: { name: 'Vit', value: '#f5f5f5', img: 'images/primarycolors/whitebox.webp', thumbnail: 'images/primarycolors/whitebox.webp' },
-                        secondaryColor: { name: 'Guld', value: '#d4af37', img: 'images/secondarycolors/goldbutton.webp', thumbnail: 'images/secondarycolors/goldbutton.webp' }
+                        primaryColor: { name: 'Vit', value: 'white', img: 'images/primarycolors/boxwhite.PNG', thumbnail: 'images/primarycolors/boxwhite.PNG' },
+                        secondaryColor: { name: 'Guld', value: 'gold', img: 'images/secondarycolors/goldbutton.PNG', logo: 'images/secondarycolors/goldlogo.PNG', thumbnail: 'images/secondarycolors/goldbutton.PNG' }
                     },
                     { 
                         id: 'midnight-gold', 
                         name: 'Midnight Gold', 
-                        primaryColor: { name: 'Svart', value: '#000000', img: 'images/primarycolors/blackbox.webp', thumbnail: 'images/primarycolors/blackbox.webp' },
-                        secondaryColor: { name: 'Guld', value: '#d4af37', img: 'images/secondarycolors/goldbutton.webp', thumbnail: 'images/secondarycolors/goldbutton.webp' }
+                        primaryColor: { name: 'Svart', value: 'black', img: 'images/primarycolors/blackbox.PNG', thumbnail: 'images/primarycolors/blackbox.PNG' },
+                        secondaryColor: { name: 'Guld', value: 'gold', img: 'images/secondarycolors/goldbutton.PNG', logo: 'images/secondarycolors/goldlogo.PNG', thumbnail: 'images/secondarycolors/goldbutton.PNG' }
                     }
                 ],
                 designs: [
                     { 
                         name: 'Motiv 1', 
                         id: 'M1', 
-                        optionImg: 'images/motiv/M1/M1.webp',
-                        optionThumb: 'images/motiv/M1/M1.webp',
+                        optionImg: 'images/motiv/M1/M1.png',
+                        optionThumb: 'images/motiv/M1/M1.png',
                         variants: {
-                            black: { img: 'images/motiv/M1/M1black.webp', thumb: 'images/motiv/M1/M1black.webp' },
-                            white: { img: 'images/motiv/M1/M1white.webp', thumb: 'images/motiv/M1/M1white.webp' },
-                            gold: { img: 'images/motiv/M1/M1gold.webp', thumb: 'images/motiv/M1/M1gold.webp' },
-                            orange: { img: 'images/motiv/M1/M1orange.webp', thumb: 'images/motiv/M1/M1orange.webp' },
-                            red: { img: 'images/motiv/M1/M1red.webp', thumb: 'images/motiv/M1/M1red.webp' }
+                            black: { img: 'images/motiv/M1/M1svart.PNG', thumb: 'images/motiv/M1/M1svart.PNG' },
+                            white: { img: 'images/motiv/M1/M1vit.PNG', thumb: 'images/motiv/M1/M1vit.PNG' },
+                            gold: { img: 'images/motiv/M1/M1guld.PNG', thumb: 'images/motiv/M1/M1guld.PNG' },
+                            orange: { img: 'images/motiv/M1/orangeM1.png', thumb: 'images/motiv/M1/orangeM1.png' },
+                            red: { img: 'images/motiv/M1/rödM1.png', thumb: 'images/motiv/M1/rödM1.png' }
                         }
                     },
                     { 
                         name: 'Motiv 2', 
                         id: 'M2', 
-                        optionImg: 'images/motiv/M2/M2.webp',
-                        optionThumb: 'images/motiv/M2/M2.webp',
+                        optionImg: 'images/motiv/M2/M2.PNG',
+                        optionThumb: 'images/motiv/M2/M2.PNG',
                         variants: {
-                            black: { img: 'images/motiv/M2/M2black.webp', thumb: 'images/motiv/M2/M2black.webp' },
-                            white: { img: 'images/motiv/M2/M2white.webp', thumb: 'images/motiv/M2/M2white.webp' },
-                            gold: { img: 'images/motiv/M2/M2gold.webp', thumb: 'images/motiv/M2/M2gold.webp' },
-                            orange: { img: 'images/motiv/M2/M2orange.webp', thumb: 'images/motiv/M2/M2orange.webp' },
-                            red: { img: 'images/motiv/M2/M2red.webp', thumb: 'images/motiv/M2/M2red.webp' }
+                            black: { img: 'images/motiv/M2/M2svart.PNG', thumb: 'images/motiv/M2/M2svart.PNG' },
+                            white: { img: 'images/motiv/M2/M2vit.PNG', thumb: 'images/motiv/M2/M2vit.PNG' },
+                            gold: { img: 'images/motiv/M2/M2guld.PNG', thumb: 'images/motiv/M2/M2guld.PNG' },
+                            orange: { img: 'images/motiv/M2/M2orange.png', thumb: 'images/motiv/M2/M2orange.png' },
+                            red: { img: 'images/motiv/M2/M2röd.png', thumb: 'images/motiv/M2/M2röd.png' }
                         }
                     },
                     { 
                         name: 'Motiv 3', 
                         id: 'M3', 
                         optionImg: 'images/motiv/M3/M3.webp',
-                        optionThumb: 'images/motiv/M3/M3-thumb.webp',
+                        optionThumb: 'images/motiv/M3/M3-thumb.jpg',
                         variants: {
-                            black: { img: 'images/motiv/M3/M3black.webp', thumb: 'images/motiv/M3/M3black.webp' },
-                            white: { img: 'images/motiv/M3/M3white.webp', thumb: 'images/motiv/M3/M3white.webp' },
-                            gold: { img: 'images/motiv/M3/M3gold.webp', thumb: 'images/motiv/M3/M3gold.webp' },
-                            orange: { img: 'images/motiv/M3/M3orange.webp', thumb: 'images/motiv/M3/M3orange.webp' },
-                            red: { img: 'images/motiv/M3/M3red.webp', thumb: 'images/motiv/M3/M3red.webp' }
+                            black: { img: 'images/motiv/M3/M3svart.webp', thumb: 'images/motiv/M3/M3svart-thumb.jpg' },
+                            white: { img: 'images/motiv/M3/M3vit.webp', thumb: 'images/motiv/M3/M3vit-thumb.jpg' },
+                            gold: { img: 'images/motiv/M3/M3guld.webp', thumb: 'images/motiv/M3/M3guld-thumb.jpg' },
+                            orange: { img: 'images/motiv/M3/orangeM3.webp', thumb: 'images/motiv/M3/orangeM3-thumb.jpg' },
+                            red: { img: 'images/motiv/M3/rödM3.webp', thumb: 'images/motiv/M3/rödM3-thumb.jpg' }
                         }
                     },
                     { 
                         name: 'Motiv 4', 
                         id: 'M4', 
                         optionImg: 'images/motiv/M4/M4.webp',
-                        optionThumb: 'images/motiv/M4/M4-thumb.webp',
+                        optionThumb: 'images/motiv/M4/M4-thumb.jpg',
                         variants: {
-                            black: { img: 'images/motiv/M4/M4black.webp', thumb: 'images/motiv/M4/M4black.webp' },
-                            white: { img: 'images/motiv/M4/M4white.webp', thumb: 'images/motiv/M4/M4white.webp' },
-                            gold: { img: 'images/motiv/M4/M4gold.webp', thumb: 'images/motiv/M4/M4gold.webp' },
-                            orange: { img: 'images/motiv/M4/M4orange.webp', thumb: 'images/motiv/M4/M4orange.webp' },
-                            red: { img: 'images/motiv/M4/M4red.webp', thumb: 'images/motiv/M4/M4red.webp' }
+                            black: { img: 'images/motiv/M4/M4svart.webp', thumb: 'images/motiv/M4/M4svart-thumb.jpg' },
+                            white: { img: 'images/motiv/M4/M4vit.webp', thumb: 'images/motiv/M4/M4vit-thumb.jpg' },
+                            gold: { img: 'images/motiv/M4/M4guld.webp', thumb: 'images/motiv/M4/M4guld-thumb.jpg' },
+                            orange: { img: 'images/motiv/M4/M4orange.webp', thumb: 'images/motiv/M4/M4orange-thumb.jpg' },
+                            red: { img: 'images/motiv/M4/M4röd.webp', thumb: 'images/motiv/M4/M4röd-thumb.jpg' }
                         }
                     },
                     { 
                         name: 'Motiv 5', 
                         id: 'M5', 
                         optionImg: 'images/motiv/M5/M5.webp',
-                        optionThumb: 'images/motiv/M5/M5-thumb.webp',
+                        optionThumb: 'images/motiv/M5/M5-thumb.jpg',
                         variants: {
-                            black: { img: 'images/motiv/M5/M5black.webp', thumb: 'images/motiv/M5/M5black.webp' },
-                            white: { img: 'images/motiv/M5/M5white.webp', thumb: 'images/motiv/M5/M5white.webp' },
-                            gold: { img: 'images/motiv/M5/M5gold.webp', thumb: 'images/motiv/M5/M5gold.webp' },
-                            orange: { img: 'images/motiv/M5/M5orange.webp', thumb: 'images/motiv/M5/M5orange.webp' },
-                            red: { img: 'images/motiv/M5/M5red.webp', thumb: 'images/motiv/M5/M5red.webp' }
+                            black: { img: 'images/motiv/M5/M5svart.webp', thumb: 'images/motiv/M5/M5svart-thumb.jpg' },
+                            white: { img: 'images/motiv/M5/M5vit.webp', thumb: 'images/motiv/M5/M5vit-thumb.jpg' },
+                            gold: { img: 'images/motiv/M5/M5guld.webp', thumb: 'images/motiv/M5/M5guld-thumb.jpg' },
+                            orange: { img: 'images/motiv/M5/M5orange.webp', thumb: 'images/motiv/M5/M5orange-thumb.jpg' },
+                            red: { img: 'images/motiv/M5/M5röd.webp', thumb: 'images/motiv/M5/M5röd-thumb.jpg' }
                         }
                     },
                     { 
                         name: 'Motiv 6', 
                         id: 'M6', 
                         optionImg: 'images/motiv/M6/M6.webp',
-                        optionThumb: 'images/motiv/M6/M6-thumb.webp',
+                        optionThumb: 'images/motiv/M6/M6-thumb.jpg',
                         variants: {
-                            black: { img: 'images/motiv/M6/M6black.webp', thumb: 'images/motiv/M6/M6black.webp' },
-                            white: { img: 'images/motiv/M6/M6white.webp', thumb: 'images/motiv/M6/M6white.webp' },
-                            gold: { img: 'images/motiv/M6/M6gold.webp', thumb: 'images/motiv/M6/M6gold.webp' },
-                            orange: { img: 'images/motiv/M6/M6orange.webp', thumb: 'images/motiv/M6/M6orange.webp' },
-                            red: { img: 'images/motiv/M6/M6red.webp', thumb: 'images/motiv/M6/M6red.webp' }
+                            black: { img: 'images/motiv/M6/M6svart.webp', thumb: 'images/motiv/M6/M6svart-thumb.jpg' },
+                            white: { img: 'images/motiv/M6/M6vit.webp', thumb: 'images/motiv/M6/M6vit-thumb.jpg' },
+                            gold: { img: 'images/motiv/M6/M6guld.webp', thumb: 'images/motiv/M6/M6guld-thumb.jpg' },
+                            orange: { img: 'images/motiv/M6/M6orange.webp', thumb: 'images/motiv/M6/M6orange-thumb.jpg' },
+                            red: { img: 'images/motiv/M6/M6röd.webp', thumb: 'images/motiv/M6/M6röd-thumb.jpg' }
                         }
                     },
                     { 
                         name: 'Motiv 7', 
                         id: 'M7', 
                         optionImg: 'images/motiv/M7/M7.webp',
-                        optionThumb: 'images/motiv/M7/M7-thumb.webp',
+                        optionThumb: 'images/motiv/M7/M7-thumb.jpg',
                         variants: {
-                            black: { img: 'images/motiv/M7/M7black.webp', thumb: 'images/motiv/M7/M7black.webp' },
-                            white: { img: 'images/motiv/M7/M7white.webp', thumb: 'images/motiv/M7/M7white.webp' },
-                            gold: { img: 'images/motiv/M7/M7gold.webp', thumb: 'images/motiv/M7/M7gold.webp' },
-                            orange: { img: 'images/motiv/M7/M7orange.webp', thumb: 'images/motiv/M7/M7orange.webp' },
-                            red: { img: 'images/motiv/M7/M7red.webp', thumb: 'images/motiv/M7/M7red.webp' }
+                            black: { img: 'images/motiv/M7/M7svart.webp', thumb: 'images/motiv/M7/M7svart-thumb.jpg' },
+                            white: { img: 'images/motiv/M7/M7vit.webp', thumb: 'images/motiv/M7/M7vit-thumb.jpg' },
+                            gold: { img: 'images/motiv/M7/M7guld.webp', thumb: 'images/motiv/M7/M7guld-thumb.jpg' },
+                            orange: { img: 'images/motiv/M7/M7orange.webp', thumb: 'images/motiv/M7/M7orange-thumb.jpg' },
+                            red: { img: 'images/motiv/M7/M7röd.webp', thumb: 'images/motiv/M7/M7röd-thumb.jpg' }
                         }
                     },
                     { 
                         name: 'Motiv 8', 
                         id: 'M8', 
-                        optionImg: 'images/motiv/M8/M8.webp',
-                        optionThumb: 'images/motiv/M8/M8.webp',
+                        optionImg: 'images/motiv/M8/M8.svg',
+                        optionThumb: 'images/motiv/M8/M8.svg',
                         variants: {
-                            black: { img: 'images/motiv/M8/M8black.webp', thumb: 'images/motiv/M8/M8black.webp' },
-                            white: { img: 'images/motiv/M8/M8white.webp', thumb: 'images/motiv/M8/M8white.webp' },
-                            gold: { img: 'images/motiv/M8/M8gold.webp', thumb: 'images/motiv/M8/M8gold.webp' },
-                            orange: { img: 'images/motiv/M8/M8orange.webp', thumb: 'images/motiv/M8/M8orange.webp' },
-                            red: { img: 'images/motiv/M8/M8red.webp', thumb: 'images/motiv/M8/M8red.webp' }
+                            black: { img: 'images/motiv/M8/M8svart.PNG', thumb: 'images/motiv/M8/M8svart.PNG' },
+                            white: { img: 'images/motiv/M8/M8vit.webp', thumb: 'images/motiv/M8/M8vit-thumb.jpg' },
+                            gold: { img: 'images/motiv/M8/M8guld.webp', thumb: 'images/motiv/M8/M8guld-thumb.jpg' },
+                            orange: { img: 'images/motiv/M8/M8orange.webp', thumb: 'images/motiv/M8/M8orange-thumb.jpg' },
+                            red: { img: 'images/motiv/M8/M8röd.webp', thumb: 'images/motiv/M8/M8röd-thumb.jpg' }
                         }
                     },
                     { 
                         name: 'Motiv 9', 
                         id: 'M9', 
                         optionImg: 'images/motiv/M9/M9.webp',
-                        optionThumb: 'images/motiv/M9/M9-thumb.webp',
+                        optionThumb: 'images/motiv/M9/M9-thumb.jpg',
                         isSpecial: true, // This one combines grund + color
                         variants: {
-                            black: { img: 'images/motiv/M9/M9black.webp', thumb: 'images/motiv/M9/M9black.webp' },
-                            white: { img: 'images/motiv/M9/M9white.webp', thumb: 'images/motiv/M9/M9white.webp' },
-                            gold: { img: 'images/motiv/M9/M9gold.webp', thumb: 'images/motiv/M9/M9gold.webp' },
-                            orange: { img: 'images/motiv/M9/M9orange.webp', thumb: 'images/motiv/M9/M9orange.webp' },
-                            red: { img: 'images/motiv/M9/M9red.webp', thumb: 'images/motiv/M9/M9red.webp' }
+                            black: { img: 'images/motiv/M9/M9svart.webp', thumb: 'images/motiv/M9/M9svart-thumb.jpg' },
+                            white: { img: 'images/motiv/M9/M9vit.webp', thumb: 'images/motiv/M9/M9vit-thumb.jpg' },
+                            gold: { img: 'images/motiv/M9/M9guld.webp', thumb: 'images/motiv/M9/M9guld-thumb.jpg' },
+                            orange: { img: 'images/motiv/M9/M9orange.webp', thumb: 'images/motiv/M9/M9orange-thumb.jpg' },
+                            red: { img: 'images/motiv/M9/M9röd.webp', thumb: 'images/motiv/M9/M9röd-thumb.jpg' }
                         },
-                        base: { img: 'images/motiv/M9/M9grund.webp', thumb: 'images/motiv/M9/M9grund-thumb.webp' }
+                        base: { img: 'images/motiv/M9/M9grund.webp', thumb: 'images/motiv/M9/M9grund-thumb.jpg' }
                     },
                     { 
                         name: 'Motiv 10', 
                         id: 'M10', 
                         optionImg: 'images/motiv/M10/M10.webp',
-                        optionThumb: 'images/motiv/M10/M10-thumb.webp',
+                        optionThumb: 'images/motiv/M10/M10-thumb.jpg',
                         isSpecial: true, // This one only has one color
                         variants: {
-                            black: { img: 'images/motiv/M10/M10black.webp', thumb: 'images/motiv/M10/M10black.webp' }
+                            black: { img: 'images/motiv/M10/M10svart.webp', thumb: 'images/motiv/M10/M10svart-thumb.jpg' }
                         }
                     },
                     { name: 'Inget motiv', id: 'none', optionImg: null, optionThumb: null, variants: {} }
@@ -1823,9 +1798,6 @@
 
             // Initialize the application
             function init() {
-                // Initialize lazy loading system
-                initLazyLoading();
-                
                 // Load saved products from localStorage
                 loadSavedProducts();
                 
@@ -1837,11 +1809,18 @@
                 updateStepIndicator();
                 updateCart();
                 
-                // Smart progressive loading based on current step
+                // Progressive loading is now handled by startProgressiveLoading()
                 startProgressiveLoading();
                 
-                // Update preview immediately for faster loading
+                // Wait a bit for default selections to be applied, then update preview
+                setTimeout(() => {
                 updatePreview();
+                    
+                    // Force show some images for testing
+                    setTimeout(() => {
+                        forceShowPreview();
+                    }, 1000);
+                }, 500);
                 
                 // Initialize button states (this will disable next buttons initially)
                 updateAllButtonStates();
@@ -1863,8 +1842,11 @@
 
             // Progressive image loading system
             function startProgressiveLoading() {
-                // Only preload images for current step and next step
-                preloadStepImages(app.currentStep);
+                // Load high-quality images for steps 3-4 in background
+                // This ensures they're ready when user reaches those steps
+                setTimeout(() => {
+                    preloadHighQualityImages();
+                }, 1000); // Wait 1 second after page load
                 
                 // Also start loading high-quality images for current step
                 if (app.currentStep >= 3) {
@@ -1872,65 +1854,31 @@
                 }
             }
             
-            // Smart step-based image preloading
-            function preloadStepImages(currentStep) {
-                switch(currentStep) {
-                    case 1:
-                        // Step 1: Only preload design thumbnails for step 2
-                        preloadDesignThumbnails();
-                        break;
-                    case 2:
-                        // Step 2: Preload primary colors for step 3
-                        preloadPrimaryColors();
-                        break;
-                    case 3:
-                        // Step 3: Preload secondary colors for step 4
-                        preloadSecondaryColors();
-                        break;
-                    case 4:
-                        // Step 4: Preload popular design variants
-                        preloadPopularDesigns();
-                        break;
-                    default:
-                        // No preloading needed
-                        break;
-                }
-            }
-            
-            // Preload only design thumbnails (lightweight)
-            function preloadDesignThumbnails() {
-                data.designs.forEach(design => {
-                    if (design.optionThumb) {
-                        const img = new Image();
-                        img.src = design.optionThumb;
-                    }
-                });
-            }
-            
-            // Preload primary colors (only when needed)
-            function preloadPrimaryColors() {
+            // Preload high-quality images for steps 3-4
+            function preloadHighQualityImages() {
+                // Preload primary colors (high quality)
                 data.primaryColors.forEach(color => {
                     if (color.img) {
                         const img = new Image();
                         img.src = color.img;
                     }
                 });
-            }
-            
-            // Preload secondary colors (only when needed)
-            function preloadSecondaryColors() {
+                
+                // Preload secondary colors (high quality)
                 data.secondaryColors.forEach(color => {
                     if (color.img) {
                         const img = new Image();
                         img.src = color.img;
                     }
+                    if (color.logo) {
+                        const img = new Image();
+                        img.src = color.logo;
+                    }
                 });
-            }
-            
-            // Preload only most popular design variants
-            function preloadPopularDesigns() {
-                const popularDesigns = ['M8', 'M1', 'M2']; // Most popular designs
-                popularDesigns.forEach(designId => {
+                
+                // Preload design variants (high quality) - only the most common ones
+                const commonDesigns = ['M8', 'M1', 'M2']; // Most popular designs
+                commonDesigns.forEach(designId => {
                     const design = data.designs.find(d => d.id === designId);
                     if (design && design.variants) {
                         // Only preload black and gold variants (most common)
@@ -1944,71 +1892,37 @@
                 });
             }
             
-            // Lazy loading system for images
-            let imageObserver;
-            
-            function initLazyLoading() {
-                if ('IntersectionObserver' in window) {
-                    imageObserver = new IntersectionObserver((entries) => {
-                        entries.forEach(entry => {
-                            if (entry.isIntersecting) {
-                                const img = entry.target;
-                                if (img.dataset.highRes && img.src !== img.dataset.highRes) {
-                                    loadHighQualityImage(img);
-                                }
-                                imageObserver.unobserve(img);
-                            }
-                        });
-                    }, {
-                        rootMargin: '50px 0px',
-                        threshold: 0.1
-                    });
-                }
-            }
-            
-            function loadHighQualityImage(img) {
-                const highResImg = new Image();
-                highResImg.onload = () => {
-                    img.src = img.dataset.highRes;
-                    img.classList.add('loaded');
-                };
-                highResImg.src = img.dataset.highRes;
-            }
-            
-            // Debounced preview update to prevent excessive calls
-            let previewUpdateTimeout;
-            function debouncedUpdatePreview() {
-                clearTimeout(previewUpdateTimeout);
-                previewUpdateTimeout = setTimeout(() => {
-                    updatePreview();
-                }, 50);
-            }
-            
             // Upgrade image quality when user reaches step 3 or 4
             function upgradeImageQuality() {
-                // Use lazy loading for better performance
+                // Upgrade all visible images to high quality
                 document.querySelectorAll('img[data-high-res]').forEach(img => {
-                    if (imageObserver) {
-                        imageObserver.observe(img);
-                    } else {
-                        // Fallback for browsers without IntersectionObserver
-                        if (img.dataset.highRes && img.src !== img.dataset.highRes) {
-                            loadHighQualityImage(img);
-                        }
+                    if (img.dataset.highRes && img.src !== img.dataset.highRes) {
+                        img.src = img.dataset.highRes;
                     }
                 });
                 
                 // Upgrade color option backgrounds to high quality
                 upgradeColorOptions();
                 
-                // Use debounced preview update
-                debouncedUpdatePreview();
+                // Also upgrade preview images to high quality
+                updatePreview();
             }
             
             // Upgrade color options to high quality
             function upgradeColorOptions() {
-                // Skip primary color options - they should use solid colors, not images
-                // Primary colors are already set with background-color in the HTML
+                // Upgrade primary color options
+                document.querySelectorAll('.primary-color-option').forEach(option => {
+                    if (option.dataset.highRes) {
+                        // Create a high-quality background image
+                        const highResImg = new Image();
+                        highResImg.onload = () => {
+                            option.style.backgroundImage = `url(${option.dataset.highRes})`;
+                            option.style.backgroundSize = 'cover';
+                            option.style.backgroundPosition = 'center';
+                        };
+                        highResImg.src = option.dataset.highRes;
+                    }
+                });
                 
                 // Upgrade secondary color options
                 document.querySelectorAll('.secondary-color-option').forEach(option => {
@@ -2030,8 +1944,44 @@
             
             // Upgrade configured combinations to high quality
             function upgradeConfiguredCombinations() {
-                // Skip upgrading configured combinations - they should use solid colors from CSS
-                // The CSS already defines the proper colors for each combination
+                document.querySelectorAll('.configured-combo-option').forEach(combo => {
+                    if (combo.dataset.primaryHigh && combo.dataset.secondaryHigh) {
+                        // Create high-quality background for the combo
+                        const primaryImg = new Image();
+                        const secondaryImg = new Image();
+                        
+                        Promise.all([
+                            new Promise(resolve => {
+                                primaryImg.onload = resolve;
+                                primaryImg.src = combo.dataset.primaryHigh;
+                            }),
+                            new Promise(resolve => {
+                                secondaryImg.onload = resolve;
+                                secondaryImg.src = combo.dataset.secondaryHigh;
+                            })
+                        ]).then(() => {
+                            // Create a canvas to combine the images
+                            const canvas = document.createElement('canvas');
+                            const ctx = canvas.getContext('2d');
+                            canvas.width = 80;
+                            canvas.height = 80;
+                            
+                            // Draw primary color (bottom half)
+                            ctx.drawImage(primaryImg, 0, 0, 80, 80);
+                            
+                            // Draw secondary color (top half)
+                            ctx.drawImage(secondaryImg, 0, 40, 80, 40);
+                            
+                            // Apply the combined image to the combo circle
+                            const comboCircle = combo.querySelector('.combo-color-circle');
+                            if (comboCircle) {
+                                comboCircle.style.backgroundImage = `url(${canvas.toDataURL()})`;
+                                comboCircle.style.backgroundSize = 'cover';
+                                comboCircle.style.backgroundPosition = 'center';
+                            }
+                        });
+                    }
+                });
             }
 
             // Set standard selections for special request (without UI selection)
@@ -2043,7 +1993,7 @@
                         app.selections.design = data.designs.find(d => d.id === 'M8');
                         break;
                     case 3: // Primary Color - set to Grå
-                        app.selections.primaryColor = data.primaryColors.find(c => c.name === 'Grå');
+                        app.selections.primaryColor = data.primaryColors.find(c => c.value === 'gray');
                         break;
                     case 4: // Secondary Color - set to Svart
                         app.selections.secondaryColor = data.secondaryColors.find(c => c.name === 'Svart');
@@ -2154,7 +2104,7 @@
             // Set default selections for better user experience
             function setDefaultSelections() {
                 // Set default primary color (gray)
-                app.selections.primaryColor = data.primaryColors.find(c => c.name === 'Grå');
+                app.selections.primaryColor = data.primaryColors.find(c => c.value === 'gray');
                 
                 // Set default secondary color (black)
                 app.selections.secondaryColor = data.secondaryColors.find(c => c.name === 'Svart');
@@ -2185,7 +2135,7 @@
             // Set default selections without loading state (for reset scenarios)
             function setDefaultSelectionsSilent() {
                 // Set default primary color (gray)
-                app.selections.primaryColor = data.primaryColors.find(c => c.name === 'Grå');
+                app.selections.primaryColor = data.primaryColors.find(c => c.value === 'gray');
                 
                 // Set default secondary color (black)
                 app.selections.secondaryColor = data.secondaryColors.find(c => c.name === 'Svart');
@@ -2240,7 +2190,8 @@
                              data-primary-high="${combo.primaryColor.img}"
                              data-primary-thumb="${combo.primaryColor.thumbnail}"
                              data-secondary-high="${combo.secondaryColor.img}"
-                             data-secondary-thumb="${combo.secondaryColor.thumbnail}">
+                             data-secondary-thumb="${combo.secondaryColor.thumbnail}"
+                             data-logo-high="${combo.secondaryColor.logo}">
                             <div class="combo-color-circle ${combo.id}"></div>
                             <span class="fw-semibold">${combo.name}</span>
                         </div>
@@ -2379,7 +2330,7 @@
                     option.addEventListener('click', function() {
                         selectOption(this, 'caliber', this.dataset.caliber);
                         clearSpecialRequest(1);
-                        // Preview will be updated to show default gray box
+                        // Don't update preview for caliber selection - it's just text
                     });
                 });
 
@@ -2524,8 +2475,10 @@
                 // Update cart
                 updateCart();
                 
-                // Update preview for all selections to show appropriate default images
-                debouncedUpdatePreview();
+                // Only update preview for visual elements (not caliber)
+                if (type !== 'caliber') {
+                updatePreview();
+                }
                 
                 // Update button states
                 updateAllButtonStates();
@@ -2756,9 +2709,6 @@
 
             // Clear configured combo
             function clearConfiguredCombo() {
-                // Store the individual colors from the combo before clearing
-                const combo = app.selections.configuredCombo;
-                
                 // Clear configured combo selection
                 app.selections.configuredCombo = null;
                 
@@ -2766,31 +2716,6 @@
                 document.querySelectorAll('.configured-combo-option.selected').forEach(opt => {
                     opt.classList.remove('selected');
                 });
-
-                // If we had a combo, preserve the individual color selections
-                if (combo) {
-                    // Preserve primary color selection
-                    if (!app.selections.primaryColor) {
-                        app.selections.primaryColor = combo.primaryColor;
-                        // Mark the corresponding primary color option as selected
-                        document.querySelectorAll('.primary-color-option').forEach(opt => {
-                            if (opt.dataset.color === combo.primaryColor.value) {
-                                opt.classList.add('selected');
-                            }
-                        });
-                    }
-                    
-                    // Preserve secondary color selection
-                    if (!app.selections.secondaryColor) {
-                        app.selections.secondaryColor = combo.secondaryColor;
-                        // Mark the corresponding secondary color option as selected
-                        document.querySelectorAll('.secondary-color-option').forEach(opt => {
-                            if (opt.dataset.color === combo.secondaryColor.value) {
-                                opt.classList.add('selected');
-                            }
-                        });
-                    }
-                }
 
                 // Restore other options
                 restoreOtherOptions();
@@ -2939,9 +2864,6 @@
                 
                 // Show/hide configured combinations based on current step
                 updateConfiguredCombinationsVisibility();
-                
-                // Smart preload images for the new step
-                preloadStepImages(stepNum);
                 
                 // Upgrade image quality when reaching steps 3 or 4
                 if (stepNum === 3 || stepNum === 4) {
@@ -3445,7 +3367,7 @@
                     // Show configured combo
                     const primaryImg = useHighQuality ? app.selections.configuredCombo.primaryColor.img : app.selections.configuredCombo.primaryColor.thumbnail;
                     const secondaryImg = useHighQuality ? app.selections.configuredCombo.secondaryColor.img : app.selections.configuredCombo.secondaryColor.thumbnail;
-                    const secondaryLogo = useHighQuality ? app.selections.configuredCombo.secondaryColor.img : app.selections.configuredCombo.secondaryColor.thumbnail;
+                    const secondaryLogo = useHighQuality ? app.selections.configuredCombo.secondaryColor.logo : app.selections.configuredCombo.secondaryColor.thumbnail;
                     
                     fadeInImage(previewBase, primaryImg);
                     fadeInImage(previewButton, secondaryImg);
@@ -3478,7 +3400,7 @@
                     // Show individual color selections
                     if (app.selections.primaryColorSpecial) {
                         // Show standard gray box for special request
-                        const grayImg = useHighQuality ? 'images/primarycolors/graybox.webp' : 'images/primarycolors/graybox.webp';
+                        const grayImg = useHighQuality ? 'images/primarycolors/graybox.PNG' : 'images/primarycolors/graybox.PNG';
                         fadeInImage(previewBase, grayImg);
                         hasSelections = true;
                         addPreviewDetail('Primär Färg', 'Specialförfrågan');
@@ -3488,21 +3410,12 @@
                         hasSelections = true;
                         addPreviewDetail('Primär Färg', app.selections.primaryColor.name);
                     } else {
-                        // If no primary color is selected, show a default gray for preview
-                        // This prevents the primary color from disappearing and provides visual feedback
-                        if (app.currentStep >= 1 && (app.selections.caliber || app.selections.caliberSpecial)) {
-                            const defaultGrayImg = useHighQuality ? 'images/primarycolors/graybox.webp' : 'images/primarycolors/graybox.webp';
-                            fadeInImage(previewBase, defaultGrayImg);
-                            hasSelections = true;
-                            addPreviewDetail('Primär Färg', 'Grå (Standard)');
-                        } else {
-                            fadeOutImage(previewBase);
-                        }
+                        fadeOutImage(previewBase);
                     }
 
                     if (app.selections.secondaryColorSpecial) {
                         // Show standard black button/logo for special request
-                        const blackImg = useHighQuality ? 'images/secondarycolors/blackbutton.webp' : 'images/secondarycolors/blackbutton.webp';
+                        const blackImg = useHighQuality ? 'images/secondarycolors/blackbutton.PNG' : 'images/secondarycolors/blackbutton.PNG';
                         fadeInImage(previewButton, blackImg);
                         
                         // Only show logo if no design is selected AND not "Inget motiv"
@@ -3625,7 +3538,7 @@
                 
                 if (previewBase) {
                     // Use thumbnail for immediate display
-                    previewBase.src = 'images/primarycolors/graybox.webp';
+                    previewBase.src = 'images/primarycolors/graybox.PNG';
                     previewBase.style.display = 'block';
                     previewBase.style.opacity = '1';
                     previewBase.style.transition = 'none';
@@ -3633,7 +3546,7 @@
                 
                 if (previewButton) {
                     // Use thumbnail for immediate display
-                    previewButton.src = 'images/secondarycolors/blackbutton.webp';
+                    previewButton.src = 'images/secondarycolors/blackbutton.PNG';
                     previewButton.style.display = 'block';
                     previewButton.style.opacity = '1';
                     previewButton.style.transition = 'none';
@@ -3641,7 +3554,7 @@
                 
                 if (previewLogo) {
                     // Use thumbnail for immediate display
-                    previewLogo.src = 'images/motiv/M8/M8black.webp';
+                    previewLogo.src = 'images/motiv/M8/M8svart.PNG';
                     previewLogo.style.display = 'block';
                     previewLogo.style.opacity = '1';
                     previewLogo.style.transition = 'none';
