@@ -1,6 +1,7 @@
 [build]
   publish = "."
   command = "echo 'No build step needed'"
+  functions = "api"
 
 # Cache headers for static assets
 [[headers]]
