@@ -294,6 +294,13 @@
                 let orderData = null;
                 
                 // Try to get data from cart first (this should have the processed order data)
+                console.log('🔍 Cart data check:', {
+                    hasCartData: !!cartData,
+                    hasItems: cartData && cartData.items,
+                    itemsLength: cartData && cartData.items ? cartData.items.length : 0,
+                    cartData: cartData
+                });
+                
                 if (cartData && cartData.items && cartData.items.length > 0) {
                     console.log('📦 Using cart data for order display');
                     orderData = {
@@ -491,15 +498,31 @@
             try {
                 console.log('📧 Sending test order confirmation emails...');
                 
-                // Get customer info from URL parameters
+                // Get customer info from URL parameters or cart data
                 const urlParams = new URLSearchParams(window.location.search);
-                const customerEmail = urlParams.get('customer_email') || 'test@example.com';
-                const customerName = urlParams.get('customer_name') || 'Test Customer';
-                const customerPhone = urlParams.get('customer_phone') || '+46 123 456 789';
-                const customerAddress = urlParams.get('customer_address') || 'Test Street 123';
-                const customerPostalCode = urlParams.get('customer_postal') || '12345';
-                const customerCity = urlParams.get('customer_city') || 'Stockholm';
-                const customerCountry = urlParams.get('customer_country') || 'Sverige';
+                let customerEmail, customerName, customerPhone, customerAddress, customerPostalCode, customerCity, customerCountry;
+                
+                // Try to get from cart data first (more reliable)
+                if (cartData && cartData.customerInfo) {
+                    customerEmail = cartData.customerInfo.email || 'test@example.com';
+                    customerName = cartData.customerInfo.name || 'Test Customer';
+                    customerPhone = cartData.customerInfo.phone || '+46 123 456 789';
+                    customerAddress = cartData.customerInfo.address || 'Test Street 123';
+                    customerPostalCode = cartData.customerInfo.postalCode || '12345';
+                    customerCity = cartData.customerInfo.city || 'Stockholm';
+                    customerCountry = cartData.customerInfo.country || 'Sverige';
+                    console.log('📧 Using cart data for customer info:', cartData.customerInfo);
+                } else {
+                    // Fallback to URL parameters
+                    customerEmail = urlParams.get('customer_email') || 'test@example.com';
+                    customerName = urlParams.get('customer_name') || 'Test Customer';
+                    customerPhone = urlParams.get('customer_phone') || '+46 123 456 789';
+                    customerAddress = urlParams.get('customer_address') || 'Test Street 123';
+                    customerPostalCode = urlParams.get('customer_postal') || '12345';
+                    customerCity = urlParams.get('customer_city') || 'Stockholm';
+                    customerCountry = urlParams.get('customer_country') || 'Sverige';
+                    console.log('📧 Using URL parameters for customer info');
+                }
                 
                 // Get order data from window.orderData (set in the main function)
                 let orderData = window.orderData;

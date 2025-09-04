@@ -540,7 +540,10 @@
                     name: document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value,
                     email: document.getElementById('email').value,
                     phone: document.getElementById('phone').value,
-                    address: document.getElementById('address').value + ', ' + document.getElementById('postalCode').value + ' ' + document.getElementById('city').value + ', ' + document.getElementById('country').value
+                    address: document.getElementById('address').value,
+                    postalCode: document.getElementById('postalCode').value,
+                    city: document.getElementById('city').value,
+                    country: document.getElementById('country').value
                 };
                 
                 // Get existing cart data and add customer info + order items
