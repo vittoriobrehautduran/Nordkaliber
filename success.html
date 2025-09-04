@@ -249,6 +249,12 @@
             urlParams: Object.fromEntries(urlParams.entries())
         });
         
+        console.log('🔍 Test mode check:', {
+            testParam: urlParams.get('test'),
+            isTestMode: isTestMode,
+            testModeType: typeof isTestMode
+        });
+        
         // Debug localStorage data
         const productsData = localStorage.getItem('nordkaliberProducts');
         console.log('📦 Products data in localStorage:', productsData ? JSON.parse(productsData) : 'No data');
@@ -273,37 +279,7 @@
             // Try to get order details from localStorage
             let orderDetails = '';
             
-            if (cartData) {
-                const order = JSON.parse(cartData);
-                orderDetails = order.items.map(item => `
-                    <div class="flex justify-between items-center py-2 border-b border-hunter-brown border-opacity-20">
-                        <div>
-                            <div class="font-medium">${item.caliber}</div>
-                            <div class="text-sm text-cool-grey">${item.primaryColor}/${item.secondaryColor}</div>
-                            ${item.initials ? `<div class="text-sm text-cool-grey">Initialer: ${item.initials}</div>` : ''}
-                        </div>
-                        <div class="font-semibold">${item.price} kr</div>
-                    </div>
-                `).join('');
-                
-                // Add total
-                const total = order.items.reduce((sum, item) => sum + item.price, 0);
-                orderDetails += `
-                    <div class="flex justify-between items-center py-2 font-semibold text-mustard-gold">
-                        <span>Totalt:</span>
-                        <span>${total} kr</span>
-                    </div>
-                `;
-                
-                // Send confirmation emails for real orders
-                if (sessionId) {
-                    console.log('Payment successful, sending confirmation emails...');
-                    sendOrderConfirmationEmails(order);
-                }
-                
-                // Clear cart data after using it in live mode
-                localStorage.removeItem('nordkaliberCart');
-            } else if (isTestMode) {
+            if (isTestMode) {
                 // Handle test mode - prioritize cart data, fallback to products data
                 let orderData = null;
                 
@@ -405,6 +381,38 @@
                 }
                 
                 // Clear cart data after using it in test mode
+                localStorage.removeItem('nordkaliberCart');
+            } else if (cartData) {
+                // Handle live mode - use cart data
+                console.log('🚀 EXECUTING LIVE MODE PATH');
+                const order = JSON.parse(cartData);
+                orderDetails = order.items.map(item => `
+                    <div class="flex justify-between items-center py-2 border-b border-hunter-brown border-opacity-20">
+                        <div>
+                            <div class="font-medium">${item.caliber}</div>
+                            <div class="text-sm text-cool-grey">${item.primaryColor}/${item.secondaryColor}</div>
+                            ${item.initials ? `<div class="text-sm text-cool-grey">Initialer: ${item.initials}</div>` : ''}
+                        </div>
+                        <div class="font-semibold">${item.price} kr</div>
+                    </div>
+                `).join('');
+                
+                // Add total
+                const total = order.items.reduce((sum, item) => sum + item.price, 0);
+                orderDetails += `
+                    <div class="flex justify-between items-center py-2 font-semibold text-mustard-gold">
+                        <span>Totalt:</span>
+                        <span>${total} kr</span>
+                    </div>
+                `;
+                
+                // Send confirmation emails for real orders
+                if (sessionId) {
+                    console.log('Payment successful, sending confirmation emails...');
+                    sendOrderConfirmationEmails(order);
+                }
+                
+                // Clear cart data after using it in live mode
                 localStorage.removeItem('nordkaliberCart');
             } else {
                 orderDetails = '<p class="text-cool-grey">Orderdetaljer laddas...</p>';
