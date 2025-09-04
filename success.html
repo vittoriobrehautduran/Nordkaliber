@@ -238,7 +238,7 @@
         }
         
         // Get order details from URL parameters or localStorage
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
         const urlParams = new URLSearchParams(window.location.search);
         const sessionId = urlParams.get('session_id') || urlParams.get('payment_intent');
         const isTestMode = urlParams.get('test') === 'true';
@@ -366,9 +366,38 @@
                     }
                 } else {
                     console.error('❌ Failed to fetch payment details:', paymentData);
+                    // Fallback: show default amount for test mode
+                    if (isTestMode) {
+                        updateTestOrderAmount(850);
+                    }
                 }
             } catch (error) {
                 console.error('❌ Error fetching payment details:', error);
+                // Fallback: show default amount for test mode
+                if (isTestMode) {
+                    updateTestOrderAmount(850);
+                }
+            }
+        }
+
+        // Update test order amount (fallback function)
+        function updateTestOrderAmount(amount) {
+            console.log('🔄 Updating test order amount to:', amount);
+            const orderDetailsElement = document.getElementById('orderDetails');
+            if (orderDetailsElement) {
+                orderDetailsElement.innerHTML = `
+                    <div class="flex justify-between items-center py-2 border-b border-hunter-brown border-opacity-20">
+                        <div>
+                            <h3 class="font-semibold text-hunter-brown">Ammunitionsetui - Test Order</h3>
+                            <p class="text-sm text-cool-grey">Kaliber: .308 Winchester | Färg: Grå | Motiv: Motiv 8</p>
+                        </div>
+                        <span class="font-bold text-hunter-brown">${amount} kr</span>
+                    </div>
+                    <div class="flex justify-between items-center py-2 font-bold text-lg">
+                        <span>Total:</span>
+                        <span>${amount} kr</span>
+                    </div>
+                `;
             }
         }
 
