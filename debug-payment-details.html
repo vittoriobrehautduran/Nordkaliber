@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Payment Details API</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
+        .result { margin: 10px 0; padding: 10px; background: #f5f5f5; border-radius: 4px; }
+        .error { background: #ffebee; color: #c62828; }
+        .success { background: #e8f5e8; color: #2e7d32; }
+        button { padding: 10px 20px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        input { padding: 8px; margin: 5px; width: 300px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Debug Payment Details API</h1>
+        
+        <div class="test-section">
+            <h2>Test get-payment-details API</h2>
+            <p>Enter a payment intent ID to test the API:</p>
+            <input type="text" id="paymentIntentId" placeholder="pi_xxxxxxxxxxxxxxxxx" value="">
+            <br>
+            <button onclick="testPaymentDetailsAPI()">Test Payment Details API</button>
+            <button onclick="testStripeConfig()">Test Stripe Config</button>
+            <button onclick="testCreatePaymentIntent()">Test Create Payment Intent</button>
+            <div id="result" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>Test Create Payment Intent (Test Mode)</h2>
+            <button onclick="createTestPaymentIntent()">Create Test Payment Intent</button>
+            <div id="createResult" class="result" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        function showResult(elementId, message, isError = false) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            element.className = `result ${isError ? 'error' : 'success'}`;
+            element.innerHTML = `<pre>${JSON.stringify(message, null, 2)}</pre>`;
+        }
+
+        async function testPaymentDetailsAPI() {
+            const paymentIntentId = document.getElementById('paymentIntentId').value;
+            if (!paymentIntentId) {
+                showResult('result', { error: 'Please enter a payment intent ID' }, true);
+                return;
+            }
+
+            try {
+                console.log('🔍 Testing payment details API with:', paymentIntentId);
+                const response = await fetch(`/.netlify/functions/get-payment-details?payment_intent=${paymentIntentId}&test=true`);
+                const data = await response.json();
+                
+                console.log('📊 Response:', { status: response.status, data });
+                showResult('result', { status: response.status, data });
+            } catch (error) {
+                console.error('❌ Error:', error);
+                showResult('result', { error: error.message }, true);
+            }
+        }
+
+        async function testStripeConfig() {
+            try {
+                console.log('🔍 Testing Stripe config API...');
+                const response = await fetch(`/.netlify/functions/stripe-config?test=true`);
+                const data = await response.json();
+                
+                console.log('📊 Stripe Config Response:', { status: response.status, data });
+                showResult('result', { status: response.status, data });
+            } catch (error) {
+                console.error('❌ Error:', error);
+                showResult('result', { error: error.message }, true);
+            }
+        }
+
+        async function testCreatePaymentIntent() {
+            try {
+                console.log('🔍 Testing create payment intent API...');
+                const response = await fetch(`/.netlify/functions/create-payment-intent?test=true`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        items: [{
+                            name: 'Ammunitionsetui - Test Order',
+                            caliber: '.308 Winchester',
+                            color: 'Grå',
+                            motif: 'Motiv 8',
+                            quantity: 1,
+                            price: 850
+                        }],
+                        customerEmail: 'test@example.com',
+                        customerName: 'Test Customer',
+                        customerPhone: '+46 123 456 789',
+                        customerAddress: {
+                            line1: 'Test Street 123',
+                            postalCode: '12345',
+                            city: 'Stockholm',
+                            country: 'Sverige'
+                        }
+                    })
+                });
+                const data = await response.json();
+                
+                console.log('📊 Create Payment Intent Response:', { status: response.status, data });
+                showResult('result', { status: response.status, data });
+                
+                // If successful, store the payment intent ID for testing
+                if (response.ok && data.paymentIntentId) {
+                    document.getElementById('paymentIntentId').value = data.paymentIntentId;
+                }
+            } catch (error) {
+                console.error('❌ Error:', error);
+                showResult('result', { error: error.message }, true);
+            }
+        }
+
+        async function createTestPaymentIntent() {
+            try {
+                console.log('🔍 Creating test payment intent...');
+                const response = await fetch(`/.netlify/functions/create-payment-intent?test=true`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        items: [{
+                            name: 'Ammunitionsetui - Test Order',
+                            caliber: '.308 Winchester',
+                            color: 'Grå',
+                            motif: 'Motiv 8',
+                            quantity: 1,
+                            price: 850
+                        }],
+                        customerEmail: 'test@example.com',
+                        customerName: 'Test Customer',
+                        customerPhone: '+46 123 456 789',
+                        customerAddress: {
+                            line1: 'Test Street 123',
+                            postalCode: '12345',
+                            city: 'Stockholm',
+                            country: 'Sverige'
+                        }
+                    })
+                });
+                const data = await response.json();
+                
+                console.log('📊 Create Payment Intent Response:', { status: response.status, data });
+                showResult('createResult', { status: response.status, data });
+                
+                // If successful, store the payment intent ID for testing
+                if (response.ok && data.paymentIntentId) {
+                    document.getElementById('paymentIntentId').value = data.paymentIntentId;
+                    showResult('createResult', { 
+                        status: response.status, 
+                        data,
+                        message: 'Payment Intent created! You can now test the get-payment-details API with this ID.'
+                    });
+                }
+            } catch (error) {
+                console.error('❌ Error:', error);
+                showResult('createResult', { error: error.message }, true);
+            }
+        }
+    </script>
+</body>
+</html>
