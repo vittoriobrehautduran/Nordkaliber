@@ -301,7 +301,7 @@
                     sendOrderConfirmationEmails(order);
                 }
                 
-                // Clear cart data after using it
+                // Clear cart data after using it in live mode
                 localStorage.removeItem('nordkaliberCart');
             } else if (isTestMode) {
                 // Handle test mode - prioritize cart data, fallback to products data
@@ -317,9 +317,12 @@
                 
                 if (parsedCartData && parsedCartData.items && parsedCartData.items.length > 0) {
                     console.log('📦 Using cart data for order display');
+                    console.log('📦 Cart data items:', parsedCartData.items);
+                    console.log('📦 Cart data customer info:', parsedCartData.customerInfo);
                     orderData = {
                         items: parsedCartData.items,
-                        total: parsedCartData.total
+                        total: parsedCartData.total,
+                        customer: parsedCartData.customerInfo // Include customer info!
                     };
                 } else {
                     // Fallback to products data if cart is empty
@@ -393,7 +396,7 @@
                 // Send test confirmation emails
                 if (sessionId) {
                     console.log('Test payment successful, sending confirmation emails...');
-                    sendTestOrderConfirmationEmails();
+                    sendTestOrderConfirmationEmails(orderData);
                 }
                 
                 // Clear cart data after using it in test mode
@@ -511,24 +514,25 @@
         }
 
         // Send test order confirmation emails
-        async function sendTestOrderConfirmationEmails() {
+        async function sendTestOrderConfirmationEmails(orderData) {
             try {
                 console.log('📧 Sending test order confirmation emails...');
+                console.log('📧 Order data received:', orderData);
                 
-                // Get customer info from URL parameters or cart data
+                // Get customer info from orderData or URL parameters
                 const urlParams = new URLSearchParams(window.location.search);
                 let customerEmail, customerName, customerPhone, customerAddress, customerPostalCode, customerCity, customerCountry;
                 
-                // Try to get from cart data first (more reliable)
-                if (parsedCartData && parsedCartData.customerInfo) {
-                    customerEmail = parsedCartData.customerInfo.email || 'test@example.com';
-                    customerName = parsedCartData.customerInfo.name || 'Test Customer';
-                    customerPhone = parsedCartData.customerInfo.phone || '+46 123 456 789';
-                    customerAddress = parsedCartData.customerInfo.address || 'Test Street 123';
-                    customerPostalCode = parsedCartData.customerInfo.postalCode || '12345';
-                    customerCity = parsedCartData.customerInfo.city || 'Stockholm';
-                    customerCountry = parsedCartData.customerInfo.country || 'Sverige';
-                    console.log('📧 Using cart data for customer info:', parsedCartData.customerInfo);
+                // Try to get from orderData first (most reliable)
+                if (orderData && orderData.customer) {
+                    customerEmail = orderData.customer.email || 'test@example.com';
+                    customerName = orderData.customer.name || 'Test Customer';
+                    customerPhone = orderData.customer.phone || '+46 123 456 789';
+                    customerAddress = orderData.customer.address || 'Test Street 123';
+                    customerPostalCode = orderData.customer.postalCode || '12345';
+                    customerCity = orderData.customer.city || 'Stockholm';
+                    customerCountry = orderData.customer.country || 'Sverige';
+                    console.log('📧 Using order data for customer info:', orderData.customer);
                 } else {
                     // Fallback to URL parameters
                     customerEmail = urlParams.get('customer_email') || 'test@example.com';

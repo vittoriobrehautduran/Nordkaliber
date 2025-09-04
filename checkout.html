@@ -556,9 +556,17 @@
                 cartData.timestamp = new Date().toLocaleString('sv-SE');
                 
                 console.log('💾 Saving cart data with items:', cartData);
+                console.log('💾 Cart data items count:', cartData.items ? cartData.items.length : 'No items');
+                console.log('💾 Cart data customer info:', cartData.customerInfo);
                 
                 // Save updated cart data
                 localStorage.setItem('nordkaliberCart', JSON.stringify(cartData));
+                
+                // Verify it was saved
+                const savedCart = localStorage.getItem('nordkaliberCart');
+                const parsedSavedCart = savedCart ? JSON.parse(savedCart) : null;
+                console.log('✅ Verified saved cart data:', parsedSavedCart);
+                console.log('✅ Saved cart has items:', parsedSavedCart && parsedSavedCart.items ? parsedSavedCart.items.length : 'No items');
                 
                 // Confirm payment
                 const isTestMode = document.getElementById('testModeToggle').checked;
