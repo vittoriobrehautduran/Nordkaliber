@@ -290,24 +290,54 @@
                 // Clear cart data
                 localStorage.removeItem('nordkaliberCart');
             } else if (isTestMode) {
-                // Handle test mode - get actual order data from localStorage
-                const productsData = localStorage.getItem('nordkaliberProducts');
-                if (productsData) {
-                    const products = JSON.parse(productsData);
-                    const total = products.reduce((sum, product) => sum + product.totalPrice, 0);
-                    
-                    orderDetails = products.map(product => `
+                // Handle test mode - prioritize cart data, fallback to products data
+                let orderData = null;
+                
+                // Try to get data from cart first (this should have the processed order data)
+                if (cartData && cartData.items && cartData.items.length > 0) {
+                    console.log('📦 Using cart data for order display');
+                    orderData = {
+                        items: cartData.items,
+                        total: cartData.total
+                    };
+                } else {
+                    // Fallback to products data if cart is empty
+                    console.log('📦 Cart data empty, using products data');
+                    const productsData = localStorage.getItem('nordkaliberProducts');
+                    if (productsData) {
+                        const products = JSON.parse(productsData);
+                        const total = products.reduce((sum, product) => sum + product.totalPrice, 0);
+                        
+                        orderData = {
+                            items: products.map(product => ({
+                                type: product.type,
+                                caliber: product.selections.caliber || product.selections.caliberSpecial || 'Ej valt',
+                                primaryColor: product.selections.primaryColor ? product.selections.primaryColor.name : (product.selections.primaryColorSpecial || 'Ej valt'),
+                                secondaryColor: product.selections.secondaryColor ? product.selections.secondaryColor.name : (product.selections.secondaryColorSpecial || 'Ej valt'),
+                                design: product.selections.design ? product.selections.design.name : (product.selections.designSpecial || 'Ej valt'),
+                                initials: product.selections.initials || product.selections.initialsSpecial || 'Inga',
+                                price: product.totalPrice,
+                                specialRequest: product.selections.caliberSpecial || product.selections.primaryColorSpecial || product.selections.secondaryColorSpecial || product.selections.designSpecial || product.selections.initialsSpecial || ''
+                            })),
+                            total: total
+                        };
+                    }
+                }
+                
+                if (orderData) {
+                    // Display order details using the order data
+                    orderDetails = orderData.items.map(item => `
                         <div class="flex justify-between items-center py-2 border-b border-hunter-brown border-opacity-20">
                             <div>
-                                <h3 class="font-semibold text-hunter-brown">${product.type}</h3>
-                                <div class="text-sm text-cool-grey">Kaliber: ${product.selections.caliber || product.selections.caliberSpecial || 'Ej valt'}</div>
-                                <div class="text-sm text-cool-grey">Primär Färg: ${product.selections.primaryColor ? product.selections.primaryColor.name : (product.selections.primaryColorSpecial || 'Ej valt')}</div>
-                                <div class="text-sm text-cool-grey">Sekundär Färg: ${product.selections.secondaryColor ? product.selections.secondaryColor.name : (product.selections.secondaryColorSpecial || 'Ej valt')}</div>
-                                <div class="text-sm text-cool-grey">Design: ${product.selections.design ? product.selections.design.name : (product.selections.designSpecial || 'Ej valt')}</div>
-                                ${product.selections.initials || product.selections.initialsSpecial ? `<div class="text-sm text-cool-grey">Initialer: ${product.selections.initials || product.selections.initialsSpecial}</div>` : ''}
-                                ${product.selections.caliberSpecial || product.selections.primaryColorSpecial || product.selections.secondaryColorSpecial || product.selections.designSpecial || product.selections.initialsSpecial ? `<div class="text-sm text-yellow-600">Specialförfrågan: Ja</div>` : ''}
+                                <h3 class="font-semibold text-hunter-brown">${item.type}</h3>
+                                <div class="text-sm text-cool-grey">Kaliber: ${item.caliber}</div>
+                                <div class="text-sm text-cool-grey">Primär Färg: ${item.primaryColor}</div>
+                                <div class="text-sm text-cool-grey">Sekundär Färg: ${item.secondaryColor}</div>
+                                <div class="text-sm text-cool-grey">Design: ${item.design}</div>
+                                ${item.initials !== 'Inga' ? `<div class="text-sm text-cool-grey">Initialer: ${item.initials}</div>` : ''}
+                                ${item.specialRequest ? `<div class="text-sm text-yellow-600">Specialförfrågan: ${item.specialRequest}</div>` : ''}
                             </div>
-                            <div class="font-semibold text-mustard-gold">${product.totalPrice} kr</div>
+                            <div class="font-semibold text-mustard-gold">${item.price} kr</div>
                         </div>
                     `).join('');
                     
@@ -315,26 +345,15 @@
                     orderDetails += `
                         <div class="flex justify-between items-center py-2 font-semibold text-mustard-gold text-lg">
                             <span>Totalt:</span>
-                            <span>${total} kr</span>
+                            <span>${orderData.total} kr</span>
                         </div>
                     `;
                     
                     // Store order data for email sending
-                    window.orderData = {
-                        items: products.map(product => ({
-                            type: product.type,
-                            caliber: product.selections.caliber || product.selections.caliberSpecial || 'Ej valt',
-                            primaryColor: product.selections.primaryColor ? product.selections.primaryColor.name : (product.selections.primaryColorSpecial || 'Ej valt'),
-                            secondaryColor: product.selections.secondaryColor ? product.selections.secondaryColor.name : (product.selections.secondaryColorSpecial || 'Ej valt'),
-                            design: product.selections.design ? product.selections.design.name : (product.selections.designSpecial || 'Ej valt'),
-                            initials: product.selections.initials || product.selections.initialsSpecial || 'Inga',
-                            price: product.totalPrice,
-                            specialRequest: product.selections.caliberSpecial || product.selections.primaryColorSpecial || product.selections.secondaryColorSpecial || product.selections.designSpecial || product.selections.initialsSpecial || ''
-                        })),
-                        total: total
-                    };
+                    window.orderData = orderData;
                 } else {
-                    // Fallback if no products data
+                    // Fallback if no data found
+                    console.log('📦 No order data found, using demo data');
                     orderDetails = `
                         <div class="flex justify-between items-center py-2 border-b border-hunter-brown border-opacity-20">
                             <div>

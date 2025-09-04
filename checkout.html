@@ -543,12 +543,16 @@
                     address: document.getElementById('address').value + ', ' + document.getElementById('postalCode').value + ' ' + document.getElementById('city').value + ', ' + document.getElementById('country').value
                 };
                 
-                // Get existing cart data and add customer info
+                // Get existing cart data and add customer info + order items
                 const existingCartData = localStorage.getItem('nordkaliberCart');
                 let cartData = existingCartData ? JSON.parse(existingCartData) : { items: [], orderId: 'ORDER-' + Date.now() };
                 cartData.customerInfo = customerInfo;
+                cartData.items = orderData.items; // Add the order items!
+                cartData.total = orderData.total; // Add the total!
                 cartData.paymentStatus = 'processing';
                 cartData.timestamp = new Date().toLocaleString('sv-SE');
+                
+                console.log('💾 Saving cart data with items:', cartData);
                 
                 // Save updated cart data
                 localStorage.setItem('nordkaliberCart', JSON.stringify(cartData));
