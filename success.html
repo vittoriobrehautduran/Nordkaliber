@@ -360,6 +360,8 @@
                     // Send test confirmation emails
                     if (sessionId) {
                         console.log('Test payment successful, sending confirmation emails...');
+                        console.log('📧 About to call sendTestOrderConfirmationEmails with orderData:', orderData);
+                        console.log('📧 orderData type:', typeof orderData);
                         sendTestOrderConfirmationEmails(orderData);
                     }
                 } else {
@@ -530,7 +532,9 @@
         async function sendTestOrderConfirmationEmails(orderData) {
             try {
                 console.log('📧 Sending test order confirmation emails...');
-                console.log('📧 Order data received:', orderData);
+                console.log('📧 Function parameter orderData:', orderData);
+                console.log('📧 Function parameter type:', typeof orderData);
+                console.log('📧 Window orderData:', window.orderData);
                 
                 // Get customer info from orderData or URL parameters
                 const urlParams = new URLSearchParams(window.location.search);
