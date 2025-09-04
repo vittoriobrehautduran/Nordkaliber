@@ -356,6 +356,12 @@
                     
                     // Store order data for email sending
                     window.orderData = orderData;
+                    
+                    // Send test confirmation emails
+                    if (sessionId) {
+                        console.log('Test payment successful, sending confirmation emails...');
+                        sendTestOrderConfirmationEmails(orderData);
+                    }
                 } else {
                     // Fallback if no data found
                     console.log('📦 No order data found, using demo data');
@@ -372,12 +378,6 @@
                             <span>Laddar...</span>
                         </div>
                     `;
-                }
-                
-                // Send test confirmation emails
-                if (sessionId) {
-                    console.log('Test payment successful, sending confirmation emails...');
-                    sendTestOrderConfirmationEmails(orderData);
                 }
                 
                 // Clear cart data after using it in test mode
