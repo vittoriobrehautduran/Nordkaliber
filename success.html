@@ -240,7 +240,8 @@
         // Get order details from URL parameters or localStorage
         document.addEventListener('DOMContentLoaded', function() {
         const urlParams = new URLSearchParams(window.location.search);
-        const sessionId = urlParams.get('session_id');
+        const sessionId = urlParams.get('session_id') || urlParams.get('payment_intent');
+        const isTestMode = urlParams.get('test') === 'true';
         
             // Try to get order details from localStorage
             const cartData = localStorage.getItem('nordkaliberCart');
@@ -276,6 +277,27 @@
                 
                 // Clear cart data
                 localStorage.removeItem('nordkaliberCart');
+            } else if (isTestMode) {
+                // Handle test mode - create test order data
+                orderDetails = `
+                    <div class="flex justify-between items-center py-2 border-b border-hunter-brown border-opacity-20">
+                        <div>
+                            <h3 class="font-semibold text-hunter-brown">Ammunitionsetui - Test Order</h3>
+                            <p class="text-sm text-cool-grey">Kaliber: .308 Winchester | Färg: Grå | Motiv: Motiv 8</p>
+                        </div>
+                        <span class="font-bold text-hunter-brown">850 kr</span>
+                    </div>
+                    <div class="flex justify-between items-center py-2 font-bold text-lg">
+                        <span>Total:</span>
+                        <span>850 kr</span>
+                    </div>
+                `;
+                
+                // Send test confirmation emails
+                if (sessionId) {
+                    console.log('Test payment successful, sending confirmation emails...');
+                    sendTestOrderConfirmationEmails();
+                }
             } else {
                 orderDetails = '<p class="text-cool-grey">Orderdetaljer laddas...</p>';
             }
@@ -288,6 +310,58 @@
                 // Here you could make an API call to get order details from your backend
             }
         });
+
+        // Send test order confirmation emails
+        async function sendTestOrderConfirmationEmails() {
+            try {
+                console.log('📧 Sending test order confirmation emails...');
+                
+                const orderData = {
+                    customer: {
+                        firstName: 'Test',
+                        lastName: 'Customer',
+                        email: 'test@example.com',
+                        phone: '+46 123 456 789',
+                        address: 'Test Street 123',
+                        postalCode: '12345',
+                        city: 'Stockholm',
+                        country: 'Sverige'
+                    },
+                    items: [{
+                        name: 'Ammunitionsetui - Test Order',
+                        details: [
+                            'Kaliber: .308 Winchester',
+                            'Primär Färg: Grå',
+                            'Sekundär Färg: Svart',
+                            'Design: Motiv 8',
+                            'Initialer: Test'
+                        ],
+                        price: 850
+                    }],
+                    total: 850,
+                    orderId: 'TEST-ORDER-' + Date.now()
+                };
+
+                // Call the email service
+                const response = await fetch('/.netlify/functions/send-order-emails', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(orderData)
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    console.log('✅ Test order confirmation emails sent successfully');
+                } else {
+                    console.error('❌ Failed to send test order confirmation emails:', result);
+                }
+            } catch (error) {
+                console.error('❌ Error sending test order confirmation emails:', error);
+            }
+        }
 
         // Send order confirmation emails
         async function sendOrderConfirmationEmails(orderData) {
