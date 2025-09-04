@@ -1,8 +1,15 @@
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY, {
+// Initialize Stripe with appropriate key based on mode
+const getStripeInstance = (isTestMode) => {
+  const secretKey = isTestMode ? 
+    process.env.STRIPE_SECRET_KEY_TEST : 
+    process.env.STRIPE_SECRET_KEY;
+  
+  return require('stripe')(secretKey, {
     apiVersion: '2025-07-30.basil',
     timeout: 30000,
     maxNetworkRetries: 3
-});
+  });
+};
 
 exports.handler = async (event, context) => {
   // Enable CORS
@@ -31,7 +38,11 @@ exports.handler = async (event, context) => {
   }
 
   try {
-      const { items, customerEmail, customerName, customerPhone, customerAddress } = JSON.parse(event.body);
+    // Check if we're in test mode
+    const isTestMode = event.queryStringParameters?.test === 'true' || process.env.STRIPE_MODE === 'test';
+    const stripe = getStripeInstance(isTestMode);
+    
+    const { items, customerEmail, customerName, customerPhone, customerAddress } = JSON.parse(event.body);
 
     if (!items || !Array.isArray(items) || items.length === 0) {
       return {
@@ -45,7 +56,8 @@ exports.handler = async (event, context) => {
     const totalAmountInKronor = items.reduce((sum, item) => sum + item.price, 0);
     const totalAmountInCents = Math.round(totalAmountInKronor * 100); // Convert SEK to cents
 
-    console.log('💰 Amount calculation:', {
+    console.log('💰 Payment Intent creation:', {
+      mode: isTestMode ? 'test' : 'live',
       totalInKronor: totalAmountInKronor,
       totalInCents: totalAmountInCents,
       items: items.map(item => ({ name: item.caliber, price: item.price }))
@@ -77,6 +89,7 @@ exports.handler = async (event, context) => {
     });
 
     console.log('✅ Payment Intent created:', {
+      mode: isTestMode ? 'test' : 'live',
       id: paymentIntent.id,
       amount: paymentIntent.amount,
       currency: paymentIntent.currency,
@@ -87,8 +100,10 @@ exports.handler = async (event, context) => {
       statusCode: 200,
       headers,
       body: JSON.stringify({ 
-      clientSecret: paymentIntent.client_secret,
-      paymentIntentId: paymentIntent.id
+        clientSecret: paymentIntent.client_secret,
+        paymentIntentId: paymentIntent.id,
+        mode: isTestMode ? 'test' : 'live',
+        isTestMode: isTestMode
       })
     };
   } catch (error) {

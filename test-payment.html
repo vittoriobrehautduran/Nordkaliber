@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Payment - Nordkaliber</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico?v=2">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">
+                <i class="fas fa-credit-card me-2"></i>Test Payment System
+            </h1>
+            
+            <!-- Mode Selection -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                <h2 class="text-xl font-semibold mb-4 text-gray-700">Payment Mode</h2>
+                <div class="flex gap-4 mb-4">
+                    <label class="flex items-center">
+                        <input type="radio" name="paymentMode" value="test" checked class="mr-2">
+                        <span class="text-green-600 font-semibold">
+                            <i class="fas fa-flask me-1"></i>Test Mode
+                        </span>
+                    </label>
+                    <label class="flex items-center">
+                        <input type="radio" name="paymentMode" value="live" class="mr-2">
+                        <span class="text-red-600 font-semibold">
+                            <i class="fas fa-exclamation-triangle me-1"></i>Live Mode
+                        </span>
+                    </label>
+                </div>
+                <div id="modeInfo" class="p-3 bg-green-50 border border-green-200 rounded-lg">
+                    <p class="text-green-800 text-sm">
+                        <i class="fas fa-info-circle me-1"></i>
+                        <strong>Test Mode:</strong> Uses Stripe test keys. No real money will be charged.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Test Order Form -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                <h2 class="text-xl font-semibold mb-4 text-gray-700">Test Order</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Customer Info -->
+                    <div>
+                        <h3 class="text-lg font-medium mb-3 text-gray-600">Customer Information</h3>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">First Name</label>
+                                <input type="text" id="firstName" value="Test" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Last Name</label>
+                                <input type="text" id="lastName" value="Customer" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Email</label>
+                                <input type="email" id="email" value="test@example.com" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Phone</label>
+                                <input type="tel" id="phone" value="+46 123 456 789" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Address Info -->
+                    <div>
+                        <h3 class="text-lg font-medium mb-3 text-gray-600">Address Information</h3>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Address</label>
+                                <input type="text" id="address" value="Test Street 123" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Postal Code</label>
+                                    <input type="text" id="postalCode" value="12345" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">City</label>
+                                    <input type="text" id="city" value="Stockholm" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Country</label>
+                                <select id="country" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                    <option value="SE" selected>Sweden</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Test Items -->
+                <div class="mt-6">
+                    <h3 class="text-lg font-medium mb-3 text-gray-600">Test Items</h3>
+                    <div id="testItems" class="space-y-2">
+                        <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                            <div>
+                                <span class="font-medium">Ammunitionsetui - Test Order</span>
+                                <div class="text-sm text-gray-600">
+                                    Kaliber: .308 Winchester | Färg: Grå | Motiv: Motiv 8
+                                </div>
+                            </div>
+                            <span class="font-bold text-green-600">850 SEK</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-semibold">Total:</span>
+                            <span class="text-xl font-bold text-blue-600">850 SEK</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Button -->
+                <div class="mt-6">
+                    <button id="testPaymentBtn" class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors font-semibold">
+                        <i class="fas fa-credit-card me-2"></i>Test Payment
+                    </button>
+                </div>
+            </div>
+
+            <!-- Test Cards Info -->
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                <h3 class="font-semibold text-yellow-800 mb-2">
+                    <i class="fas fa-info-circle me-2"></i>Test Card Numbers
+                </h3>
+                <div class="text-yellow-700 text-sm space-y-1">
+                    <div><strong>Successful payment:</strong> 4242 4242 4242 4242</div>
+                    <div><strong>Declined payment:</strong> 4000 0000 0000 0002</div>
+                    <div><strong>Requires authentication:</strong> 4000 0025 0000 3155</div>
+                    <div><strong>Expiry:</strong> Any future date (e.g., 12/25)</div>
+                    <div><strong>CVC:</strong> Any 3 digits (e.g., 123)</div>
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div id="result" class="mt-6 p-4 rounded-lg hidden">
+                <!-- Results will appear here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let stripe;
+        let elements;
+        let paymentElement;
+
+        // Initialize Stripe based on selected mode
+        async function initializeStripe() {
+            const mode = document.querySelector('input[name="paymentMode"]:checked').value;
+            const isTestMode = mode === 'test';
+            
+            console.log('🔑 Initializing Stripe in', isTestMode ? 'test' : 'live', 'mode');
+            
+            try {
+                // Get Stripe configuration
+                const configResponse = await fetch(`/.netlify/functions/stripe-config?test=${isTestMode}`);
+                const config = await configResponse.json();
+                
+                if (!config.publishableKey) {
+                    throw new Error('Stripe configuration not found');
+                }
+                
+                // Initialize Stripe
+                stripe = Stripe(config.publishableKey);
+                
+                console.log('✅ Stripe initialized:', {
+                    mode: config.mode,
+                    isTestMode: config.isTestMode
+                });
+                
+                return true;
+            } catch (error) {
+                console.error('❌ Failed to initialize Stripe:', error);
+                return false;
+            }
+        }
+
+        // Create payment element
+        async function createPaymentElement() {
+            const mode = document.querySelector('input[name="paymentMode"]:checked').value;
+            const isTestMode = mode === 'test';
+            
+            try {
+                // Create payment intent
+                const response = await fetch(`/.netlify/functions/create-payment-intent?test=${isTestMode}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        items: [{
+                            name: 'Ammunitionsetui - Test Order',
+                            caliber: '.308 Winchester',
+                            color: 'Grå',
+                            motif: 'Motiv 8',
+                            quantity: 1,
+                            price: 850
+                        }],
+                        customerEmail: document.getElementById('email').value,
+                        customerName: document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value,
+                        customerPhone: document.getElementById('phone').value,
+                        customerAddress: {
+                            line1: document.getElementById('address').value,
+                            postal_code: document.getElementById('postalCode').value,
+                            city: document.getElementById('city').value,
+                            country: document.getElementById('country').value
+                        }
+                    })
+                });
+                
+                const { clientSecret, mode: paymentMode, isTestMode: paymentIsTestMode } = await response.json();
+                
+                console.log('💰 Payment Intent created:', {
+                    mode: paymentMode,
+                    isTestMode: paymentIsTestMode
+                });
+                
+                // Create payment element
+                elements = stripe.elements({
+                    clientSecret: clientSecret,
+                    appearance: {
+                        theme: 'stripe',
+                        variables: {
+                            colorPrimary: '#1B4D3E',
+                            colorBackground: '#ffffff',
+                            colorText: '#1a1a1a',
+                            colorDanger: '#df1b41',
+                            fontFamily: 'Inter, sans-serif',
+                            spacingUnit: '4px',
+                            borderRadius: '8px'
+                        }
+                    }
+                });
+                
+                paymentElement = elements.create('payment');
+                paymentElement.mount('#payment-element');
+                
+                console.log('✅ Payment Element mounted successfully');
+                return true;
+            } catch (error) {
+                console.error('❌ Failed to create payment element:', error);
+                return false;
+            }
+        }
+
+        // Handle form submission
+        async function handleSubmit() {
+            const resultDiv = document.getElementById('result');
+            const btn = document.getElementById('testPaymentBtn');
+            
+            // Show loading state
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing Payment...';
+            resultDiv.className = 'mt-6 p-4 rounded-lg bg-blue-50 border border-blue-200';
+            resultDiv.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing payment...';
+            resultDiv.classList.remove('hidden');
+            
+            try {
+                const { error } = await stripe.confirmPayment({
+                    elements,
+                    confirmParams: {
+                        return_url: `${window.location.origin}/success?test=true`,
+                    }
+                });
+                
+                if (error) {
+                    throw error;
+                }
+                
+                // Success - redirect will happen automatically
+                resultDiv.className = 'mt-6 p-4 rounded-lg bg-green-50 border border-green-200';
+                resultDiv.innerHTML = `
+                    <div class="text-green-800">
+                        <i class="fas fa-check-circle me-2"></i>
+                        <strong>Payment successful!</strong>
+                        <div class="mt-2 text-sm">Redirecting to success page...</div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('❌ Payment failed:', error);
+                resultDiv.className = 'mt-6 p-4 rounded-lg bg-red-50 border border-red-200';
+                resultDiv.innerHTML = `
+                    <div class="text-red-800">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Payment failed</strong>
+                        <div class="mt-2 text-sm">${error.message}</div>
+                    </div>
+                `;
+            } finally {
+                // Reset button
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-credit-card me-2"></i>Test Payment';
+            }
+        }
+
+        // Update mode info when radio button changes
+        function updateModeInfo() {
+            const mode = document.querySelector('input[name="paymentMode"]:checked').value;
+            const modeInfo = document.getElementById('modeInfo');
+            
+            if (mode === 'test') {
+                modeInfo.className = 'p-3 bg-green-50 border border-green-200 rounded-lg';
+                modeInfo.innerHTML = `
+                    <p class="text-green-800 text-sm">
+                        <i class="fas fa-info-circle me-1"></i>
+                        <strong>Test Mode:</strong> Uses Stripe test keys. No real money will be charged.
+                    </p>
+                `;
+            } else {
+                modeInfo.className = 'p-3 bg-red-50 border border-red-200 rounded-lg';
+                modeInfo.innerHTML = `
+                    <p class="text-red-800 text-sm">
+                        <i class="fas fa-exclamation-triangle me-1"></i>
+                        <strong>Live Mode:</strong> Uses real Stripe keys. Real money will be charged!
+                    </p>
+                `;
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Set up mode change listeners
+            document.querySelectorAll('input[name="paymentMode"]').forEach(radio => {
+                radio.addEventListener('change', updateModeInfo);
+            });
+            
+            // Set up payment button
+            document.getElementById('testPaymentBtn').addEventListener('click', async function() {
+                // Initialize Stripe
+                const stripeInitialized = await initializeStripe();
+                if (!stripeInitialized) {
+                    alert('Failed to initialize Stripe. Please check your configuration.');
+                    return;
+                }
+                
+                // Create payment element
+                const elementCreated = await createPaymentElement();
+                if (!elementCreated) {
+                    alert('Failed to create payment element. Please try again.');
+                    return;
+                }
+                
+                // Handle payment
+                await handleSubmit();
+            });
+            
+            // Initialize mode info
+            updateModeInfo();
+        });
+    </script>
+</body>
+</html>

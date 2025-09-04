@@ -16,26 +16,45 @@ exports.handler = async (event, context) => {
   }
 
   try {
-  // Get Stripe publishable key from environment
-  const publishableKey = process.env.STRIPE_PUBLISHABLE_KEY;
-  
-  if (!publishableKey) {
-    console.error('STRIPE_PUBLISHABLE_KEY not found in environment variables');
+    // Check if we're in test mode (via query parameter or environment)
+    const isTestMode = event.queryStringParameters?.test === 'true' || process.env.STRIPE_MODE === 'test';
+    
+    // Get appropriate Stripe keys based on mode
+    const publishableKey = isTestMode ? 
+      process.env.STRIPE_PUBLISHABLE_KEY_TEST : 
+      process.env.STRIPE_PUBLISHABLE_KEY;
+    
+    const secretKey = isTestMode ? 
+      process.env.STRIPE_SECRET_KEY_TEST : 
+      process.env.STRIPE_SECRET_KEY;
+    
+    console.log('🔑 Stripe configuration:', {
+      mode: isTestMode ? 'test' : 'live',
+      hasPublishableKey: !!publishableKey,
+      hasSecretKey: !!secretKey
+    });
+    
+    if (!publishableKey) {
+      const keyType = isTestMode ? 'STRIPE_PUBLISHABLE_KEY_TEST' : 'STRIPE_PUBLISHABLE_KEY';
+      console.error(`${keyType} not found in environment variables`);
       return {
         statusCode: 500,
         headers,
         body: JSON.stringify({ 
-      error: 'Stripe configuration not found',
-      details: 'Publishable key not configured'
+          error: 'Stripe configuration not found',
+          details: `${keyType} not configured`,
+          mode: isTestMode ? 'test' : 'live'
         })
       };
-  }
+    }
 
     return {
       statusCode: 200,
       headers,
       body: JSON.stringify({
-    publishableKey: publishableKey
+        publishableKey: publishableKey,
+        mode: isTestMode ? 'test' : 'live',
+        isTestMode: isTestMode
       })
     };
   } catch (error) {
