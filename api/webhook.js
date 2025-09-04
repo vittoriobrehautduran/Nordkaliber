@@ -1,4 +1,5 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const { sendOrderEmails } = require('./email-service');
 
 exports.handler = async (event, context) => {
   // Enable CORS
@@ -139,8 +140,9 @@ async function handlePaymentSucceeded(paymentIntent) {
       itemsCount: orderData.items.length
     });
 
-    // Log order data for manual email processing
-    console.log('📧 Order data for manual email processing:', orderData);
+    // Send confirmation emails
+    const emailResults = await sendOrderEmails(orderData);
+    console.log('📧 Order confirmation emails sent:', emailResults);
 
     // Log successful payment processing
     console.log('🎉 Payment processing completed successfully for order:', paymentIntent.id);
@@ -225,8 +227,9 @@ async function handleCheckoutSessionCompleted(session) {
       total: orderData.total
     });
 
-    // Log order data for manual email processing
-    console.log('📧 Checkout session order data for manual email processing:', orderData);
+    // Send confirmation emails
+    const emailResults = await sendOrderEmails(orderData);
+    console.log('📧 Checkout session confirmation emails sent:', emailResults);
 
   } catch (error) {
     console.error('❌ Error processing checkout session:', error);

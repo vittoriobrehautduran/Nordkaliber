@@ -1,3 +1,5 @@
+const { sendOrderEmails } = require('./email-service');
+
 exports.handler = async (event, context) => {
   // Enable CORS
   const headers = {
@@ -37,13 +39,9 @@ exports.handler = async (event, context) => {
 
     console.log('📦 Processing order completion:', orderData.orderId);
 
-    // Log order data for manual processing
-    console.log('📋 Order details:', {
-      orderId: orderData.orderId,
-      customer: orderData.customer,
-      items: orderData.items,
-      total: orderData.total
-    });
+    // Send confirmation emails
+    const emailResults = await sendOrderEmails(orderData);
+    console.log('📧 Email results:', emailResults);
 
     // Return success response
     return {
@@ -52,7 +50,8 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({
         success: true,
         orderId: orderData.orderId,
-        message: 'Order processed successfully - emails will be sent manually'
+        emailsSent: emailResults,
+        message: 'Order processed successfully'
       })
     };
 

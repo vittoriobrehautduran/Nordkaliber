@@ -1,3 +1,6 @@
+// Import the email functions
+const { sendOrderEmails } = require('./email-service');
+
 exports.handler = async (event, context) => {
   // Enable CORS
   const headers = {
@@ -34,16 +37,16 @@ exports.handler = async (event, context) => {
       itemCount: orderData.items?.length
     });
 
-    // Log order data for manual email processing
-    console.log('📋 Order data for manual email processing:', orderData);
+    // Send the emails
+    const result = await sendOrderEmails(orderData);
 
     return {
       statusCode: 200,
       headers,
       body: JSON.stringify({
         success: true,
-        message: 'Order data logged for manual email processing',
-        orderId: orderData.orderId
+        message: 'Order confirmation emails sent successfully',
+        details: result
       })
     };
   } catch (error) {
@@ -54,7 +57,7 @@ exports.handler = async (event, context) => {
       headers,
       body: JSON.stringify({
         success: false,
-        error: 'Failed to process order email request',
+        error: 'Failed to send order confirmation emails',
         details: error.message
       })
     };
