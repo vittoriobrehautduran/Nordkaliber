@@ -259,6 +259,16 @@
         // Parse cart data for use
         const parsedCartData = cartData ? JSON.parse(cartData) : null;
         console.log('🔍 Parsed cart data:', parsedCartData);
+        console.log('🔍 Cart data has items:', parsedCartData && parsedCartData.items);
+        console.log('🔍 Cart data has customerInfo:', parsedCartData && parsedCartData.customerInfo);
+        if (parsedCartData && parsedCartData.customerInfo) {
+            console.log('🔍 Customer info details:', {
+                name: parsedCartData.customerInfo.name,
+                email: parsedCartData.customerInfo.email,
+                postalCode: parsedCartData.customerInfo.postalCode,
+                city: parsedCartData.customerInfo.city
+            });
+        }
         
             // Try to get order details from localStorage
             let orderDetails = '';

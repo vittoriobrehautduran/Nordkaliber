@@ -4,7 +4,8 @@
   "description": "Nordkaliber website with Stripe integration for Netlify",
   "main": "api/index.js",
   "scripts": {
-    "build": "echo 'Build complete'",
+    "build": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
+    "build:prod": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --minify",
     "start": "node api/index.js"
   },
   "keywords": [
@@ -25,5 +26,10 @@
     "node-fetch": "^2.7.0",
     "nodemailer": "^7.0.5",
     "stripe": "^14.10.0"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.0",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32"
   }
 }
