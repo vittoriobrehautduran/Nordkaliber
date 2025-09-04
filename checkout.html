@@ -555,10 +555,18 @@
                 
                 // Confirm payment
                 const isTestMode = document.getElementById('testModeToggle').checked;
+                const customerName = document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value;
+                const customerEmail = document.getElementById('email').value;
+                const customerPhone = document.getElementById('phone').value;
+                const customerAddress = document.getElementById('address').value;
+                const customerPostalCode = document.getElementById('postalCode').value;
+                const customerCity = document.getElementById('city').value;
+                const customerCountry = document.getElementById('country').value;
+                
                 const { error } = await stripe.confirmPayment({
                     elements,
                     confirmParams: {
-                        return_url: `${window.location.origin}/success?test=${isTestMode}`,
+                        return_url: `${window.location.origin}/success?test=${isTestMode}&customer_name=${encodeURIComponent(customerName)}&customer_email=${encodeURIComponent(customerEmail)}&customer_phone=${encodeURIComponent(customerPhone)}&customer_address=${encodeURIComponent(customerAddress)}&customer_postal=${encodeURIComponent(customerPostalCode)}&customer_city=${encodeURIComponent(customerCity)}&customer_country=${encodeURIComponent(customerCountry)}`,
                         payment_method_data: {
                             billing_details: {
                                 name: document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value,

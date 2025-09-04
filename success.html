@@ -284,20 +284,65 @@
                 // Clear cart data
                 localStorage.removeItem('nordkaliberCart');
             } else if (isTestMode) {
-                // Handle test mode - show loading state first, will be updated by fetchPaymentDetails
-                orderDetails = `
-                    <div class="flex justify-between items-center py-2 border-b border-hunter-brown border-opacity-20">
-                        <div>
-                            <h3 class="font-semibold text-hunter-brown">Ammunitionsetui - Test Order</h3>
-                            <p class="text-sm text-cool-grey">Kaliber: .308 Winchester | Färg: Grå | Motiv: Motiv 8</p>
+                // Handle test mode - get actual order data from localStorage
+                const productsData = localStorage.getItem('nordkaliberProducts');
+                if (productsData) {
+                    const products = JSON.parse(productsData);
+                    const total = products.reduce((sum, product) => sum + product.totalPrice, 0);
+                    
+                    orderDetails = products.map(product => `
+                        <div class="flex justify-between items-center py-2 border-b border-hunter-brown border-opacity-20">
+                            <div>
+                                <h3 class="font-semibold text-hunter-brown">${product.type}</h3>
+                                <div class="text-sm text-cool-grey">Kaliber: ${product.selections.caliber || product.selections.caliberSpecial || 'Ej valt'}</div>
+                                <div class="text-sm text-cool-grey">Primär Färg: ${product.selections.primaryColor ? product.selections.primaryColor.name : (product.selections.primaryColorSpecial || 'Ej valt')}</div>
+                                <div class="text-sm text-cool-grey">Sekundär Färg: ${product.selections.secondaryColor ? product.selections.secondaryColor.name : (product.selections.secondaryColorSpecial || 'Ej valt')}</div>
+                                <div class="text-sm text-cool-grey">Design: ${product.selections.design ? product.selections.design.name : (product.selections.designSpecial || 'Ej valt')}</div>
+                                ${product.selections.initials || product.selections.initialsSpecial ? `<div class="text-sm text-cool-grey">Initialer: ${product.selections.initials || product.selections.initialsSpecial}</div>` : ''}
+                                ${product.selections.caliberSpecial || product.selections.primaryColorSpecial || product.selections.secondaryColorSpecial || product.selections.designSpecial || product.selections.initialsSpecial ? `<div class="text-sm text-yellow-600">Specialförfrågan: Ja</div>` : ''}
+                            </div>
+                            <div class="font-semibold text-mustard-gold">${product.totalPrice} kr</div>
                         </div>
-                        <span class="font-bold text-hunter-brown">Laddar...</span>
-                    </div>
-                    <div class="flex justify-between items-center py-2 font-bold text-lg">
-                        <span>Total:</span>
-                        <span>Laddar...</span>
-                    </div>
-                `;
+                    `).join('');
+                    
+                    // Add total
+                    orderDetails += `
+                        <div class="flex justify-between items-center py-2 font-semibold text-mustard-gold text-lg">
+                            <span>Totalt:</span>
+                            <span>${total} kr</span>
+                        </div>
+                    `;
+                    
+                    // Store order data for email sending
+                    window.orderData = {
+                        items: products.map(product => ({
+                            type: product.type,
+                            caliber: product.selections.caliber || product.selections.caliberSpecial || 'Ej valt',
+                            primaryColor: product.selections.primaryColor ? product.selections.primaryColor.name : (product.selections.primaryColorSpecial || 'Ej valt'),
+                            secondaryColor: product.selections.secondaryColor ? product.selections.secondaryColor.name : (product.selections.secondaryColorSpecial || 'Ej valt'),
+                            design: product.selections.design ? product.selections.design.name : (product.selections.designSpecial || 'Ej valt'),
+                            initials: product.selections.initials || product.selections.initialsSpecial || 'Inga',
+                            price: product.totalPrice,
+                            specialRequest: product.selections.caliberSpecial || product.selections.primaryColorSpecial || product.selections.secondaryColorSpecial || product.selections.designSpecial || product.selections.initialsSpecial || ''
+                        })),
+                        total: total
+                    };
+                } else {
+                    // Fallback if no products data
+                    orderDetails = `
+                        <div class="flex justify-between items-center py-2 border-b border-hunter-brown border-opacity-20">
+                            <div>
+                                <h3 class="font-semibold text-hunter-brown">Ammunitionsetui - Test Order</h3>
+                                <p class="text-sm text-cool-grey">Kaliber: .308 Winchester | Färg: Grå | Motiv: Motiv 8</p>
+                            </div>
+                            <span class="font-bold text-hunter-brown">Laddar...</span>
+                        </div>
+                        <div class="flex justify-between items-center py-2 font-bold text-lg">
+                            <span>Total:</span>
+                            <span>Laddar...</span>
+                        </div>
+                    `;
+                }
                 
                 // Send test confirmation emails
                 if (sessionId) {
@@ -421,59 +466,85 @@
             try {
                 console.log('📧 Sending test order confirmation emails...');
                 
-                // Get the actual payment amount from the page
-                const totalElement = document.querySelector('.flex.justify-between.items-center.py-2.font-bold.text-lg span:last-child');
-                const actualAmount = totalElement ? parseInt(totalElement.textContent.replace(' kr', '')) : 850;
-                
-                // Get customer info from URL parameters or use defaults
+                // Get customer info from URL parameters
+                const urlParams = new URLSearchParams(window.location.search);
                 const customerEmail = urlParams.get('customer_email') || 'test@example.com';
                 const customerName = urlParams.get('customer_name') || 'Test Customer';
+                const customerPhone = urlParams.get('customer_phone') || '+46 123 456 789';
+                const customerAddress = urlParams.get('customer_address') || 'Test Street 123';
+                const customerPostalCode = urlParams.get('customer_postal') || '12345';
+                const customerCity = urlParams.get('customer_city') || 'Stockholm';
+                const customerCountry = urlParams.get('customer_country') || 'Sverige';
                 
-                // Get special request info from payment metadata if available
-                let specialRequestInfo = '';
-                if (window.paymentMetadata && window.paymentMetadata.items) {
-                    try {
-                        const items = JSON.parse(window.paymentMetadata.items);
-                        if (items.length > 0 && items[0].specialRequest) {
-                            specialRequestInfo = items[0].specialRequest;
-                        }
-                    } catch (e) {
-                        console.log('Could not parse payment metadata:', e);
+                // Get order data from window.orderData (set in the main function)
+                let orderData = window.orderData;
+                if (!orderData) {
+                    // Fallback: try to get from localStorage
+                    const productsData = localStorage.getItem('nordkaliberProducts');
+                    if (productsData) {
+                        const products = JSON.parse(productsData);
+                        const total = products.reduce((sum, product) => sum + product.totalPrice, 0);
+                        orderData = {
+                            items: products.map(product => ({
+                                type: product.type,
+                                caliber: product.selections.caliber || product.selections.caliberSpecial || 'Ej valt',
+                                primaryColor: product.selections.primaryColor ? product.selections.primaryColor.name : (product.selections.primaryColorSpecial || 'Ej valt'),
+                                secondaryColor: product.selections.secondaryColor ? product.selections.secondaryColor.name : (product.selections.secondaryColorSpecial || 'Ej valt'),
+                                design: product.selections.design ? product.selections.design.name : (product.selections.designSpecial || 'Ej valt'),
+                                initials: product.selections.initials || product.selections.initialsSpecial || 'Inga',
+                                price: product.totalPrice,
+                                specialRequest: product.selections.caliberSpecial || product.selections.primaryColorSpecial || product.selections.secondaryColorSpecial || product.selections.designSpecial || product.selections.initialsSpecial || ''
+                            })),
+                            total: total
+                        };
                     }
                 }
                 
-                // Build details array
-                const details = [
-                    'Kaliber: .308 Winchester',
-                    'Primär Färg: Grå',
-                    'Sekundär Färg: Svart',
-                    'Design: Motiv 8',
-                    'Initialer: Test'
-                ];
+                if (!orderData) {
+                    throw new Error('No order data available for email');
+                }
+                
+                console.log('📊 Order data for email:', orderData);
+                
+                // Build details array from actual order data
+                const details = [];
+                orderData.items.forEach(item => {
+                    details.push(`Kaliber: ${item.caliber}`);
+                    details.push(`Primär Färg: ${item.primaryColor}`);
+                    details.push(`Sekundär Färg: ${item.secondaryColor}`);
+                    details.push(`Design: ${item.design}`);
+                    if (item.initials && item.initials !== 'Inga') {
+                        details.push(`Initialer: ${item.initials}`);
+                    }
+                    if (item.specialRequest) {
+                        details.push(`Specialförfrågan: ${item.specialRequest}`);
+                    }
+                });
                 
                 // Add special request if available
+                const specialRequestInfo = orderData.items.find(item => item.specialRequest)?.specialRequest || '';
                 if (specialRequestInfo) {
                     details.push(`Specialförfrågan: ${specialRequestInfo}`);
                 }
                 
-                const orderData = {
+                const emailOrderData = {
                     customer: {
                         firstName: customerName.split(' ')[0] || 'Test',
                         lastName: customerName.split(' ').slice(1).join(' ') || 'Customer',
                         email: customerEmail,
-                        phone: '+46 123 456 789',
-                        address: 'Test Street 123',
-                        postalCode: '12345',
-                        city: 'Stockholm',
-                        country: 'Sverige'
+                        phone: customerPhone,
+                        address: customerAddress,
+                        postalCode: customerPostalCode,
+                        city: customerCity,
+                        country: customerCountry
                     },
-                    items: [{
-                        name: 'Ammunitionsetui - Test Order',
+                    items: orderData.items.map(item => ({
+                        name: item.type,
                         details: details,
-                        price: actualAmount,
-                        specialRequest: specialRequestInfo
-                    }],
-                    total: actualAmount,
+                        price: item.price,
+                        specialRequest: item.specialRequest
+                    })),
+                    total: orderData.total,
                     orderId: 'TEST-ORDER-' + Date.now()
                 };
 
@@ -483,7 +554,7 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(orderData)
+                    body: JSON.stringify(emailOrderData)
                 });
 
                 const result = await response.json();
