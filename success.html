@@ -304,17 +304,70 @@
             
             document.getElementById('orderDetails').innerHTML = orderDetails;
             
-            // If we have a session ID, we could fetch order details from the server
+            // If we have a session ID, fetch payment details from Stripe
             if (sessionId) {
                 console.log('Payment session ID:', sessionId);
-                // Here you could make an API call to get order details from your backend
+                await fetchPaymentDetails(sessionId, isTestMode);
             }
         });
+
+        // Fetch payment details from Stripe
+        async function fetchPaymentDetails(paymentIntentId, isTestMode) {
+            try {
+                console.log('🔍 Fetching payment details from Stripe...');
+                
+                const response = await fetch(`/.netlify/functions/get-payment-details?payment_intent=${paymentIntentId}&test=${isTestMode}`);
+                const paymentData = await response.json();
+                
+                if (response.ok && paymentData.amountInKronor) {
+                    console.log('✅ Payment details fetched:', paymentData);
+                    
+                    // Update the order details with real payment amount
+                    const orderDetailsElement = document.getElementById('orderDetails');
+                    if (orderDetailsElement) {
+                        // Check if this is test mode or regular order
+                        if (isTestMode) {
+                            orderDetailsElement.innerHTML = `
+                                <div class="flex justify-between items-center py-2 border-b border-hunter-brown border-opacity-20">
+                                    <div>
+                                        <h3 class="font-semibold text-hunter-brown">Ammunitionsetui - Test Order</h3>
+                                        <p class="text-sm text-cool-grey">Kaliber: .308 Winchester | Färg: Grå | Motiv: Motiv 8</p>
+                                        <p class="text-xs text-cool-grey">Payment ID: ${paymentData.id}</p>
+                                    </div>
+                                    <span class="font-bold text-hunter-brown">${paymentData.amountInKronor} kr</span>
+                                </div>
+                                <div class="flex justify-between items-center py-2 font-bold text-lg">
+                                    <span>Total:</span>
+                                    <span>${paymentData.amountInKronor} kr</span>
+                                </div>
+                            `;
+                        } else {
+                            // For regular orders, update the total amount
+                            const totalElement = orderDetailsElement.querySelector('.flex.justify-between.items-center.py-2.font-bold.text-lg');
+                            if (totalElement) {
+                                totalElement.innerHTML = `
+                                    <span>Total:</span>
+                                    <span>${paymentData.amountInKronor} kr</span>
+                                `;
+                            }
+                        }
+                    }
+                } else {
+                    console.error('❌ Failed to fetch payment details:', paymentData);
+                }
+            } catch (error) {
+                console.error('❌ Error fetching payment details:', error);
+            }
+        }
 
         // Send test order confirmation emails
         async function sendTestOrderConfirmationEmails() {
             try {
                 console.log('📧 Sending test order confirmation emails...');
+                
+                // Get the actual payment amount from the page
+                const totalElement = document.querySelector('.flex.justify-between.items-center.py-2.font-bold.text-lg span:last-child');
+                const actualAmount = totalElement ? parseInt(totalElement.textContent.replace(' kr', '')) : 850;
                 
                 const orderData = {
                     customer: {
@@ -336,9 +389,9 @@
                             'Design: Motiv 8',
                             'Initialer: Test'
                         ],
-                        price: 850
+                        price: actualAmount
                     }],
-                    total: 850,
+                    total: actualAmount,
                     orderId: 'TEST-ORDER-' + Date.now()
                 };
 
