@@ -108,13 +108,36 @@
                                     Kaliber: .308 Winchester | Färg: Grå | Motiv: Motiv 8
                                 </div>
                             </div>
-                            <span class="font-bold text-green-600">850 SEK</span>
+                            <span class="font-bold text-green-600" id="itemPrice">850 SEK</span>
                         </div>
                     </div>
+                    
+                    <!-- Custom Pricing Options -->
+                    <div class="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <h4 class="font-medium text-gray-700 mb-3">🧪 Test Custom Pricing</h4>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Custom Price (SEK)</label>
+                                <input type="number" id="customPrice" value="850" min="100" max="5000" 
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                       onchange="updateTestPrice()">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Special Request</label>
+                                <input type="text" id="specialRequest" placeholder="e.g., Custom engraving, special color" 
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                       onchange="updateTestPrice()">
+                            </div>
+                        </div>
+                        <div class="mt-2 text-xs text-gray-500">
+                            💡 Special requests add 200 SEK to the base price
+                        </div>
+                    </div>
+                    
                     <div class="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
                         <div class="flex justify-between items-center">
                             <span class="text-lg font-semibold">Total:</span>
-                            <span class="text-xl font-bold text-blue-600">850 SEK</span>
+                            <span id="totalAmount" class="text-xl font-bold text-blue-600">850 SEK</span>
                         </div>
                     </div>
                 </div>
@@ -210,6 +233,14 @@
                     paymentElement.unmount();
                 }
                 
+                // Get custom price and special request
+                const customPrice = parseInt(document.getElementById('customPrice').value) || 850;
+                const specialRequest = document.getElementById('specialRequest').value.trim();
+                let totalPrice = customPrice;
+                if (specialRequest) {
+                    totalPrice += 200; // Add 200 SEK for special request
+                }
+                
                 // Create payment intent
                 const response = await fetch(`/.netlify/functions/create-payment-intent?test=${isTestMode}`, {
                     method: 'POST',
@@ -223,7 +254,8 @@
                             color: 'Grå',
                             motif: 'Motiv 8',
                             quantity: 1,
-                            price: 850
+                            price: customPrice,
+                            specialRequest: specialRequest
                         }],
                         customerEmail: document.getElementById('email').value,
                         customerName: document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value,
@@ -328,6 +360,28 @@
             try {
                 console.log('📧 Sending test order confirmation emails...');
                 
+                // Get custom price and special request
+                const customPrice = parseInt(document.getElementById('customPrice').value) || 850;
+                const specialRequest = document.getElementById('specialRequest').value.trim();
+                let totalPrice = customPrice;
+                if (specialRequest) {
+                    totalPrice += 200; // Add 200 SEK for special request
+                }
+                
+                // Build details array
+                const details = [
+                    'Kaliber: .308 Winchester',
+                    'Primär Färg: Grå',
+                    'Sekundär Färg: Svart',
+                    'Design: Motiv 8',
+                    'Initialer: Test'
+                ];
+                
+                // Add special request if provided
+                if (specialRequest) {
+                    details.push(`Specialförfrågan: ${specialRequest}`);
+                }
+                
                 const orderData = {
                     customer: {
                         firstName: document.getElementById('firstName').value,
@@ -341,16 +395,11 @@
                     },
                     items: [{
                         name: 'Ammunitionsetui - Test Order',
-                        details: [
-                            'Kaliber: .308 Winchester',
-                            'Primär Färg: Grå',
-                            'Sekundär Färg: Svart',
-                            'Design: Motiv 8',
-                            'Initialer: Test'
-                        ],
-                        price: 850
+                        details: details,
+                        price: customPrice,
+                        specialRequest: specialRequest
                     }],
-                    total: 850,
+                    total: totalPrice,
                     orderId: 'TEST-ORDER-' + Date.now()
                 };
 
@@ -404,6 +453,24 @@
                     await createPaymentElement();
                 }, 50);
             }
+        }
+
+        // Update test price based on custom price and special request
+        function updateTestPrice() {
+            const customPrice = parseInt(document.getElementById('customPrice').value) || 850;
+            const specialRequest = document.getElementById('specialRequest').value.trim();
+            
+            // Calculate total price
+            let totalPrice = customPrice;
+            if (specialRequest) {
+                totalPrice += 200; // Add 200 SEK for special request
+            }
+            
+            // Update display
+            document.getElementById('itemPrice').textContent = customPrice + ' SEK';
+            document.getElementById('totalAmount').textContent = totalPrice + ' SEK';
+            
+            console.log('💰 Price updated:', { customPrice, specialRequest, totalPrice });
         }
 
         // Initialize on page load
