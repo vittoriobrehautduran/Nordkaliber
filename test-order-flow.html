@@ -5,6 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
     <title>Test Order Flow - Nordkaliber</title>
+    
+    <!-- Favicon for all browsers - ICO format for IE compatibility -->
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+    
+    <!-- PNG favicons for modern browsers -->
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="24x24" href="images/favicon-24x24.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="images/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="images/favicon-64x64.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="128x128" href="images/favicon-128x128.png">
+    <link rel="icon" type="image/png" sizes="256x256" href="images/favicon-256x256.png">
+    
+    <!-- Apple Touch Icons for iOS devices -->
+    <link rel="apple-touch-icon" sizes="57x57" href="images/favicon-57x57.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/favicon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/favicon-114x114.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="images/favicon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="images/favicon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    
+    <!-- Microsoft Tiles for Windows -->
+    <meta name="msapplication-TileColor" content="#1B4D3E">
+    <meta name="msapplication-TileImage" content="images/favicon-144x144.png">
+    <meta name="msapplication-config" content="browserconfig.xml">
+    
+    <!-- Android Chrome icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="images/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="images/favicon-512x512.png">
+    
+    <!-- Theme color for mobile browsers -->
+    <meta name="theme-color" content="#1B4D3E">
+    
+    <!-- Web App Manifest for PWA support -->
+    <link rel="manifest" href="manifest.json">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -47,6 +85,27 @@
                 </div>
             </div>
 
+            <!-- Step 1.5: Set Test Email -->
+            <div class="bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg p-6">
+                <h2 class="text-xl font-semibold mb-4 text-mustard-gold">
+                    <i class="fas fa-envelope mr-2"></i>Steg 1.5: Ange Test Email
+                </h2>
+                <p class="text-cool-grey mb-4">
+                    Ange en email-adress som ska ta emot orderbekräftelsen (simulerar kundens email).
+                </p>
+                <div class="flex gap-4 mb-4">
+                    <input type="email" id="test-email" placeholder="test@example.com" 
+                           class="flex-1 px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-mustard-gold">
+                    <button onclick="setTestEmail()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-save mr-2"></i>Spara Email
+                    </button>
+                </div>
+                <div id="email-status" class="mt-4 p-3 bg-gray-800 rounded-lg hidden">
+                    <p class="text-green-400"><i class="fas fa-check mr-2"></i>Test email sparad!</p>
+                    <p class="text-cool-grey text-sm" id="saved-email"></p>
+                </div>
+            </div>
+
             <!-- Step 2: Simulate Checkout Process -->
             <div class="bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg p-6">
                 <h2 class="text-xl font-semibold mb-4 text-mustard-gold">
@@ -64,10 +123,32 @@
                 </div>
             </div>
 
-            <!-- Step 3: Simulate Payment Success -->
+            <!-- Step 3: Test Email Confirmation -->
             <div class="bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg p-6">
                 <h2 class="text-xl font-semibold mb-4 text-mustard-gold">
-                    <i class="fas fa-credit-card mr-2"></i>Steg 3: Simulera Framgångsrik Betalning
+                    <i class="fas fa-envelope mr-2"></i>Steg 3: Testa Email Bekräftelse
+                </h2>
+                <p class="text-cool-grey mb-4">
+                    Detta skickar en riktig orderbekräftelse via email till den angivna test-adressen.
+                </p>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-cool-grey mb-2">Test Email:</label>
+                    <input type="email" id="email-to-test" placeholder="test@example.com" 
+                           class="w-full px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-mustard-gold">
+                </div>
+                <button onclick="testEmailConfirmation()" class="bg-mustard-gold text-white px-6 py-3 rounded-lg hover:bg-dark-green transition-colors">
+                    <i class="fas fa-paper-plane mr-2"></i>Skicka Test Email
+                </button>
+                <div id="email-test-status" class="mt-4 p-3 bg-gray-800 rounded-lg hidden">
+                    <p class="text-green-400"><i class="fas fa-check mr-2"></i>Test email skickad!</p>
+                    <pre id="email-test-data" class="text-xs mt-2 text-cool-grey overflow-auto"></pre>
+                </div>
+            </div>
+
+            <!-- Step 3.5: Simulate Payment Success -->
+            <div class="bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg p-6">
+                <h2 class="text-xl font-semibold mb-4 text-mustard-gold">
+                    <i class="fas fa-credit-card mr-2"></i>Steg 3.5: Simulera Framgångsrik Betalning
                 </h2>
                 <p class="text-cool-grey mb-4">
                     Detta simulerar vad som händer när betalningen lyckas och användaren skickas till success page.
@@ -167,6 +248,24 @@
             console.log('✅ Test product created:', testProduct);
         }
 
+        // Step 1.5: Set test email
+        function setTestEmail() {
+            const email = document.getElementById('test-email').value.trim();
+            if (!email) {
+                alert('Vänligen ange en email-adress');
+                return;
+            }
+            
+            // Save email to localStorage
+            localStorage.setItem('nordkaliberTestEmail', email);
+            
+            // Show status
+            document.getElementById('email-status').classList.remove('hidden');
+            document.getElementById('saved-email').textContent = `Sparad email: ${email}`;
+            
+            console.log('✅ Test email saved:', email);
+        }
+
         // Step 2: Simulate checkout process (simulates checkout.html loadOrderData function)
         function simulateCheckout() {
             const productsData = localStorage.getItem('nordkaliberProducts');
@@ -196,7 +295,85 @@
             console.log('✅ Checkout process simulated:', orderData);
         }
 
-        // Step 3: Simulate payment success (simulates what happens after successful payment)
+        // Step 3: Test email confirmation (sends real email)
+        async function testEmailConfirmation() {
+            const email = document.getElementById('email-to-test').value.trim();
+            if (!email) {
+                alert('Vänligen ange en email-adress för att testa');
+                return;
+            }
+
+            const productsData = localStorage.getItem('nordkaliberProducts');
+            if (!productsData) {
+                alert('Ingen produktdata hittad! Skapa först en testprodukt.');
+                return;
+            }
+
+            const products = JSON.parse(productsData);
+            
+            // Create order data for email service
+            const orderData = {
+                customer: {
+                    firstName: 'Test',
+                    lastName: 'Testsson',
+                    email: email,
+                    phone: '+46701234567',
+                    address: 'Testgatan 123',
+                    postalCode: '12345',
+                    city: 'Teststad',
+                    country: 'Sverige'
+                },
+                items: products.map(product => ({
+                    caliber: product.selections.caliber || product.selections.caliberSpecial || 'Ej valt',
+                    primaryColor: product.selections.primaryColor ? product.selections.primaryColor.name : (product.selections.primaryColorSpecial || 'Ej valt'),
+                    secondaryColor: product.selections.secondaryColor ? product.selections.secondaryColor.name : (product.selections.secondaryColorSpecial || 'Ej valt'),
+                    design: product.selections.design ? product.selections.design.name : (product.selections.designSpecial || 'Ej valt'),
+                    initials: product.selections.initials || product.selections.initialsSpecial || 'Inga',
+                    price: product.totalPrice
+                })),
+                total: products.reduce((sum, product) => sum + product.totalPrice, 0),
+                orderId: 'TEST-' + Date.now()
+            };
+
+            try {
+                // Show loading state
+                const button = event.target;
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Skickar...';
+                button.disabled = true;
+
+                // Call the email service
+                const response = await fetch('/.netlify/functions/send-test-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(orderData)
+                });
+
+                const result = await response.json();
+
+                // Show status
+                document.getElementById('email-test-status').classList.remove('hidden');
+                document.getElementById('email-test-data').textContent = JSON.stringify(result, null, 2);
+                
+                if (result.success) {
+                    console.log('✅ Test email sent successfully:', result);
+                } else {
+                    console.error('❌ Test email failed:', result);
+                }
+            } catch (error) {
+                console.error('❌ Error sending test email:', error);
+                document.getElementById('email-test-status').classList.remove('hidden');
+                document.getElementById('email-test-data').textContent = `Error: ${error.message}`;
+            } finally {
+                // Restore button
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }
+        }
+
+        // Step 3.5: Simulate payment success (simulates what happens after successful payment)
         function simulatePaymentSuccess() {
             const productsData = localStorage.getItem('nordkaliberProducts');
             if (!productsData) {
@@ -277,7 +454,17 @@
         // Auto-show current data on page load
         document.addEventListener('DOMContentLoaded', function() {
             showCurrentData();
+            loadSavedEmail();
         });
+
+        // Load saved email on page load
+        function loadSavedEmail() {
+            const savedEmail = localStorage.getItem('nordkaliberTestEmail');
+            if (savedEmail) {
+                document.getElementById('test-email').value = savedEmail;
+                document.getElementById('email-to-test').value = savedEmail;
+            }
+        }
     </script>
 </body>
 </html> 
