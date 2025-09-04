@@ -119,6 +119,14 @@
                     </div>
                 </div>
 
+                <!-- Payment Element Container -->
+                <div class="mt-6">
+                    <h3 class="text-lg font-medium mb-3 text-gray-600">Payment Information</h3>
+                    <div id="payment-element" class="mb-4">
+                        <!-- Stripe Payment Element will be mounted here -->
+                    </div>
+                </div>
+
                 <!-- Payment Button -->
                 <div class="mt-6">
                     <button id="testPaymentBtn" class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors font-semibold">
@@ -324,6 +332,11 @@
                     </p>
                 `;
             }
+            
+            // Recreate payment element when mode changes
+            if (stripe) {
+                createPaymentElement();
+            }
         }
 
         // Initialize on page load
@@ -355,6 +368,12 @@
             
             // Initialize mode info
             updateModeInfo();
+            
+            // Auto-initialize Stripe and create payment element on page load
+            const stripeInitialized = await initializeStripe();
+            if (stripeInitialized) {
+                await createPaymentElement();
+            }
         });
     </script>
 </body>
