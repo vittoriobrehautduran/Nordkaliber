@@ -296,8 +296,7 @@
                     throw error;
                 }
                 
-                // Success - send confirmation emails immediately
-                await sendTestOrderEmails();
+                // Success - redirect to success page (emails will be sent there)
                 
                 resultDiv.className = 'mt-6 p-4 rounded-lg bg-green-50 border border-green-200';
                 resultDiv.innerHTML = `

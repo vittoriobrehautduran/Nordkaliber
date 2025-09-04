@@ -284,18 +284,18 @@
                 // Clear cart data
                 localStorage.removeItem('nordkaliberCart');
             } else if (isTestMode) {
-                // Handle test mode - create test order data
+                // Handle test mode - show loading state first, will be updated by fetchPaymentDetails
                 orderDetails = `
                     <div class="flex justify-between items-center py-2 border-b border-hunter-brown border-opacity-20">
                         <div>
                             <h3 class="font-semibold text-hunter-brown">Ammunitionsetui - Test Order</h3>
                             <p class="text-sm text-cool-grey">Kaliber: .308 Winchester | Färg: Grå | Motiv: Motiv 8</p>
                         </div>
-                        <span class="font-bold text-hunter-brown">850 kr</span>
+                        <span class="font-bold text-hunter-brown">Laddar...</span>
                     </div>
                     <div class="flex justify-between items-center py-2 font-bold text-lg">
                         <span>Total:</span>
-                        <span>850 kr</span>
+                        <span>Laddar...</span>
                     </div>
                 `;
                 
