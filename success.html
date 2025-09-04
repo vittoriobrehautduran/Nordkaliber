@@ -334,16 +334,32 @@
                 if (response.ok && paymentData.amountInKronor) {
                     console.log('✅ Payment details fetched:', paymentData);
                     
+                    // Store payment metadata globally for email function
+                    window.paymentMetadata = paymentData.metadata;
+                    
                     // Update the order details with real payment amount
                     const orderDetailsElement = document.getElementById('orderDetails');
                     if (orderDetailsElement) {
                         // Check if this is test mode or regular order
                         if (isTestMode) {
+                            // Parse items from metadata to get special request info
+                            let itemsInfo = 'Kaliber: .308 Winchester | Färg: Grå | Motiv: Motiv 8';
+                            if (paymentData.metadata && paymentData.metadata.items) {
+                                try {
+                                    const items = JSON.parse(paymentData.metadata.items);
+                                    if (items.length > 0 && items[0].specialRequest) {
+                                        itemsInfo += ` | Specialförfrågan: ${items[0].specialRequest}`;
+                                    }
+                                } catch (e) {
+                                    console.log('Could not parse items metadata:', e);
+                                }
+                            }
+                            
                             orderDetailsElement.innerHTML = `
                                 <div class="flex justify-between items-center py-2 border-b border-hunter-brown border-opacity-20">
                                     <div>
                                         <h3 class="font-semibold text-hunter-brown">Ammunitionsetui - Test Order</h3>
-                                        <p class="text-sm text-cool-grey">Kaliber: .308 Winchester | Färg: Grå | Motiv: Motiv 8</p>
+                                        <p class="text-sm text-cool-grey">${itemsInfo}</p>
                                     </div>
                                     <span class="font-bold text-hunter-brown">${paymentData.amountInKronor} kr</span>
                                 </div>
@@ -409,11 +425,42 @@
                 const totalElement = document.querySelector('.flex.justify-between.items-center.py-2.font-bold.text-lg span:last-child');
                 const actualAmount = totalElement ? parseInt(totalElement.textContent.replace(' kr', '')) : 850;
                 
+                // Get customer info from URL parameters or use defaults
+                const customerEmail = urlParams.get('customer_email') || 'test@example.com';
+                const customerName = urlParams.get('customer_name') || 'Test Customer';
+                
+                // Get special request info from payment metadata if available
+                let specialRequestInfo = '';
+                if (window.paymentMetadata && window.paymentMetadata.items) {
+                    try {
+                        const items = JSON.parse(window.paymentMetadata.items);
+                        if (items.length > 0 && items[0].specialRequest) {
+                            specialRequestInfo = items[0].specialRequest;
+                        }
+                    } catch (e) {
+                        console.log('Could not parse payment metadata:', e);
+                    }
+                }
+                
+                // Build details array
+                const details = [
+                    'Kaliber: .308 Winchester',
+                    'Primär Färg: Grå',
+                    'Sekundär Färg: Svart',
+                    'Design: Motiv 8',
+                    'Initialer: Test'
+                ];
+                
+                // Add special request if available
+                if (specialRequestInfo) {
+                    details.push(`Specialförfrågan: ${specialRequestInfo}`);
+                }
+                
                 const orderData = {
                     customer: {
-                        firstName: 'Test',
-                        lastName: 'Customer',
-                        email: 'test@example.com',
+                        firstName: customerName.split(' ')[0] || 'Test',
+                        lastName: customerName.split(' ').slice(1).join(' ') || 'Customer',
+                        email: customerEmail,
                         phone: '+46 123 456 789',
                         address: 'Test Street 123',
                         postalCode: '12345',
@@ -422,14 +469,9 @@
                     },
                     items: [{
                         name: 'Ammunitionsetui - Test Order',
-                        details: [
-                            'Kaliber: .308 Winchester',
-                            'Primär Färg: Grå',
-                            'Sekundär Färg: Svart',
-                            'Design: Motiv 8',
-                            'Initialer: Test'
-                        ],
-                        price: actualAmount
+                        details: details,
+                        price: actualAmount,
+                        specialRequest: specialRequestInfo
                     }],
                     total: actualAmount,
                     orderId: 'TEST-ORDER-' + Date.now()

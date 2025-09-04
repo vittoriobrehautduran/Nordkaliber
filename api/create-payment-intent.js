@@ -53,7 +53,14 @@ exports.handler = async (event, context) => {
     }
 
     // Calculate total amount and convert to cents (Stripe expects smallest currency unit)
-    const totalAmountInKronor = items.reduce((sum, item) => sum + item.price, 0);
+    let totalAmountInKronor = items.reduce((sum, item) => {
+        let itemPrice = item.price || 0;
+        // Add 200 SEK for special requests
+        if (item.specialRequest && item.specialRequest.trim()) {
+            itemPrice += 200;
+        }
+        return sum + itemPrice;
+    }, 0);
     const totalAmountInCents = Math.round(totalAmountInKronor * 100); // Convert SEK to cents
 
     console.log('💰 Payment Intent creation:', {
@@ -74,7 +81,9 @@ exports.handler = async (event, context) => {
         customer_email: customerEmail,
         customer_name: customerName,
         customer_phone: customerPhone,
-        items: JSON.stringify(items)
+        items: JSON.stringify(items),
+        total_amount: totalAmountInKronor.toString(),
+        is_test_mode: isTestMode.toString()
       },
       // Configure automatic payment methods (this will automatically detect available methods)
       automatic_payment_methods: {

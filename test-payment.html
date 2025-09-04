@@ -317,10 +317,14 @@
             resultDiv.classList.remove('hidden');
             
             try {
+                // Get customer info for URL parameters
+                const customerEmail = document.getElementById('email').value;
+                const customerName = document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value;
+                
                 const { error } = await stripe.confirmPayment({
                     elements,
                     confirmParams: {
-                        return_url: `${window.location.origin}/success?test=true`,
+                        return_url: `${window.location.origin}/success?test=true&customer_email=${encodeURIComponent(customerEmail)}&customer_name=${encodeURIComponent(customerName)}`,
                     }
                 });
                 
