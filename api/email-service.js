@@ -77,7 +77,7 @@ const sendManagerNotification = async (orderData) => {
     
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: process.env.PRODUCTION_MANAGER_EMAIL,
+      to: `${process.env.PRODUCTION_MANAGER_EMAIL}, vittorio.brehaut.duran@gmail.com`,
       subject: `Ny beställning - ${orderData.orderId}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
