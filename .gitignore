@@ -1,6 +1,10 @@
 # Gallery - keep local only, don't deploy
 gallery.html
 
+# Test files - keep local only, don't deploy
+test-order-flow.html
+api/send-test-email.js
+
 # Node modules
 node_modules/
 
