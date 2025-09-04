@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Data Flow - Nordkaliber</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold text-center mb-8">🔍 Debug Data Flow</h1>
+        
+        <!-- Design Page Data -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">1. Design Page Data (localStorage)</h2>
+            <div id="designData" class="bg-gray-50 p-4 rounded">
+                <p class="text-gray-600">Loading...</p>
+            </div>
+        </div>
+        
+        <!-- Checkout Page Data -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">2. Checkout Page Data (orderData)</h2>
+            <div id="checkoutData" class="bg-gray-50 p-4 rounded">
+                <p class="text-gray-600">Loading...</p>
+            </div>
+        </div>
+        
+        <!-- URL Parameters -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">3. URL Parameters</h2>
+            <div id="urlParams" class="bg-gray-50 p-4 rounded">
+                <p class="text-gray-600">Loading...</p>
+            </div>
+        </div>
+        
+        <!-- Test Actions -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">4. Test Actions</h2>
+            <div class="space-y-4">
+                <button onclick="createTestData()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                    Create Test Design Data
+                </button>
+                <button onclick="clearAllData()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
+                    Clear All Data
+                </button>
+                <button onclick="refreshData()" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                    Refresh Display
+                </button>
+            </div>
+        </div>
+        
+        <!-- Success Page Simulation -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">5. Success Page Simulation</h2>
+            <div id="successSimulation" class="bg-gray-50 p-4 rounded">
+                <p class="text-gray-600">Loading...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load and display data
+        function refreshData() {
+            // 1. Design Page Data
+            const designData = localStorage.getItem('nordkaliberProducts');
+            const designElement = document.getElementById('designData');
+            if (designData) {
+                const products = JSON.parse(designData);
+                designElement.innerHTML = `
+                    <h3 class="font-semibold mb-2">Products in localStorage:</h3>
+                    <pre class="text-sm overflow-auto">${JSON.stringify(products, null, 2)}</pre>
+                `;
+            } else {
+                designElement.innerHTML = '<p class="text-red-600">No design data found in localStorage</p>';
+            }
+            
+            // 2. Checkout Page Data (simulate)
+            const checkoutElement = document.getElementById('checkoutData');
+            if (designData) {
+                const products = JSON.parse(designData);
+                const orderData = {
+                    items: products.map(product => ({
+                        type: product.type,
+                        caliber: product.selections.caliber || product.selections.caliberSpecial || 'Ej valt',
+                        primaryColor: product.selections.primaryColor ? product.selections.primaryColor.name : (product.selections.primaryColorSpecial || 'Ej valt'),
+                        secondaryColor: product.selections.secondaryColor ? product.selections.secondaryColor.name : (product.selections.secondaryColorSpecial || 'Ej valt'),
+                        design: product.selections.design ? product.selections.design.name : (product.selections.designSpecial || 'Ej valt'),
+                        initials: product.selections.initials || product.selections.initialsSpecial || 'Inga',
+                        price: product.totalPrice
+                    })),
+                    total: products.reduce((sum, product) => sum + product.totalPrice, 0)
+                };
+                checkoutElement.innerHTML = `
+                    <h3 class="font-semibold mb-2">Order Data (as processed by checkout):</h3>
+                    <pre class="text-sm overflow-auto">${JSON.stringify(orderData, null, 2)}</pre>
+                `;
+            } else {
+                checkoutElement.innerHTML = '<p class="text-red-600">No data to process</p>';
+            }
+            
+            // 3. URL Parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlElement = document.getElementById('urlParams');
+            const params = Object.fromEntries(urlParams.entries());
+            urlElement.innerHTML = `
+                <h3 class="font-semibold mb-2">URL Parameters:</h3>
+                <pre class="text-sm overflow-auto">${JSON.stringify(params, null, 2)}</pre>
+            `;
+            
+            // 4. Success Page Simulation
+            const successElement = document.getElementById('successSimulation');
+            if (designData) {
+                const products = JSON.parse(designData);
+                const total = products.reduce((sum, product) => sum + product.totalPrice, 0);
+                
+                let orderDetails = products.map(product => `
+                    <div class="border-b pb-2 mb-2">
+                        <div class="font-semibold">${product.type}</div>
+                        <div class="text-sm text-gray-600">Kaliber: ${product.selections.caliber || product.selections.caliberSpecial || 'Ej valt'}</div>
+                        <div class="text-sm text-gray-600">Primär: ${product.selections.primaryColor ? product.selections.primaryColor.name : (product.selections.primaryColorSpecial || 'Ej valt')}</div>
+                        <div class="text-sm text-gray-600">Sekundär: ${product.selections.secondaryColor ? product.selections.secondaryColor.name : (product.selections.secondaryColorSpecial || 'Ej valt')}</div>
+                        <div class="text-sm text-gray-600">Design: ${product.selections.design ? product.selections.design.name : (product.selections.designSpecial || 'Ej valt')}</div>
+                        ${product.selections.initials || product.selections.initialsSpecial ? `<div class="text-sm text-gray-600">Initialer: ${product.selections.initials || product.selections.initialsSpecial}</div>` : ''}
+                        ${product.selections.caliberSpecial || product.selections.primaryColorSpecial || product.selections.secondaryColorSpecial || product.selections.designSpecial || product.selections.initialsSpecial ? `<div class="text-sm text-yellow-600">Specialförfrågan: Ja</div>` : ''}
+                        <div class="font-bold text-green-600">${product.totalPrice} kr</div>
+                    </div>
+                `).join('');
+                
+                orderDetails += `
+                    <div class="font-bold text-lg border-t pt-2">
+                        <span>Totalt: ${total} kr</span>
+                    </div>
+                `;
+                
+                successElement.innerHTML = `
+                    <h3 class="font-semibold mb-2">Success Page Display:</h3>
+                    <div class="bg-white p-4 rounded border">${orderDetails}</div>
+                `;
+            } else {
+                successElement.innerHTML = '<p class="text-red-600">No data to display</p>';
+            }
+        }
+        
+        // Create test data
+        function createTestData() {
+            const testProduct = {
+                id: Date.now(),
+                type: 'Ammunitionsetui',
+                selections: {
+                    caliber: '.308 Winchester',
+                    primaryColor: { name: 'Grå' },
+                    secondaryColor: { name: 'Svart' },
+                    design: { name: 'Motiv 8' },
+                    initials: 'V.B.',
+                    caliberSpecial: '',
+                    primaryColorSpecial: '',
+                    secondaryColorSpecial: '',
+                    designSpecial: '',
+                    initialsSpecial: '',
+                    specialRequest: 'Custom engraving'
+                },
+                totalPrice: 1050, // 850 + 100 (initials) + 100 (special request)
+                timestamp: new Date().toLocaleString('sv-SE')
+            };
+            
+            localStorage.setItem('nordkaliberProducts', JSON.stringify([testProduct]));
+            refreshData();
+        }
+        
+        // Clear all data
+        function clearAllData() {
+            localStorage.removeItem('nordkaliberProducts');
+            localStorage.removeItem('nordkaliberCart');
+            refreshData();
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            refreshData();
+        });
+    </script>
+</body>
+</html>

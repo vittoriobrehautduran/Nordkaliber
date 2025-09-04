@@ -249,8 +249,14 @@
             urlParams: Object.fromEntries(urlParams.entries())
         });
         
+        // Debug localStorage data
+        const productsData = localStorage.getItem('nordkaliberProducts');
+        console.log('📦 Products data in localStorage:', productsData ? JSON.parse(productsData) : 'No data');
+        
+        const cartData = localStorage.getItem('nordkaliberCart');
+        console.log('🛒 Cart data in localStorage:', cartData ? JSON.parse(cartData) : 'No data');
+        
             // Try to get order details from localStorage
-            const cartData = localStorage.getItem('nordkaliberCart');
             let orderDetails = '';
             
             if (cartData) {
