@@ -243,6 +243,12 @@
         const sessionId = urlParams.get('session_id') || urlParams.get('payment_intent');
         const isTestMode = urlParams.get('test') === 'true';
         
+        console.log('🔍 Success page debug:', {
+            sessionId: sessionId,
+            isTestMode: isTestMode,
+            urlParams: Object.fromEntries(urlParams.entries())
+        });
+        
             // Try to get order details from localStorage
             const cartData = localStorage.getItem('nordkaliberCart');
             let orderDetails = '';
@@ -314,10 +320,16 @@
         // Fetch payment details from Stripe
         async function fetchPaymentDetails(paymentIntentId, isTestMode) {
             try {
-                console.log('🔍 Fetching payment details from Stripe...');
+                console.log('🔍 Fetching payment details from Stripe...', {
+                    paymentIntentId: paymentIntentId,
+                    isTestMode: isTestMode,
+                    url: `/.netlify/functions/get-payment-details?payment_intent=${paymentIntentId}&test=${isTestMode}`
+                });
                 
                 const response = await fetch(`/.netlify/functions/get-payment-details?payment_intent=${paymentIntentId}&test=${isTestMode}`);
+                console.log('📡 Response status:', response.status);
                 const paymentData = await response.json();
+                console.log('📊 Payment data received:', paymentData);
                 
                 if (response.ok && paymentData.amountInKronor) {
                     console.log('✅ Payment details fetched:', paymentData);

@@ -60,7 +60,8 @@ exports.handler = async (event, context) => {
       mode: isTestMode ? 'test' : 'live',
       totalInKronor: totalAmountInKronor,
       totalInCents: totalAmountInCents,
-      items: items.map(item => ({ name: item.caliber, price: item.price }))
+      items: items.map(item => ({ name: item.caliber, price: item.price })),
+      rawItems: items
     });
 
     // Create payment intent with Swedish payment methods
