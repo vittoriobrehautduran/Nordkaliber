@@ -37,13 +37,21 @@ exports.handler = async (event, context) => {
     if (!publishableKey) {
       const keyType = isTestMode ? 'STRIPE_PUBLISHABLE_KEY_TEST' : 'STRIPE_PUBLISHABLE_KEY';
       console.error(`${keyType} not found in environment variables`);
+      console.error('Available environment variables:', Object.keys(process.env).filter(key => key.includes('STRIPE')));
       return {
         statusCode: 500,
         headers,
         body: JSON.stringify({ 
           error: 'Stripe configuration not found',
           details: `${keyType} not configured`,
-          mode: isTestMode ? 'test' : 'live'
+          mode: isTestMode ? 'test' : 'live',
+          availableKeys: Object.keys(process.env).filter(key => key.includes('STRIPE')),
+          debug: {
+            isTestMode,
+            requestedKey: keyType,
+            hasTestKey: !!process.env.STRIPE_PUBLISHABLE_KEY_TEST,
+            hasLiveKey: !!process.env.STRIPE_PUBLISHABLE_KEY
+          }
         })
       };
     }
