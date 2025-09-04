@@ -198,6 +198,18 @@
             const isTestMode = mode === 'test';
             
             try {
+                // Check if payment element container exists
+                const paymentElementContainer = document.getElementById('payment-element');
+                if (!paymentElementContainer) {
+                    console.error('❌ Payment element container not found');
+                    return false;
+                }
+                
+                // Clear any existing payment element
+                if (paymentElement) {
+                    paymentElement.unmount();
+                }
+                
                 // Create payment intent
                 const response = await fetch(`/.netlify/functions/create-payment-intent?test=${isTestMode}`, {
                     method: 'POST',
@@ -335,7 +347,9 @@
             
             // Recreate payment element when mode changes
             if (stripe) {
-                createPaymentElement();
+                setTimeout(async () => {
+                    await createPaymentElement();
+                }, 50);
             }
         }
 
@@ -348,20 +362,6 @@
             
             // Set up payment button
             document.getElementById('testPaymentBtn').addEventListener('click', async function() {
-                // Initialize Stripe
-                const stripeInitialized = await initializeStripe();
-                if (!stripeInitialized) {
-                    alert('Failed to initialize Stripe. Please check your configuration.');
-                    return;
-                }
-                
-                // Create payment element
-                const elementCreated = await createPaymentElement();
-                if (!elementCreated) {
-                    alert('Failed to create payment element. Please try again.');
-                    return;
-                }
-                
                 // Handle payment
                 await handleSubmit();
             });
@@ -369,11 +369,13 @@
             // Initialize mode info
             updateModeInfo();
             
-            // Auto-initialize Stripe and create payment element on page load
-            const stripeInitialized = await initializeStripe();
-            if (stripeInitialized) {
-                await createPaymentElement();
-            }
+            // Wait a bit for DOM to be fully ready, then initialize
+            setTimeout(async () => {
+                const stripeInitialized = await initializeStripe();
+                if (stripeInitialized) {
+                    await createPaymentElement();
+                }
+            }, 100);
         });
     </script>
 </body>
