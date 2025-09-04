@@ -256,6 +256,10 @@
         const cartData = localStorage.getItem('nordkaliberCart');
         console.log('🛒 Cart data in localStorage:', cartData ? JSON.parse(cartData) : 'No data');
         
+        // Parse cart data for use
+        const parsedCartData = cartData ? JSON.parse(cartData) : null;
+        console.log('🔍 Parsed cart data:', parsedCartData);
+        
             // Try to get order details from localStorage
             let orderDetails = '';
             
@@ -287,7 +291,7 @@
                     sendOrderConfirmationEmails(order);
                 }
                 
-                // Clear cart data
+                // Clear cart data after using it
                 localStorage.removeItem('nordkaliberCart');
             } else if (isTestMode) {
                 // Handle test mode - prioritize cart data, fallback to products data
@@ -295,17 +299,17 @@
                 
                 // Try to get data from cart first (this should have the processed order data)
                 console.log('🔍 Cart data check:', {
-                    hasCartData: !!cartData,
-                    hasItems: cartData && cartData.items,
-                    itemsLength: cartData && cartData.items ? cartData.items.length : 0,
-                    cartData: cartData
+                    hasCartData: !!parsedCartData,
+                    hasItems: parsedCartData && parsedCartData.items,
+                    itemsLength: parsedCartData && parsedCartData.items ? parsedCartData.items.length : 0,
+                    cartData: parsedCartData
                 });
                 
-                if (cartData && cartData.items && cartData.items.length > 0) {
+                if (parsedCartData && parsedCartData.items && parsedCartData.items.length > 0) {
                     console.log('📦 Using cart data for order display');
                     orderData = {
-                        items: cartData.items,
-                        total: cartData.total
+                        items: parsedCartData.items,
+                        total: parsedCartData.total
                     };
                 } else {
                     // Fallback to products data if cart is empty
@@ -381,6 +385,9 @@
                     console.log('Test payment successful, sending confirmation emails...');
                     sendTestOrderConfirmationEmails();
                 }
+                
+                // Clear cart data after using it in test mode
+                localStorage.removeItem('nordkaliberCart');
             } else {
                 orderDetails = '<p class="text-cool-grey">Orderdetaljer laddas...</p>';
             }
@@ -503,15 +510,15 @@
                 let customerEmail, customerName, customerPhone, customerAddress, customerPostalCode, customerCity, customerCountry;
                 
                 // Try to get from cart data first (more reliable)
-                if (cartData && cartData.customerInfo) {
-                    customerEmail = cartData.customerInfo.email || 'test@example.com';
-                    customerName = cartData.customerInfo.name || 'Test Customer';
-                    customerPhone = cartData.customerInfo.phone || '+46 123 456 789';
-                    customerAddress = cartData.customerInfo.address || 'Test Street 123';
-                    customerPostalCode = cartData.customerInfo.postalCode || '12345';
-                    customerCity = cartData.customerInfo.city || 'Stockholm';
-                    customerCountry = cartData.customerInfo.country || 'Sverige';
-                    console.log('📧 Using cart data for customer info:', cartData.customerInfo);
+                if (parsedCartData && parsedCartData.customerInfo) {
+                    customerEmail = parsedCartData.customerInfo.email || 'test@example.com';
+                    customerName = parsedCartData.customerInfo.name || 'Test Customer';
+                    customerPhone = parsedCartData.customerInfo.phone || '+46 123 456 789';
+                    customerAddress = parsedCartData.customerInfo.address || 'Test Street 123';
+                    customerPostalCode = parsedCartData.customerInfo.postalCode || '12345';
+                    customerCity = parsedCartData.customerInfo.city || 'Stockholm';
+                    customerCountry = parsedCartData.customerInfo.country || 'Sverige';
+                    console.log('📧 Using cart data for customer info:', parsedCartData.customerInfo);
                 } else {
                     // Fallback to URL parameters
                     customerEmail = urlParams.get('customer_email') || 'test@example.com';
