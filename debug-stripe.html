@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Stripe Config</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-2xl font-bold mb-6">Stripe Configuration Debug</h1>
+        
+        <div class="space-y-4">
+            <button onclick="testStripeConfig(false)" class="bg-blue-500 text-white px-4 py-2 rounded">
+                Test Live Mode
+            </button>
+            <button onclick="testStripeConfig(true)" class="bg-green-500 text-white px-4 py-2 rounded">
+                Test Test Mode
+            </button>
+        </div>
+        
+        <div id="results" class="mt-6"></div>
+    </div>
+
+    <script>
+        async function testStripeConfig(isTestMode) {
+            const resultsDiv = document.getElementById('results');
+            const mode = isTestMode ? 'test' : 'live';
+            
+            resultsDiv.innerHTML = `<div class="p-4 bg-blue-50 border border-blue-200 rounded">
+                <p>Testing ${mode} mode...</p>
+            </div>`;
+            
+            try {
+                const response = await fetch(`/.netlify/functions/stripe-config?test=${isTestMode}`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultsDiv.innerHTML = `
+                        <div class="p-4 bg-green-50 border border-green-200 rounded">
+                            <h3 class="font-bold text-green-800">✅ ${mode.toUpperCase()} Mode Working</h3>
+                            <pre class="mt-2 text-sm text-green-700">${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                } else {
+                    resultsDiv.innerHTML = `
+                        <div class="p-4 bg-red-50 border border-red-200 rounded">
+                            <h3 class="font-bold text-red-800">❌ ${mode.toUpperCase()} Mode Error</h3>
+                            <pre class="mt-2 text-sm text-red-700">${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `
+                    <div class="p-4 bg-red-50 border border-red-200 rounded">
+                        <h3 class="font-bold text-red-800">❌ Network Error</h3>
+                        <p class="text-red-700">${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
