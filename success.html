@@ -5,12 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
     <title>Tack för din beställning - Nordkaliber</title>
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <!-- Favicon for all browsers - ICO format for IE compatibility -->
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+    
+    <!-- PNG favicons for modern browsers -->
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="24x24" href="images/favicon-24x24.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="48x48" href="images/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="images/favicon-64x64.png">
     <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png">
-    <link rel="shortcut icon" type="image/png" href="images/favicon-32x32.png">
-    <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="128x128" href="images/favicon-128x128.png">
+    <link rel="icon" type="image/png" sizes="256x256" href="images/favicon-256x256.png">
+    
+    <!-- Apple Touch Icons for iOS devices -->
+    <link rel="apple-touch-icon" sizes="57x57" href="images/favicon-57x57.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/favicon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/favicon-114x114.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="images/favicon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="images/favicon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    
+    <!-- Microsoft Tiles for Windows -->
+    <meta name="msapplication-TileColor" content="#1B4D3E">
+    <meta name="msapplication-TileImage" content="images/favicon-144x144.png">
+    <meta name="msapplication-config" content="browserconfig.xml">
+    
+    <!-- Android Chrome icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="images/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="images/favicon-512x512.png">
+    
+    <!-- Theme color for mobile browsers -->
+    <meta name="theme-color" content="#1B4D3E">
+    
+    <!-- Web App Manifest for PWA support -->
+    <link rel="manifest" href="manifest.json">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -238,6 +268,12 @@
                     </div>
                 `;
                 
+                // Send confirmation emails for real orders
+                if (sessionId) {
+                    console.log('Payment successful, sending confirmation emails...');
+                    sendOrderConfirmationEmails(order);
+                }
+                
                 // Clear cart data
                 localStorage.removeItem('nordkaliberCart');
             } else {
@@ -252,6 +288,56 @@
                 // Here you could make an API call to get order details from your backend
             }
         });
+
+        // Send order confirmation emails
+        async function sendOrderConfirmationEmails(orderData) {
+            try {
+                console.log('📧 Sending order confirmation emails...');
+                
+                // Prepare order data for email service
+                const emailOrderData = {
+                    customer: {
+                        firstName: orderData.customerInfo?.name?.split(' ')[0] || 'Kund',
+                        lastName: orderData.customerInfo?.name?.split(' ').slice(1).join(' ') || '',
+                        email: orderData.customerInfo?.email || '',
+                        phone: orderData.customerInfo?.phone || '',
+                        address: orderData.customerInfo?.address || '',
+                        postalCode: orderData.customerInfo?.address?.split(', ')[1]?.split(' ')[0] || '',
+                        city: orderData.customerInfo?.address?.split(', ')[1]?.split(' ').slice(1).join(' ') || '',
+                        country: 'Sverige'
+                    },
+                    items: orderData.items.map(item => ({
+                        caliber: item.caliber,
+                        primaryColor: item.primaryColor,
+                        secondaryColor: item.secondaryColor,
+                        design: item.design,
+                        initials: item.initials,
+                        price: item.price
+                    })),
+                    total: orderData.items.reduce((sum, item) => sum + item.price, 0),
+                    orderId: orderData.orderId || 'ORDER-' + Date.now()
+                };
+
+                // Call the email service
+                const response = await fetch('/.netlify/functions/send-order-emails', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(emailOrderData)
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    console.log('✅ Order confirmation emails sent successfully');
+                } else {
+                    console.error('❌ Failed to send order confirmation emails:', result);
+                }
+            } catch (error) {
+                console.error('❌ Error sending order confirmation emails:', error);
+            }
+        }
     </script>
 </body>
 </html> 

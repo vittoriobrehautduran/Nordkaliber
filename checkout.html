@@ -5,12 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
     <title>Kassa - Nordkaliber</title>
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <!-- Favicon for all browsers - ICO format for IE compatibility -->
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+    
+    <!-- PNG favicons for modern browsers -->
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="24x24" href="images/favicon-24x24.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="48x48" href="images/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="images/favicon-64x64.png">
     <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png">
-    <link rel="shortcut icon" type="image/png" href="images/favicon-32x32.png">
-    <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="128x128" href="images/favicon-128x128.png">
+    <link rel="icon" type="image/png" sizes="256x256" href="images/favicon-256x256.png">
+    
+    <!-- Apple Touch Icons for iOS devices -->
+    <link rel="apple-touch-icon" sizes="57x57" href="images/favicon-57x57.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/favicon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/favicon-114x114.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="images/favicon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="images/favicon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    
+    <!-- Microsoft Tiles for Windows -->
+    <meta name="msapplication-TileColor" content="#1B4D3E">
+    <meta name="msapplication-TileImage" content="images/favicon-144x144.png">
+    <meta name="msapplication-config" content="browserconfig.xml">
+    
+    <!-- Android Chrome icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="images/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="images/favicon-512x512.png">
+    
+    <!-- Theme color for mobile browsers -->
+    <meta name="theme-color" content="#1B4D3E">
+    
+    <!-- Web App Manifest for PWA support -->
+    <link rel="manifest" href="manifest.json">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://js.stripe.com/v3/"></script>
@@ -448,6 +478,24 @@
             setLoading(true);
 
             try {
+                // Save customer information for email sending
+                const customerInfo = {
+                    name: document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    address: document.getElementById('address').value + ', ' + document.getElementById('postalCode').value + ' ' + document.getElementById('city').value + ', ' + document.getElementById('country').value
+                };
+                
+                // Get existing cart data and add customer info
+                const existingCartData = localStorage.getItem('nordkaliberCart');
+                let cartData = existingCartData ? JSON.parse(existingCartData) : { items: [], orderId: 'ORDER-' + Date.now() };
+                cartData.customerInfo = customerInfo;
+                cartData.paymentStatus = 'processing';
+                cartData.timestamp = new Date().toLocaleString('sv-SE');
+                
+                // Save updated cart data
+                localStorage.setItem('nordkaliberCart', JSON.stringify(cartData));
+                
                 // Confirm payment
                 const { error } = await stripe.confirmPayment({
                     elements,
