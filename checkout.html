@@ -549,6 +549,12 @@
                 // Get existing cart data and add customer info + order items
                 const existingCartData = localStorage.getItem('nordkaliberCart');
                 let cartData = existingCartData ? JSON.parse(existingCartData) : { items: [], orderId: 'ORDER-' + Date.now() };
+                
+                console.log('🔍 Before adding to cart:');
+                console.log('🔍 orderData.items:', orderData.items);
+                console.log('🔍 orderData.total:', orderData.total);
+                console.log('🔍 customerInfo:', customerInfo);
+                
                 cartData.customerInfo = customerInfo;
                 cartData.items = orderData.items; // Add the order items!
                 cartData.total = orderData.total; // Add the total!

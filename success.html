@@ -312,8 +312,13 @@
                     hasCartData: !!parsedCartData,
                     hasItems: parsedCartData && parsedCartData.items,
                     itemsLength: parsedCartData && parsedCartData.items ? parsedCartData.items.length : 0,
+                    hasCustomerInfo: parsedCartData && parsedCartData.customerInfo,
                     cartData: parsedCartData
                 });
+                
+                if (parsedCartData) {
+                    console.log('🔍 Full cart data structure:', JSON.stringify(parsedCartData, null, 2));
+                }
                 
                 if (parsedCartData && parsedCartData.items && parsedCartData.items.length > 0) {
                     console.log('📦 Using cart data for order display');
@@ -525,6 +530,7 @@
                 
                 // Try to get from orderData first (most reliable)
                 if (orderData && orderData.customer) {
+                    console.log('📧 Order data customer info:', orderData.customer);
                     customerEmail = orderData.customer.email || 'test@example.com';
                     customerName = orderData.customer.name || 'Test Customer';
                     customerPhone = orderData.customer.phone || '+46 123 456 789';
@@ -533,6 +539,7 @@
                     customerCity = orderData.customer.city || 'Stockholm';
                     customerCountry = orderData.customer.country || 'Sverige';
                     console.log('📧 Using order data for customer info:', orderData.customer);
+                    console.log('📧 Extracted values:', { customerEmail, customerName, customerPostalCode, customerCity });
                 } else {
                     // Fallback to URL parameters
                     customerEmail = urlParams.get('customer_email') || 'test@example.com';
