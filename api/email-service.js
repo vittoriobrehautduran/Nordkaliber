@@ -23,7 +23,7 @@ const sendCustomerConfirmation = async (orderData) => {
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #1B4D3E;">Tack för din beställning!</h2>
-          <p>Hej ${orderData.customer.name},</p>
+          <p>Hej ${orderData.customer.name || `${orderData.customer.firstName || ''} ${orderData.customer.lastName || ''}`.trim() || 'Kund'},</p>
           <p>Vi har mottagit din beställning och kommer att bearbeta den så snart som möjligt.</p>
           
           <h3 style="color: #1B4D3E;">Beställningsdetaljer:</h3>
@@ -35,10 +35,13 @@ const sendCustomerConfirmation = async (orderData) => {
             ${orderData.items.map(item => `
               <li>
                 <strong>${item.name}</strong><br>
-                Kaliber: ${item.caliber}<br>
-                Färg: ${item.color}<br>
-                Motiv: ${item.motif}<br>
-                Antal: ${item.quantity}<br>
+                ${item.details ? item.details.map(detail => `${detail}<br>`).join('') : ''}
+                ${item.caliber ? `Kaliber: ${item.caliber}<br>` : ''}
+                ${item.primaryColor ? `Primär Färg: ${item.primaryColor}<br>` : ''}
+                ${item.secondaryColor ? `Sekundär Färg: ${item.secondaryColor}<br>` : ''}
+                ${item.design ? `Design: ${item.design}<br>` : ''}
+                ${item.initials && item.initials !== 'Inga' ? `Initialer: ${item.initials}<br>` : ''}
+                ${item.specialRequest ? `Specialförfrågan: ${item.specialRequest}<br>` : ''}
                 Pris: ${item.price} SEK
               </li>
             `).join('')}
@@ -47,12 +50,12 @@ const sendCustomerConfirmation = async (orderData) => {
           <p><strong>Totalt: ${orderData.total} SEK</strong></p>
           
           <h3 style="color: #1B4D3E;">Leveransinformation:</h3>
-          <p><strong>Namn:</strong> ${orderData.customer.name}</p>
+          <p><strong>Namn:</strong> ${orderData.customer.name || `${orderData.customer.firstName || ''} ${orderData.customer.lastName || ''}`.trim() || 'Kund'}</p>
           <p><strong>E-post:</strong> ${orderData.customer.email}</p>
           <p><strong>Telefon:</strong> ${orderData.customer.phone}</p>
           <p><strong>Adress:</strong> ${orderData.customer.address}</p>
-          <p><strong>Postnummer:</strong> ${orderData.customer.zipCode}</p>
-          <p><strong>Ort:</strong> ${orderData.customer.city}</p>
+          <p><strong>Postnummer:</strong> ${orderData.customer.zipCode || orderData.customer.postalCode || orderData.customer.postnummer || 'Ej angiven'}</p>
+          <p><strong>Ort:</strong> ${orderData.customer.city || orderData.customer.stad || 'Ej angiven'}</p>
           
           <p>Vi kommer att skicka dig en leveransbekräftelse när din beställning skickas.</p>
           
@@ -92,10 +95,13 @@ const sendManagerNotification = async (orderData) => {
             ${orderData.items.map(item => `
               <li>
                 <strong>${item.name}</strong><br>
-                Kaliber: ${item.caliber}<br>
-                Färg: ${item.color}<br>
-                Motiv: ${item.motif}<br>
-                Antal: ${item.quantity}<br>
+                ${item.details ? item.details.map(detail => `${detail}<br>`).join('') : ''}
+                ${item.caliber ? `Kaliber: ${item.caliber}<br>` : ''}
+                ${item.primaryColor ? `Primär Färg: ${item.primaryColor}<br>` : ''}
+                ${item.secondaryColor ? `Sekundär Färg: ${item.secondaryColor}<br>` : ''}
+                ${item.design ? `Design: ${item.design}<br>` : ''}
+                ${item.initials && item.initials !== 'Inga' ? `Initialer: ${item.initials}<br>` : ''}
+                ${item.specialRequest ? `Specialförfrågan: ${item.specialRequest}<br>` : ''}
                 Pris: ${item.price} SEK
               </li>
             `).join('')}
@@ -104,12 +110,12 @@ const sendManagerNotification = async (orderData) => {
           <p><strong>Totalt: ${orderData.total} SEK</strong></p>
           
           <h3 style="color: #1B4D3E;">Kundinformation:</h3>
-          <p><strong>Namn:</strong> ${orderData.customer.name}</p>
+          <p><strong>Namn:</strong> ${orderData.customer.name || `${orderData.customer.firstName || ''} ${orderData.customer.lastName || ''}`.trim() || 'Kund'}</p>
           <p><strong>E-post:</strong> ${orderData.customer.email}</p>
           <p><strong>Telefon:</strong> ${orderData.customer.phone}</p>
           <p><strong>Adress:</strong> ${orderData.customer.address}</p>
-          <p><strong>Postnummer:</strong> ${orderData.customer.zipCode}</p>
-          <p><strong>Ort:</strong> ${orderData.customer.city}</p>
+          <p><strong>Postnummer:</strong> ${orderData.customer.zipCode || orderData.customer.postalCode || orderData.customer.postnummer || 'Ej angiven'}</p>
+          <p><strong>Ort:</strong> ${orderData.customer.city || orderData.customer.stad || 'Ej angiven'}</p>
         </div>
       `
     };
