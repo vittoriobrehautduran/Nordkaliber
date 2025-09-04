@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Real Design Payment - Nordkaliber</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .debug-info { background: #f0f0f0; padding: 10px; margin: 10px 0; border-radius: 5px; font-family: monospace; }
+        .error { background: #ffebee; color: #c62828; }
+        .success { background: #e8f5e8; color: #2e7d32; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-center mb-8">🧪 Test Real Design Payment</h1>
+        
+        <!-- Design Selection -->
+        <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">1. Select Design Options</h2>
+            
+            <!-- Caliber Selection -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Kaliber</label>
+                <select id="caliber" class="w-full p-2 border border-gray-300 rounded-md">
+                    <option value=".308 Winchester">.308 Winchester</option>
+                    <option value=".223 Remington">.223 Remington</option>
+                    <option value="9.3x62 Mauser">9.3x62 Mauser</option>
+                    <option value="7x57 Mauser">7x57 Mauser</option>
+                    <option value=".340 Weatherby Magnum">.340 Weatherby Magnum</option>
+                    <option value="8x57 Mauser">8x57 Mauser</option>
+                    <option value=".30-06 Springfield">.30-06 Springfield</option>
+                    <option value=".300 Winchester Magnum">.300 Winchester Magnum</option>
+                    <option value="6.5x55 Swedish Mauser">6.5x55 Swedish Mauser</option>
+                    <option value="12 Gauge (Hagel)">12 Gauge (Hagel)</option>
+                </select>
+            </div>
+            
+            <!-- Design Selection -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Design</label>
+                <select id="design" class="w-full p-2 border border-gray-300 rounded-md">
+                    <option value="M1">Motiv 1</option>
+                    <option value="M2">Motiv 2</option>
+                    <option value="M3">Motiv 3</option>
+                    <option value="M4">Motiv 4</option>
+                    <option value="M5">Motiv 5</option>
+                    <option value="M6">Motiv 6</option>
+                    <option value="M7">Motiv 7</option>
+                    <option value="M8">Motiv 8</option>
+                    <option value="M9">Motiv 9</option>
+                    <option value="M10">Motiv 10</option>
+                    <option value="none">Inget motiv</option>
+                </select>
+            </div>
+            
+            <!-- Primary Color -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Primär Färg</label>
+                <select id="primaryColor" class="w-full p-2 border border-gray-300 rounded-md">
+                    <option value="Svart">Svart</option>
+                    <option value="Vit">Vit</option>
+                    <option value="Grå">Grå</option>
+                    <option value="Grön">Grön</option>
+                    <option value="Röd">Röd</option>
+                    <option value="Mörkgrön">Mörkgrön</option>
+                </select>
+            </div>
+            
+            <!-- Secondary Color -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Sekundär Färg</label>
+                <select id="secondaryColor" class="w-full p-2 border border-gray-300 rounded-md">
+                    <option value="Svart">Svart</option>
+                    <option value="Vit">Vit</option>
+                    <option value="Guld">Guld</option>
+                    <option value="Orange">Orange</option>
+                    <option value="Röd">Röd</option>
+                </select>
+            </div>
+            
+            <!-- Initials -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Initialer (Valfritt)</label>
+                <input type="text" id="initials" placeholder="T.EX. J.S." maxlength="5" class="w-full p-2 border border-gray-300 rounded-md">
+            </div>
+            
+            <!-- Special Request -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Specialförfrågan (Valfritt)</label>
+                <textarea id="specialRequest" placeholder="Beskriv din specialförfrågan..." class="w-full p-2 border border-gray-300 rounded-md h-20"></textarea>
+            </div>
+        </div>
+        
+        <!-- Customer Information -->
+        <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">2. Customer Information</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Förnamn</label>
+                    <input type="text" id="firstName" value="Test" class="w-full p-2 border border-gray-300 rounded-md">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Efternamn</label>
+                    <input type="text" id="lastName" value="Customer" class="w-full p-2 border border-gray-300 rounded-md">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input type="email" id="email" value="vittorio.brehaut.duran@gmail.com" class="w-full p-2 border border-gray-300 rounded-md">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Telefon</label>
+                    <input type="tel" id="phone" value="+46 123 456 789" class="w-full p-2 border border-gray-300 rounded-md">
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Adress</label>
+                    <input type="text" id="address" value="Test Street 123" class="w-full p-2 border border-gray-300 rounded-md">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Postnummer</label>
+                    <input type="text" id="postalCode" value="12345" class="w-full p-2 border border-gray-300 rounded-md">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Stad</label>
+                    <input type="text" id="city" value="Stockholm" class="w-full p-2 border border-gray-300 rounded-md">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Land</label>
+                    <input type="text" id="country" value="Sverige" class="w-full p-2 border border-gray-300 rounded-md">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Order Summary -->
+        <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">3. Order Summary</h2>
+            <div id="orderSummary" class="space-y-2">
+                <!-- Order details will be populated here -->
+            </div>
+            <div class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <div class="flex justify-between items-center">
+                    <span class="text-lg font-semibold">Total:</span>
+                    <span id="totalAmount" class="text-xl font-bold text-blue-600">850 SEK</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Payment Mode Selection -->
+        <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">4. Payment Mode</h2>
+            <div class="flex space-x-4">
+                <label class="flex items-center">
+                    <input type="radio" name="paymentMode" value="test" checked class="mr-2">
+                    <span>Test Mode (4242 4242 4242 4242)</span>
+                </label>
+                <label class="flex items-center">
+                    <input type="radio" name="paymentMode" value="live" class="mr-2">
+                    <span>Live Mode (Real Payment)</span>
+                </label>
+            </div>
+        </div>
+        
+        <!-- Payment Element -->
+        <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">5. Payment</h2>
+            <div id="payment-element" class="mb-4">
+                <!-- Stripe Payment Element will be mounted here -->
+            </div>
+            <button id="testPaymentBtn" class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 disabled:bg-gray-400">
+                <i class="fas fa-credit-card mr-2"></i>Complete Payment
+            </button>
+        </div>
+        
+        <!-- Debug Information -->
+        <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">Debug Information</h2>
+            <div id="debugInfo" class="debug-info">
+                <p>Ready to test...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let stripe = null;
+        let elements = null;
+        let paymentElement = null;
+
+        // Initialize Stripe
+        async function initializeStripe() {
+            try {
+                const mode = document.querySelector('input[name="paymentMode"]:checked').value;
+                const isTestMode = mode === 'test';
+                
+                console.log('🔑 Initializing Stripe in', isTestMode ? 'test' : 'live', 'mode');
+                
+                const response = await fetch(`/.netlify/functions/stripe-config?test=${isTestMode}`);
+                const config = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(`Stripe config failed: ${config.error || 'Unknown error'}`);
+                }
+                
+                stripe = Stripe(config.publishableKey);
+                console.log('✅ Stripe initialized successfully');
+                updateDebugInfo(`Stripe initialized in ${isTestMode ? 'test' : 'live'} mode`);
+                return true;
+            } catch (error) {
+                console.error('❌ Failed to initialize Stripe:', error);
+                updateDebugInfo(`Stripe initialization failed: ${error.message}`, 'error');
+                return false;
+            }
+        }
+
+        // Update order summary
+        function updateOrderSummary() {
+            const caliber = document.getElementById('caliber').value;
+            const design = document.getElementById('design').value;
+            const primaryColor = document.getElementById('primaryColor').value;
+            const secondaryColor = document.getElementById('secondaryColor').value;
+            const initials = document.getElementById('initials').value;
+            const specialRequest = document.getElementById('specialRequest').value.trim();
+            
+            // Calculate price
+            let basePrice = 850;
+            let specialPrice = 0;
+            
+            if (initials) {
+                basePrice += 100;
+            }
+            
+            if (specialRequest) {
+                specialPrice = 200;
+            }
+            
+            const totalPrice = basePrice + specialPrice;
+            
+            // Update display
+            document.getElementById('totalAmount').textContent = `${totalPrice} SEK`;
+            
+            // Update order summary
+            const summary = document.getElementById('orderSummary');
+            summary.innerHTML = `
+                <div class="flex justify-between items-center py-2 border-b">
+                    <div>
+                        <span class="font-medium">Ammunitionsetui</span>
+                        <div class="text-sm text-gray-600">
+                            Kaliber: ${caliber} | Design: ${design === 'none' ? 'Inget motiv' : design} | Primär: ${primaryColor} | Sekundär: ${secondaryColor}
+                            ${initials ? ` | Initialer: ${initials}` : ''}
+                            ${specialRequest ? ` | Specialförfrågan: ${specialRequest}` : ''}
+                        </div>
+                    </div>
+                    <span class="font-bold text-green-600">${totalPrice} SEK</span>
+                </div>
+            `;
+            
+            updateDebugInfo(`Order updated: ${totalPrice} SEK (Base: ${basePrice}, Special: ${specialPrice})`);
+        }
+
+        // Create payment element
+        async function createPaymentElement() {
+            const mode = document.querySelector('input[name="paymentMode"]:checked').value;
+            const isTestMode = mode === 'test';
+            
+            try {
+                // Clear existing payment element
+                if (paymentElement) {
+                    paymentElement.unmount();
+                }
+                
+                // Get order details
+                const caliber = document.getElementById('caliber').value;
+                const design = document.getElementById('design').value;
+                const primaryColor = document.getElementById('primaryColor').value;
+                const secondaryColor = document.getElementById('secondaryColor').value;
+                const initials = document.getElementById('initials').value;
+                const specialRequest = document.getElementById('specialRequest').value.trim();
+                
+                // Calculate price
+                let basePrice = 850;
+                if (initials) basePrice += 100;
+                if (specialRequest) basePrice += 200;
+                
+                const items = [{
+                    name: 'Ammunitionsetui',
+                    caliber: caliber,
+                    color: primaryColor,
+                    motif: design,
+                    quantity: 1,
+                    price: basePrice,
+                    specialRequest: specialRequest
+                }];
+                
+                console.log('💰 Creating payment intent with items:', items);
+                updateDebugInfo(`Creating payment intent: ${basePrice} SEK`);
+                
+                // Create payment intent
+                const response = await fetch(`/.netlify/functions/create-payment-intent?test=${isTestMode}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        items: items,
+                        customerEmail: document.getElementById('email').value,
+                        customerName: document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value,
+                        customerPhone: document.getElementById('phone').value,
+                        customerAddress: {
+                            line1: document.getElementById('address').value,
+                            postalCode: document.getElementById('postalCode').value,
+                            city: document.getElementById('city').value,
+                            country: document.getElementById('country').value
+                        }
+                    })
+                });
+                
+                const data = await response.json();
+                console.log('📊 Payment intent response:', data);
+                
+                if (!response.ok) {
+                    throw new Error(`Payment intent creation failed: ${data.error || 'Unknown error'}`);
+                }
+                
+                // Create payment element
+                elements = stripe.elements({
+                    clientSecret: data.clientSecret,
+                    appearance: {
+                        theme: 'stripe',
+                        variables: {
+                            colorPrimary: '#1B4D3E',
+                            colorBackground: '#ffffff',
+                            colorText: '#1a1a1a',
+                            colorDanger: '#df1b41',
+                            fontFamily: 'Inter, system-ui, sans-serif',
+                            spacingUnit: '4px',
+                            borderRadius: '8px'
+                        }
+                    }
+                });
+                
+                paymentElement = elements.create('payment');
+                paymentElement.mount('#payment-element');
+                
+                console.log('✅ Payment element mounted successfully');
+                updateDebugInfo(`Payment element created successfully. Amount: ${basePrice} SEK`);
+                return true;
+            } catch (error) {
+                console.error('❌ Failed to create payment element:', error);
+                updateDebugInfo(`Payment element creation failed: ${error.message}`, 'error');
+                return false;
+            }
+        }
+
+        // Handle payment submission
+        async function handleSubmit() {
+            const btn = document.getElementById('testPaymentBtn');
+            const resultDiv = document.getElementById('debugInfo');
+            
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+            
+            try {
+                const mode = document.querySelector('input[name="paymentMode"]:checked').value;
+                const isTestMode = mode === 'test';
+                
+                // Get customer info for URL parameters
+                const customerEmail = document.getElementById('email').value;
+                const customerName = document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value;
+                
+                console.log('💳 Confirming payment...');
+                updateDebugInfo('Confirming payment...');
+                
+                const { error } = await stripe.confirmPayment({
+                    elements,
+                    confirmParams: {
+                        return_url: `${window.location.origin}/success?test=${isTestMode}&customer_email=${encodeURIComponent(customerEmail)}&customer_name=${encodeURIComponent(customerName)}`,
+                    }
+                });
+                
+                if (error) {
+                    throw error;
+                }
+                
+                console.log('✅ Payment confirmed successfully');
+                updateDebugInfo('Payment confirmed! Redirecting to success page...', 'success');
+                
+            } catch (error) {
+                console.error('❌ Payment failed:', error);
+                updateDebugInfo(`Payment failed: ${error.message}`, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-credit-card mr-2"></i>Complete Payment';
+            }
+        }
+
+        // Update debug info
+        function updateDebugInfo(message, type = 'info') {
+            const debugDiv = document.getElementById('debugInfo');
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : 'debug-info';
+            debugDiv.className = className;
+            debugDiv.innerHTML = `<p>${new Date().toLocaleTimeString()}: ${message}</p>`;
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Set up event listeners
+            document.querySelectorAll('select, input, textarea').forEach(element => {
+                element.addEventListener('change', updateOrderSummary);
+                element.addEventListener('input', updateOrderSummary);
+            });
+            
+            document.querySelectorAll('input[name="paymentMode"]').forEach(radio => {
+                radio.addEventListener('change', async () => {
+                    await initializeStripe();
+                    await createPaymentElement();
+                });
+            });
+            
+            document.getElementById('testPaymentBtn').addEventListener('click', handleSubmit);
+            
+            // Initialize
+            updateOrderSummary();
+            const stripeInitialized = await initializeStripe();
+            if (stripeInitialized) {
+                await createPaymentElement();
+            }
+        });
+    </script>
+</body>
+</html>

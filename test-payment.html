@@ -241,6 +241,12 @@
                     totalPrice += 200; // Add 200 SEK for special request
                 }
                 
+                console.log('💰 Test payment pricing:', {
+                    customPrice: customPrice,
+                    specialRequest: specialRequest,
+                    totalPrice: totalPrice
+                });
+                
                 // Create payment intent
                 const response = await fetch(`/.netlify/functions/create-payment-intent?test=${isTestMode}`, {
                     method: 'POST',
