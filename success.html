@@ -615,7 +615,7 @@
                     details.push(`Specialförfrågan: ${specialRequestInfo}`);
                 }
                 
-                const emailOrderData = {
+                const finalEmailOrderData = {
                     customer: {
                         firstName: customerName.split(' ')[0] || 'Test',
                         lastName: customerName.split(' ').slice(1).join(' ') || 'Customer',
@@ -642,7 +642,7 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(emailOrderData)
+                    body: JSON.stringify(finalEmailOrderData)
                 });
 
                 const result = await response.json();
