@@ -389,10 +389,10 @@
                 }
                 
                 // Don't clear cart data yet - fetchPaymentDetails needs it
-            } else if (cartData) {
+            } else if (parsedCartData) {
                 // Handle live mode - use cart data
                 console.log('🚀 EXECUTING LIVE MODE PATH');
-                const order = JSON.parse(cartData);
+                const order = parsedCartData;
                 orderDetails = order.items.map(item => `
                     <div class="flex justify-between items-center py-2 border-b border-hunter-brown border-opacity-20">
                         <div>
@@ -511,15 +511,14 @@
                                 <span>${paymentData.amountInKronor} kr</span>
                             </div>
                         `;
-                        } else {
-                            // For regular orders, update the total amount
-                            const totalElement = orderDetailsElement.querySelector('.flex.justify-between.items-center.py-2.font-bold.text-lg');
-                            if (totalElement) {
-                                totalElement.innerHTML = `
-                                    <span>Total:</span>
-                                    <span>${paymentData.amountInKronor} kr</span>
-                                `;
-                            }
+                    } else {
+                        // For regular orders, update the total amount
+                        const totalElement = orderDetailsElement.querySelector('.flex.justify-between.items-center.py-2.font-bold.text-lg');
+                        if (totalElement) {
+                            totalElement.innerHTML = `
+                                <span>Total:</span>
+                                <span>${paymentData.amountInKronor} kr</span>
+                            `;
                         }
                     }
                 } else {
