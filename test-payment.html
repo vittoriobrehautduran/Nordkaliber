@@ -8,6 +8,17 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        // Generate CSRF token for security
+        function generateCSRFToken() {
+            const array = new Uint8Array(32);
+            crypto.getRandomValues(array);
+            return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+        }
+        
+        // Store CSRF token globally
+        window.csrfToken = generateCSRFToken();
+    </script>
 </head>
 <body class="bg-gray-100 min-h-screen">
     <div class="container mx-auto px-4 py-8">
@@ -252,6 +263,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'X-CSRF-Token': window.csrfToken
                     },
                     body: JSON.stringify({
                         items: [{
@@ -271,7 +283,8 @@
                             postal_code: document.getElementById('postalCode').value,
                             city: document.getElementById('city').value,
                             country: document.getElementById('country').value
-                        }
+                        },
+                        csrfToken: window.csrfToken
                     })
                 });
                 

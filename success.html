@@ -462,55 +462,55 @@
                     // Update the order details with real payment amount
                     const orderDetailsElement = document.getElementById('orderDetails');
                     if (orderDetailsElement) {
-                        // Check if this is test mode or regular order
-                        if (isTestMode) {
-                            // Use cart data for display instead of static data
-                            const cartData = localStorage.getItem('nordkaliberCart');
-                            let itemsInfo = 'Kaliber: .308 Winchester | Färg: Grå | Motiv: Motiv 8'; // Fallback
-                            
-                            console.log('🔍 fetchPaymentDetails - cartData:', cartData);
-                            
-                            if (cartData) {
-                                try {
-                                    const parsedCartData = JSON.parse(cartData);
-                                    console.log('🔍 fetchPaymentDetails - parsedCartData:', parsedCartData);
+                        // Use cart data for display (works for both test and live mode)
+                        const cartData = localStorage.getItem('nordkaliberCart');
+                        let itemsInfo = 'Kaliber: .308 Winchester | Färg: Grå | Motiv: Motiv 8'; // Fallback
+                        let orderTitle = isTestMode ? 'Ammunitionsetui - Test Order' : 'Ammunitionsetui';
+                        
+                        console.log('🔍 fetchPaymentDetails - cartData:', cartData);
+                        console.log('🔍 fetchPaymentDetails - isTestMode:', isTestMode);
+                        
+                        if (cartData) {
+                            try {
+                                const parsedCartData = JSON.parse(cartData);
+                                console.log('🔍 fetchPaymentDetails - parsedCartData:', parsedCartData);
+                                
+                                if (parsedCartData.items && parsedCartData.items.length > 0) {
+                                    const item = parsedCartData.items[0];
+                                    console.log('🔍 fetchPaymentDetails - item:', item);
                                     
-                                    if (parsedCartData.items && parsedCartData.items.length > 0) {
-                                        const item = parsedCartData.items[0];
-                                        console.log('🔍 fetchPaymentDetails - item:', item);
-                                        
-                                        itemsInfo = `Kaliber: ${item.caliber} | Färg: ${item.primaryColor}/${item.secondaryColor} | Motiv: ${item.design}`;
-                                        if (item.initials && item.initials !== 'Inga') {
-                                            itemsInfo += ` | Initialer: ${item.initials}`;
-                                        }
-                                        if (item.specialRequest) {
-                                            itemsInfo += ` | Specialförfrågan: ${item.specialRequest}`;
-                                        }
-                                        
-                                        console.log('🔍 fetchPaymentDetails - final itemsInfo:', itemsInfo);
-                                    } else {
-                                        console.log('🔍 fetchPaymentDetails - no items found in cart data');
+                                    itemsInfo = `Kaliber: ${item.caliber} | Färg: ${item.primaryColor}/${item.secondaryColor} | Motiv: ${item.design}`;
+                                    if (item.initials && item.initials !== 'Inga') {
+                                        itemsInfo += ` | Initialer: ${item.initials}`;
                                     }
-                                } catch (e) {
-                                    console.log('Could not parse cart data:', e);
+                                    if (item.specialRequest) {
+                                        itemsInfo += ` | Specialförfrågan: ${item.specialRequest}`;
+                                    }
+                                    
+                                    console.log('🔍 fetchPaymentDetails - final itemsInfo:', itemsInfo);
+                                } else {
+                                    console.log('🔍 fetchPaymentDetails - no items found in cart data');
                                 }
-                            } else {
-                                console.log('🔍 fetchPaymentDetails - no cart data found');
+                            } catch (e) {
+                                console.log('Could not parse cart data:', e);
                             }
-                            
-                            orderDetailsElement.innerHTML = `
-                                <div class="flex justify-between items-center py-2 border-b border-hunter-brown border-opacity-20">
-                                    <div>
-                                        <h3 class="font-semibold text-hunter-brown">Ammunitionsetui - Test Order</h3>
-                                        <p class="text-sm text-cool-grey">${itemsInfo}</p>
-                                    </div>
-                                    <span class="font-bold text-hunter-brown">${paymentData.amountInKronor} kr</span>
+                        } else {
+                            console.log('🔍 fetchPaymentDetails - no cart data found');
+                        }
+                        
+                        orderDetailsElement.innerHTML = `
+                            <div class="flex justify-between items-center py-2 border-b border-hunter-brown border-opacity-20">
+                                <div>
+                                    <h3 class="font-semibold text-hunter-brown">${orderTitle}</h3>
+                                    <p class="text-sm text-cool-grey">${itemsInfo}</p>
                                 </div>
-                                <div class="flex justify-between items-center py-2 font-bold text-lg">
-                                    <span>Total:</span>
-                                    <span>${paymentData.amountInKronor} kr</span>
-                                </div>
-                            `;
+                                <span class="font-bold text-hunter-brown">${paymentData.amountInKronor} kr</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 font-bold text-lg">
+                                <span>Total:</span>
+                                <span>${paymentData.amountInKronor} kr</span>
+                            </div>
+                        `;
                         } else {
                             // For regular orders, update the total amount
                             const totalElement = orderDetailsElement.querySelector('.flex.justify-between.items-center.py-2.font-bold.text-lg');
@@ -524,10 +524,8 @@
                     }
                 } else {
                     console.error('❌ Failed to fetch payment details:', paymentData);
-                    // Fallback: show default amount for test mode
-                    if (isTestMode) {
-                        updateTestOrderAmount(850);
-                    }
+                    // Fallback: show default amount
+                    updateOrderAmount(850);
                 }
                 
                 // Clear cart data after fetchPaymentDetails completes
@@ -535,10 +533,8 @@
                 localStorage.removeItem('nordkaliberCart');
             } catch (error) {
                 console.error('❌ Error fetching payment details:', error);
-                // Fallback: show default amount for test mode
-                if (isTestMode) {
-                    updateTestOrderAmount(850);
-                }
+                // Fallback: show default amount
+                updateOrderAmount(850);
                 
                 // Clear cart data even if there was an error
                 console.log('🧹 Clearing cart data after error');
@@ -546,14 +542,15 @@
             }
         }
 
-        // Update test order amount (fallback function)
-        function updateTestOrderAmount(amount) {
-            console.log('🔄 Updating test order amount to:', amount);
+        // Update order amount (fallback function - works for both test and live mode)
+        function updateOrderAmount(amount) {
+            console.log('🔄 Updating order amount to:', amount);
             const orderDetailsElement = document.getElementById('orderDetails');
             if (orderDetailsElement) {
                 // Use cart data for display instead of static data
                 const cartData = localStorage.getItem('nordkaliberCart');
                 let itemsInfo = 'Kaliber: .308 Winchester | Färg: Grå | Motiv: Motiv 8'; // Fallback
+                let orderTitle = isTestMode ? 'Ammunitionsetui - Test Order' : 'Ammunitionsetui';
                 
                 if (cartData) {
                     try {
@@ -576,7 +573,7 @@
                 orderDetailsElement.innerHTML = `
                     <div class="flex justify-between items-center py-2 border-b border-hunter-brown border-opacity-20">
                         <div>
-                            <h3 class="font-semibold text-hunter-brown">Ammunitionsetui - Test Order</h3>
+                            <h3 class="font-semibold text-hunter-brown">${orderTitle}</h3>
                             <p class="text-sm text-cool-grey">${itemsInfo}</p>
                         </div>
                         <span class="font-bold text-hunter-brown">${amount} kr</span>
