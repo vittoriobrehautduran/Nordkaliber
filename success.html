@@ -322,7 +322,13 @@
                                 design: product.selections.design ? product.selections.design.name : (product.selections.designSpecial || 'Ej valt'),
                                 initials: product.selections.initials || product.selections.initialsSpecial || 'Inga',
                                 price: product.totalPrice,
-                                specialRequest: product.selections.caliberSpecial || product.selections.primaryColorSpecial || product.selections.secondaryColorSpecial || product.selections.designSpecial || product.selections.initialsSpecial || ''
+                                specialRequest: [
+                                    product.selections.caliberSpecial ? `Kaliber: ${product.selections.caliberSpecial}` : '',
+                                    product.selections.primaryColorSpecial ? `Primär färg: ${product.selections.primaryColorSpecial}` : '',
+                                    product.selections.secondaryColorSpecial ? `Sekundär färg: ${product.selections.secondaryColorSpecial}` : '',
+                                    product.selections.designSpecial ? `Motiv: ${product.selections.designSpecial}` : '',
+                                    product.selections.initialsSpecial ? `Initialer: ${product.selections.initialsSpecial}` : ''
+                                ].filter(req => req !== '').join(' | ')
                             })),
                             total: total
                         };
@@ -638,7 +644,13 @@
                                 design: product.selections.design ? product.selections.design.name : (product.selections.designSpecial || 'Ej valt'),
                                 initials: product.selections.initials || product.selections.initialsSpecial || 'Inga',
                                 price: product.totalPrice,
-                                specialRequest: product.selections.caliberSpecial || product.selections.primaryColorSpecial || product.selections.secondaryColorSpecial || product.selections.designSpecial || product.selections.initialsSpecial || ''
+                                specialRequest: [
+                                    product.selections.caliberSpecial ? `Kaliber: ${product.selections.caliberSpecial}` : '',
+                                    product.selections.primaryColorSpecial ? `Primär färg: ${product.selections.primaryColorSpecial}` : '',
+                                    product.selections.secondaryColorSpecial ? `Sekundär färg: ${product.selections.secondaryColorSpecial}` : '',
+                                    product.selections.designSpecial ? `Motiv: ${product.selections.designSpecial}` : '',
+                                    product.selections.initialsSpecial ? `Initialer: ${product.selections.initialsSpecial}` : ''
+                                ].filter(req => req !== '').join(' | ')
                             })),
                             total: total
                         };
