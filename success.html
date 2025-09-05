@@ -367,10 +367,17 @@
                     if (sessionId) {
                         const emailSentKey = `emails_sent_${sessionId}`;
                         if (!sessionStorage.getItem(emailSentKey)) {
-                            console.log('Test payment successful, sending confirmation emails...');
-                            console.log('📧 About to call sendTestOrderConfirmationEmails with orderData:', orderData);
-                            console.log('📧 orderData type:', typeof orderData);
-                            sendTestOrderConfirmationEmails(orderData);
+                            if (isTestMode) {
+                                console.log('Test payment successful, sending test confirmation emails...');
+                                console.log('📧 About to call sendTestOrderConfirmationEmails with orderData:', orderData);
+                                console.log('📧 orderData type:', typeof orderData);
+                                sendTestOrderConfirmationEmails(orderData);
+                            } else {
+                                console.log('Live payment successful, sending confirmation emails...');
+                                console.log('📧 About to call sendOrderConfirmationEmails with orderData:', orderData);
+                                console.log('📧 orderData type:', typeof orderData);
+                                sendOrderConfirmationEmails(orderData);
+                            }
                             sessionStorage.setItem(emailSentKey, 'true');
                         } else {
                             console.log('📧 Emails already sent for this session, skipping to prevent duplicates');
@@ -380,11 +387,11 @@
                     // Fallback if no data found
                     console.log('📦 No order data found, using demo data');
                     orderDetails = `
-                        <div class="flex justify-between items-center py-2 border-b border-hunter-brown border-opacity-20">
-                            <div>
-                                <h3 class="font-semibold text-hunter-brown">Ammunitionsetui - Test Order</h3>
-                                <p class="text-sm text-cool-grey">Kaliber: .308 Winchester | Färg: Grå | Motiv: Motiv 8</p>
-                            </div>
+                                                    <div class="flex justify-between items-center py-2 border-b border-hunter-brown border-opacity-20">
+                                <div>
+                                    <h3 class="font-semibold text-hunter-brown">Ammunitionsetui</h3>
+                                    <p class="text-sm text-cool-grey">Kaliber: .308 Winchester | Färg: Grå | Motiv: Motiv 8</p>
+                                </div>
                             <span class="font-bold text-hunter-brown">Laddar...</span>
                         </div>
                         <div class="flex justify-between items-center py-2 font-bold text-lg">
@@ -423,8 +430,13 @@
                 if (sessionId) {
                     const emailSentKey = `emails_sent_${sessionId}`;
                     if (!sessionStorage.getItem(emailSentKey)) {
-                        console.log('Payment successful, sending confirmation emails...');
-                        sendOrderConfirmationEmails(order);
+                        if (isTestMode) {
+                            console.log('Test payment successful, sending test confirmation emails...');
+                            sendTestOrderConfirmationEmails(order);
+                        } else {
+                            console.log('Live payment successful, sending confirmation emails...');
+                            sendOrderConfirmationEmails(order);
+                        }
                         sessionStorage.setItem(emailSentKey, 'true');
                     } else {
                         console.log('📧 Emails already sent for this session, skipping to prevent duplicates');
