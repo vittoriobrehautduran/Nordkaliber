@@ -382,8 +382,7 @@
                     `;
                 }
                 
-                // Clear cart data after using it in test mode
-                localStorage.removeItem('nordkaliberCart');
+                // Don't clear cart data yet - fetchPaymentDetails needs it
             } else if (cartData) {
                 // Handle live mode - use cart data
                 console.log('🚀 EXECUTING LIVE MODE PATH');
@@ -414,8 +413,7 @@
                     sendOrderConfirmationEmails(order);
                 }
                 
-                // Clear cart data after using it in live mode
-                localStorage.removeItem('nordkaliberCart');
+                // Don't clear cart data yet - fetchPaymentDetails needs it
             } else {
                 orderDetails = '<p class="text-cool-grey">Orderdetaljer laddas...</p>';
             }
@@ -519,12 +517,20 @@
                         updateTestOrderAmount(850);
                     }
                 }
+                
+                // Clear cart data after fetchPaymentDetails completes
+                console.log('🧹 Clearing cart data after payment details fetched');
+                localStorage.removeItem('nordkaliberCart');
             } catch (error) {
                 console.error('❌ Error fetching payment details:', error);
                 // Fallback: show default amount for test mode
                 if (isTestMode) {
                     updateTestOrderAmount(850);
                 }
+                
+                // Clear cart data even if there was an error
+                console.log('🧹 Clearing cart data after error');
+                localStorage.removeItem('nordkaliberCart');
             }
         }
 
