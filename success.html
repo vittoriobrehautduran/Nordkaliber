@@ -529,28 +529,28 @@
         }
 
         // Send test order confirmation emails
-        async function sendTestOrderConfirmationEmails(orderData) {
+        async function sendTestOrderConfirmationEmails(testOrderData) {
             try {
                 console.log('📧 Sending test order confirmation emails...');
-                console.log('📧 Function parameter orderData:', orderData);
-                console.log('📧 Function parameter type:', typeof orderData);
+                console.log('📧 Function parameter testOrderData:', testOrderData);
+                console.log('📧 Function parameter type:', typeof testOrderData);
                 console.log('📧 Window orderData:', window.orderData);
                 
                 // Get customer info from orderData or URL parameters
                 const urlParams = new URLSearchParams(window.location.search);
                 let customerEmail, customerName, customerPhone, customerAddress, customerPostalCode, customerCity, customerCountry;
                 
-                // Try to get from orderData first (most reliable)
-                if (orderData && orderData.customer) {
-                    console.log('📧 Order data customer info:', orderData.customer);
-                    customerEmail = orderData.customer.email || 'test@example.com';
-                    customerName = orderData.customer.name || 'Test Customer';
-                    customerPhone = orderData.customer.phone || '+46 123 456 789';
-                    customerAddress = orderData.customer.address || 'Test Street 123';
-                    customerPostalCode = orderData.customer.postalCode || '12345';
-                    customerCity = orderData.customer.city || 'Stockholm';
-                    customerCountry = orderData.customer.country || 'Sverige';
-                    console.log('📧 Using order data for customer info:', orderData.customer);
+                // Try to get from testOrderData first (most reliable)
+                if (testOrderData && testOrderData.customer) {
+                    console.log('📧 Order data customer info:', testOrderData.customer);
+                    customerEmail = testOrderData.customer.email || 'test@example.com';
+                    customerName = testOrderData.customer.name || 'Test Customer';
+                    customerPhone = testOrderData.customer.phone || '+46 123 456 789';
+                    customerAddress = testOrderData.customer.address || 'Test Street 123';
+                    customerPostalCode = testOrderData.customer.postalCode || '12345';
+                    customerCity = testOrderData.customer.city || 'Stockholm';
+                    customerCountry = testOrderData.customer.country || 'Sverige';
+                    console.log('📧 Using order data for customer info:', testOrderData.customer);
                     console.log('📧 Extracted values:', { customerEmail, customerName, customerPostalCode, customerCity });
                 } else {
                     // Fallback to URL parameters
@@ -565,8 +565,8 @@
                 }
                 
                 // Get order data from window.orderData (set in the main function)
-                let orderData = window.orderData;
-                if (!orderData) {
+                let emailOrderData = window.orderData;
+                if (!emailOrderData) {
                     // Fallback: try to get from localStorage
                     const productsData = localStorage.getItem('nordkaliberProducts');
                     if (productsData) {
@@ -592,11 +592,11 @@
                     throw new Error('No order data available for email');
                 }
                 
-                console.log('📊 Order data for email:', orderData);
+                console.log('📊 Order data for email:', emailOrderData);
                 
                 // Build details array from actual order data
                 const details = [];
-                orderData.items.forEach(item => {
+                emailOrderData.items.forEach(item => {
                     details.push(`Kaliber: ${item.caliber}`);
                     details.push(`Primär Färg: ${item.primaryColor}`);
                     details.push(`Sekundär Färg: ${item.secondaryColor}`);
@@ -610,7 +610,7 @@
                 });
                 
                 // Add special request if available
-                const specialRequestInfo = orderData.items.find(item => item.specialRequest)?.specialRequest || '';
+                const specialRequestInfo = emailOrderData.items.find(item => item.specialRequest)?.specialRequest || '';
                 if (specialRequestInfo) {
                     details.push(`Specialförfrågan: ${specialRequestInfo}`);
                 }
@@ -626,13 +626,13 @@
                         city: customerCity,
                         country: customerCountry
                     },
-                    items: orderData.items.map(item => ({
+                    items: emailOrderData.items.map(item => ({
                         name: item.type,
                         details: details,
                         price: item.price,
                         specialRequest: item.specialRequest
                     })),
-                    total: orderData.total,
+                    total: emailOrderData.total,
                     orderId: 'TEST-ORDER-' + Date.now()
                 };
 
