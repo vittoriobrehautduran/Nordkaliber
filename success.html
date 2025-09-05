@@ -316,11 +316,11 @@
                         orderData = {
                             items: products.map(product => ({
                                 type: product.type,
-                                caliber: product.selections.caliber || product.selections.caliberSpecial || 'Ej valt',
-                                primaryColor: product.selections.primaryColor ? product.selections.primaryColor.name : (product.selections.primaryColorSpecial || 'Ej valt'),
-                                secondaryColor: product.selections.secondaryColor ? product.selections.secondaryColor.name : (product.selections.secondaryColorSpecial || 'Ej valt'),
-                                design: product.selections.design ? product.selections.design.name : (product.selections.designSpecial || 'Ej valt'),
-                                initials: product.selections.initials || product.selections.initialsSpecial || 'Inga',
+                                caliber: product.selections.caliberSpecial ? `Specialförfrågan (${product.selections.caliberSpecial})` : (product.selections.caliber || 'Ej valt'),
+                                primaryColor: product.selections.primaryColorSpecial ? `Specialförfrågan (${product.selections.primaryColorSpecial})` : (product.selections.primaryColor ? product.selections.primaryColor.name : 'Ej valt'),
+                                secondaryColor: product.selections.secondaryColorSpecial ? `Specialförfrågan (${product.selections.secondaryColorSpecial})` : (product.selections.secondaryColor ? product.selections.secondaryColor.name : 'Ej valt'),
+                                design: product.selections.designSpecial ? `Specialförfrågan (${product.selections.designSpecial})` : (product.selections.design ? product.selections.design.name : 'Ej valt'),
+                                initials: product.selections.initialsSpecial ? `Specialförfrågan (${product.selections.initialsSpecial})` : (product.selections.initials || 'Inga'),
                                 price: product.totalPrice,
                                 specialRequest: [
                                     product.selections.caliberSpecial ? `Kaliber: ${product.selections.caliberSpecial}` : '',
@@ -650,11 +650,11 @@
                         orderData = {
                             items: products.map(product => ({
                                 type: product.type,
-                                caliber: product.selections.caliber || product.selections.caliberSpecial || 'Ej valt',
-                                primaryColor: product.selections.primaryColor ? product.selections.primaryColor.name : (product.selections.primaryColorSpecial || 'Ej valt'),
-                                secondaryColor: product.selections.secondaryColor ? product.selections.secondaryColor.name : (product.selections.secondaryColorSpecial || 'Ej valt'),
-                                design: product.selections.design ? product.selections.design.name : (product.selections.designSpecial || 'Ej valt'),
-                                initials: product.selections.initials || product.selections.initialsSpecial || 'Inga',
+                                caliber: product.selections.caliberSpecial ? `Specialförfrågan (${product.selections.caliberSpecial})` : (product.selections.caliber || 'Ej valt'),
+                                primaryColor: product.selections.primaryColorSpecial ? `Specialförfrågan (${product.selections.primaryColorSpecial})` : (product.selections.primaryColor ? product.selections.primaryColor.name : 'Ej valt'),
+                                secondaryColor: product.selections.secondaryColorSpecial ? `Specialförfrågan (${product.selections.secondaryColorSpecial})` : (product.selections.secondaryColor ? product.selections.secondaryColor.name : 'Ej valt'),
+                                design: product.selections.designSpecial ? `Specialförfrågan (${product.selections.designSpecial})` : (product.selections.design ? product.selections.design.name : 'Ej valt'),
+                                initials: product.selections.initialsSpecial ? `Specialförfrågan (${product.selections.initialsSpecial})` : (product.selections.initials || 'Inga'),
                                 price: product.totalPrice,
                                 specialRequest: [
                                     product.selections.caliberSpecial ? `Kaliber: ${product.selections.caliberSpecial}` : '',

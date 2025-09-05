@@ -261,8 +261,8 @@
                     <div class="mb-8">
                         <h3 class="text-lg font-semibold mb-4 text-gray-900">Betalningsmetod</h3>
                         
-                        <!-- Test Mode Toggle (Hidden from customers but functional for testing) -->
-                        <div class="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg hidden">
+                        <!-- Test Mode Toggle -->
+                        <div class="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
                             <div class="flex items-center justify-between">
                                 <div>
                                     <h4 class="font-medium text-yellow-800">Test Mode</h4>
@@ -291,8 +291,8 @@
                             </div>
                         </div>
                         
-                        <!-- Debug Information (Hidden from customers but functional for testing) -->
-                        <div class="mt-4 p-3 bg-gray-50 border border-gray-200 rounded-lg hidden">
+                        <!-- Debug Information -->
+                        <div class="mt-4 p-3 bg-gray-50 border border-gray-200 rounded-lg">
                             <h4 class="text-sm font-medium text-gray-700 mb-2">Debug Information</h4>
                             <div id="debugInfo" class="text-xs text-gray-600">
                                 <div>Mode: <span id="currentMode">Live</span></div>
@@ -386,11 +386,11 @@
                 orderData = {
                     items: products.map(product => ({
                         type: product.type,
-                        caliber: product.selections.caliber || product.selections.caliberSpecial || 'Ej valt',
-                        primaryColor: product.selections.primaryColor ? product.selections.primaryColor.name : (product.selections.primaryColorSpecial || 'Ej valt'),
-                        secondaryColor: product.selections.secondaryColor ? product.selections.secondaryColor.name : (product.selections.secondaryColorSpecial || 'Ej valt'),
-                        design: product.selections.design ? product.selections.design.name : (product.selections.designSpecial || 'Ej valt'),
-                        initials: product.selections.initials || product.selections.initialsSpecial || 'Inga',
+                        caliber: product.selections.caliberSpecial ? `Specialförfrågan (${product.selections.caliberSpecial})` : (product.selections.caliber || 'Ej valt'),
+                        primaryColor: product.selections.primaryColorSpecial ? `Specialförfrågan (${product.selections.primaryColorSpecial})` : (product.selections.primaryColor ? product.selections.primaryColor.name : 'Ej valt'),
+                        secondaryColor: product.selections.secondaryColorSpecial ? `Specialförfrågan (${product.selections.secondaryColorSpecial})` : (product.selections.secondaryColor ? product.selections.secondaryColor.name : 'Ej valt'),
+                        design: product.selections.designSpecial ? `Specialförfrågan (${product.selections.designSpecial})` : (product.selections.design ? product.selections.design.name : 'Ej valt'),
+                        initials: product.selections.initialsSpecial ? `Specialförfrågan (${product.selections.initialsSpecial})` : (product.selections.initials || 'Inga'),
                         price: product.totalPrice
                     })),
                     total: products.reduce((sum, product) => sum + product.totalPrice, 0)
