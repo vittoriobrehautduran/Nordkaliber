@@ -204,8 +204,7 @@ exports.handler = async (event, context) => {
         items: JSON.stringify(items),
         total_amount: totalAmountInKronor.toString(),
         is_test_mode: isTestMode.toString(),
-        client_ip: clientIP,
-        idempotency_key: idempotencyKey
+        client_ip: clientIP
       },
       // Configure automatic payment methods (this will automatically detect available methods)
       automatic_payment_methods: {
@@ -217,9 +216,7 @@ exports.handler = async (event, context) => {
       // Add receipt email
       receipt_email: sanitizedEmail,
       // Add description
-      description: `Nordkaliber order - ${items.length} item(s)`,
-      // Add idempotency key
-      idempotency_key: idempotencyKey
+      description: `Nordkaliber order - ${items.length} item(s)`
     }, {
       idempotencyKey: idempotencyKey
     });
