@@ -454,16 +454,25 @@
                     if (orderDetailsElement) {
                         // Check if this is test mode or regular order
                         if (isTestMode) {
-                            // Parse items from metadata to get special request info
-                            let itemsInfo = 'Kaliber: .308 Winchester | Färg: Grå | Motiv: Motiv 8';
-                            if (paymentData.metadata && paymentData.metadata.items) {
+                            // Use cart data for display instead of static data
+                            const cartData = localStorage.getItem('nordkaliberCart');
+                            let itemsInfo = 'Kaliber: .308 Winchester | Färg: Grå | Motiv: Motiv 8'; // Fallback
+                            
+                            if (cartData) {
                                 try {
-                                    const items = JSON.parse(paymentData.metadata.items);
-                                    if (items.length > 0 && items[0].specialRequest) {
-                                        itemsInfo += ` | Specialförfrågan: ${items[0].specialRequest}`;
+                                    const parsedCartData = JSON.parse(cartData);
+                                    if (parsedCartData.items && parsedCartData.items.length > 0) {
+                                        const item = parsedCartData.items[0];
+                                        itemsInfo = `Kaliber: ${item.caliber} | Färg: ${item.primaryColor}/${item.secondaryColor} | Motiv: ${item.design}`;
+                                        if (item.initials && item.initials !== 'Inga') {
+                                            itemsInfo += ` | Initialer: ${item.initials}`;
+                                        }
+                                        if (item.specialRequest) {
+                                            itemsInfo += ` | Specialförfrågan: ${item.specialRequest}`;
+                                        }
                                     }
                                 } catch (e) {
-                                    console.log('Could not parse items metadata:', e);
+                                    console.log('Could not parse cart data:', e);
                                 }
                             }
                             
@@ -512,11 +521,33 @@
             console.log('🔄 Updating test order amount to:', amount);
             const orderDetailsElement = document.getElementById('orderDetails');
             if (orderDetailsElement) {
+                // Use cart data for display instead of static data
+                const cartData = localStorage.getItem('nordkaliberCart');
+                let itemsInfo = 'Kaliber: .308 Winchester | Färg: Grå | Motiv: Motiv 8'; // Fallback
+                
+                if (cartData) {
+                    try {
+                        const parsedCartData = JSON.parse(cartData);
+                        if (parsedCartData.items && parsedCartData.items.length > 0) {
+                            const item = parsedCartData.items[0];
+                            itemsInfo = `Kaliber: ${item.caliber} | Färg: ${item.primaryColor}/${item.secondaryColor} | Motiv: ${item.design}`;
+                            if (item.initials && item.initials !== 'Inga') {
+                                itemsInfo += ` | Initialer: ${item.initials}`;
+                            }
+                            if (item.specialRequest) {
+                                itemsInfo += ` | Specialförfrågan: ${item.specialRequest}`;
+                            }
+                        }
+                    } catch (e) {
+                        console.log('Could not parse cart data in fallback:', e);
+                    }
+                }
+                
                 orderDetailsElement.innerHTML = `
                     <div class="flex justify-between items-center py-2 border-b border-hunter-brown border-opacity-20">
                         <div>
                             <h3 class="font-semibold text-hunter-brown">Ammunitionsetui - Test Order</h3>
-                            <p class="text-sm text-cool-grey">Kaliber: .308 Winchester | Färg: Grå | Motiv: Motiv 8</p>
+                            <p class="text-sm text-cool-grey">${itemsInfo}</p>
                         </div>
                         <span class="font-bold text-hunter-brown">${amount} kr</span>
                     </div>
