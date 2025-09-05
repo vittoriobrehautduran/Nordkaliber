@@ -180,7 +180,7 @@ exports.handler = async (event, context) => {
     const idempotencyKey = `${clientIP}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     
     // Server-side payment amount verification (additional security layer)
-    const maxAllowedAmount = 50000; // 500 SEK maximum per order
+    const maxAllowedAmount = 200000; // 2000 SEK maximum per order (increased from 500 SEK)
     if (totalAmountInCents > maxAllowedAmount) {
       console.error('❌ Payment amount exceeds maximum allowed:', totalAmountInCents);
       return {
