@@ -357,12 +357,18 @@
                     // Store order data for email sending
                     window.orderData = orderData;
                     
-                    // Send test confirmation emails
+                    // Send test confirmation emails (only once per session)
                     if (sessionId) {
-                        console.log('Test payment successful, sending confirmation emails...');
-                        console.log('📧 About to call sendTestOrderConfirmationEmails with orderData:', orderData);
-                        console.log('📧 orderData type:', typeof orderData);
-                        sendTestOrderConfirmationEmails(orderData);
+                        const emailSentKey = `emails_sent_${sessionId}`;
+                        if (!sessionStorage.getItem(emailSentKey)) {
+                            console.log('Test payment successful, sending confirmation emails...');
+                            console.log('📧 About to call sendTestOrderConfirmationEmails with orderData:', orderData);
+                            console.log('📧 orderData type:', typeof orderData);
+                            sendTestOrderConfirmationEmails(orderData);
+                            sessionStorage.setItem(emailSentKey, 'true');
+                        } else {
+                            console.log('📧 Emails already sent for this session, skipping to prevent duplicates');
+                        }
                     }
                 } else {
                     // Fallback if no data found
@@ -407,10 +413,16 @@
                     </div>
                 `;
                 
-                // Send confirmation emails for real orders
+                // Send confirmation emails for real orders (only once per session)
                 if (sessionId) {
-                    console.log('Payment successful, sending confirmation emails...');
-                    sendOrderConfirmationEmails(order);
+                    const emailSentKey = `emails_sent_${sessionId}`;
+                    if (!sessionStorage.getItem(emailSentKey)) {
+                        console.log('Payment successful, sending confirmation emails...');
+                        sendOrderConfirmationEmails(order);
+                        sessionStorage.setItem(emailSentKey, 'true');
+                    } else {
+                        console.log('📧 Emails already sent for this session, skipping to prevent duplicates');
+                    }
                 }
                 
                 // Don't clear cart data yet - fetchPaymentDetails needs it
