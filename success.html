@@ -458,11 +458,17 @@
                             const cartData = localStorage.getItem('nordkaliberCart');
                             let itemsInfo = 'Kaliber: .308 Winchester | Färg: Grå | Motiv: Motiv 8'; // Fallback
                             
+                            console.log('🔍 fetchPaymentDetails - cartData:', cartData);
+                            
                             if (cartData) {
                                 try {
                                     const parsedCartData = JSON.parse(cartData);
+                                    console.log('🔍 fetchPaymentDetails - parsedCartData:', parsedCartData);
+                                    
                                     if (parsedCartData.items && parsedCartData.items.length > 0) {
                                         const item = parsedCartData.items[0];
+                                        console.log('🔍 fetchPaymentDetails - item:', item);
+                                        
                                         itemsInfo = `Kaliber: ${item.caliber} | Färg: ${item.primaryColor}/${item.secondaryColor} | Motiv: ${item.design}`;
                                         if (item.initials && item.initials !== 'Inga') {
                                             itemsInfo += ` | Initialer: ${item.initials}`;
@@ -470,10 +476,16 @@
                                         if (item.specialRequest) {
                                             itemsInfo += ` | Specialförfrågan: ${item.specialRequest}`;
                                         }
+                                        
+                                        console.log('🔍 fetchPaymentDetails - final itemsInfo:', itemsInfo);
+                                    } else {
+                                        console.log('🔍 fetchPaymentDetails - no items found in cart data');
                                     }
                                 } catch (e) {
                                     console.log('Could not parse cart data:', e);
                                 }
+                            } else {
+                                console.log('🔍 fetchPaymentDetails - no cart data found');
                             }
                             
                             orderDetailsElement.innerHTML = `
