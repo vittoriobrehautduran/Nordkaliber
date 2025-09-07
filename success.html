@@ -41,6 +41,26 @@
     
     <!-- Web App Manifest for PWA support -->
     <link rel="manifest" href="manifest.json">
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X22SH7JYCN"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-X22SH7JYCN', {
+            page_title: 'Tack för din beställning - Nordkaliber',
+            page_location: window.location.href,
+            // Enhanced demographics and interests
+            allow_google_signals: true,
+            allow_ad_personalization_signals: true,
+            // Custom parameters for better insights
+            custom_map: {
+                'custom_parameter_1': 'user_type',
+                'custom_parameter_2': 'product_interest'
+            }
+        });
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -69,6 +89,57 @@
                 return;
             }
         })();
+        
+        // Enhanced Google Analytics tracking functions
+        function trackEvent(category, action, label, value) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', action, {
+                    event_category: category,
+                    event_label: label,
+                    value: value
+                });
+            }
+        }
+        
+        function trackOrderCompletion(orderData) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'purchase', {
+                    event_category: 'ecommerce',
+                    event_label: `Order Completed - ${orderData.orderId}`,
+                    value: orderData.totalAmount,
+                    currency: 'SEK',
+                    transaction_id: orderData.orderId
+                });
+            }
+        }
+        
+        function trackSuccessPageAction(action) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'success_page_action', {
+                    event_category: 'conversion',
+                    event_label: action,
+                    value: 1
+                });
+            }
+        }
+        
+        // Track page load as conversion
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track successful order completion
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('order_id');
+            const totalAmount = urlParams.get('total');
+            
+            if (orderId && totalAmount) {
+                trackOrderCompletion({
+                    orderId: orderId,
+                    totalAmount: parseFloat(totalAmount)
+                });
+            }
+            
+            // Track success page view
+            trackEvent('conversion', 'success_page_view', 'Order Success Page', 1);
+        });
         
         tailwind.config = {
             theme: {

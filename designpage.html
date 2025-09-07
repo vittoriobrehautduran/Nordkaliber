@@ -48,6 +48,26 @@
     <!-- Web App Manifest for PWA support -->
     <link rel="manifest" href="manifest.json">
     
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X22SH7JYCN"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-X22SH7JYCN', {
+            page_title: 'Designa Din Egen - Nordkaliber',
+            page_location: window.location.href,
+            // Enhanced demographics and interests
+            allow_google_signals: true,
+            allow_ad_personalization_signals: true,
+            // Custom parameters for better insights
+            custom_map: {
+                'custom_parameter_1': 'user_type',
+                'custom_parameter_2': 'product_interest'
+            }
+        });
+    </script>
+    
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -1648,6 +1668,58 @@
     <script>
                     // Main application logic
             document.addEventListener('DOMContentLoaded', function() {
+            
+            // Enhanced Google Analytics tracking functions
+            function trackEvent(category, action, label, value) {
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', action, {
+                        event_category: category,
+                        event_label: label,
+                        value: value
+                    });
+                }
+            }
+            
+            function trackDesignStep(step, action) {
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'design_step', {
+                        event_category: 'design_flow',
+                        event_label: `Step ${step} - ${action}`,
+                        value: step
+                    });
+                }
+            }
+            
+            function trackProductConfiguration(selections) {
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'product_configured', {
+                        event_category: 'design',
+                        event_label: `Caliber: ${selections.caliber}, Primary: ${selections.primaryColor}, Secondary: ${selections.secondaryColor}, Design: ${selections.design}`,
+                        value: 1
+                    });
+                }
+            }
+            
+            function trackAddToCart(productData) {
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'add_to_cart', {
+                        event_category: 'ecommerce',
+                        event_label: `Product: ${productData.caliber} - ${productData.primaryColor}`,
+                        value: productData.price,
+                        currency: 'SEK'
+                    });
+                }
+            }
+            
+            function trackCheckoutInitiated() {
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'begin_checkout', {
+                        event_category: 'ecommerce',
+                        event_label: 'Design Page Checkout',
+                        value: 1
+                    });
+                }
+            }
             
             // Application state
             const app = {

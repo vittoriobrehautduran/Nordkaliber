@@ -41,6 +41,26 @@
     
     <!-- Web App Manifest for PWA support -->
     <link rel="manifest" href="manifest.json">
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X22SH7JYCN"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-X22SH7JYCN', {
+            page_title: 'Kassa - Nordkaliber',
+            page_location: window.location.href,
+            // Enhanced demographics and interests
+            allow_google_signals: true,
+            allow_ad_personalization_signals: true,
+            // Custom parameters for better insights
+            custom_map: {
+                'custom_parameter_1': 'user_type',
+                'custom_parameter_2': 'product_interest'
+            }
+        });
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://js.stripe.com/v3/"></script>
@@ -85,6 +105,60 @@
         function redirectToDesign(event) {
             event.preventDefault();
             window.location.href = '/designpage';
+        }
+        
+        // Enhanced Google Analytics tracking functions
+        function trackEvent(category, action, label, value) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', action, {
+                    event_category: category,
+                    event_label: label,
+                    value: value
+                });
+            }
+        }
+        
+        function trackCheckoutStep(step, action) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'checkout_step', {
+                    event_category: 'ecommerce',
+                    event_label: `Checkout ${step} - ${action}`,
+                    value: step
+                });
+            }
+        }
+        
+        function trackPaymentAttempt(method, amount) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'purchase', {
+                    event_category: 'ecommerce',
+                    event_label: `Payment Attempt - ${method}`,
+                    value: amount,
+                    currency: 'SEK'
+                });
+            }
+        }
+        
+        function trackPaymentSuccess(amount, orderId) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'purchase', {
+                    event_category: 'ecommerce',
+                    event_label: `Payment Success - Order ${orderId}`,
+                    value: amount,
+                    currency: 'SEK',
+                    transaction_id: orderId
+                });
+            }
+        }
+        
+        function trackPaymentError(errorType, errorMessage) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'payment_error', {
+                    event_category: 'ecommerce',
+                    event_label: `${errorType} - ${errorMessage}`,
+                    value: 1
+                });
+            }
         }
         
         tailwind.config = {

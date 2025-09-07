@@ -91,6 +91,26 @@
     <!-- Web App Manifest for PWA support -->
     <link rel="manifest" href="manifest.json">
     
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X22SH7JYCN"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-X22SH7JYCN', {
+            page_title: 'Nordkaliber - Premium Jaktutrustning',
+            page_location: window.location.href,
+            // Enhanced demographics and interests
+            allow_google_signals: true,
+            allow_ad_personalization_signals: true,
+            // Custom parameters for better insights
+            custom_map: {
+                'custom_parameter_1': 'user_type',
+                'custom_parameter_2': 'product_interest'
+            }
+        });
+    </script>
+    
     <!-- Preload critical video for faster loading -->
     <link rel="preload" href="images/nordkaliber_ad_optimized.webm" as="video" type="video/webm">
     <link rel="preload" href="images/nordkaliber_ad_poster.jpg" as="image" type="image/jpeg">
@@ -1337,7 +1357,8 @@
             </div>
         </section>
 
-        <!-- About Nordkaliber Section -->
+        <!-- About Nordkaliber Section - HIDDEN -->
+        <!--
         <section id="om-nordkaliber" class="py-16 bg-gradient-to-b from-deep-blue to-dark-green">
             <div class="container mx-auto px-4">
                 <div class="max-w-4xl mx-auto text-center">
@@ -1378,6 +1399,7 @@
                 </div>
             </div>
         </section>
+        -->
 
         <!-- Contact Section -->
         <section id="kontakt" class="py-20 section-fade">
@@ -1541,7 +1563,73 @@
                     // Function to redirect to the new design page
         function redirectToDesign(event) {
             event.preventDefault();
+            
+            // Track design button click
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'click', {
+                    event_category: 'engagement',
+                    event_label: 'Design Button Click',
+                    value: 1
+                });
+            }
+            
             window.location.href = '/designpage';
+        }
+        
+        // Enhanced Google Analytics tracking functions
+        function trackEvent(category, action, label, value) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', action, {
+                    event_category: category,
+                    event_label: label,
+                    value: value
+                });
+            }
+        }
+        
+        function trackVideoInteraction(videoId, action) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'video_interaction', {
+                    event_category: 'video',
+                    event_label: videoId + ' - ' + action,
+                    video_title: videoId
+                });
+            }
+        }
+        
+        function trackFormSubmission(formType) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'form_submit', {
+                    event_category: 'engagement',
+                    event_label: formType + ' Form Submission',
+                    value: 1
+                });
+            }
+        }
+        
+        function trackScrollDepth() {
+            let maxScroll = 0;
+            const scrollThresholds = [25, 50, 75, 90, 100];
+            const trackedThresholds = new Set();
+            
+            function checkScrollDepth() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const scrollPercent = Math.round((scrollTop / docHeight) * 100);
+                
+                if (scrollPercent > maxScroll) {
+                    maxScroll = scrollPercent;
+                    
+                    scrollThresholds.forEach(threshold => {
+                        if (scrollPercent >= threshold && !trackedThresholds.has(threshold)) {
+                            trackedThresholds.add(threshold);
+                            trackEvent('engagement', 'scroll', 'Page Scroll', threshold);
+                        }
+                    });
+                }
+            }
+            
+            window.addEventListener('scroll', checkScrollDepth, { passive: true });
         }
             
             // Smooth scrolling for anchor links
@@ -1694,6 +1782,11 @@
             document.querySelectorAll('form').forEach(form => {
                 form.addEventListener('submit', (e) => {
                     e.preventDefault();
+                    
+                    // Track form submission
+                    const formType = form.querySelector('input[type="email"]') ? 'Newsletter' : 'Contact';
+                    trackFormSubmission(formType);
+                    
                     alert('Tack för ditt meddelande! Vi återkommer så snart som möjligt.');
                     form.reset();
                 });
@@ -1751,7 +1844,9 @@
                     // Start ad video immediately
                     if (adVideo) {
                         adVideo.loop = true;
-                        adVideo.play().catch(() => {
+                        adVideo.play().then(() => {
+                            trackVideoInteraction('adVideo', 'autoplay_start');
+                        }).catch(() => {
                             // Silent fail for autoplay
                         });
                     }
@@ -1768,7 +1863,9 @@
                     
                     video.addEventListener('mouseenter', () => {
                         video.loop = true;
-                        video.play().catch(() => {
+                        video.play().then(() => {
+                            trackVideoInteraction(video.id, 'hover_play');
+                        }).catch(() => {
                             // Silent fail
                         });
                     });
@@ -1776,6 +1873,7 @@
                     video.addEventListener('mouseleave', () => {
                         video.pause();
                         video.currentTime = 0;
+                        trackVideoInteraction(video.id, 'hover_pause');
                     });
                 }
                 
@@ -1797,6 +1895,9 @@
                 try { console.log('[NK] openVideoModal called'); } catch(e) {}
                 if (!videoModal || !expandedVideo) return;
                 if (!videoModal.classList.contains('hidden')) return;
+                
+                // Track video modal open
+                trackEvent('engagement', 'video_modal_open', 'Ad Video Modal', 1);
                 
                 // Video is already loaded with direct src attributes
                 // No need to load dynamically as it's already optimized
@@ -1869,6 +1970,9 @@
             
             // Close video modal
             function closeModal() {
+                // Track video modal close
+                trackEvent('engagement', 'video_modal_close', 'Ad Video Modal', 1);
+                
                 // Simple scale animation for closing
                 const modalContent = videoModal.querySelector('div');
                 if (modalContent) {
@@ -1948,6 +2052,22 @@
                 } else {
                     scrollToTopBtn.style.opacity = '0';
                 }
+            });
+            
+            // Initialize scroll depth tracking
+            trackScrollDepth();
+            
+            // Track navigation clicks
+            document.querySelectorAll('a[href^="#"]').forEach(link => {
+                link.addEventListener('click', function() {
+                    const targetSection = this.getAttribute('href');
+                    trackEvent('navigation', 'section_click', targetSection, 1);
+                });
+            });
+            
+            // Track scroll to top button clicks
+            scrollToTopBtn.addEventListener('click', () => {
+                trackEvent('engagement', 'scroll_to_top', 'Scroll to Top Button', 1);
             });
             
 
