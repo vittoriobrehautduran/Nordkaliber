@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 
 // Create reusable transporter object using SMTP transport
 const createTransporter = () => {
-  return nodemailer.createTransporter({
+  return nodemailer.createTransport({
     service: 'gmail',
     auth: {
       user: process.env.EMAIL_USER,
@@ -54,6 +54,12 @@ const sendContactEmail = async (contactData) => {
 };
 
 exports.handler = async (event, context) => {
+  console.log('Contact form handler called:', {
+    method: event.httpMethod,
+    body: event.body,
+    headers: event.headers
+  });
+
   // Handle CORS
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -82,6 +88,7 @@ exports.handler = async (event, context) => {
   try {
     // Parse the request body
     const contactData = JSON.parse(event.body);
+    console.log('Parsed contact data:', contactData);
 
     // Validate required fields
     if (!contactData.name || !contactData.email || !contactData.message) {
@@ -106,7 +113,9 @@ exports.handler = async (event, context) => {
     }
 
     // Send the contact email
+    console.log('Attempting to send contact email...');
     const result = await sendContactEmail(contactData);
+    console.log('Email sent successfully:', result);
 
     return {
       statusCode: 200,
