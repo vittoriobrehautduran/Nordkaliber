@@ -1409,20 +1409,21 @@
                         <h2 class="text-3xl font-bold mb-6 text-reveal smooth-reveal">
                             <span>KONTAKTA OSS</span>
                         </h2>
-                        <form>
+                        <form id="contactForm">
                             <div class="mb-4">
                                 <label for="name" class="block mb-2">Namn</label>
-                                <input type="text" id="name" class="w-full bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-hunter-brown transition-all duration-300">
+                                <input type="text" id="name" name="name" required class="w-full bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-hunter-brown transition-all duration-300">
                             </div>
                             <div class="mb-4">
                                 <label for="email" class="block mb-2">E-post</label>
-                                <input type="email" id="email" class="w-full bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-hunter-brown transition-all duration-300">
+                                <input type="email" id="email" name="email" required class="w-full bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-hunter-brown transition-all duration-300">
                             </div>
                             <div class="mb-4">
                                 <label for="message" class="block mb-2">Meddelande</label>
-                                <textarea id="message" rows="4" class="w-full bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-hunter-brown transition-all duration-300"></textarea>
+                                <textarea id="message" name="message" rows="4" required class="w-full bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-hunter-brown transition-all duration-300"></textarea>
                             </div>
-                            <button type="submit" class="btn-enhanced btn-hunter text-white px-6 py-3 rounded-full font-medium w-full">SKICKA</button>
+                            <button type="submit" id="contactSubmitBtn" class="btn-enhanced btn-hunter text-white px-6 py-3 rounded-full font-medium w-full">SKICKA</button>
+                            <div id="contactMessage" class="mt-4 text-center hidden"></div>
                         </form>
                     </div>
                     
@@ -1778,8 +1779,68 @@
                 }
             });
 
-            // Form submission handling (simplified)
-            document.querySelectorAll('form').forEach(form => {
+            // Contact form submission handling
+            const contactForm = document.getElementById('contactForm');
+            const contactSubmitBtn = document.getElementById('contactSubmitBtn');
+            const contactMessage = document.getElementById('contactMessage');
+
+            if (contactForm) {
+                contactForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    // Disable submit button and show loading state
+                    contactSubmitBtn.disabled = true;
+                    contactSubmitBtn.textContent = 'SKICKAR...';
+                    contactMessage.classList.add('hidden');
+                    
+                    try {
+                        // Get form data
+                        const formData = new FormData(contactForm);
+                        const contactData = {
+                            name: formData.get('name'),
+                            email: formData.get('email'),
+                            message: formData.get('message')
+                        };
+
+                        // Send to API
+                        const response = await fetch('/.netlify/functions/contact-form', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(contactData)
+                        });
+
+                        const result = await response.json();
+
+                        if (response.ok) {
+                            // Success
+                            contactMessage.textContent = result.message || 'Tack för ditt meddelande! Vi återkommer så snart som möjligt.';
+                            contactMessage.className = 'mt-4 text-center text-green-400';
+                            contactForm.reset();
+                            
+                            // Track form submission
+                            trackFormSubmission('Contact');
+                        } else {
+                            // Error
+                            contactMessage.textContent = result.error || 'Ett fel uppstod. Försök igen senare.';
+                            contactMessage.className = 'mt-4 text-center text-red-400';
+                        }
+                    } catch (error) {
+                        console.error('Contact form error:', error);
+                        contactMessage.textContent = 'Ett fel uppstod. Kontrollera din internetanslutning och försök igen.';
+                        contactMessage.className = 'mt-4 text-center text-red-400';
+                    } finally {
+                        // Re-enable submit button
+                        contactSubmitBtn.disabled = false;
+                        contactSubmitBtn.textContent = 'SKICKA';
+                        contactMessage.classList.remove('hidden');
+                    }
+                });
+            }
+
+            // Newsletter form submission handling (simplified)
+            document.querySelectorAll('form:not(#contactForm)').forEach(form => {
                 form.addEventListener('submit', (e) => {
                     e.preventDefault();
                     
