@@ -18,7 +18,7 @@ const sendContactEmail = async (contactData) => {
     
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: process.env.EMAIL_USER, // Send to the same email address
+      to: `${process.env.EMAIL_USER}, vittorio.brehaut.duran@gmail.com`, // Send to both email addresses
       subject: `Kontaktformulär - ${contactData.name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
