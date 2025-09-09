@@ -1471,10 +1471,11 @@
                     <p class="mb-8 text-reveal smooth-reveal">
                         <span>Få exklusiva erbjudanden, nyheter om våra produkter och jaktrelaterade tips direkt till din inkorg.</span>
                     </p>
-                    <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                        <input type="email" placeholder="Din e-postadress" class="flex-grow bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-hunter-brown transition-all duration-300">
-                        <button type="submit" class="btn-enhanced btn-hunter text-white px-6 py-2 rounded-full font-medium whitespace-nowrap">PRENUMERERA</button>
+                    <form id="newsletterForm" class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                        <input type="email" id="newsletterEmail" name="email" placeholder="Din e-postadress" required class="flex-grow bg-dark-green bg-opacity-50 border border-hunter-brown border-opacity-30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-hunter-brown transition-all duration-300">
+                        <button type="submit" id="newsletterSubmitBtn" class="btn-enhanced btn-hunter text-white px-6 py-2 rounded-full font-medium whitespace-nowrap">PRENUMERERA</button>
                     </form>
+                    <div id="newsletterMessage" class="mt-4 text-center hidden"></div>
                 </div>
             </div>
         </section>
@@ -1839,19 +1840,63 @@
                 });
             }
 
-            // Newsletter form submission handling (simplified)
-            document.querySelectorAll('form:not(#contactForm)').forEach(form => {
-                form.addEventListener('submit', (e) => {
+            // Newsletter form submission handling
+            const newsletterForm = document.getElementById('newsletterForm');
+            const newsletterSubmitBtn = document.getElementById('newsletterSubmitBtn');
+            const newsletterMessage = document.getElementById('newsletterMessage');
+
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', async (e) => {
                     e.preventDefault();
                     
-                    // Track form submission
-                    const formType = form.querySelector('input[type="email"]') ? 'Newsletter' : 'Contact';
-                    trackFormSubmission(formType);
+                    // Disable submit button and show loading state
+                    newsletterSubmitBtn.disabled = true;
+                    newsletterSubmitBtn.textContent = 'PRENUMERERAR...';
+                    newsletterMessage.classList.add('hidden');
                     
-                    alert('Tack för ditt meddelande! Vi återkommer så snart som möjligt.');
-                    form.reset();
+                    try {
+                        // Get form data
+                        const formData = new FormData(newsletterForm);
+                        const subscriptionData = {
+                            email: formData.get('email')
+                        };
+
+                        // Send to API
+                        const response = await fetch('/.netlify/functions/newsletter', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(subscriptionData)
+                        });
+
+                        const result = await response.json();
+
+                        if (response.ok) {
+                            // Success
+                            newsletterMessage.textContent = result.message || 'Tack för din prenumeration! Du kommer nu att få våra nyhetsbrev.';
+                            newsletterMessage.className = 'mt-4 text-center text-green-400';
+                            newsletterForm.reset();
+                            
+                            // Track form submission
+                            trackFormSubmission('Newsletter');
+                        } else {
+                            // Error
+                            newsletterMessage.textContent = result.error || 'Ett fel uppstod. Försök igen senare.';
+                            newsletterMessage.className = 'mt-4 text-center text-red-400';
+                        }
+                    } catch (error) {
+                        console.error('Newsletter form error:', error);
+                        newsletterMessage.textContent = 'Ett fel uppstod. Kontrollera din internetanslutning och försök igen.';
+                        newsletterMessage.className = 'mt-4 text-center text-red-400';
+                    } finally {
+                        // Re-enable submit button
+                        newsletterSubmitBtn.disabled = false;
+                        newsletterSubmitBtn.textContent = 'PRENUMERERA';
+                        newsletterMessage.classList.remove('hidden');
+                    }
                 });
-            });
+            }
             
             // Scroll to top functionality
             const scrollToTopBtn = document.getElementById('scrollToTop');
